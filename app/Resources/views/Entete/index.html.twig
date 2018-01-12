@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Liste des Entete</h1>
+	<p class="lead">Consulter et editer les Entetes utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Entetes</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Description</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for entete in list %}
+						<tr>
+							<th scope="row">{{ entete.id }} </th>
+							<td>{{ entete.titre }} </td>
+							<td class="col-lg-6">{{ entete.texte }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('Entete_voir', {'id' : entete.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('Entete_edit', {'id' : entete.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('Entete_delete', {'id' : entete.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('Entete_create')}}">Ajouter un entete</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

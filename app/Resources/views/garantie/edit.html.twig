@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+	<div class="col-lg-12">
+		<h1>Editer une Garantie</h1>
+			{{ form_start(form) }}
+			<div class="row well well-lg">
+				<div class="col-md-3">
+					{{ form_label(form.nom) }}
+					{{ form_errors(form.nom) }}
+					{{ form_widget(form.nom) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.description) }}
+					{{ form_errors(form.description) }}
+					{{ form_widget(form.description) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.duree) }}
+					{{ form_errors(form.duree) }}
+					{{ form_widget(form.duree) }}
+				</div>
+			</div>
+			<div class="row well well-lg">
+				<div class="col-md-4">
+					{{ form_label(form.disponibilite) }}
+					{{ form_errors(form.disponibilite) }}
+					{{ form_widget(form.disponibilite) }}
+				</div>
+				<div class="col-md-4">
+					{{ form_label(form.intervention) }}
+					{{ form_errors(form.intervention) }}
+					{{ form_widget(form.intervention) }}
+				</div>
+				<div class="col-md-4">
+					{{ form_label(form.reparation) }}
+					{{ form_errors(form.reparation) }}
+					{{ form_widget(form.reparation) }}
+				</div>
+			</div>
+			<div class="row well well-lg">
+				<div class="col-md-8">
+					{{ form_label(form.supplement) }}
+					{{ form_errors(form.supplement) }}
+					{{ form_widget(form.supplement) }}
+				</div>
+			</div>			
+			<hr>
+			<div>
+				{{ form_widget(form.save) }}
+			</div>
+		{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

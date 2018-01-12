@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Userrole creation</h1>
+    <p class="lead">Consulter et editer les roles utilisées dans la gestion commerciale.<br>
+<a type="button" href="{{ path('userrole_index') }}" class="btn btn-default">Retour au Role</a>
+<hr>
+    <div class="row">
+        <div class="col-lg-12">
+
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            {{ form_end(form) }}
+        </div>
+    </div>
+{% endblock %}

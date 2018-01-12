@@ -1,0 +1,13 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Consulter une Type Metier</h1>
+<p class="lead">Consulter et editer les Type Metier utilisés dans la gestion commerciale.<br> A venir, une mise a jour automatique des Type Metier</p>
+<hr>
+<a type="button" href="{{ url('metier_list')}}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header"><strong>{{ enregistrement.nom }}</strong></h2>
+<ul class="list-group">
+  <li class="list-group-item">{{enregistrement.description}}</li>
+</ul>
+
+{% endblock %}

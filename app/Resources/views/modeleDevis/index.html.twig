@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des modeles de devis {% endblock %}
+{% block body %}
+<div class="row">
+	<h1>Liste des Modele</h1>
+	<p class="lead">Consulter et editer les Modele utilisées dans la gestion commerciale.</p>
+</div>
+	<div class="row">
+			<hr>
+			<table class="table table-hover" >
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Langue</th>
+						<th>Description</th>
+						<th>Mise en Page</th>
+						<th>Modele</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for modeleDevis in list %}
+						<tr>
+							<th scope="row">{{ modeleDevis.id }} </th>
+							<td>{{ modeleDevis.nom }} </td>
+							<td>{{ modeleDevis.Langue }} </td>
+							<td>{{ modeleDevis.description }} </td>
+							<td>{{ modeleDevis.miseenpage }} </td>
+							<td>{{ modeleDevis.modele }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('modeleDevis_voir', {'id' : modeleDevis.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('modeleDevis_edit', {'id' : modeleDevis.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('modeleDevis_delete', {'id' : modeleDevis.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	</div>
+	<div class="row">
+			<hr>
+			<a type="button" class="btn btn-success" href="{{ url('modeleDevis_create')}}">Ajouter un Modele</a>		
+	</div>
+{% endblock %}

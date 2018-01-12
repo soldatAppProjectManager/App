@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+
+<link href="{{ asset('/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+{% endblock %}	
+{% block title %} Liste des clients {% endblock %}
+{% block body %}
+<div class="row">
+	<h1>Liste des Clients</h1>
+	<p class="lead">Consulter et editer les Clients utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Clients.</p>
+</div>
+	<div class="row">
+			<hr>
+			<table class="table table-hover" id="liste_clients">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Contact Principal</th>
+						<th>Délai de recouvrement moyen</th>
+						<th>Chargé de compte</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for client in clients %}
+						<tr>
+							<th scope="row">{{ client.id }} </th>
+							<td>{{ client.nom }} </td>
+							<td>
+							{% if client.getContactParDefaut %}
+									{{ client.getContactParDefaut.civilite }} {{ client.getContactParDefaut.prenom }} {{ client.getContactParDefaut.nom }}
+							{% endif %}
+							</td>
+							<td>{{ client.delaipaiementconstate }} </td>
+							<td> {{ client.commercial.civilite }} {{ client.commercial.prenom }} {{ client.commercial.nom }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('client_voir', {'id' : client.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('client_edit', {'id' : client.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('client_delete', {'id' : client.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+	</div>
+	<div class="row">
+			<hr>
+			<a type="button" class="btn btn-success" href="{{ url('client_create')}}">Ajouter un Client</a>		
+	</div>
+{% endblock %} 
+
+ 
+{% block javascripts %}
+
+	{{ parent() }}
+  	<script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+	<script>
+	$(document).ready(function() {
+	    $('#liste_clients').DataTable({
+		  "pageLength": 25
+		} );
+	} );
+	$.extend($.fn.dataTableExt.oStdClasses, {
+    "sFilterInput": "form-control",
+    "sLengthSelect": "form-control"
+});
+	</script>
+
+{% endblock %}

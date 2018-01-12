@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="row">
+		<h1>Consulter une catégorie Terme Commercial</h1>
+		<p class="lead">Vous consultez une catégorie de terme commercial</p>
+					<a type="button" href="{{ url('CategorieTerme_list')}}" class="btn btn-default"> Retour</a>
+	</div>
+<a type="button" href="{{ url('TermeCommercial_list')}}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header"><strong>{{ enregistrement.nom }}</strong></h2>
+<ul class="list-group">
+  <li class="list-group-item">{{enregistrement.description}}</li>
+</ul>
+
+{% endblock %}

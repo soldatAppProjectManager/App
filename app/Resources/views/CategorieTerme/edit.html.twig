@@ -1,0 +1,20 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+	<div class="row">
+		<h1>Editer une catégorie Terme Commercial</h1>
+		<p class="lead">Vous etes sur le point de modifier une catégorie de terme commercial</p>
+	</div>
+<a type="button" href="{{ url('CategorieTerme_list')}}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header">Modification de {{ nom }}</h2>
+	<div class="row">
+		<div class="col-lg-12">
+			{{ form_start(form) }}
+			{{ form_widget(form) }}
+			{{ form_end(form) }}
+		</div>
+	</div>
+
+{% endblock %}

@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Effacer {{ nom }} {% endblock %}
+{% block body %}
+
+	<h1>Effacer un Fournisseur</h1>
+	<p class="lead">Consulter et editer les fournisseurs utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des fournisseurs.</p>
+	<hr>
+
+	<h2 class="page-header">{{ nom }}</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('fournisseur_delete_confirmed', {'id' : id})}}" class="btn btn-danger">Effacer {{ nom }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('fournisseur_list')}}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

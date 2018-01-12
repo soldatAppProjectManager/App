@@ -1,0 +1,36 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+<div class="row">
+	<h1>Consulter une produits devis </h1>
+	<p class="lead">Consulter et editer les produits devis  utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des produits devis</p>
+	<hr>
+	<a type="button" href="{{ url('devis_voir', {'id' : produitdevis.devis.id})}}" class="btn btn-default">Retour à la liste</a>
+</div>
+<div class="row">
+	<div class="panel panel-default">
+	  	<div class="panel-heading">{{ produitdevis.designation }}</div>
+	  {# <h2 class="page-header"></h2> #}
+			<ul class="list-group">
+			  <li class="list-group-item">Quantité : <strong>{{produitdevis.quantite}}</strong></li>
+			  <li class="list-group-item">Désignation : {{produitdevis.designation}}</li>
+			  <li class="list-group-item">{{produitdevis.description|nl2br}}</li>
+			  <li class="list-group-item"><strong>{{produitdevis.prixachatht}}</strong></li>
+			  <li class="list-group-item">{{produitdevis.fraisapproche}}</li>
+			  <li class="list-group-item">{{produitdevis.marge}}</li>
+			  <li class="list-group-item"><strong>{{produitdevis.metier.nom}}</strong></li>
+
+			{% if produitdevis.typeproduit %}
+			  <li class="list-group-item">{{produitdevis.typeproduit.nom}}</li>
+			{% else %}
+			  <li class="list-group-item">NULL</li>
+			{% endif %}
+
+			  <li class="list-group-item">{{produitdevis.prixventeht}}</li>
+			</ul>
+	</div>
+</div>
+
+
+{% endblock %}

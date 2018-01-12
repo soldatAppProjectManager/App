@@ -1,0 +1,50 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Liste des fournisseurs{% endblock %}
+{% block body %}
+	<div class="row">
+	<h1>Liste des Fournisseur</h1>
+	<p class="lead">Consulter et editer les fournisseurs utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des fournisseurs.</p>
+</div>
+	<div class="row">
+		<div class="col-lg-12">
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Devise de vente</th>
+						<th>Frais d'approche</th>
+						<th>Frais d'approche surtaxés</th>
+						<th>Terme de paiement</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for fournisseur in fournisseurs %}
+						<tr>
+							<th scope="row">{{ fournisseur.id }} </th>
+							<td>{{ fournisseur.nom }} </td>
+							{% if fournisseur.devisevente %}
+								<td>{{ fournisseur.devisevente.nom }} </td>
+							{% else %}
+								<td> NULL </td>
+							{% endif %}
+							<td>{{ fournisseur.fa *100 }}% </td>
+							<td>{{ fournisseur.faSurtaxe *100 }}% </td>
+							<td>{{ fournisseur.termepaiement }} Jours </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('fournisseur_voir', {'id' : fournisseur.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('fournisseur_edit', {'id' : fournisseur.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('fournisseur_delete', {'id' : fournisseur.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('fournisseur_create')}}">Ajouter un Fournisseur</a>		
+		</div>
+	</div>
+{% endblock %}  

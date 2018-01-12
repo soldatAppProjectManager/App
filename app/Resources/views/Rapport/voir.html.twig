@@ -1,0 +1,112 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+
+<link href="{{ asset('/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %} Rapport {% endblock %}
+{% block body %}
+<div class="container-fluid">
+  <div class="row">
+
+  	<br>
+    <h1>Rapport Hebdomadaire</h1>
+    <p class="lead">{{annee}} - Semaine n°{{numsemaine}} démarrant le {{lundi|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y") |capitalize}}<p>
+  	<br>
+  	<hr>
+      <table class="table table-hover table-responsive" id="rapport">
+        <thead>
+          <tr>
+            <th>Nom IC</th>
+            <th>Client</th>          
+            <th>BC</th>          
+            <th>Date</th>          
+            <th>Total CA</th>
+            <th>Marge nette totale</th>
+            <th>Marge totale</th>
+            <th>Statut</th>
+            <th>Etat Recouvrement</th>
+            <th>CA Solution</th>
+            <th>Marge Solution</th>
+            <th>CA Poste de travail</th>
+            <th>Marge Poste de travail</th>
+            <th>CA périphérique</th>
+            <th>Marge périphérique</th>
+            <th>CA service MD</th>
+            <th>Marge service MD</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for ligne in rapport %}
+           <tr>
+              <td style="min-width:120px">{{ligne.commercial.civilite}} {{ligne.commercial.prenom|capitalize }} {{ligne.commercial.nom|capitalize }}</td>
+              <td style="min-width:120px">{{ligne.client.nom}}</td>
+              <td></td>
+              <td></td>
+              <td style="min-width:120px">{{ligne.getTotalHT         | number_format(2, '.', ',') }}  Dh</td>
+              <td style="min-width:120px">{{(ligne.TauxMargeNette * 100) | number_format(2, '.', ',') }}%</strong></td>
+              <td style="min-width:120px">{{(ligne.TauxMargeBrute * 100) | number_format(2, '.', ',') }}%</strong></td>
+              <td></td>
+              <td></td>
+              <td style="min-width:120px">
+                {% if attribute(ligne.RevenuParMetier,'Infrastructure serveur') is defined %}
+                    {{ligne.RevenuParMetier['Infrastructure serveur'].revenu | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+              <td style="min-width:120px">
+                {% if attribute(ligne.MargeParMetier,'Infrastructure serveur') is defined %}
+                    {{ligne.MargeParMetier['Infrastructure serveur'].marge | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+              <td style="min-width:120px">
+                {% if ligne.RevenuParMetier.Client is defined %}
+                    {{ligne.RevenuParMetier.Client.revenu | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+              <td style="min-width:120px">
+                {% if ligne.MargeParMetier.Client is defined %}
+                    {{ligne.MargeParMetier.Client.marge | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+              <td style="min-width:120px">
+                {% if ligne.RevenuParMetier.Image is defined %}
+                    {{ligne.RevenuParMetier.Image.revenu | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+              <td style="min-width:120px">
+                {% if ligne.MargeParMetier.Image is defined %}
+                    {{ligne.MargeParMetier.Image.marge | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+              <td style="min-width:120px">
+                {% if attribute(ligne.RevenuParTypeProduit,'Service Microdata') is defined %}
+                    {{ligne.RevenuParTypeProduit['Service Microdata'].revenu | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+              <td style="min-width:120px">
+                {% if attribute(ligne.MargeParTypeProduit,'Service Microdata') is defined %}
+                    {{ligne.MargeParTypeProduit['Service Microdata'].marge | number_format(2, '.', ',')}} Dh<br>
+                {% endif %}
+              </td>
+           </tr>
+          {% endfor %}
+        </tbody>  
+      </table>
+</div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/datatables.min.js') }}"></script>
+
+  <script>
+  $(document).ready(function() {
+      $('#rapport').DataTable();
+  } );
+  </script>
+
+  {% endblock %}

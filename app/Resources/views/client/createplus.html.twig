@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+{% block title %} Créer un client {% endblock %}
+{% block body %}
+
+	<div class="row">
+	<h1>Ajouter un Client</h1>
+	<p class="lead">Consulter et editer les Clients utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Clients.</p>
+</div>
+<hr>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			{{ form_start(form) }}
+			{{ form_errors(form) }}
+			<div class="well well-lg">
+				<div class="row">
+					<div class="col-md-4 form-group {% if not form.nom.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.nom) }}
+						{{ form_errors(form.nom) }}
+						{{ form_widget(form.nom) }}
+					</div>
+					<div class="col-md-4 form-group {% if not form.delaipaiementconstate.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.delaipaiementconstate) }}
+						{{ form_errors(form.delaipaiementconstate) }}
+						{{ form_widget(form.delaipaiementconstate) }}
+					</div>
+					<div class="col-md-4 form-group {% if not form.secteur.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.secteur) }}
+						{{ form_errors(form.secteur) }}
+						{{ form_widget(form.secteur) }} 
+					</div>
+				</div>
+				<div class="row">
+					{% if source == "devis"%}
+						<div class="col-md-4" align="center">
+						</div>
+					{% else %}
+						<div class="col-md-4 form-group {% if not form.commercial.vars.valid %} has-error {% endif %}">
+							{{ form_label(form.commercial) }}
+							{{ form_errors(form.commercial) }}
+							{{ form_widget(form.commercial) }}						
+						</div>
+					{% endif %}
+					<div class="col-md-4" align="center">
+					</div>
+					<div class="col-md-4 form-group {% if not form.prive.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.prive) }}
+						{{ form_errors(form.prive) }}
+						{{ form_widget(form.prive) }}
+					</div>
+				</div>			
+			</div>
+			<hr>			
+
+			<div class="row" align="center">
+				<a type="button" {% if source == "devis"%} href="{{ url('devis_create') }}" {% else %} href="{{ url('client_list') }}" {% endif %} class="btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Annuler</a>
+				<button type="submit" class="btn btn-primary" formnovalidate>Créer un client</button>
+			</div>
+
+			{{ form_end(form) }}
+		</div>
+	</div>
+</div>
+<br><br><br>
+{% endblock %}  

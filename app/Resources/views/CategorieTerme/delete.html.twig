@@ -1,0 +1,27 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<div class="row">
+		<h1>Effacer une catégorie Terme Commercial</h1>
+		<p class="lead">Vous etes sur le point d'effacer une catégorie de terme commercial</p>
+	</div>
+
+	<h2 class="page-header">{{ nom }}</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('CategorieTerme_delete_confirmed', {'id' : id})}}" class="btn btn-danger">Effacer {{ nom }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('CategorieTerme_list')}}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

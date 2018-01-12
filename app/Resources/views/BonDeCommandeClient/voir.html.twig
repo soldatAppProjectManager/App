@@ -1,0 +1,260 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+
+<style>
+.invisible{
+  {% if BonDeCommandeClient.verrouille %}
+  visibility: visible;
+  {% else %}
+  visibility: hidden;
+  {% endif %}
+}
+
+.visible{
+  {% if BonDeCommandeClient.verrouille %}
+  visibility: hidden;
+  {% else %}
+  visibility: visible;
+  {% endif %}
+}
+
+</style>
+<link href="{{ asset('/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+{% endblock %}
+{% block title %} Voir Bon De Commande {{BonDeCommandeClient.numeroDeBonDeCommandeClient}} de <strong>{{BonDeCommandeClient.client.nom}}</strong> {% endblock %}
+{% block body %}
+
+<div class="row">
+      <br>
+      <a type="button" title="Retour à liste des devis" href="{{ url('BonDeCommandeClient_list') }}" class="btn btn-default">Retour à la liste</a>
+      <h1>Consulter un Bon de commande </h1>
+        <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports </p>
+</div>
+<div class="row">
+  <ul class="nav nav-tabs"> 
+    <li class="active">
+      <a href="{{ url('BonDeCommandeClient_voir', {'id' : BonDeCommandeClient.id})}}">Bon de commande</a>
+    </li> 
+    <li >
+      <a href="{{ url('BonDeCommandeClient_voirprofitabilite', {'id' : BonDeCommandeClient.id})}}">Profitabilité</a>
+    </li> 
+  </ul>
+</div>
+<br>
+<div class="container-fluid">
+  <div class="row">
+    <div class="well" style="background-color: #fcfcfc; width:45%;">
+    <table class="table"  style="width:100%">
+    <tbody>
+      <tr>
+        <th style="min-width:15%">Nom du Client :</th>
+        <td align="left"><strong>{{BonDeCommandeClient.client.nom}}</strong></td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Nom du commercial :</th>
+        <td align="left">{{BonDeCommandeClient.commercial.prenom}} {{BonDeCommandeClient.commercial.nom}}</td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Référence du BonDeCommandeClient :</th>
+        <td align="left"><strong>{{ BonDeCommandeClient.numeroDeBonDeCommandeClient }}</strong> </td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Document client :</th>
+        <td align="left"><a href="{{ url('BonDeCommandeClient_fichier', {'id' : BonDeCommandeClient.id})}}">{{ BonDeCommandeClient.fichier }}</a> </td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Echéance du BC :</th>
+        <td align="left">{{BonDeCommandeClient.echeance}} Jours à compter de {{BonDeCommandeClient.datedereception |date('F j, Y, g:i a')}}</td>
+      </tr>
+          <tr>
+            <td></td>
+            <td>
+              <a type="button" class="btn btn-warning" href="{{ url('BonDeCommandeClient_edit', {'id' : BonDeCommandeClient.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                {% if BonDeCommandeClient.verrouille  == false %} 
+                  <a type="button" class="btn btn-danger" href="{{ url('BonDeCommandeClient_verrouille', {'id' : BonDeCommandeClient.id,'source' : "index"})}}"><i class="fa fa-lock" aria-hidden="true"></i> verrouiller</a>
+                {% else %}
+                  <a type="button" href="{{ url('BonDeCommandeClient_verrouille', {'id' : BonDeCommandeClient.id,'source' : "index"})}}" class="btn btn-primary"><i class="fa fa-unlock" aria-hidden="true"></i> déverouiller</a> 
+                {% endif %}              
+            </td>
+          </tr>      
+    </tbody>
+    </table>
+    </div>
+  </div>
+  <hr>
+
+<div class="well" style="background-color: #fcfcfc">
+<table class="table table-hover" id="listedesproduits">
+  <thead>
+    <tr>
+      <th>#</th>
+      <th>Quantité</th>
+      <th>Désignation</th>
+      <th>Description</th>
+      <th>Statut</th>
+      <th>Prix Unitaire</th>
+      <th>Sous-total</th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for produit in BonDeCommandeClient.produits %}
+      <tr>
+        <th scope="row">{{ produit.id }} </th>
+        <td id="{{ produit.id }}" class="quantite" {% if BonDeCommandeClient.verrouille  == false %} contenteditable="true"  {% endif %}><strong>{{ produit.quantite }}</strong></td>
+        <td>{{ produit.designation | capitalize | raw}} </td>
+        <td>{{ produit.description | capitalize | raw}} </td>
+        <td style="min-width:110px">
+            <select class="selectpicker form-control statutProduit" produit="{{produit.id}}">
+                  {% for statut in statuts %}
+                      <option value="{{statut.id}}" {% if statut.nom == produit.statut.nom %} selected {% endif %}>{{statut.nom}}</option>
+                  {% endfor %}            
+            </select>
+        </td>
+
+        <td style="min-width:110px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
+        <td>{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
+        <td style="min-width:250px">
+          <a type="button" class="btn btn-default" href="{{ url('ProduitBC_voir', {'id' : produit.id})}}">Voir</a>
+          {% if BonDeCommandeClient.verrouille  == false %} 
+          <a type="button" class="btn btn-warning" href="{{ url('ProduitBC_edit', {'id' : produit.id})}}">Editer</a>
+          <a type="button" class="btn btn-danger" href="{{ url('ProduitBC_delete_confirmed', {'id' : produit.id,'bcid' : BonDeCommandeClient.id})}}">Effacer</a>
+        {% endif %}
+        </td>
+        </tr>
+    {% endfor %}
+      <tr>
+        <th scope="row" style="border-top: 0px"></th>
+        <td style="border-top: 0px"></td>
+        <td style="border-top: 0px"></td>
+        <td style="border-top: 0px"></td>
+        <td><strong>TOTAL HT :</strong></td>
+        <td><strong>{{BonDeCommandeClient.getTotalHT()| number_format(2, '.', ',')}}</strong></td>
+        <td></td>
+      </tr>
+  </tbody>
+</table>
+</div>
+      <br><br>
+      <hr>
+<div class="well" style="background-color: #fcfcfc">
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th></th>
+      <th>Termes Commerciaux</th>
+      <th></th>
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for terme in BonDeCommandeClient.termes %}
+      <tr>
+        <th></th>
+        <td><strong>{{ terme.nom }}</strong></td>
+        <td>{{ terme.description }} </td>
+        <td style="min-width:250px">
+        </td>
+        </tr>
+    {% endfor %}
+  </tbody>
+</table>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+
+     <script>
+
+     $( ".statutProduit" ).change(function() {
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('maj_statut') }}',
+                data: { 'produit': $(this).attr('produit'),
+                        'statut': $(this).val()},
+                dataType: "json",
+                success: function (data, status, object) {
+                    if (data.code == 1) {
+                }},
+                error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                }
+            });  
+});
+
+{% if BonDeCommandeClient.verrouille  == false %} 
+     $( ".quantite" ).on( "focusout",function (){
+
+
+            // $(#totalHT).text();
+
+            var poduitID = $(this).attr('id');
+            var element = $(this);
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('maj_bc') }}',
+                data: { 'produit': $(this).attr('id'),
+                        'devis' : {{BonDeCommandeClient.id}},
+                        'quantite' :  $(this).text()},
+                dataType: "json",
+                success: function (data, status, object) {
+                    if (data.code == 1) {
+
+                    var totalHTHTML = "<strong>"+data.totalHT.toLocaleString('en-US')+"</strong>";
+                    var totalTVAHTML = data.totalTVA.toLocaleString('en-US');
+                    var totalTTCHTML = "<strong>"+data.totalTTC.toLocaleString('en-US')+"</strong>";
+                    var sousTotalId = "#soustotal"+poduitID;
+
+
+                    $("#totalHT").html(totalHTHTML);
+                    $("#totalTVA").html(totalTVAHTML);
+                    $("#totalTTC").html(totalTTCHTML);
+                    $(sousTotalId).html(data.sousTotalHT.toLocaleString('en-US'));
+
+
+                    var totalEntouteLettre = "<i>La somme du présent devis est arreté à : <strong>"+data.totalEntouteLettre+" Dirhmas TTC.</strong></i>";
+
+                    $("#enTouteLettre").html(totalEntouteLettre);
+
+                }},
+                error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                }
+            });
+     });
+
+    $('.monter').click(function () {
+
+      var produitid = $(this).attr("id");
+      var $row = $(this).parents('tr');
+      if ($row.index() === 0)return; // Don't go above the header
+
+      $row.prev().before($row.get(0));
+
+      $.ajax({
+        type: 'POST',
+        url: '{{ url('monter_produit') }}',
+        data: { 'produitid': produitid,
+                'devisid' : {{BonDeCommandeClient.id}}},
+        dataType: "json",
+        success: function (data, status, object) {
+            if (data.code == 1) {
+
+            }},
+        error: function(xhr, status, error) {
+              console.log("NOK "+status);
+        }
+      });
+    });
+ {% endif %}
+       </script>
+
+
+
+  {% endblock %}

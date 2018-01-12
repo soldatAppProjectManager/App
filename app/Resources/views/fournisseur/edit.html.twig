@@ -1,0 +1,53 @@
+{% extends 'base.html.twig' %}
+{% block title %} Editer {{ nom }} {% endblock %}
+{% block body %}
+
+	<div class="row">
+<h1>Editer un Fournisseur</h1>
+<hr>
+
+<a type="button" href="{{ url('fournisseur_list')}}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header">Modification de {{ nom }}</h2>
+	<div class="row">
+		<div class="col-lg-12">
+			{{ form_start(form) }}
+			<div class="well well-lg">
+				<div class="row">
+					<div class="col-md-3 form-group {% if not form.nom.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.nom) }}
+						{{ form_errors(form.nom) }}
+						{{ form_widget(form.nom) }}
+					</div>
+					<div class="col-md-3 form-group {% if not form.termepaiement.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.termepaiement) }}
+						{{ form_errors(form.termepaiement) }}
+						{{ form_widget(form.termepaiement) }}
+					</div>
+					<div class="col-md-3 form-group {% if not form.devisevente.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.devisevente) }}
+						{{ form_errors(form.devisevente) }}
+						{{ form_widget(form.devisevente) }}
+					</div>
+				</div>
+				<div class="row">				
+					<div class="col-md-3 form-group {% if not form.fa.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.fa) }}
+						{{ form_errors(form.fa) }}
+						{{ form_widget(form.fa) }}						
+					</div>					
+					<div class="col-md-3 form-group {% if not form.faSurtaxe.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.faSurtaxe) }}
+						{{ form_errors(form.faSurtaxe) }}
+						{{ form_widget(form.faSurtaxe) }}						
+					</div>					
+				</div>
+
+			</div>
+			<div class="row" align="center">
+				<a type="button" href="{{ url('fournisseur_list')}}" class="btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Annuler</a>
+				<button type="submit" class="btn btn-primary" formnovalidate>Sauvegarder</button>
+			</div>			
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

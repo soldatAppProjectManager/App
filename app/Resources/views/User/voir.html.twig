@@ -1,0 +1,65 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+<h1>Consulter un User</h1>
+	<p class="lead">Consulter et editer les User utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des User.</p>
+<hr>
+{% if is_granted('ROLE_ADMIN') %}
+<a type="button" href="{{ url('User_list')}}" class="btn btn-default">Retour à la liste des utilisateurs</a>
+{% endif %}
+<h2 class="page-header">{{User.civilite}} {{User.prenom|capitalize }} {{User.nom|capitalize }}  </h2>
+<div class="well" style="background-color: #fcfcfc; width:60%;">
+<table class="table"  style="width:100%">
+    <tbody>
+      <tr>
+        <th style="min-width:10%">Sexe</th>
+        <td align="left">{% if User.genre %} <i class="fa fa-venus" aria-hidden="true"></i> Féminin {% else %} <i class="fa fa-mars" aria-hidden="true"></i> Masculin {% endif %}
+        </td>
+        <td>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a type="button" href="{{ url('User_edit',{'id' : User.id})}}" class="btn btn-default"><i class="fa fa-user fa-fw"></i> Modifier Profil</a>                           
+            {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th style="min-width:10%"><i class="fa fa-at" aria-hidden="true"></i> Email </th>
+        <td align="left">{{User.email}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th style="min-width:10%"> <i class="fa fa-phone" aria-hidden="true"></i> Telephone</th>
+        <td align="left">{{User.telephone}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th style="min-width:10%"><i class="fa fa-user-o" aria-hidden="true"></i> Login </th>
+        <td align="left">{{User.login}}</td>
+        <td>
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                <a type="button" href="{{ url('User_edituserinfo',{'id' : User.id})}}" class="btn btn-warning"><i class="fa fa-lock" aria-hidden="true"></i> Modifier compte</a>                           
+            {% endif %}
+        </td>
+      </tr>
+      <tr>
+        <th style="min-width:10%"><i class="fa fa-lock" aria-hidden="true"></i> Password crypté</th>
+        <td align="left">{{User.password}}</td>
+        <td></td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Roles</th>
+        <td ></td>
+        <td></td>
+      </tr>    
+      {% for role in User.getRolesCollection() %}        
+      <tr>
+        <th style="min-width:10%"></th>
+        <td align="left">{{role.nom}}</td>
+        <td></td>
+      </tr>
+      {% endfor %}
+    </tbody>
+</table>
+</div>
+{% endblock %}

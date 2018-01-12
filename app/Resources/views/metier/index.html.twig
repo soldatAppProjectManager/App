@@ -1,0 +1,43 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Liste des Type Metier</h1>
+	<p class="lead">Consulter et editer les Type Metier utilisés dans la gestion commerciale.<br> A venir, une mise a jour automatique des Type Metier</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Description</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for Metier in list %}
+						<tr>
+							<th scope="row">{{ Metier.id }} </th>
+							<td>{{ Metier.nom }} </td>
+							<td class="col-lg-6">{{ Metier.description }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('metier_voir', {'id' : Metier.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('metier_edit', {'id' : Metier.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('metier_delete', {'id' : Metier.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('metier_create')}}">Ajouter un Metier</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

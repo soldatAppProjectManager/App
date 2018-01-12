@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Liste des Parametre global</h1>
+	<p class="lead">Consulter et editer les Parametres global utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Parametres global</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Description</th>
+						<th>Valeur</th>
+						<th>Label</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for Parametre in list %}
+						<tr>
+							<th scope="row">{{ Parametre.id }} </th>
+							<td>{{ Parametre.nom }} </td>
+							<td class="col-lg-6">{{ Parametre.description }} </td>
+							<td>{{ Parametre.valeur }} </td>
+							<td>{{ Parametre.label }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('Parametres_voir', {'id' : Parametre.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('Parametres_edit', {'id' : Parametre.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('Parametres_delete', {'id' : Parametre.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('Parametres_create')}}">Ajouter un Parametre</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

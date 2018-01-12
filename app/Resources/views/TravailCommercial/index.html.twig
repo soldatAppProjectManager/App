@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<ul class="nav nav-tabs"> 
+  <li >
+    <a href="{{ url('TravailAvantVente_list')}}">Avant-Vente</a>
+  </li> 
+  <li class="active">
+    <a href="{{ url('TravailCommercial_list')}}">Vente</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailImport_list')}}">Import</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailLivraison_list')}}">Livraison</a>
+  </li> 
+</ul>	<h1>Liste des TravailCommercial</h1>
+	<p class="lead">Consulter et editer les TravailCommercial utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des TravailCommercial</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<a type="button" href="{{ url('Travail')}}" class="btn btn-default">Retour aux travaux</a>
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Description</th>
+						<th>Charge</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for TravailCommercial in list %}
+						<tr>
+							<th scope="row">{{ TravailCommercial.id }} </th>
+							<td>{{ TravailCommercial.nom }} </td>
+							<td class="col-lg-6">{{ TravailCommercial.description }} </td>
+							<td>{{TravailCommercial.charge  * 100 | number_format(2)}} % </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('TravailCommercial_voir', {'id' : TravailCommercial.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('TravailCommercial_edit', {'id' : TravailCommercial.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('TravailCommercial_delete', {'id' : TravailCommercial.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('TravailCommercial_create')}}">Ajouter un TravailCommercial</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

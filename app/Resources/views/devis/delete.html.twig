@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+
+	<h1>Effacer un devis </h1>
+	<p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports </p>
+	<hr>
+</div>
+<div class="row" align="center">
+
+	<p class="lead">Effacer le devis <strong>{{ devis }}</strong></p>
+</div>
+
+<div class="row">
+
+	<table align="center">
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('devis_delete_confirmed', {'id' : id})}}" class="btn btn-danger"><strong> Confirmer </strong></a>
+				</td>
+				<td style="min-width:100px">
+				</td>
+				<td>
+					<a type="button" href="{{ url('devis_list') }}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+{% endblock %}

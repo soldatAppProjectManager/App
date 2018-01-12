@@ -1,0 +1,28 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<ul class="nav nav-tabs"> 
+  <li >
+    <a href="{{ url('TravailAvantVente_list')}}">Avant-Vente</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailCommercial_list')}}">Vente</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailImport_list')}}">Import</a>
+  </li> 
+  <li class="active">
+    <a href="{{ url('TravailLivraison_list')}}">Livraison</a>
+  </li> 
+</ul><h1>Consulter un TravailLivraison</h1>
+	<p class="lead">Consulter et editer les TravailLivraison utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des TravailLivraison</p>
+
+<hr>
+<a type="button" href="{{ url('TravailLivraison_list')}}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header">Type de Livraison : <strong>{{ enregistrement.nom }}</strong></h2>
+<ul class="list-group">
+  <li class="list-group-item">{{enregistrement.description}}</li>
+  <li class="list-group-item">{{enregistrement.charge * 100 | number_format(2)}} %</li>
+</ul>
+
+{% endblock %}

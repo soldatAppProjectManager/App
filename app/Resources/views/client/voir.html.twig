@@ -1,0 +1,108 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} Voir {{ client.nom }} {% endblock %}
+{% block body %}
+
+<div class="row">
+<h1>Consulter un Client</h1>
+	<p class="lead">Consulter et editer les Clients utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Clients.</p>
+<hr>
+
+    <a type="button"  href="{{ url('client_list') }}" class="btn btn-default">Retour à la liste</a>
+</div>
+<h2 class="page-header">Client : {{ client.nom }}</h2>
+<div class="well" style="background-color: #fcfcfc; width:45%;">
+<table class="table"  style="width:100%">
+    <tbody>
+      <tr>
+        <th style="min-width:15%"><a type="button" class="btn btn-warning" href="{{ url('client_edit', {'id' : client.id})}}">Editer</a></th>
+        <td align="left"><strong>{{client.nom}} n°{{client.id}}</strong></td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Terme de paiement constaté</th>
+        <td align="left">{{client.delaipaiementconstate}}</td>
+      </tr>
+    </tbody>
+</table>
+</div>
+<div class="well" style="background-color: #fcfcfc">
+<table class="table table-hover">
+  <thead>
+    <tr>
+      <th>Contact</th>
+      <th>email</th>            
+      <th>Telephone</th>
+      <th>Poste</th>
+      <th>Principal</th>      
+      <th></th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for contact in client.contacts %}
+        {% if contact.defaut %}
+        <tr id="{{contact.id}}" style="background-color: rgb(186, 186, 186);">
+          <td><strong>{{contact.civilite}} {{contact.prenom}}, {{contact.nom}}</strong></td>
+          <td>{{contact.email}} </td>
+          <td>{{contact.telephone}} </td>
+          <td>{{contact.poste}} </td>
+          <td><input  id="{{contact.id}}" type="checkbox" checked></td>
+
+        {% else %}
+
+        <tr id="{{contact.id}}">
+          <td><strong>{{contact}}</strong></td>
+          <td>{{contact.email}} </td>
+          <td>{{contact.telephone}} </td>
+          <td>{{contact.poste}} </td>
+          <td><input id="{{contact.id}}" type="checkbox"></td>
+        {% endif %}      
+
+        <td style="min-width:250px">
+			<a type="button" class="btn btn-default" href="{{ url('contact_voir', {'source':'Client','id' : contact.id})}}">Voir</a>
+      <a type="button" class="btn btn-warning" href="{{ url('contact_edit', {'source':'Client','id' : contact.id})}}">Editer</a>
+			<a type="button" class="btn btn-danger" href="{{ url('contact_delete', {'source':'Client','id' : contact.id})}}">Effacer</a>
+        </td>
+        </tr>
+    {% endfor %}       
+  </tbody>
+</table>
+<div class="row">
+<a type="button" href="{{ url('contact_create', {'id' : client.id})}}" class="btn btn-success">Ajouter un contact</a>
+</div>
+
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+     <script>
+
+        $('input').on('change', function() {
+
+            if ( $(this).prop( "checked" ) ){
+              $('input').not(this).prop('checked', false);  
+              var contactid = $(this).attr('id');
+
+              $('tr').removeAttr("style");
+
+              $('tr#'+contactid).css("background-color", "#bababa");
+
+              $.ajax({
+                  type: 'POST',
+                  url: '{{ url('client_contact_defaut') }}',
+                  data: { 'contactid': contactid,
+                          'clientid' : {{client.id}}},
+                  dataType: "json",
+                  success: function (data, status, object) {
+                      if (data.code == 1) {}},
+                  error: function(xhr, status, error) {
+                  }
+              });}
+            else
+            {
+              $(this).prop('checked', true);  ;  
+            }
+
+        });
+       </script>
+  {% endblock %}
+

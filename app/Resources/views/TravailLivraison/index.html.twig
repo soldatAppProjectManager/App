@@ -1,0 +1,58 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<ul class="nav nav-tabs"> 
+  <li >
+    <a href="{{ url('TravailAvantVente_list')}}">Avant-Vente</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailCommercial_list')}}">Vente</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailImport_list')}}">Import</a>
+  </li> 
+  <li class="active">
+    <a href="{{ url('TravailLivraison_list')}}">Livraison</a>
+  </li> 
+</ul>	<h1>Liste des TravailLivraison</h1>
+	<p class="lead">Consulter et editer les TravailLivraison utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des TravailLivraison</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+			<a type="button" href="{{ url('Travail')}}" class="btn btn-default">Retour aux travaux</a>
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Description</th>
+						<th>Charge</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for TravailLivraison in list %}
+						<tr>
+							<th scope="row">{{ TravailLivraison.id }} </th>
+							<td>{{ TravailLivraison.nom }} </td>
+							<td class="col-lg-6">{{ TravailLivraison.description }} </td>
+							<td>{{TravailLivraison.charge  * 100 | number_format(2)}} % </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('TravailLivraison_voir', {'id' : TravailLivraison.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('TravailLivraison_edit', {'id' : TravailLivraison.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('TravailLivraison_delete', {'id' : TravailLivraison.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('TravailLivraison_create')}}">Ajouter un TravailLivraison</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

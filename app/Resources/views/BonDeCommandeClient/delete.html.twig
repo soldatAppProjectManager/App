@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h1>Effacer un Bon de Commande client</h1>
+	<p class="lead">Consulter et editer les Bons de Commande client utilisées dans la gestion commerciale.
+	<hr>
+
+	<h2 class="page-header">Bon de commande client {{ BonDeCommandeClient.client.nom }} </h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('BonDeCommandeClient_delete_confirmed', {'id' : BonDeCommandeClient.id})}}" class="btn btn-danger">Effacer réf : {{ BonDeCommandeClient.numeroDeBonDeCommandeClient }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('BonDeCommandeClient_list')}}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

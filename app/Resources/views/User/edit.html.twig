@@ -1,0 +1,71 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+<h1>Editer un User</h1>
+	<p class="lead">Consulter et editer les User utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des User.</p>
+<hr>
+{% if is_granted('ROLE_ADMIN') %}
+<a type="button" href="{{ url('User_list')}}" class="btn btn-default">Retour à la liste des utilisateurs</a>
+{% endif %}
+<h2 class="page-header">Modification de {{ User.Login }}</h2>
+	<div class="row">
+		<div class="col-lg-12">
+			{{ form_start(form) }}
+			{{ form_errors(form) }}
+
+			<div class="row well well-lg">
+				<div class="col-md-3">
+					{{ form_label(form.genre) }}
+					{{ form_errors(form.genre) }}
+					{{ form_widget(form.genre) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.civilite) }}
+					{{ form_errors(form.civilite) }}
+					{{ form_widget(form.civilite) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.prenom) }}
+					{{ form_errors(form.prenom) }}
+					{{ form_widget(form.prenom) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.nom) }}
+					{{ form_errors(form.nom) }}
+					{{ form_widget(form.nom) }}
+				</div>
+			</div>
+			<div class="row well well-lg">
+				<div class="col-md-6">
+					{{ form_label(form.email) }}
+					{{ form_errors(form.email) }}
+					{{ form_widget(form.email) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.telephone) }}
+					{{ form_errors(form.telephone) }}
+					{{ form_widget(form.telephone) }}
+				</div>
+			</div>
+			<div class="row well well-lg">
+				<div class="col-md-6">
+					{{ form_label(form.departement) }} <br>
+					{{ form_errors(form.departement) }}
+					{{ form_widget(form.departement) }}
+				</div>
+				<div class="col-md-6">
+					{{ form_label(form.poste) }}
+					{{ form_errors(form.poste) }}
+					{{ form_widget(form.poste) }}
+				</div>	
+			</div>
+			<hr>			
+			<div>
+				{{ form_widget(form.save) }}
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
+{% endblock %}

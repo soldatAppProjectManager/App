@@ -1,0 +1,207 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+
+<link href="{{ asset('/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block title %} Voir produit de fusion {% endblock %}
+
+
+{% block body %}
+<div class="row">
+      <br>
+      <a type="button" href="{{ url('devis_apercu', {'id' : ProduitFusion.devis.id})}}" class="btn btn-default">Retour au devis</a>
+      <h1>Consulter un produit de fusion</h1>
+        <p class="lead">Consulter un produit de fusion.</p>
+</div>
+<div class="container-fluid">
+  <div class="row">
+    <br>
+    <p class="lead" align="left">ProduitFusion : <small>{{ ProduitFusion }} </small></p>
+  </div>
+
+
+  <div class="row">
+    <div class="well" style="background-color: #fcfcfc; width:45%;">
+    <table class="table"  style="width:100%">
+        <tbody>
+          <tr>
+            <th style="min-width:15%">Quantité :</th>
+            <td align="left"><strong>{{ProduitFusion.quantite }}</strong></td>
+          </tr>
+          <tr>
+            <th style="min-width:10%">Designation :</th>
+            <td align="left"><strong>{{ProduitFusion.designation}}</strong></td>
+          </tr>
+          <tr>
+            <th style="min-width:10%">Description :</th>
+            <td align="left">{{ProduitFusion.description}}</td>
+          </tr>
+          <tr>
+            <th style="min-width:10%">Prix de revient :</th>
+            <td align="left">{{ProduitFusion.getPrixRevientUnitaire|number_format(2, '.', ',') }}</td>
+          </tr>
+          <tr>
+            <th style="min-width:10%">Somme des prix de vente :</th>
+            <td align="left">{{ProduitFusion.getSommePrixDeVenteHT|number_format(2, '.', ',') }}</td>
+          </tr>
+          <tr>
+            <td></td>
+            <td>
+              <a type="button" class="btn btn-warning" href="{{ url('ProduitFusion_edit', {'id' : ProduitFusion.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="well" style="background-color: #fcfcfc">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th style="text-align:center;">
+              {# <a type="button" class="btn btn-success" href="{{ url('produitdevis_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a> #}
+            </th>
+            <th>article</th>
+            <th>Quantité</th>
+            <th>Description</th>            
+            <th>Prix d'achat total</th>
+            <th>Prix Unitaire</th>
+            <th>Sous-total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produit in ProduitFusion.produits %}
+            <tr>
+              <td align="center"><button type="button" class="btn  btn-sm monter" id="{{ produit.id }}"><span class="fa fa-arrow-circle-up"></span> Monter</button></td>
+              <td scope="row">{{ produit.numero }} </td>
+              <td class="quantite" contenteditable="true" id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
+              <td>
+                {% if produit.designation != " " %}
+                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
+                  <br>              
+                {% endif %}
+
+                {{ produit.description | capitalize | raw }}
+                <br>
+                {% if produit.garanties|length  > 0 %}
+                    <strong>Garantie :</strong> <br>
+                {% endif %}
+                {% for garantie in produit.garanties %}
+                  {{garantie|capitalize }}<br>
+                {% endfor %}
+
+                {% if produit.termes|length  > 0 %}
+                     <strong>Conditions particulières :</strong> <br> 
+                {% endif %}                         
+                {% for terme in produit.termes %}
+                  {{terme.categorie.nom |capitalize }} : {{terme.description}}|capitalize <br>
+                {% endfor %}            
+              </td>
+              <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
+              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
+              <td style="min-width:250px">
+                <a type="button" class="btn btn-warning" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
+                <a type="button" class="btn btn-danger" href="{{ url('ProduitFusion_remove', {'id' : ProduitFusion.id,'produitid' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Retirer</a>
+              </td>
+              </tr>
+          {% endfor %}
+            <tr> 
+              <td style="border-top: 0px"></td>
+              <th scope="row" style="border-top: 0px"></th>
+              <td style="border-top: 0px"></td>            
+              <td style="border-top: 0px"></td>                      
+              <td style="border-top: 0px"></td>            
+              <td><strong>TOTAL Prix de vente choisis HT (taux de marge {{ProduitFusion.getMargeBrute*100| number_format(2, '.', ',')}}%):</strong></td>            
+              <td id="totalHT"><strong>{{ProduitFusion.getPrixVenteHT| number_format(2, '.', ',')}}</strong></td>        
+              <td></td>            
+            </tr>        
+        </tbody>  
+      </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="well" style="background-color: #fcfcfc">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+{#             <th style="text-align:center;">
+               <a type="button" class="btn btn-success" href="{{ url('produitdevis_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a> 
+            </th> #}
+            <th>article<span class="badge" >fusion</span> </th>
+            <th>Quantité</th>
+            <th>Description</th>            
+            <th>Prix d'achat total</th>
+            <th>Prix Unitaire</th>
+            <th>Sous-total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produit in ProduitFusion.devis.produits %}
+            <tr>
+              <td scope="row">{{ produit.numero }} {% if produit.estFusionné %}<span class="badge" >fusion</span>{% endif %}</td>
+              <td class="quantite" contenteditable="true" id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
+              <td>
+                {% if produit.designation != " " %}
+                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
+                  <br>              
+                {% endif %}
+
+                {{ produit.description | capitalize | raw }}
+                <br>
+                {% if produit.garanties|length  > 0 %}
+                    <strong>Garantie :</strong> <br>
+                {% endif %}
+                {% for garantie in produit.garanties %}
+                  {{garantie|capitalize }}<br>
+                {% endfor %}
+
+                {% if produit.termes|length  > 0 %}
+                     <strong>Conditions particulières :</strong> <br> 
+                {% endif %}                         
+                {% for terme in produit.termes %}
+                  {{terme.categorie.nom |capitalize }} : {{terme.description}}|capitalize <br>
+                {% endfor %}            
+              </td>
+              <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
+              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
+              <td style="min-width:250px">
+                <a type="button" class="btn btn-success" href="{{ url('ProduitFusion_add', {'id' : ProduitFusion.id,'produitid' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Ajouter à la fusion</a>
+              </td>
+              </tr>
+          {% endfor %}
+        </tbody>  
+      </table>
+    </div>
+  </div>
+
+  <hr>
+
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/datatables.min.js') }}"></script>
+
+  <script>
+  $(document).ready(function() {
+      $('#liste_produits').DataTable();
+  } );
+  </script>
+
+  {% endblock %}

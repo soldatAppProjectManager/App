@@ -1,0 +1,14 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="row">
+    <h1>Edition des Rôles utilisateur</h1>
+    <p class="lead">Consulter et editer les Entetes utilisées dans la gestion commerciale.</p>
+
+<hr>
+            {{ form_start(form) }}
+            {{ form_widget(form) }}
+            <a type="button" href="{{ path('userrole_index') }}" class="btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Annuler</a>
+            {{ form_end(form) }}
+</div>
+{% endblock %}

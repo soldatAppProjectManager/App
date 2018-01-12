@@ -1,0 +1,228 @@
+{% extends 'base.html.twig' %}
+{% block title %} Editer devis {{devis}} {% endblock %}
+{% block body %}
+
+<div class="row">
+	<h1>Editer un devis</h1>
+	<p class="lead">Editer le devis {{devis}} </p>
+</div>
+<hr>
+<div class="container">
+	<div class="col-lg-12">
+
+			{{ form_start(form) }}
+			<div class="well well-lg">
+				<div class="row">
+					<div class="col-md-6 form-group {% if not form.client.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.client) }}
+						{{ form_errors(form.client)}}
+						 <div class="input-group">
+						{{ form_widget(form.client) }}
+						<span class="input-group-btn">
+						<a type="button" class="btn btn-default" href="{{ url('client_create', {'source' : "devis"})}}"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+					</span>
+						</div>
+					</div>
+					<div class="col-md-6 form-group {% if not form.destinataire.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.destinataire) }}
+						{{ form_errors(form.destinataire)}}
+						{{ form_widget(form.destinataire) }}
+					</div>			
+				</div>
+				<div class="row">
+					<div class="col-md-8">
+						 {{ form_row(form.titre) }}
+					</div>
+					<div class="col-md-4">
+						 {{ form_row(form.numdemande) }}
+					</div>
+				</div>
+				<div class="row">				
+					<div class="col-md-4">
+						 {{ form_row(form.devisevente) }}
+					</div>					
+					<div class="col-md-4">
+						 {{ form_row(form.tauxVente) }}
+					</div>					
+					<div class="col-md-4">
+						 {{ form_row(form.modele) }}
+					</div>
+				</div>
+			</div>
+
+			<hr>
+			<div class="row well well-lg">
+				<div class="col-md-3 form-group {% if not form.introduction.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.introduction)}}
+					{{ form_errors(form.introduction)}}
+					{{ form_widget(form.introduction)}}
+				</div>
+				<div class="col-md-3 form-group {% if not form.validite.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.validite)}}
+					{{ form_errors(form.validite)}}
+					{{ form_widget(form.validite)}}
+				</div>	
+				<div class="col-md-3 form-group {% if not form.validite.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.termes)}}
+					{{ form_errors(form.termes)}}
+					{{ form_widget(form.termes)}}
+				</div>	
+				<div class="col-md-3 form-group {% if not form.piedDePage.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.piedDePage)}}
+					{{ form_errors(form.piedDePage)}}
+					{{ form_widget(form.piedDePage)}}
+				</div>	
+			</div>
+			<hr>
+			<div class="row well well-lg">
+
+					<div class="col-md-3">
+						{{ form_label(form.TravailAvantVente) }}
+						{{ form_errors(form.TravailAvantVente) }}
+						{{ form_widget(form.TravailAvantVente) }}
+					</div>
+					<div class="col-md-3">
+						{{ form_label(form.TravailCommercial) }}
+						{{ form_errors(form.TravailCommercial) }}
+						{{ form_widget(form.TravailCommercial) }}
+					</div>
+					<div class="col-md-3">
+						{{ form_label(form.TravailImport) }}
+						{{ form_errors(form.TravailImport) }}
+						{{ form_widget(form.TravailImport) }}
+					</div>
+					<div class="col-md-3">
+						{{ form_label(form.TravailLivraison) }}
+						{{ form_errors(form.TravailLivraison) }}
+						{{ form_widget(form.TravailLivraison) }}
+					</div>
+			</div>
+			<hr>
+			<div class="row well well-lg">
+				<div class="progress" id="centPourCent">
+				  <div id="progressbarcharges" class="progress-bar progress-bar-striped active" role="progressbar" aria-valuenow="0" aria-valuemin="0" aria-valuemax="25" style="width: {{100*devis.getTauxChargesExploitation()*100/13}}%;">
+				  	Charges : {{devis.getTauxChargesExploitation()*100}}%
+				  </div>
+				</div> 
+			</div>
+
+			<hr>			
+			<div class="row" align="center">
+				<a type="button" href="{{ url('devis_list') }}" class="btn btn-default"><i class="fa fa-undo" aria-hidden="true"></i> Annuler</a>				
+				<button type="submit" class="btn btn-primary" formnovalidate>Enregistrer mon devis</button>
+			</div>
+		{{ form_end(form) }}
+
+		<br><br><br>
+	</div>
+</div>
+
+
+{% endblock %}
+
+
+{% block javascripts %}
+ 	{{ parent() }}
+     <script>
+        
+        $('#devis_form_client').change(function (e) {
+            e.preventDefault();
+
+            var clientid= $('#devis_form_client').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('get_contacts') }}',
+                data: {'id': clientid},
+                dataType: "json",
+                success: function (data, status, object) {
+                    if (data.code == 1) {
+
+ 						$("#devis_form_destinataire").prop( "disabled", false );
+                    	$.each(data.contacts, function (i, item) {
+						    
+						    if (item.defaut) {
+							    $('#devis_form_destinataire').append($('<option>', { 
+							        value: item.id,
+							        text : item.civilite + " " +item.prenom + " " + item.nom,
+							        selected : true
+							    }));
+						    	$('#devis_form_destinataire').prop( 'selected' );
+							}
+							else {
+							    $('#devis_form_destinataire').append($('<option>', { 
+							        value: item.id,
+							        text : item.civilite + " " +item.prenom + " " + item.nom
+							    }));
+
+							}					    
+						});
+                }},
+                error: function (data, status, object) {
+                    console.log("Error : " + data.message);
+                }
+            });
+        });
+
+        $('.travail').change(function (e) {
+
+        	    $.ajax({
+                type: 'POST',
+                url: '{{ url('charges_fetch') }}',
+                data: {	'idtravailimport': $('#devis_form_TravailImport option:selected').val(),
+                		'idtravailivraison': $('#devis_form_TravailLivraison option:selected').val(),
+                		'idtravailcommercial': $('#devis_form_TravailCommercial option:selected').val(),
+                		'idtravailavantvente': $('#devis_form_TravailAvantVente option:selected').val() },
+                dataType: "json",
+                success: function (data, status, object) {
+                    if (data.code == 1) {
+                    	var initialsize = {{travailminimum}};
+                    	var size = 100*parseFloat($('#progressbarcharges').css('width'))/parseFloat($('#centPourCent').width())*0.13;
+                 		$('#progressbarcharges').text("Charges : "+(100*data.travail).toFixed(2)+" %");
+                    	if (size > 0 && size<7) {
+	                    	$('#progressbarcharges').removeClass('progress-bar-success');	
+                    	}
+                    	if (size>=7 && size<10) {
+	                    	$('#progressbarcharges').removeClass('progress-bar-warning');	
+                    	}
+                    	if (size>=10) {
+	                    	$('#progressbarcharges').removeClass('progress-bar-danger');	
+                    	}
+                    	$('#progressbarcharges').css('width',100*data.travail/({{travailmaximum}}+0.01)+'%');
+                    	
+                    	if (100*data.travail > 0 && 100*data.travail<7) {
+	                    	$('#progressbarcharges').addClass('progress-bar-success');		
+                    	}
+                    	if (100*data.travail>7 && 100*data.travail<10) {
+	                    	$('#progressbarcharges').addClass('progress-bar-warning');		
+                    	}
+                    	if (100*data.travail>=10) {
+	                    	$('#progressbarcharges').addClass('progress-bar-danger');		
+                    	}
+
+                }},
+                error: function (data, status, object) {
+                    console.log("Error : " + data.message);
+                }
+            });
+
+        });
+
+
+
+        $( document ).ready(function() {
+        var charges = 100*{{devis.getTauxChargesExploitation()}};
+		if (charges > 0 && charges<7) {
+		$('#progressbarcharges').addClass('progress-bar-success');		
+		}
+		if (charges>7 && charges<10) {
+		$('#progressbarcharges').addClass('progress-bar-warning');		
+		}
+		if (charges>=10) {
+		$('#progressbarcharges').addClass('progress-bar-danger');		
+		}
+		});
+</script>
+
+       </script>
+  {% endblock %} 	

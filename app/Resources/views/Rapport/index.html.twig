@@ -1,0 +1,15 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="row">
+	<h1>Liste des Rapports</h1>
+	<p class="lead">Consulter et editer les Type rapports utilisés dans la gestion commerciale.<br>
+
+
+	<a type="button" class="btn btn-success" href="{{ url('Rapport_create')}}">Créer un rapport</a>
+	<a type="button" class="btn btn-default" href="{{ url('Rapport_voir')}}">Rapport Hebdomadaire</a>
+
+	<a type="button" class="btn btn-default" href="{{ url('Rapport_nonlivre')}}">Rapport test</a>
+
+	</div>
+{% endblock %}  

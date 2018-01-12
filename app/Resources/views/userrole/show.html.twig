@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Consulter un Role</h1>
+    <p class="lead">Consulter et editer les User utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des User.</p>
+<hr>
+<a type="button" href="{{ path('userrole_index') }}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header">{{ userRole.nom }} </h2>
+
+<div class="well" style="background-color: #fcfcfc; width:60%;">
+<table class="table"  style="width:100%">
+    <tbody>
+      <tr>
+                <th style="min-width:10%">Id</th>
+                <td align="left">{{ userRole.id }}</td>
+            </tr>
+            <tr>
+                <th style="min-width:10%">Nom</th>
+                <td align="left">{{ userRole.nom }}</td>
+            </tr>
+            <tr>
+                <th style="min-width:10%">Description</th>
+                <td align="left">{{ userRole.description }}</td>
+            </tr>
+            <tr>
+                <th style="min-width:10%">Role</th>
+                <td align="left">{{ userRole.role }}</td>
+            </tr>
+        </tbody>
+    </table>
+</div>
+
+{% endblock %}
+

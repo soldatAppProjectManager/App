@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h1>Effacer un User</h1>
+	<p class="lead">Consulter et editer les User utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des User.</p>
+	<hr>
+
+	<h2 class="page-header">{{ User.login }} de l'organisation</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('User_delete_confirmed',{'id' : User.id})}}" class="btn btn-danger">Effacer {{ User.login }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('User_list')}}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

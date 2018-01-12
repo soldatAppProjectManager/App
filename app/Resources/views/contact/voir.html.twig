@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+{% block title %} Voir {{ contact}} {% endblock %}
+{% block body %}
+
+
+<h1>Consulter un contact</h1>
+	<p class="lead">Consulter et editer les contact utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des contact.</p>
+<hr>
+
+{% if source == "Fournisseur" %}
+<a type="button" href="{{ url('fournisseur_voir', {'id' : contact.fournisseur.id})}}" class="btn btn-default">Retour à la liste</a>
+{% else %}
+<a type="button" href="{{ url('client_voir', {'id' : contact.client.id}) }}" class="btn btn-default">Retour à la liste</a>
+{% endif %}
+<h2 class="page-header">{{ contact.civilite }} {{ contact.prenom }} {{ contact.nom }}</h2>
+
+<div class="well" style="background-color: #fcfcfc; width:60%;">
+<table class="table"  style="width:100%">
+    <tbody>
+      <tr>
+        <th style="min-width:10%">Organisation </th>
+        {% if source == "Fournisseur" %}
+        <td align="left">{{contact.fournisseur}}</td>
+        {% else %}
+        <td align="left">{{contact.client}}</td>
+        {% endif %}
+      </tr>
+      <tr>
+        <th style="min-width:10%">Poste</th>
+        <td align="left">{{contact.poste}}</td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Email</th>
+        <td align="left">{{contact.email}}</td>
+      </tr>
+      <tr>
+        <th style="min-width:10%">Telephone</th>
+        <td align="left">{{contact.telephone}}</td>
+      </tr>
+    </tbody>
+</table>
+</div>
+
+{% endblock %}

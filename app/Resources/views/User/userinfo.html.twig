@@ -1,0 +1,49 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Ajouter un user</h1>
+	<p class="lead">Consulter et editer les users utilisées dans la gestion commerciale.<br>
+{% if is_granted('ROLE_ADMIN') %}
+<a type="button" href="{{ url('User_list')}}" class="btn btn-default">Retour à la liste des utilisateurs</a>
+{% endif %}
+<hr>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			{{ form_start(form) }}
+			{{ form_errors(form) }}
+
+			<div class="row well well-lg">
+				<div class="col-md-4">
+					{{ form_label(form.login) }}
+					{{ form_errors(form.login) }}
+					{{ form_widget(form.login) }}
+				</div>
+				<div class="col-md-4">
+					{{ form_label(form.plainpassword) }}
+					{{ form_errors(form.plainpassword) }}
+					{{ form_widget(form.plainpassword) }}
+				</div>
+				{% if is_granted('ROLE_ADMIN') %}
+				<div class="col-md-4">
+					{{ form_label(form.roles) }}
+					{{ form_errors(form.roles) }}
+					{{ form_widget(form.roles) }}
+				</div>
+				{% else %}
+				<div class="col-md-4">
+					{{ form_label(form.roles) }}
+					{{ form_errors(form.roles) }}
+					{{ form_widget(form.roles,{'attr': {'disabled': true}}) }}
+				</div>
+				{% endif %}
+			</div>
+			<hr>			
+	<div>	
+				{{ form_widget(form.save) }}
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
+</div>
+{% endblock %}

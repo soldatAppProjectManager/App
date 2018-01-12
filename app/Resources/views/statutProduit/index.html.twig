@@ -1,0 +1,44 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Liste des Statut Produit</h1>
+	<p class="lead">Vous etes sur le point de visionner les statuts produit</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Description</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for statutProduit in list %}
+						<tr>
+							<th scope="row">{{ statutProduit.id }} </th>
+							<td>{{ statutProduit.nom }} </td>
+							<td class="col-lg-6">{{ statutProduit.description }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('statutProduit_voir', {'id' : statutProduit.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('statutProduit_edit', {'id' : statutProduit.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('statutProduit_delete', {'id' : statutProduit.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('statutProduit_create')}}">Ajouter un statut Produit</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h1>Effacer un produits devis </h1>
+	<p class="lead">Consulter et editer les produits devis utilisés dans la gestion commerciale.<br> A venir, une mise a jour automatique des produits devis </p>
+	<hr>
+
+	<h2 class="page-header">{{ designation }}</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('produitdevis_delete_confirmed', {'id' : id})}}" class="btn btn-danger">Effacer {{ designation }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('devis_voir', {'id' : devisId})}}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

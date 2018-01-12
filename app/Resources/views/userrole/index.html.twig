@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Userroles list</h1>
+
+    <div class="row">
+        <div class="col-lg-12">
+            <hr>
+            <table class="table table-hover">
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Nom</th>
+                    <th>Description</th>
+                    <th>Role</th>
+                    <th>Actions</th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for userRole in userRoles %}
+                    <tr>
+                        <td><a href="{{ path('userrole_show', { 'id': userRole.id }) }}">{{ userRole.id }}</a></td>
+                        <td>{{ userRole.nom }}</td>
+                        <td>{{ userRole.description }}</td>
+                        <td>{{ userRole.role }}</td>
+                        <td>
+                            <a type="button" class="btn btn-default" href="{{ path('userrole_show', { 'id': userRole.id }) }}">Voir</a>
+                            <a type="button" class="btn btn-warning" href="{{ path('userrole_edit', { 'id': userRole.id }) }}">Editer</a>
+                            <a type="button" class="btn btn-danger" href="{{ url('userrole_delete',{'id' : userRole.id})}}">Effacer</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+                <hr>
+                <a type="button" class="btn btn-success" href="{{ path('userrole_new') }}">Ajouter un Role</a>     
+        </div>
+    </div>
+{% endblock %}  
+

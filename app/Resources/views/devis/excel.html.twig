@@ -1,0 +1,145 @@
+{% extends 'base.html.twig' %}
+{% block title %} Devis to Excel {% endblock %}
+{% block body %}
+	<div class="row">
+	<h1>Importer un devis </h1>
+	<p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports </p>
+	<a type="button" href="{{ url('devis_list') }}" class="btn btn-default">Retour à la liste</a>
+	<hr>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+
+			{{ form_start(form) }}
+			<div class="row well well-lg">
+				<div class="col-md-4 form-group {% if not form.titre.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.titre)}}
+					{{ form_errors(form.titre)}}
+					{{ form_widget(form.titre)}}
+				</div>
+					<div class="col-md-6 form-group {% if not form.client.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.client) }}
+						{{ form_errors(form.client)}}
+						 <div class="input-group">
+						{{ form_widget(form.client) }}
+						<span class="input-group-btn">
+						<a type="button" class="btn btn-default" href="{{ url('client_create', {'source' : "devis"})}}"><i class="fa fa-plus" aria-hidden="true"></i> Ajouter</a>
+					</span>
+						</div>
+					</div>
+				<div class="col-md-4 form-group {% if not form.destinataire.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.destinataire) }}
+					{{ form_errors(form.destinataire)}}
+					{{ form_widget(form.destinataire) }}
+				</div>
+			</div>
+			<div class="row well well-lg">
+				<div class="col-md-4 form-group {% if not form.introduction.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.introduction) }}
+					{{ form_errors(form.introduction)}}
+					{{ form_widget(form.introduction) }}
+				</div>
+				<div class="col-md-4 form-group {% if not form.validite.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.validite) }}
+					{{ form_errors(form.validite)}}
+					{{ form_widget(form.validite) }}
+				</div>	
+				<div class="col-md-4 form-group {% if not form.piedDePage.vars.valid %} has-error {% endif %}">
+					{{ form_label(form.piedDePage) }}
+					{{ form_errors(form.piedDePage)}}
+					{{ form_widget(form.piedDePage) }}
+				</div>	
+			</div>
+			<div class="row well well-lg" style="width:50%">
+				<div class="col-md-12 form-group" id='formgroup-fichier'>
+					<span class="help-block" >    
+						<ul class="list-unstyled">
+							<li hidden id="error-fichier"><span class="glyphicon glyphicon-exclamation-sign"></span> This value should not be blank.
+							</li>
+						</ul>
+    				</span>
+
+					{{ form_label(form.fichier) }}
+					{{ form_errors(form.fichier) }}
+					{{ form_widget(form.fichier) }}
+				</div>
+					<div class="col-md-3">
+						 {{ form_row(form.modele) }}
+					</div>
+					<div class="col-md-3">
+						 {{ form_row(form.devisevente) }}
+					</div>					
+									
+			</div>			
+			<hr>			
+			<div>
+				<button type="submit" class="btn btn-primary" formnovalidate>Créer un devis</button>
+			</div>
+		{{ form_end(form) }}
+		</div>
+	</div>
+</div>
+{% endblock %}
+
+
+{% block javascripts %}
+ 	{{ parent() }}
+
+<script src="{{ asset('/js/bootstrap-filestyle.min.js') }}"></script>
+<script>
+        
+        $('#excel_devis_form_client').change(function (e) {
+            e.preventDefault();
+
+            var clientid= $('#excel_devis_form_client').val();
+
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('get_contacts') }}',
+                data: {'id': clientid},
+                dataType: "json",
+                success: function (data, status, object) {
+                    if (data.code == 1) {
+
+ 						$("#excel_devis_form_destinataire").prop( "disabled", false );
+                    	$.each(data.contacts, function (i, item) {
+						    
+						    if (item.defaut) {
+							    $('#excel_devis_form_destinataire').append($('<option>', { 
+							        value: item.id,
+							        text : item.civilite + " " +item.prenom + " " + item.nom,
+							        selected : true
+							    }));
+						    	$('#excel_devis_form_destinataire').prop( 'selected' );
+							}
+							else {
+							    $('#excel_devis_form_destinataire').append($('<option>', { 
+							        value: item.id,
+							        text : item.civilite + " " +item.prenom + " " + item.nom
+							    }));
+
+							}					    
+						});
+                }},
+                error: function (data, status, object) {
+                    console.log("Error : " + data.message);
+                }
+            });
+        });
+
+        $( document ).ready(function() {
+        				$("#excel_devis_form_destinataire").empty();
+        				$("#excel_devis_form_destinataire").prop( "disabled", true );
+		});
+
+		$('form').submit(function( event ) {
+		  	if($('#excel_devis_form_fichier').get(0).files.length === 0){
+		  		event.preventDefault();
+		  		$('#error-fichier').removeAttr('hidden');
+		  		$('#formgroup-fichier').addClass('has-error');
+		  	}
+		  // event.preventDefault();
+		});		
+</script>
+  {% endblock %} 	

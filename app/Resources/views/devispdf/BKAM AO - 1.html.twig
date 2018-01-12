@@ -1,0 +1,469 @@
+<head>
+<meta charset='utf-8'>
+  
+  	<title>Printed document</title>
+  
+  	<style type="text/css">
+	        * {
+	        font-size: 70%;
+            font-family: sans-serif;
+	        }
+			@page {
+			  margin: 0.2cm;
+			}
+			body {
+			  margin-top: 2.5cm;
+			  margin-bottom: 2cm;
+				margin-left: .5cm;
+				margin-right: .5cm;
+				text-align: justify;
+			}		
+			div.header,
+			div.footer {
+			  position: fixed;
+			  width: 100%;
+			  border: 0px solid #888;
+			  overflow: hidden;
+			  padding: 0.1cm;
+			  text-align: center;
+			}
+			div.header {
+			  top: 0cm;
+			  left: 0cm;
+			  border-bottom-width: 0px;
+			  height: 2.5cm;
+			}
+			div.footer {
+			  bottom: 0cm;
+			  left: 0cm;
+			  border-top-width: 0px;
+			  height: 2cm;
+			}
+			table {
+				border-collapse: collapse;
+			}
+			table.entete{
+	        	width: 120%;
+			    margin-left:auto; 
+			    margin-right:auto;
+    			}
+			table.produits{
+				margin: 0 auto;
+			}
+			table.signature{
+				margin-right: auto;
+				margin-left: 0px;			
+			}
+			table.produits tbody tr:nth-child(odd){
+				background-color: #F4F4F4;
+			}        
+
+	        table.produits{
+	        	width: 100%;
+    			table-layout: fixed;
+	        }
+
+	        table.produits th {
+	        	font-weight: 700;
+	        	font-size: 85%;
+	        	border-bottom: 0.5px solid #000000;
+	            border-left: 0; 
+	            border-right: 0; 
+	            border-top: 0;
+	            color : #e07000;
+				background-color: #B7B7B7;
+				height:20px;
+	        }
+
+	        td.total{
+	        	background-color: #B7B7B7;
+	        	font-weight: 700;
+	        	font-size: 85%;	  
+	        	border-bottom: 0.5px solid #000000;
+				height:30px;
+			}
+
+
+	        table.produits td:nth-child(1){
+	        	width: 5%; 
+	        	text-align: left;
+	        	border-right: 0.5px;
+	        	border-color:  #000000;
+
+	        }
+	        table.produits td:nth-child(2){
+	        	width: 50%; 
+	        	text-align: left;
+	        	border-right: 0.5px;
+	        	border-color:  #000000;
+
+	        }
+	        table.produits td:nth-child(3){
+	        	width: 10%; 
+	        	text-align: left;
+	        	border-right: 0.5px;
+	        	border-color:  #000000;
+
+	        }
+	        table.produits td:nth-child(4){
+	        	width: 25%; 
+	        	text-align: left;
+	        	border-right: 0.5px;
+	        	border-color:  #000000;
+
+	        }
+
+	        table.produits td:nth-child(5){width: 10%; text-align: left; padding-right:10px;}
+
+	        table.signature {
+	        		text-align:right;
+				    margin-left: 400px;
+				    margin-right: 0;
+				    page-break-inside: avoid;
+	        }
+
+
+	       	table.termes {
+				page-break-inside: avoid;			
+		
+	        }
+
+	       	table.piedDePage {
+       			border-left:2.5px solid #D22420;
+ 	        	text-align:center;
+ 	        	width:100%;			
+	        }
+
+	        p.Titre{
+	        	text-align:center;
+	        	font-weight: 800;
+	        	font-size: 100%;	        	
+	        }
+	        p.typededocuement {
+	        	text-align:center;
+	        	font-weight: 700;
+	        	font-size: 90%;	        		        	
+	        }
+
+	        td.soustotal{
+	        	font-weight: 500;
+	        	font-size: 85%;						        	
+	        }
+	        div.acteengagement{
+	        	page-break-before: always;
+					        	
+	        }
+ 	</style>
+</head>
+<body>
+	<p class="Titre">Relatif à {{devis.titre|capitalize}}
+	</p>
+	<p class="typededocuement">Bordereau des prix<br>LOT 1: Acquisition et mise en œuvre d'équipements informatiques</p> 
+	<div class="header" >
+	    <table class="entete">
+	    <tbody>
+	        <tr>
+	            <td style="vertical-align: middle; width: 33%;">
+	                <img src="img/solution_data.png" height="79" width="177">
+	            </td>
+	            <td class="numero" style="font-size:160%; vertical-align: middle; width: 34%;">
+	                <strong>MARCHE N°{{devis.numdemande}}</strong>
+	            </td>
+	            <td style="vertical-align: middle; width: 33%;">
+	                <img src="img/bkam.png" height="79" width="150">
+	            </td>
+	        </tr>
+	    </tbody>
+	    </table>
+	</div>
+    <div class="footer">
+	    <table class="piedDePage">
+		    <tbody>
+		        <tr>
+			        <th>Contacts</th>
+			        <th>Informations Juridiques</th>
+			        <th>Identifiants de l'entreprise</th>
+		        </tr>
+
+		        <tr>
+			        <td>{{devis.piedDePage.adresse}}</td>
+			        <td>Microdata {{devis.piedDePage.formejuridique}}</td>
+			        <td>ICE : {{devis.piedDePage.ice}}</td>
+		        </tr>
+
+		        <tr>
+			        <td>{{devis.piedDePage.Telephone}}</td>
+			        <td>Au capital de {{devis.piedDePage.capital}}</td>
+			        <td>Patente : {{devis.piedDePage.patente}}</td>
+		        </tr>
+
+		        <tr>
+			        <td>{{devis.piedDePage.fax}}</td>
+			        <td>Registre de Commerce : {{devis.piedDePage.rc}}</td>
+			        <td>CNSS : {{devis.piedDePage.cnss}}</td>
+			        <td></td>
+		        </tr>
+
+		        <tr>
+			        <td>{{devis.piedDePage.email}}</td>
+			        <td></td>	        
+			        <td></td>	        
+		        </tr>
+		        <tr>
+			        <td>{{devis.piedDePage.siteweb}}</td>
+			        <td></td>
+			        <td></td>	        
+		        </tr>
+	    	</tbody>
+	    </table>
+	    <p class="page"></p>
+	</div> 	
+<br>
+	<table class="produits">
+	    <thead>
+	    <tr>
+	        <th  style="text-align:center; ">N° de prix</th>
+	        <th  style="text-align:center; ">Désignation</th>
+	        <th  style="text-align:center; ">Quantité</th>
+	        <th  style="text-align:center; ">Prix unitaire (MAD HT) <br>en chiffres et en lettres </th>
+	        <th style="text-align:right; padding-right:20px">Prix Total (MAD HT) </th>
+	    </tr>
+	    </thead>        
+	    <tbody>
+	    	<tr>
+	    		<td colspan="5">I. Equipements Informatiques</td>
+	    	</tr>
+	    	<tr>
+	    		<td colspan="5">Lot 1</td>
+	    	</tr>
+
+
+			<tr>
+	        	<td><strong>{{item[0]}} </strong></td>
+
+				<td><strong>{{devis.fusionProduits[0].designation|capitalize}} : </strong><br>{{ devis.fusionProduits[0].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.fusionProduits[0].quantite}}</td>
+
+	        	<td>{{ devis.fusionProduits[0].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.fusionProduits[0].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.fusionProduits[0].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+ 
+			<tr>
+	        	<td><strong>{{item[1]}} </strong></td>
+
+				<td><strong>{{devis.produits[6].designation|capitalize}} : </strong><br>{{ devis.produits[6].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.produits[6].quantite}}</td>
+
+	        	<td>{{ devis.produits[6].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.produits[6].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.produits[6].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[2]}} </strong></td>
+
+				<td><strong>{{devis.produits[5].designation|capitalize}} : </strong><br>{{ devis.produits[5].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.produits[5].quantite}}</td>
+
+	        	<td>{{ devis.produits[5].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.produits[5].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.produits[5].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[3]}} </strong></td>
+
+				<td><strong>{{devis.fusionProduits[1].designation|capitalize}} : </strong><br>{{ devis.fusionProduits[1].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.fusionProduits[1].quantite}}</td>
+
+	        	<td>{{ devis.fusionProduits[1].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.fusionProduits[1].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.fusionProduits[1].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[4]}} </strong></td>
+
+				<td><strong>{{devis.produits[8].designation|capitalize}} : </strong><br>{{ devis.produits[8].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.produits[8].quantite}}</td>
+
+	        	<td>{{ devis.produits[8].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.produits[8].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.produits[8].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[5]}} </strong></td>
+
+				<td><strong>{{devis.produits[11].designation|capitalize}} : </strong><br>{{ devis.produits[11].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.produits[11].quantite}}</td>
+
+	        	<td>{{ devis.produits[11].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.produits[11].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.produits[11].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[6]}} </strong></td>
+
+				<td><strong>{{devis.fusionProduits[2].designation|capitalize}} : </strong><br>{{ devis.fusionProduits[2].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.fusionProduits[2].quantite}}</td>
+
+	        	<td>{{ devis.fusionProduits[2].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.fusionProduits[2].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.fusionProduits[2].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[7]}} </strong></td>
+
+				<td><strong>{{devis.produits[13].designation|capitalize}} : </strong><br>{{ devis.produits[13].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.produits[13].quantite}}</td>
+
+	        	<td>{{ devis.produits[13].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.produits[13].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.produits[13].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[8]}} </strong></td>
+
+				<td><strong>{{devis.produits[17].designation|capitalize}} : </strong><br>{{ devis.produits[17].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.produits[17].quantite}}</td>
+
+	        	<td>{{ devis.produits[17].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.produits[17].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.produits[17].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[9]}} </strong></td>
+
+				<td><strong>{{devis.fusionProduits[3].designation|capitalize}} : </strong><br>{{ devis.fusionProduits[3].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.fusionProduits[3].quantite}}</td>
+
+	        	<td>{{ devis.fusionProduits[3].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.fusionProduits[3].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.fusionProduits[3].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+
+			<tr>
+	        	<td><strong>{{item[10]}} </strong></td>
+
+				<td><strong>{{devis.produits[21].designation|capitalize}} : </strong><br>{{ devis.produits[21].description|capitalize|raw}}</td>
+
+	        	<td>{{ devis.produits[21].quantite}}</td>
+
+	        	<td>{{ devis.produits[21].getPrixVenteHT|number_format(2, ',', '.')}}  {{ devis.devisevente.symbol }} <br>{{devis.produits[21].getPrixVenteHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}</td>
+
+				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ devis.produits[21].sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
+	        </tr>
+ 
+
+ 
+
+
+
+		    <tr >
+			    <td class="total" colspan="4">Total général MAD HT</td>
+			    <td class="soustotal total" style="text-align:right; color:black; padding-right:20px">{{devis.getTotalHT|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}</td>
+	        </tr>
+		    <tr >
+			    <td class="total" colspan="4">TVA 20%</td>
+			    <td class="soustotal total" style="text-align:right; color:black; padding-right:20px">{{devis.getTotalTVA|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}</td>
+	        </tr>
+		    <tr >
+			    <td class="total" colspan="4">Total général MAD TTC </td>
+			    <td class="soustotal total" style="text-align:right; color:black; padding-right:20px">{{devis.getTotalTTC|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}</td>
+	        </tr>
+	    </tbody>
+	</table>
+<br>
+<strong style="font-size: 85%;">Le présent bordereau des prix est arrêté à la somme de {{devis.getTotalTTC|number_format(2, ',', '.')}} {{devis.devisevente.symbol}} ({{devis.getTotalTTC|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}) toutes taxes comprises.</strong>
+<br>
+<br>
+<p style="text-align:right"><u style="font-size: 85%;">Fait à Casablanca  le  {{ "now"|date("d/m/Y") }}</u><br><br>
+                                                                                                  
+<strong style="font-size: 85%;">Hassane AMOR  </strong><br>                                                                                                                                       
+Président Directeur Général<br>
+</p>
+
+<div class="acteengagement">
+<p style="text-align:center "><u style="font-size: 95%; text-align:center">ACTE D'ENGAGEMENT</u></p>
+<br><br><br><br>
+<p style="font-size: 90%; text-align:center">A - Partie réservée à l’Administration</p>
+<p style="font-size: 85%;">Appel d’offres ouvert sur offre de prix n°<strong style="font-size: 85%;">80/DA/2017</strong>  du 26/09/2017
+Objet du marché : L'acquisition de matériels bureautiques, informatiques et d'équipements spécifiques
+<strong style="font-size: 85%;">LOT 1: Acquisition et mise en œuvre d'équipements informatiques</strong></p>
+<p style="font-size: 90%; text-align:center">B - Partie réservée au concurrent</p>
+<p style="font-size: 85%;">
+Je, soussigné : <strong style="font-size: 85%;">Hassane AMOR</strong>, 
+En qualité de <strong style="font-size: 85%;">Président Directeur Général</strong><br>
+Agissant au nom et pour le compte de la <strong style="font-size: 85%;">société MICRODATA S.A</strong>,<br>
+Au capital de : <strong style="font-size: 85%;">{{devis.piedDePage.capital}}</strong>,<br>
+Adresse du siège social de la société : <strong style="font-size: 85%;">{{devis.piedDePage.adresse}}</strong><br> 
+Adresse du domicile élu <strong style="font-size: 85%;">{{devis.piedDePage.adresse}}</strong>,<br>
+Affiliée à la CNSS sous le n° : <strong style="font-size: 85%;">{{devis.piedDePage.cnss}}</strong>,	<br>			
+Immatriculé au registre du commerce sous le n° <strong style="font-size: 85%;">{{devis.piedDePage.rc}}</strong>,<br>
+Numéro taxe de professionnelle  : <strong style="font-size: 85%;">{{devis.piedDePage.patente}}</strong>,	<br><br>
+</p>
+
+<strong><p style="font-size: 85%;">En vertu des pouvoirs qui me sont conférés :</p></strong>
+<p style="font-size: 85%;">Après  avoir pris connaissance du dossier (d’appel d’offres, du concours, du marché négocié)</p>
+<ol style="font-size: 85%;">
+  <li style="font-size: 85%;">Concernant les prestations précisées en objet de la partie A ci-dessus ; </li></ol>
+<p style="font-size: 85%;">Après avoir apprécié à mon point de vue et sous ma responsabilité la nature et les difficultés que comportent ces prestations :</p>
+<ol style="font-size: 85%;">
+  <li style="font-size: 85%;">Remets, revêtu de ma signature un bordereau de prix et un détail estimatif et/ ou la décomposition du montant global établi (s) conformément aux modèles figurant au dossier (d’appel d’offres, du concours, du marché négocié)</li>
+
+<li style="font-size: 85%;">m'engage à exécuter lesdites prestations conformément au cahier des prescriptions spéciales et moyennant les prix que j'ai établi moi-même, lesquels font ressortir :</li></ol>
+
+
+<ul style="font-size: 85%;">
+  <li style="font-size: 85%; list-style: none;">Montant hors TVA : <strong style="font-size: 85%;">{{devis.getTotalHT|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}} ({{devis.getTotalHT|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}) </strong><br></li>
+  <li style="font-size: 85%; list-style: none;">Taux de la TVA : <strong style="font-size: 85%;">20%</strong><br></li>
+  <li style="font-size: 85%; list-style: none;">Montant de la TVA : <strong style="font-size: 85%;">{{devis.getTotalTVA|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}  ({{devis.getTotalTVA|number_format(2, ',', '.')}} {{devis.devisevente.symbol}})</strong><br></li>
+  <li style="font-size: 85%; list-style: none;">Montant TVA comprise : <strong style="font-size: 85%;">{{devis.getTotalTTC|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.symbol}}   ({{devis.getTotalTTC|number_format(2, ',', '.')}} {{devis.devisevente.symbol}})</strong></li>
+</ul><br>
+
+<p style="font-size: 85%;">
+Bank Al-Maghrib se libérera des sommes dues par lui en faisant donner crédit au compte bancaire ouvert au nom de la société <strong style="font-size: 85%;">MICRODATA</strong> à <strong style="font-size: 85%;">ATITJARIWAFA BANK</strong> agence <strong style="font-size: 85%;">MLY ALI KETTANI</strong>, sous le numéro (RIB) numéro <strong style="font-size: 85%;">007 780 0005405000000373 49</strong>.</p><br><br>
+<br><br>
+<p style="text-align:right"><u style="font-size: 85%;">Fait à Casablanca  le  {{ "now"|date("d/m/Y") }}</u><br><br>
+                                                                                                  
+<strong style="font-size: 85%;">Hassane AMOR  </strong><br>                                                                                                                                       
+Président Directeur Général<br>
+</p>
+
+</body>

@@ -1,0 +1,52 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<div class="container col-lg-12">
+	<h1>Liste des Garanties</h1>
+	<p class="lead">Les Garanties definissent des couverture de service pour les équipements revendus</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Titre</th>
+						<th>Description</th>
+						<th>Duree</th>
+						<th>Intervention</th>
+						<th>Réparation</th>
+						<th>Disponibilité</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for garantie in list %}
+						<tr>
+							<th scope="row">{{ garantie.id }} </th>
+							<td>{{ garantie.nom }} </td>
+							<td class="col-lg-6">{{ garantie.description }} </td>							
+							<td>{{ garantie.duree }} Mois</td>
+							<td>{{ garantie.intervention }} heures </td>
+							<td>{{ garantie.reparation }} heures </td>
+							<td>{{ garantie.disponibilite }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('garantie_voir', {'id' : garantie.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('garantie_edit', {'id' : garantie.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('garantie_delete', {'id' : garantie.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('garantie_create')}}">Créer une garantie</a>
+		</div>
+	</div>
+</div>
+{% endblock %}

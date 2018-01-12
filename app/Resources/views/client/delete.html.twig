@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+{% block title %} Effacer {{ nom }} {% endblock %}
+{% block body %}
+
+	<h1>Effacer un Client</h1>
+	<p class="lead">Consulter et editer les Clients utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Clients.</p>
+	<hr>
+
+	<h2 class="page-header">{{ nom }}</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('client_delete_confirmed', {'id' : id})}}" class="btn btn-danger">Effacer {{ nom }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('client_list') }}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

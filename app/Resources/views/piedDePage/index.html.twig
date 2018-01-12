@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Liste des piedDePage</h1>
+	<p class="lead">Consulter et editer les piedDePages utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des piedDePages</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Titre</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for piedDePage in list %}
+						<tr>
+							<th scope="row">{{ piedDePage.id }} </th>
+							<td>{{ piedDePage.titre }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('piedDePage_voir', {'id' : piedDePage.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('piedDePage_edit', {'id' : piedDePage.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('piedDePage_delete', {'id' : piedDePage.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('piedDePage_create')}}">Ajouter un piedDePage</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

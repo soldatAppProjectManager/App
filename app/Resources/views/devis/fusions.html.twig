@@ -1,0 +1,457 @@
+{% extends 'base.html.twig' %}
+{% block stylesheets %}
+{{ parent() }}
+
+<link href="{{ asset('/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+
+<style>
+.invisible{
+  {% if devis.draft %}
+  visibility: visible;
+  {% else %}
+  visibility: hidden;
+  {% endif %}
+}
+
+.visible{
+  {% if devis.draft %}
+  visibility: hidden;
+  {% else %}
+  visibility: visible;
+  {% endif %}
+}
+
+</style>
+
+{% endblock %}
+
+{% block title %} Voir Devis {{devis.client.nom}} n°{{devis.id}} {% endblock %}
+
+{% block body %}
+
+{% if devis.draft %}
+{% set modifiable = 'contenteditable="true"' %}  
+{% else %}
+{% set modifiable = 'contenteditable="false"' %}  
+{% endif %}
+  
+<div class="row">
+
+      <br>
+      <a type="button" title="Retour à liste des devis" href="{{ url('devis_list') }}" class="btn btn-default">Retour à la liste</a>
+      <a type="button" title="Finaliser un devis change la version du devis" class="btn btn-primary invisible" href="{{ url('devis_publier_pdf', {'id' : devis.id})}}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Publier le devis pdf</a>
+      <a type="button" title="Actualiser le taux de change de chaque produit"  class="btn btn-success invisible" href="{{ url('devis_actualisertauxachat', {'id' : devis.id})}}"><i class="fa fa-refresh" aria-hidden="true"></i> Actualiser le taux de change</a>
+
+      <h1>Consulter un devis </h1>
+        <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports </p>
+</div>
+<div class="row">
+  <ul class="nav nav-tabs"> 
+    <li>
+      <a href="{{ url('devis_apercu', {'id' : devis.id})}}">Aperçu du devis</a>
+    </li> 
+    <li>
+      <a href="{{ url('devis_produits', {'id' : devis.id})}}">Produits</a>
+    </li> 
+    <li class="active">
+      <a href="{{ url('devis_fusions', {'id' : devis.id})}}">Produits de fusion</a>
+    </li> 
+    <li>
+      <a href="{{ url('devis_lignes', {'id' : devis.id})}}">Lignes</a>
+    </li> 
+    <li >
+      <a href="{{ url('devis_voirprofitabilite', {'id' : devis.id})}}">Analyse financière</a>
+    </li> 
+  </ul>
+</div>
+
+<div class="container-fluid">
+
+  <div class="row">
+    <br>
+    <p class="lead" align="left">Devis : <small>{{ devis }} </small></p>
+  </div>
+
+
+  <div class="row">
+    <div class="well" style="background-color: #fcfcfc; width:45%;">
+    <table class="table"  style="width:100%">
+        <tbody>
+          <tr>
+
+            <th style="min-width:15%">Nom du Client :</th>
+            <td align="left"><a type="button" class="btn btn-default" href="{{ url('client_voir', {'id' : devis.client.id})}}"><strong>{{devis.client.nom |capitalize }}</strong></a>
+            </td>
+          </tr>
+          <tr>
+            <th style="min-width:15%">Destinataire :</th>
+            <td align="left"><strong>{{devis.destinataire.civilite |capitalize  }} {{devis.destinataire.prenom |capitalize }} {{devis.destinataire.nom |capitalize }}</strong></td>
+          </tr>
+          <tr>
+            <th style="min-width:10%">Nom du commercial :</th>
+            <td align="left">{{devis.commercial.prenom}} {{devis.commercial.nom}}</td>
+          </tr>
+          <tr>
+            <th style="min-width:10%">Référence du devis :</th>
+            <td align="left"><strong>{{devis.reference}}</strong></td>
+          </tr>
+          <tr>
+            <th style="min-width:10%">Valide jusqu'au :</th>
+            <td align="left">{{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y") |capitalize }}</td>
+          </tr>
+        {% if not devis.draft %}<tr>
+          <th style="min-width:10%">Devis publié :</th>
+          <td align="left"><a href="{{ url('devis_fichier', {'id' : devis.id})}}" target="_blank" >{{ devis.createFileName }}.pdf</a> </td>
+        </tr> {% endif %}         
+          <tr>
+            <td></td>
+            <td>
+              <a type="button" class="btn btn-warning invisible" href="{{ url('devis_edit', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+              <a type="button" class="btn btn-success visible" href="{{ url('devis_nouvelleversion', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Nouvelle Version</a>
+              <a type="button" class="btn btn-primary invisible" href="{{ url('devis_apercupdf', {'id' : devis.id})}}"  target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Aperçu en PDF</a>
+            </td>
+          </tr>
+        </tbody>
+    </table>
+    </div>
+  </div>
+  <hr>
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">Introduction : </div>
+      <div class="panel-body">
+        {{devis.introduction.texte}}
+      </div>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="well" style="background-color: #fcfcfc">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th style="text-align:center;">
+              <a type="button" class="btn btn-success invisible" href="{{ url('produitdevis_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+            </th>
+            <th>article</th>
+            <th>Quantité</th>
+            <th>Description</th>            
+            <th>Prix d'achat</th>
+            <th>Prix Unitaire</th>
+            <th>Sous-total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produit in devis.produits %}
+          {% if not produit.estFusionné %}
+            <tr>
+              <td align="center"><button type="button" class="btn  btn-sm monter invisible" id="{{ produit.id }}"><span class="fa fa-arrow-circle-up"></span> Monter</button></td>
+              <td scope="row">{{ produit.numero }} </td>
+              <td class="quantite" {{modifiable|raw}} id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
+              <td>
+                {% if produit.designation != " " %}
+                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
+                  <br>              
+                {% endif %}
+
+                {{ produit.description | capitalize | raw }}
+                <br>
+                {% if produit.garanties|length  > 0 %}
+                    <strong>Garantie :</strong> <br>
+                {% endif %}
+                {% for garantie in produit.garanties %}
+                  {{garantie|capitalize }}<br>
+                {% endfor %}
+
+                {% if produit.termes|length  > 0 %}
+                     <strong>Conditions particulières :</strong> <br> 
+                {% endif %}                         
+                {% for terme in produit.termes %}
+                  {{terme.categorie.nom |capitalize }} : {{terme.description|capitalize}} <br>
+                {% endfor %}            
+              </td>
+              <td  class="prixachat" {{modifiable|raw}} id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht|number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
+              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT()|number_format(2, '.', ',') }} </td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT())|number_format(2, '.', ',') }} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
+              <td style="min-width:250px">
+                <a type="button" class="btn btn-default visible" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a>
+                <a type="button" class="btn btn-warning invisible" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
+                <a type="button" class="btn btn-danger invisible" href="{{ url('produitdevis_delete_confirmed', {'id' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Effacer</a>
+              </td>
+              </tr>
+          {% endif %}
+          {% endfor %}
+          {% for produit in devis.fusionProduits %}
+          {% if not produit.estVide %}
+            <tr>
+              <td align="center"><button type="button" class="btn  btn-sm monter invisible" id="{{ produit.id }}"><span class="fa fa-arrow-circle-up"></span> Monter</button></td>
+              <td scope="row">#NA </td>
+              <td class="quantite" {{modifiable|raw}} id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
+              <td>
+                {% if produit.designation != " " %}
+                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
+                  <br>              
+                {% endif %}
+
+                {{ produit.description | capitalize | raw }}        
+              </td>
+              <td  class="prixachat" {{modifiable|raw}}  id="{{ produit.id }}" style="min-width:120px">{{ produit.getPrixRevientUnitaire | number_format(2, '.', ',') }} Dh </td>
+              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
+              <td style="min-width:250px">
+                {# <a type="button" class="btn btn-default" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a> #}
+              </td>
+              </tr>
+          {% endif %}
+          {% endfor %}
+            <tr> 
+              <td style="border-top: 0px"></td>
+              <th scope="row" style="border-top: 0px"></th>
+              <td style="border-top: 0px"></td>            
+              <td style="border-top: 0px"></td>                      
+              <td style="border-top: 0px"></td>            
+              <td><strong>TOTAL HT :</strong></td>            
+              <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, '.', ',')}}</strong></td>        
+              <td></td>            
+            </tr>        
+            <tr> 
+              <td style="border-top: 0px"></td>
+              <th scope="row" style="border-top: 0px"></th>
+              <td style="border-top: 0px"></td>                       
+              <td style="border-top: 0px"></td>            
+              <td style="border-top: 0px"></td>            
+              <td>TOTAL TVA : </td>            
+              <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, '.', ',') }}</td>            
+              <td  style="border-top: 0px"></td>            
+            </tr>        
+             <tr> 
+              <td style="border-top: 0px"></td>
+              <th scope="row" style="border-top: 0px"></th>
+              <td style="border-top: 0px"></td>                       
+              <td style="border-top: 0px"></td>            
+              <td style="border-top: 0px"></td>            
+              <td><strong>TOTAL TTC: </strong></td>            
+              <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, '.', ',') }}</strong></td>            
+              <td style="border-top: 0px"></td>            
+            </tr>        
+             <tr> 
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>                                   
+              <td style="border-top: 0px"></td>            
+              <td id="enTouteLettre" align="right" colspan="3"><i>La somme du présent devis est arreté à : <strong>{{devis.getTotalTTC() | localizednumber('spellout','default','fr')}} Dirhams TTC.</strong></i></td>
+              <td style="border-top: 2px"></td>                      
+            </tr>        
+        </tbody>  
+      </table>
+    </div>
+  </div>
+
+  <hr>
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">Produits de Fusion</div>
+        <div class="panel-body">
+      <table class="table table-hover">
+        <thead>
+          <tr>
+            <th style="text-align:center;">
+              <a type="button" class="btn btn-success invisible" href="{{ url('ProduitFusion_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+            </th>
+            <th>Quantité</th>
+            <th>Description</th>            
+           {#  <th>Prix d'achat</th> #}
+            <th>Prix Unitaire</th>
+            <th>Sous-total</th>
+            <th></th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for produit in devis.fusionProduits %}
+            <tr>
+              <td><strong>{{ produit.quantite }}</strong></td>
+              <td>
+                {% if produit.designation != " " %}
+                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
+                  <br>              
+                {% endif %}
+
+                {{ produit.description | capitalize | raw }}
+              </td>
+{#               <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
+ #}              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT | number_format(2, '.', ',') }} </td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getPrixVenteHT*produit.quantite) | number_format(2, '.', ',') }} </td>
+              <td style="min-width:250px">
+                <a type="button" class="btn btn-default" href="{{ url('ProduitFusion_voir', {'id' : produit.id})}}">Voir</a>
+                <a type="button" class="btn btn-warning invisible" href="{{ url('ProduitFusion_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
+                <a type="button" class="btn btn-danger invisible" href="{{ url('ProduitFusion_delete_confirmed', {'id' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Effacer</a>
+              </td>
+            </tr>
+          {% endfor %}
+        </tbody>  
+      </table>
+    </div>
+  </div>
+  </div>
+
+  <hr>
+  <div class="row">      
+    <div class="well" style="background-color: #fcfcfc">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th>Conditions Commerciales Générales</th>
+          <th>Description</th>            
+        </tr>
+      </thead>
+      <tbody>
+        {% for terme in devis.termes %}
+          <tr>
+            <td><strong>{{ terme.nom }}</strong></td>
+            <td>{{ terme.description }} </td>
+            </tr>
+        {% endfor %}       
+      </tbody>
+    </table>
+    </div>
+  </div>
+
+  <hr>
+
+  <div class="row">
+    <div class="panel panel-default">
+      <div class="panel-heading">Pied de page : </div>
+      <div class="panel-body" text-align="center">
+        {{devis.piedDePage.adresse}} - {{devis.piedDePage.telephone}} {{devis.piedDePage.fax}} <br>
+        {{devis.piedDePage.email}} {{devis.piedDePage.siteweb}} <br>
+        {{devis.piedDePage.formejuridique}} {{devis.piedDePage.capital}} {{devis.piedDePage.rc}}  <br>
+        Patent {{devis.piedDePage.patente}} - ICE {{devis.piedDePage.ice}} - CNSS {{devis.piedDePage.cnss}} <br>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}
+
+{% block javascripts %}
+  {{ parent() }}
+
+    <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+    <script src="{{ asset('/js/datatables.min.js') }}"></script>
+
+  <script>
+  $(document).ready(function() {
+      $('#liste_devis').DataTable();
+  } );
+  </script>
+  
+     <script>
+        
+     $( ".quantite" ).on( "focusout",function (){
+          var produitid=$(this).attr('id');
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('maj_devis') }}',
+                data: { 'produit': $(this).attr('id'),
+                        'devis' : {{devis.id}},
+                        'quantite' :  $(this).text()},
+                dataType: "json",
+                success: function (data, status, object) {
+                    if (data.code == 1) {
+
+                    updateTotaux(data.prixdevente,data.sousTotalHT,data.totalHT,data.totalTVA,data.totalTTC,produitid,data.totalEntouteLettre);               
+
+                }},
+                error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                }
+            });      
+     });
+
+     $( ".prixachat" ).focusout(function (){
+          var produitid=$(this).attr('id'); 
+          var element = $(this);
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('maj_produit_prixachat') }}',
+                data: { 'produit': $(this).attr('id'),
+                        'prixachat' :  parseFloat($(this).text())},
+                dataType: "json",
+                success: function (data, status, object) {
+                    if (data.code == 1) {
+
+                    updateTotaux(data.prixdevente,data.sousTotalHT,data.totalHT,data.totalTVA,data.totalTTC,produitid,data.totalEntouteLettre);
+
+                    element.text(auFormat(toFloat(element.text()))+" "+data.devise); 
+                }},
+                error: function(xhr, status, error) {
+                console.log(xhr.responseText);
+                }
+            });      
+     });
+
+     $( ".prixachat" ).focusin(function (){
+        $(this).text(toFloat($(this).text().replace(/[a-z]/gi,"")));     
+     });
+
+    $('.monter').click(function () {
+
+      var produitid = $(this).attr("id");
+      var $row = $(this).parents('tr');
+      if ($row.index() === 0)return; // Don't go above the header
+
+      $row.prev().before($row.get(0));
+
+      // console.log("monter cliqué");
+
+      $.ajax({
+        type: 'POST',
+        url: '{{ url('monter_produit') }}',
+        data: { 'produitid': produitid,
+                'devisid' : {{devis.id}}},
+        dataType: "json",
+        success: function (data, status, object) {
+            if (data.code == 1) {
+
+            }},
+        error: function(xhr, status, error) {
+              console.log("NOK "+status);
+        }
+      });
+
+    });
+
+    function toFloat(nombre){
+
+      return parseFloat(nombre.replace(",","")); 
+    }
+
+    function arrondi(nombre,precision) {
+      var x = Math.round(nombre*(Math.pow(10,precision)))/(Math.pow(10,precision));
+      return x;
+    }
+
+    function auFormat(nombre){
+      return nombre.toLocaleString('de-DE', { minimumFractionDigits: 2});
+    }
+
+    function updateTotaux(prixdevente,sousTotalHT,totalHT,totalTVA,totalTTC,poduitID,totalEntouteLettre){
+
+      var totalHTHTML = "<strong>"+totalHT.toLocaleString('en-US')+"</strong>";
+      var totalTVAHTML = totalTVA.toLocaleString('en-US');
+      var totalTTCHTML = "<strong>"+totalTTC.toLocaleString('en-US')+"</strong>";
+      var sousTotalId = "#soustotal"+poduitID;
+      var prixdeventeId= "#prixdevente"+poduitID;
+
+      $("#totalHT").html(totalHTHTML);
+      $("#totalTVA").html(totalTVAHTML);                    
+      $("#totalTTC").html(totalTTCHTML);                    
+      $(sousTotalId).html(sousTotalHT.toLocaleString('en-US'));
+      $(prixdeventeId).html(prixdevente.toLocaleString('en-US'));
+
+      var totalEntouteLettre = "<i>La somme du présent devis est arreté à : <strong>"+totalEntouteLettre+" Dirhmas TTC.</strong></i>";
+    }
+       </script>
+
+  {% endblock %}

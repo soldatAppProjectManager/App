@@ -1,0 +1,19 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+
+<h1>Consulter une Monnaie</h1>
+<p class="lead">Consulter et editer les monnaies utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des monnaies</p>
+<hr>
+<a type="button" href="{{ url('monnaie_list')}}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header">{{ monnaie.nom }}</h2>
+<ul class="list-group">
+  <li class="list-group-item"><strong>{{monnaie.Symbol}}</strong></li>
+  <li class="list-group-item">{{monnaie.Code}}</li>
+  <li class="list-group-item">{{monnaie.tauxAchat}}</li>
+  <li class="list-group-item">{{monnaie.tauxVente}}</li>
+  <li class="list-group-item"><strong>{{monnaie.dateCreation|date('F j, Y, g:i a')}}</strong></li>
+</ul>
+
+{% endblock %}

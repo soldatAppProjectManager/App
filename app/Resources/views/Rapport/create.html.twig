@@ -1,0 +1,68 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+		<div class="row">
+
+	<h1>Ajouter un rapport</h1>
+	<p class="lead">Consulter et editer les rapports utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Metier</p>
+</div>
+<div class="container">
+	<div class="row">
+		<div class="col-lg-12">
+			{{ form_start(form) }}
+			{{ form_errors(form) }}
+
+			<div class="row well well-lg">
+				<div class="col-md-3">
+					{{ form_label(form.commercial) }}
+					{{ form_errors(form.commercial) }}
+					{{ form_widget(form.commercial) }}
+				</div>				
+				<div class="col-md-3">
+					{{ form_label(form.statut) }}
+					{{ form_errors(form.statut) }}
+					{{ form_widget(form.statut) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.debut) }}
+					{{ form_errors(form.debut) }}
+					{{ form_widget(form.debut) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.fin) }}
+					{{ form_errors(form.fin) }}
+					{{ form_widget(form.fin) }}
+				</div>
+			</div>
+			<div class="row well well-lg">
+				<div class="col-md-3">
+					{{ form_label(form.fournisseur) }}
+					{{ form_errors(form.fournisseur) }}
+					{{ form_widget(form.fournisseur) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.metier) }}
+					{{ form_errors(form.metier) }}
+					{{ form_widget(form.metier) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.typeproduit) }}
+					{{ form_errors(form.typeproduit) }}
+					{{ form_widget(form.typeproduit) }}
+				</div>
+				<div class="col-md-3">
+					{{ form_label(form.client) }}
+					{{ form_errors(form.client) }}
+					{{ form_widget(form.client) }}
+				</div>
+			</div>
+			<hr>			
+			<div class="row" align="center">
+				<button type="submit" class="btn btn-primary" formnovalidate>Voir le rapport</button>
+				{# <a type="button" class="btn btn-success" href="{{ url('devis_excel')}}"><i class="fa fa-file-excel-o" aria-hidden="true"></i> Importer d'Excel</a> #}
+			</div>
+			{{ form_end(form) }}
+		</div>
+	</div>
+</div>
+{% endblock %}  	

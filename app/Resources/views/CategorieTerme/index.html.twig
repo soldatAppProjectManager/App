@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<div class="row">
+		<h1>Liste des catégories de Terme Commercial</h1>
+		<p class="lead">Consulter la liste des catégorie de terme commercial</p>
+	</div>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Description</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for CategorieTerme in list %}
+						<tr>
+							<th scope="row">{{ CategorieTerme.id }} </th>
+							<td>{{ CategorieTerme.nom }} </td>
+							<td class="col-lg-6">{{ CategorieTerme.description }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('CategorieTerme_voir', {'id' : CategorieTerme.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('CategorieTerme_edit', {'id' : CategorieTerme.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('CategorieTerme_delete', {'id' : CategorieTerme.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('CategorieTerme_create')}}">Ajouter une catégorie de Terme Commercial</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

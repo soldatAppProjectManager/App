@@ -1,0 +1,40 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<ul class="nav nav-tabs"> 
+  <li >
+    <a href="{{ url('TravailAvantVente_list')}}">Avant-Vente</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailCommercial_list')}}">Vente</a>
+  </li> 
+  <li class="active">
+    <a href="{{ url('TravailImport_list')}}">Import</a>
+  </li> 
+  <li >
+    <a href="{{ url('TravailLivraison_list')}}">Livraison</a>
+  </li>
+</ul>
+	<h1>Effacer un TravailImport</h1>
+	<p class="lead">Consulter et editer les TravailImport utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des TravailImport</p>
+
+	<hr>
+
+	<h2 class="page-header">{{ nom }}</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('TravailImport_delete_confirmed', {'id' : id})}}" class="btn btn-danger">Effacer {{ nom }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('TravailImport_list')}}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

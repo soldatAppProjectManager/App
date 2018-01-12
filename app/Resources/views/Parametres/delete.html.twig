@@ -1,0 +1,26 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+
+	<h1>Effacer un Parametre global</h1>
+	<p class="lead">Consulter et editer les Parametres global utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Parametres global</p>
+	<hr>
+
+	<h2 class="page-header">{{ nom }}</h2>
+	<table>
+		<tbody>
+			<tr>
+				<td>
+					<a type="button" href="{{ url('Parametres_delete_confirmed', {'id' : id})}}" class="btn btn-danger">Effacer {{ nom }}</a>
+				</td>
+				<td>
+				-
+				</td>
+				<td>
+					<a type="button" href="{{ url('Parametres_list')}}" class="btn btn-default">Annuler</a>
+				</td>
+			</tr>
+		</tbody>
+	</table>
+
+{% endblock %}

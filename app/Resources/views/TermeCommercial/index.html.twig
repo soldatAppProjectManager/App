@@ -1,0 +1,46 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Liste des Terme Commercial</h1>
+	<p class="lead">Consulter et editer les Termes Commerciauxutilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des TermeCommercial</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Nom</th>
+						<th>Catégorie</th>
+						<th>Description</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for TermeCommercial in list %}
+						<tr>
+							<th scope="row">{{ TermeCommercial.id }} </th>
+							<td>{{ TermeCommercial.nom }} </td>
+							<td>{{ TermeCommercial.categorie.nom }} </td>
+							<td class="col-lg-6">{{ TermeCommercial.description }} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('TermeCommercial_voir', {'id' : TermeCommercial.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('TermeCommercial_edit', {'id' : TermeCommercial.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('TermeCommercial_delete', {'id' : TermeCommercial.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('TermeCommercial_create')}}">Ajouter un Terme Commercial</a>
+
+			      
+
+		</div>
+	</div>
+{% endblock %}  

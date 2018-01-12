@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+	<h1>Liste des Monnaies</h1>
+	<p class="lead">Consulter et editer les monnaies utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des monnaies</p>
+
+	<div class="row">
+		<div class="col-lg-12">
+
+			<hr>
+			<table class="table table-hover">
+				<thead>
+					<tr>
+						<th>#</th>
+						<th>Monnaie</th>
+						<th>Symbol</th>
+						<th>Code</th>
+						<th>Commission</th>
+						<th>Volatilité</th>
+						<th>Période (V) </th>
+						<th>Taux Achat</th>
+						<th>Taux Vente</th>
+						<th>Derniere mise à jour</th>
+						<th></th>
+					</tr>
+				</thead>
+				<tbody>
+					{% for monnaie in monnaies %}
+						<tr>
+							<th scope="row">{{ monnaie.id }} </th>
+							<td>{{ monnaie.nom }} </td>
+							<td>{{ monnaie.Symbol }} </td>
+							<td>{{ monnaie.Code }} </td>
+							<td>{{ monnaie.commission *100 }}% </td>
+							<td>{{ monnaie.volatilite *100 }}% </td>
+							<td>{{ monnaie.periode}}J </td>
+							<td>{{ monnaie.tauxAchat }} </td>
+							<td>{{ monnaie.tauxVente }} </td>
+							<td>{{ monnaie.dateCreation | date('F j, Y, g:i a')}} </td>
+							<td>
+								<a type="button" class="btn btn-default" href="{{ url('monnaie_voir', {'id' : monnaie.id})}}">Voir</a>
+								<a type="button" class="btn btn-warning" href="{{ url('monnaie_edit', {'id' : monnaie.id})}}">Editer</a>
+								<a type="button" class="btn btn-danger" href="{{ url('monnaie_delete', {'id' : monnaie.id})}}">Effacer</a>
+							</td>
+							</tr>
+					{% endfor %}
+				</tbody>
+			</table>
+
+				<hr>
+				<a type="button" class="btn btn-success" href="{{ url('monnaie_create')}}">Ajouter une Monnaie</a>
+		</div>
+	</div>
+{% endblock %}  

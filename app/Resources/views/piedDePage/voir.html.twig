@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+<h1>Consulter une piedDePage</h1>
+	<p class="lead">Consulter et editer les piedDePages utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des piedDePages</p>
+<hr>
+<a type="button" href="{{ url('piedDePage_list')}}" class="btn btn-default">Retour à la liste</a>
+<h2 class="page-header"><strong>{{ enregistrement.titre }}</strong></h2>
+<div class="well" style="background-color: #fcfcfc; width:100%;">
+	<table style="width:100%"  cellpadding="10px">
+		<tbody>
+			<tr>
+				<td align="right"><strong># : </strong></td>
+				<td>{{enregistrement.id}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>Titre : </strong></td>
+				<td>{{enregistrement.titre}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>adresse : </strong></td>
+				<td>{{enregistrement.adresse}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>telephone : </strong></td>
+				<td>{{enregistrement.telephone}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>email : </strong></td>
+				<td>{{enregistrement.email}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>fax : </strong></td>
+				<td>{{enregistrement.fax}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>siteweb : </strong></td>
+				<td>{{enregistrement.siteweb}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>formejuridique : </strong></td>
+				<td>{{enregistrement.formejuridique}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>capital : </strong></td>
+				<td>{{enregistrement.capital}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>rc : </strong></td>
+				<td>{{enregistrement.rc}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>patente : </strong></td>
+				<td>{{enregistrement.patente}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>ice : </strong></td>
+				<td>{{enregistrement.ice}}</td>
+			</tr>
+			<tr>
+				<td align="right"><strong>cnss : </strong></td>
+				<td>{{enregistrement.cnss}}</td>
+			</tr>
+		</tbody>
+	</table>
+</div>
+<!-- DivTable.com -->
+
+{% endblock %}
