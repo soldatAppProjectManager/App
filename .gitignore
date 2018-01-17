@@ -16,7 +16,7 @@
 /vendor/
 /web/bundles/
 /.idea/*
-/web/devisexport/
-/web/devisimport/
-/web/bcclient/
-/web/rapportexport/
+/web/devisexport/*
+/web/devisimport/*
+/web/bcclient/*
+/web/rapportexport/*
