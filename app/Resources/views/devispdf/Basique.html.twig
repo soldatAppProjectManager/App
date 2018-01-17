@@ -1,400 +1,381 @@
 <head>
-<meta charset='utf-8'>
-  
-  	<title>Printed document</title>
-  
-  	<style type="text/css">
-	        * {
-	        font-size: 70%;
+    <meta charset='utf-8'>
+
+    <link rel="icon" href="{{ asset('/img/favicon_SD.png') }}" />
+    <title>Devis N° {{ devis.id }}</title>
+
+    <style type="text/css">
+        * {
+            font-size: 70%;
             font-family: sans-serif;
-	        }
-			@page {
-			  margin: 0.2cm;
-			}
-			body {
-			  margin-top: 2.5cm;
-			  margin-bottom: 2cm;
-				margin-left: .5cm;
-				margin-right: .5cm;
-				text-align: justify;
-			}		
-			div.header,
-			div.footer {
-			  position: fixed;
-			  width: 100%;
-			  border: 0px solid #888;
-			  overflow: hidden;
-			  padding: 0.1cm;
-				text-align: center;
-			}
-			div.header {
-			  top: 0cm;
-			  left: 0cm;
-			  border-bottom-width: 0px;
-			  height: 2.5cm;
-			}
-			div.footer {
-			  bottom: 0cm;
-			  left: 0cm;
-			  border-top-width: 0px;
-			  height: 2cm;
-			}
-			table {
-				border-collapse: collapse;
-			}
-			table.entete{
-				margin: 0 auto;
-			}
-			table.produits{
-				margin: 0 auto;
-			}
-			table.totaux{
-				width:60%;
-				margin-right: 0px;
-				margin-left: auto;
-				page-break-inside: avoid;			
-			}
-			table.signature{
-				margin-right: auto;
-				margin-left: 0px;			
-			}
-			table.produits tbody tr:nth-child(odd){
-				background-color: #F4F4F4;
-			}
-	        table.entete th
-	        {
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;	        	
-	        }
-	        th.numero {
-	        	width: 200px;
-	        	text-align: center;
-	    	}	        
-	        table.client th
-	        {
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;	        	
-	        }	        
-	        table.introduction th
-	        {
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;       	
-	        }
-	        table.produits{
-	        	width: 100%;
-    			table-layout: fixed;
-	        }
+        }
 
-	        table.produits th
-	        {
-	        	font-weight: 1000;
-	        	font-size: 90%;
-	        	border-bottom: 1.5px solid #D22420;
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;
-	            color : #545454;
-				background-color: #B7B7B7;
-				height:20px;
-	        }
-	        table.produits td:nth-child(4n+1){width: 8%; text-align: center;}
-	        table.produits th:nth-child(4n+1){width: 8%; text-align: center;}
+        @page {
+            margin: 0.2cm;
+        }
 
-	        table.produits td:nth-child(4n+2){width: 65%}
-	        table.produits th:nth-child(4n+2){width: 65%}
+        body {
+            margin-top: 2.5cm;
+            margin-bottom: 2cm;
+            margin-left: .5cm;
+            margin-right: .5cm;
+            text-align: justify;
+        }
 
-	        table.produits td:nth-child(4n+3){
-	        	width: 15%;
-	        	font-weight: 1000;
-	        	font-size: 80%;	   
-	        }
-	        table.produits th:nth-child(4n+3){
-	        	width: 15%;
-	        	font-weight: 1000;
-	        	font-size: 80%;
-			}
-	                
-	        table.produits td:nth-child(4n+4){
-	        	width: 15%
-	        	font-weight: 1000;
-	        	font-size: 80%;
-	        	text-align: right;
-	        }
-	        table.produits th:nth-child(4n+4){
-	        	width: 15%
-	        	font-weight: 1000;
-	        	font-size: 80%;
-	        	text-align: right;
-	        }
+        div.header,
+        div.footer {
+            position: fixed;
+            width: 100%;
+            border: 0px solid #888;
+            overflow: hidden;
+            padding: 0.1cm;
+            text-align: center;
+        }
 
-	        table.produits td
-	        {
-	        	border-bottom: 2px solid #C8C8C8;
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;	        	
-	        }
+        div.header {
+            top: 0cm;
+            left: 0cm;
+            border-bottom-width: 0px;
+            height: 2.5cm;
+        }
 
-	        table.totaux tr:last-child td
-	        {
-	        	border-bottom: 0.5px solid #D22420;
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;
-	        }
+        div.footer {
+            bottom: 0cm;
+            left: 0cm;
+            border-top-width: 0px;
+            height: 2cm;
+        }
 
-	        table.totaux th
-	        {
-	        	font-weight: 1000;
-	        	font-size: 90%;
-	        	border-bottom: 2px solid #C8C8C8;
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;
-	            color : #545454;
-				background-color: #B7B7B7;
-	        }
+        table {
+            border-collapse: collapse;
+        }
 
-	        table.totaux td
-	        {
-	        	font-weight: 1000;
-	        	font-size: 90%;
-	        	border-bottom: 2px solid #C8C8C8;
-	            border-left: 0; 
-	            border-right: 0; 
-	            border-top: 0;
-	        	text-align: right;
-	        }
+        table.entete {
+            margin: 0 auto;
+        }
 
-	        table.signature {
-	        		text-align:right;
-				    margin-left: 400px;
-				    margin-right: 0;
-				    page-break-inside: avoid;
-	        }
+        table.produits {
+            margin: 0 auto;
+        }
 
+        table.totaux {
+            width: 60%;
+            margin-right: 0px;
+            margin-left: auto;
+            page-break-inside: avoid;
+        }
 
-	       	table.termes {
-				page-break-inside: avoid;			
-		
-	        }
+        table.signature {
+            margin-right: auto;
+            margin-left: 0px;
+        }
 
-	       	table.piedDePage {
-       			border-left:2.5px solid #D22420;
- 	        	text-align:center;
- 	        	width:100%;			
-	        }
- 	</style>
+        table.produits tbody tr:nth-child(odd) {
+            background-color: #F4F4F4;
+        }
+
+        table.entete th {
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        th.numero {
+            width: 200px;
+            text-align: center;
+        }
+
+        table.client th {
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        table.introduction th {
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        table.produits {
+            width: 100%;
+            table-layout: fixed;
+        }
+
+        table.produits th {
+            font-weight: 1000;
+            font-size: 90%;
+            border-bottom: 1.5px solid #F39914;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+            color: #545454;
+            background-color: #CCCCCC;
+            height: 20px;
+        }
+
+        table.produits td {
+            border-bottom: 2px solid #C8C8C8;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        table.totaux tr:last-child td {
+            border-bottom: 0.5px solid #F39914;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
+
+        table.totaux th {
+            font-weight: 1000;
+            font-size: 90%;
+            border-bottom: 2px solid #C8C8C8;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+            color: #545454;
+            background-color: #CCCCCC;
+        }
+
+        table.totaux td {
+            font-weight: 1000;
+            font-size: 90%;
+            border-bottom: 2px solid #C8C8C8;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+            text-align: right;
+        }
+
+        table.signature {
+            text-align: right;
+            margin-left: 400px;
+            margin-right: 0;
+            page-break-inside: avoid;
+        }
+
+        table.termes {
+            page-break-inside: avoid;
+
+        }
+
+        table.piedDePage {
+            border-left: 2.5px solid #F39914;
+            text-align: center;
+            width: 100%;
+        }
+    </style>
 </head>
 <body>
-	<div class="header" >
-	    <table class="entete">
-	        <tr>
-	            <td rowspan="4" style="vertical-align: top; align-content: left;">
-	                <img src="img/solution_data.png" >
-	            </td>
-	            <th class="numero" rowspan="4">
-	                Devis n°{{devis.getReference}}
-	            </th>
-	            <th>
-	                 Gestionnaire :
-	            </th>                   
-	            <td>
-	                {{devis.commercial}}
-	            </td>
-	        </tr>
-	        <tr>
-	            <th>
-	                Email:
-	            </th>                   
-	            <td>
-	                {{devis.commercial.email}}
-	            </td>
-	        </tr>
-	        <tr>
-	            <th>
-	                Telephone :
-	            </th>                   
-	            <td>
-	                 {{devis.commercial.telephone}}
-	            </td>
-	        </tr>
-	        <tr>
-	            <th>
-	                Valide jusqu'au
-	            </th>                   
-	            <td>
-	                 {{devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
-	            </td>
-	        </tr>
-	    </table>
-	</div>
+<div class="header">
+    <table class="entete" width="100%;" >
+        <tr>
+            <td rowspan="4" align="center">
+                <img src="img/solution_data.png"><br>
+            </td>
+            <th class="numero" rowspan="4">
+                Devis n°{{ devis.getReference }}
+            </th>
+            <th>
+                Gestionnaire :
+            </th>
+            <td>
+                {{ devis.commercial }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Email:
+            </th>
+            <td>
+                {{ devis.commercial.email }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Telephone :
+            </th>
+            <td>
+                {{ devis.commercial.telephone }}
+            </td>
+        </tr>
+        <tr>
+            <th>
+                Valide jusqu'au
+            </th>
+            <td>
+                {{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
+            </td>
+        </tr>
+    </table>
+    <br>
+</div>
 
-	<table class="client">
-	    <tbody>
-	        <tr>
-		        <th>Objet du devis : </th>
-		        <td></td>
-		        <td>{{devis.titre}}</td>
-
-	        </tr>
-	        <tr>
-		        <th>Date : </th>
-		        <td></td>
-		        <td>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</td>
-	        </tr>
-	        <tr>
-		        <th>A l'attention de :</th>
-		        <td></td>
-		        <td>{{devis.destinataire}}</td>
-	        </tr>
-	        <tr>
-		        <th>Pour le compte de :</th>
-		        <td></td>
-		        <td>{{devis.client.nom}}</td>
-	        </tr>
-	    </tbody>
-	</table>
+<table class="client" >
+    <tbody>
+    <tr>
+        <th>Objet du devis :</th>
+        <td style="width: 200px;" >{{ devis.titre }}</td>
+    </tr>
+    <tr>
+        <th>Date :</th>
+        <td>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</td>
+    </tr>
+    <tr>
+        <th>A l'attention de :</th>
+        <td>{{ devis.destinataire }}</td>
+    </tr>
+    <tr>
+        <th>Pour le compte de :</th>
+        <td>{{ devis.client.nom }}</td>
+    </tr>
+    </tbody>
+</table>
 <br>
-	<table class="introduction">
-	        <tbody>
-	        <tr>
-	        <th></th>
-	        </tr>
-	        <tr>
-	        <td>{{devis.introduction.getTexte |nl2br }}</td>
-	        </tr>
-	        </tbody>
-	</table>
+<table class="introduction">
+    <tbody>
+    <tr>
+        <th></th>
+    </tr>
+    <tr>
+        <td>{{ devis.introduction.getTexte |nl2br }}</td>
+    </tr>
+    </tbody>
+</table>
 <br>
-	<table class="produits">
-	    <thead>
-	    <tr>
-	        <th>Qté</th>
-	        <th>Désignation</th>
-	        <th>P.U. H.T. {{devis.devisevente.symbol}}</th>
-	        <th>S.T. H.T. {{devis.devisevente.symbol}}</th>
-	    </tr>
-	    </thead>        
-	    <tbody>
-		    {% for produit in devis.produits %}
-			<tr>
-				<td>{{produit.quantite}}</td>
-				<td>{% if not produit.designation is empty %}<strong>{{produit.designation|capitalize}} : </strong><br>{% endif %}
-					{{ produit.description|capitalize|raw}}
-					{% if not produit.garanties is empty %}
-						<br><strong>Garantie : </strong>
-						{% for garantie in produit.garanties %}
-							<br>{{garantie}}
-		    			{% endfor %}
-					{% endif %}
-					{% if not produit.termes is empty %}
-						<br><strong>Conditions particulières : </strong>
-						{% for terme in produit.termes %}
-							<br>{{terme}}
-		    			{% endfor %}
-					{% endif %}
-			   </td>
-				<td>{{ produit.prixVenteHT|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}</td>
-				<td>{{ produit.sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
-	        </tr>
-		    {% endfor %}
-	    </tbody>
-	</table>
+<table class="produits">
+    <thead>
+    <tr>
+        <th width="10%">Qté</th>
+        <th width="50%">Désignation</th>
+        <th width="20%" align="right">P.U. H.T. {{ devis.devisevente.symbol }}</th>
+        <th width="20%" align="right">S.T. H.T. {{ devis.devisevente.symbol }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for produit in devis.produits %}
+        <tr>
+            <td align="center">{{ produit.quantite }}</td>
+            <td>
+                {% if produit.designation|trim != '' %}
+                    <strong>{{ produit.designation|capitalize }} : </strong>
+                    <br>
+                {% endif %}
+                {{ produit.description|capitalize|raw }}
+                {% if not produit.garanties is empty %}
+                    <br><strong>Garantie : </strong>
+                    {% for garantie in produit.garanties %}
+                        <br>{{ garantie }}
+                    {% endfor %}
+                {% endif %}
+                {% if not produit.termes is empty %}
+                    <br><strong>Conditions particulières : </strong>
+                    {% for terme in produit.termes %}
+                        <br>{{ terme }}
+                    {% endfor %}
+                {% endif %}
+            </td>
+            <td align="right">{{ produit.prixVenteHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+            <td align="right">{{ produit.sousTotalHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
 <br>
-	<table class="totaux">
-	    <tbody>
-		    <tr>
-			    <th>Total HT</th>
-			    <td>{{devis.getTotalHT|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}</td>
-	        </tr>
-	        <tr>
-		        <th>Total T.V.A.</th>
-		        <td>{{devis.getTotalTVA|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}</td>
-	        </tr>
-	        <tr>
-		        <th>Total TTC</th>
-		        <td>{{devis.getTotalTTC|number_format(2, ',', '.')}} {{devis.devisevente.symbol}}</td>
-	        </tr>
-	        <tr>
-	        	<td colspan="2"><i>La somme du présent devis est arretée à : <strong>{{devis.totalTTC|localizednumber('spellout','default','fr_FR')|capitalize}} {{devis.devisevente.nom}} TTC.</strong></i></td>
-	        </tr>
-	    </tbody>
-	</table>
+<table class="totaux">
+    <tbody>
+    <tr>
+        <th>Total HT</th>
+        <td>{{ devis.getTotalHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+    </tr>
+    <tr>
+        <th>Total T.V.A.</th>
+        <td>{{ devis.getTotalTVA|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+    </tr>
+    <tr>
+        <th>Total TTC</th>
+        <td>{{ devis.getTotalTTC|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"><i>La somme du présent devis est arretée à :
+                <strong>{{ devis.totalTTC|localizednumber('spellout','default','fr_FR')|capitalize }} {{ devis.devisevente.nom }}
+                    TTC.</strong></i></td>
+    </tr>
+    </tbody>
+</table>
 <br><br><br><br><br><br><br><br><br><br>
-	{% if not devis.termes is empty %}
-		<strong><u> Conditions commerciales générales : </u></strong><br><br>
-	    <table class="termes">
-	    	<tbody>
-
-				{% for terme in devis.termes %}
-					<tr>
-				        <th>{{terme.categorie.nom|capitalize}} : </th>
-				        <td>{{terme.description|capitalize}}</td>
-			    	</tr>
-			    {% endfor %}  
-			</tbody>
-		</table>
-	{% endif %}
-<br><br>
-    <table class="signature">
+{% if not devis.termes is empty %}
+    <strong><u> Conditions commerciales générales : </u></strong><br><br>
+    <table class="termes">
         <tbody>
-	        <tr>
-	        	<td>Cordialement,</td>
-	        </tr>
-	        <tr>
-	        	<th>{{devis.commercial.civilite}} {{devis.commercial.prenom}} {{devis.commercial.nom}}</th>
-	        <tr>
-	        	<th>{{devis.Commercial.poste}}</th>
-	        </tr>
+
+        {% for terme in devis.termes %}
+            <tr>
+                <th>{{ terme.categorie.nom|capitalize }} :</th>
+                <td>{{ terme.description|capitalize }}</td>
+            </tr>
+        {% endfor %}
         </tbody>
     </table>
+{% endif %}
+<br><br>
+<table class="signature">
+    <tbody>
+    <tr>
+        <td>Cordialement,</td>
+    </tr>
+    <tr>
+        <th>{{ devis.commercial.civilite }} {{ devis.commercial.prenom }} {{ devis.commercial.nom }}</th>
+    <tr>
+        <th>{{ devis.Commercial.poste }}</th>
+    </tr>
+    </tbody>
+</table>
 
-    <div class="footer">
-	    <table class="piedDePage">
-		    <tbody>
-		        <tr>
-			        <th>Contacts</th>
-			        <th>Informations Juridiques</th>
-			        <th>Identifiants de l'entreprise</th>
-		        </tr>
+<div class="footer">
+    <table class="piedDePage">
+        <tbody>
+        <tr>
+            <th>Contacts</th>
+            <th>Informations Juridiques</th>
+            <th>Identifiants de l'entreprise</th>
+        </tr>
 
-		        <tr>
-			        <td>{{devis.piedDePage.adresse}}</td>
-			        <td>{{ company_name }} {{devis.piedDePage.formejuridique}}</td>
-			        <td>ICE : {{devis.piedDePage.ice}}</td>
-		        </tr>
+        <tr>
+            <td>{{ devis.piedDePage.adresse }}</td>
+            <td>{{ company_name }} {{ devis.piedDePage.formejuridique }}</td>
+            <td>ICE : {{ devis.piedDePage.ice }}</td>
+        </tr>
 
-		        <tr>
-			        <td>{{devis.piedDePage.Telephone}}</td>
-			        <td>Au capital de {{devis.piedDePage.capital}}</td>
-			        <td>Patente : {{devis.piedDePage.patente}}</td>
-		        </tr>
+        <tr>
+            <td>{{ devis.piedDePage.Telephone }}</td>
+            <td>Au capital de {{ devis.piedDePage.capital }}</td>
+            <td>Patente : {{ devis.piedDePage.patente }}</td>
+        </tr>
 
-		        <tr>
-			        <td>{{devis.piedDePage.fax}}</td>
-			        <td>Registre de Commerce : {{devis.piedDePage.rc}}</td>
-			        <td>CNSS : {{devis.piedDePage.cnss}}</td>
-			        <td></td>
-		        </tr>
+        <tr>
+            <td>{{ devis.piedDePage.fax }}</td>
+            <td>Registre de Commerce : {{ devis.piedDePage.rc }}</td>
+            <td>CNSS : {{ devis.piedDePage.cnss }}</td>
+            <td></td>
+        </tr>
 
-		        <tr>
-			        <td>{{devis.piedDePage.email}}</td>
-			        <td></td>	        
-			        <td></td>	        
-		        </tr>
-		        <tr>
-			        <td>{{devis.piedDePage.siteweb}}</td>
-			        <td></td>
-			        <td></td>	        
-		        </tr>
-	    	</tbody>
-	    </table>
-	    <p class="page"></p>
-	</div> 
-    <div class="page-number"></div>	
+        <tr>
+            <td>{{ devis.piedDePage.email }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        <tr>
+            <td>{{ devis.piedDePage.siteweb }}</td>
+            <td></td>
+            <td></td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="page"></p>
+</div>
+<div class="page-number"></div>
 
 </body>

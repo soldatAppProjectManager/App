@@ -245,26 +245,25 @@ class Monnaie {
     {
         $now = new DateTime("now");
 
+        $commession = 0.01;
         $formateur = new \NumberFormatter( 'fr_FR', NumberFormatter::DECIMAL );
 
-        if (intval($now->diff($this->getDateCreation())->format("%d")) > 0) {
+        if ($now->diff($this->getDateCreation())->days > 0) {
 
             $curl = new Curl();
-            $curl->get('http://www.bkam.ma/Marches/Principaux-indicateurs/Marche-des-changes/Cours-de-change/Cours-de-change-virement-fixing-de-14h');
+            $curl->get('http://www.bkam.ma/Marches/Principaux-indicateurs/Marche-des-changes/Cours-de-change/Cours-de-reference');
 
             $dom = new \DOMDocument('1.0', 'iso-8859-1');
-
             libxml_use_internal_errors(true);
             $dom->loadHTML($curl->response);
             libxml_use_internal_errors(false);
 
             $lignes = $dom->getElementsByTagName('tbody')->item(0)->getElementsByTagName('tr');
-
             foreach ($lignes as $ligne) {
-
                 if (strpos($ligne->childNodes->item(0)->childNodes->item(1)->getAttribute('title'),$this->getCode()) !== FALSE) {
-                    $this->setTauxAchat(floatval($formateur->parse($ligne->childNodes->item(2)->firstChild->textContent)));
-                    $this->setTauxVente(floatval($formateur->parse($ligne->childNodes->item(4)->firstChild->textContent)));
+                    $val = floatval($formateur->parse($ligne->childNodes->item(2)->firstChild->textContent));
+                    $this->setTauxAchat($val * (1 - $commession));
+                    $this->setTauxVente($val * (1 + $commession));
                 }
             }
         $this->setDateCreation($now);
