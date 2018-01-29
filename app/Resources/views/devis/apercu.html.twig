@@ -30,49 +30,16 @@
 {% block body %}
 
 {% if devis.draft %}
-{% set modifiable = 'contenteditable="true"' %}  
+{% set modifiable = 'contenteditable="true"' %}
 {% else %}
-{% set modifiable = 'contenteditable="false"' %}  
+{% set modifiable = 'contenteditable="false"' %}
 {% endif %}
 
-<div class="row">
+    {% include 'devis/devis_nav.html.twig' with {'devis': devis, type: 'apercu' } %}
 
-      <br>
-      <a type="button" title="Retour à liste des devis" href="{{ url('devis_list') }}" class="btn btn-default">Retour à la liste</a>
-      <a type="button" title="Finaliser un devis change la version du devis" class="btn btn-primary invisible" href="{{ url('devis_publier_pdf', {'id' : devis.id})}}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Publier le devis pdf</a>
-      <a type="button" title="Actualiser le taux de change de chaque produit"  class="btn btn-success invisible" href="{{ url('devis_actualisertauxachat', {'id' : devis.id})}}"><i class="fa fa-refresh" aria-hidden="true"></i> Actualiser le taux de change</a>
-
-      <h1>Consulter un devis </h1>
-        <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports </p>
-</div>
-<div class="row">
-  <ul class="nav nav-tabs"> 
-    <li class="active">
-      <a href="{{ url('devis_apercu', {'id' : devis.id})}}">Aperçu du devis</a>
-    </li> 
-    <li>
-      <a href="{{ url('devis_produits', {'id' : devis.id})}}">Produits</a>
-    </li> 
-    <li>
-      <a href="{{ url('devis_fusions', {'id' : devis.id})}}">Produits de fusion</a>
-    </li> 
-    <li>
-      <a href="{{ url('devis_lignes', {'id' : devis.id})}}">Lignes</a>
-    </li> 
-    <li >
-      <a href="{{ url('devis_voirprofitabilite', {'id' : devis.id})}}">Analyse financière</a>
-    </li> 
-  </ul>
-</div>
 
 <div class="container-fluid">
-
-  <div class="row">
-    <br>
-    <p class="lead" align="left">Devis : <small>{{ devis }} </small></p>
-  </div>
-
-
+<br>
   <div class="row">
     <div class="well" style="background-color: #fcfcfc; width:45%;">
     <table class="table"  style="width:100%">
@@ -85,7 +52,7 @@
           </tr>
           <tr>
             <th style="min-width:15%">Destinataire :</th>
-            <td align="left"><strong>{{devis.destinataire.civilite |capitalize  }} {{devis.destinataire.prenom |capitalize }} {{devis.destinataire.nom |capitalize }}</strong></td>
+            <td align="left"><strong>{{devis.contact.civilite |capitalize  }} {{devis.contact.prenom |capitalize }} {{devis.contact.nom |capitalize }}</strong></td>
           </tr>
           <tr>
             <th style="min-width:10%">Nom du commercial :</th>
@@ -102,15 +69,7 @@
         {% if not devis.draft %}<tr>
           <th style="min-width:10%">Devis publié :</th>
           <td align="left"><a href="{{ url('devis_fichier', {'id' : devis.id})}}" target="_blank" >{{ devis.createFileName }}.pdf</a> </td>
-        </tr> {% endif %}         
-          <tr>
-            <td></td>
-            <td>
-              <a type="button" class="btn btn-warning invisible" href="{{ url('devis_edit', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-              <a type="button" class="btn btn-success visible" href="{{ url('devis_nouvelleversion', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Nouvelle Version</a>
-              <a type="button" class="btn btn-primary invisible" href="{{ url('devis_apercupdf', {'id' : devis.id})}}"  target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Aperçu en PDF</a>
-            </td>
-          </tr>
+        </tr> {% endif %}
         </tbody>
     </table>
     </div>
@@ -132,29 +91,25 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th style="text-align:center;">
-              <a type="button" class="btn btn-success invisible" href="{{ url('produitdevis_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
-            </th>
+            <th style="text-align:center;">#</th>
             <th>article</th>
             <th>Quantité</th>
-            <th>Description</th>            
-            <th>Prix d'achat</th>
+            <th>Description</th>
             <th>Prix Unitaire</th>
             <th>Sous-total</th>
-            <th></th>
           </tr>
         </thead>
         <tbody>
           {% for produit in devis.produits %}
-          {% if not produit.estFusionné %}
+          {% if not produit.estFusionne %}
             <tr>
               <td align="center"><button type="button" class="btn  btn-sm monter invisible" id="{{ produit.id }}"><span class="fa fa-arrow-circle-up"></span> Monter</button></td>
-              <td scope="row">{{ produit.numero }} </td>
+              <td scope="row">{{ produit.ordre }} </td>
               <td class="quantite" {{modifiable|raw}} id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
               <td>
                 {% if produit.designation != " " %}
                   <strong>{{ produit.designation |capitalize | nl2br}}</strong>
-                  <br>              
+                  <br>
                 {% endif %}
 
                 {{ produit.description | capitalize | raw }}
@@ -167,20 +122,15 @@
                 {% endfor %}
 
                 {% if produit.termes|length  > 0 %}
-                     <strong>Conditions particulières :</strong> <br> 
-                {% endif %}                         
+                     <strong>Conditions particulières :</strong> <br>
+                {% endif %}
                 {% for terme in produit.termes %}
                   {{terme.categorie.nom |capitalize }} : {{terme.description|capitalize}} <br>
-                {% endfor %}            
+                {% endfor %}
               </td>
               <td  class="prixachat" {{modifiable|raw}} id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
               <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} </td>
               <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
-              <td style="min-width:250px">
-                <a type="button" class="btn btn-default visible" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a>
-                <a type="button" class="btn btn-warning invisible" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
-                <a type="button" class="btn btn-danger invisible" href="{{ url('produitdevis_delete_confirmed', {'id' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Effacer</a>
-              </td>
               </tr>
           {% endif %}
           {% endfor %}
@@ -193,12 +143,11 @@
               <td>
                 {% if produit.designation != " " %}
                   <strong>{{ produit.designation |capitalize | nl2br}}</strong>
-                  <br>              
+                  <br>
                 {% endif %}
 
-                {{ produit.description | capitalize | raw }}        
+                {{ produit.description | capitalize | raw }}
               </td>
-              <td  class="prixachat" {{modifiable|raw}}  id="{{ produit.id }}" style="min-width:120px">{{ produit.getPrixRevientUnitaire | number_format(2, '.', ',') }} Dh </td>
               <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} </td>
               <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
               <td style="min-width:250px">
@@ -207,103 +156,58 @@
               </tr>
           {% endif %}
           {% endfor %}
-            <tr> 
+            <tr>
               <td style="border-top: 0px"></td>
               <th scope="row" style="border-top: 0px"></th>
-              <td style="border-top: 0px"></td>            
-              <td style="border-top: 0px"></td>                      
-              <td style="border-top: 0px"></td>            
-              <td><strong>TOTAL HT :</strong></td>            
-              <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</strong></td>        
-              <td></td>            
-            </tr>        
-            <tr> 
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>
+              <td><strong>TOTAL HT :</strong></td>
+              <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</strong></td>
+              <td></td>
+            </tr>
+            <tr>
               <td style="border-top: 0px"></td>
               <th scope="row" style="border-top: 0px"></th>
-              <td style="border-top: 0px"></td>                       
-              <td style="border-top: 0px"></td>            
-              <td style="border-top: 0px"></td>            
-              <td>TOTAL TVA : </td>            
-              <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</td>            
-              <td  style="border-top: 0px"></td>            
-            </tr>        
-             <tr> 
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>
+              <td>TOTAL TVA : </td>
+              <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</td>
+              <td  style="border-top: 0px"></td>
+            </tr>
+             <tr>
               <td style="border-top: 0px"></td>
               <th scope="row" style="border-top: 0px"></th>
-              <td style="border-top: 0px"></td>                       
-              <td style="border-top: 0px"></td>            
-              <td style="border-top: 0px"></td>            
-              <td><strong>TOTAL TTC: </strong></td>            
-              <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</strong></td>            
-              <td style="border-top: 0px"></td>            
-            </tr>        
-             <tr> 
               <td style="border-top: 0px"></td>
-              <td style="border-top: 0px"></td>                                   
-              <td style="border-top: 0px"></td>            
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>
+              <td><strong>TOTAL TTC: </strong></td>
+              <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</strong></td>
+              <td style="border-top: 0px"></td>
+            </tr>
+             <tr>
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>
+              <td style="border-top: 0px"></td>
               <td id="enTouteLettre" align="right" colspan="3"><i>La somme du présent devis est arreté à : <strong>{{devis.getTotalTTC() | localizednumber('spellout','default','fr')}} {{devis.deviseVente.symbol}} TTC.</strong></i></td>
-              <td style="border-top: 2px"></td>                      
-            </tr>        
-        </tbody>  
+              <td style="border-top: 2px"></td>
+            </tr>
+        </tbody>
       </table>
     </div>
   </div>
+
+  <hr>
 
   <hr>
   <div class="row">
-    <div class="panel panel-default">
-      <div class="panel-heading">Produits de Fusion</div>
-        <div class="panel-body">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-            <th style="text-align:center;">
-              <a type="button" class="btn btn-success invisible" href="{{ url('ProduitFusion_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
-            </th>
-            <th>Quantité</th>
-            <th>Description</th>            
-           {#  <th>Prix d'achat</th> #}
-            <th>Prix Unitaire</th>
-            <th>Sous-total</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for produit in devis.fusionProduits %}
-            <tr>
-              <td><strong>{{ produit.quantite }}</strong></td>
-              <td>
-                {% if produit.designation != " " %}
-                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
-                  <br>              
-                {% endif %}
-
-                {{ produit.description | capitalize | raw }}
-              </td>
-{#               <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
- #}              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT | number_format(2, '.', ',') }} </td>
-              <td id="soustotal{{produit.id}}">{{ (produit.getPrixVenteHT*produit.quantite) | number_format(2, '.', ',') }} </td>
-              <td style="min-width:250px">
-                <a type="button" class="btn btn-default" href="{{ url('ProduitFusion_voir', {'id' : produit.id})}}">Voir</a>
-                <a type="button" class="btn btn-warning invisible" href="{{ url('ProduitFusion_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
-                <a type="button" class="btn btn-danger invisible" href="{{ url('ProduitFusion_delete_confirmed', {'id' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Effacer</a>
-              </td>
-            </tr>
-          {% endfor %}
-        </tbody>  
-      </table>
-    </div>
-  </div>
-  </div>
-
-  <hr>
-  <div class="row">      
     <div class="well" style="background-color: #fcfcfc">
     <table class="table table-hover">
       <thead>
         <tr>
           <th>Conditions Commerciales Générales</th>
-          <th>Description</th>            
+          <th>Description</th>
         </tr>
       </thead>
       <tbody>
@@ -312,7 +216,7 @@
             <td><strong>{{ terme.nom }}</strong></td>
             <td>{{ terme.description }} </td>
             </tr>
-        {% endfor %}       
+        {% endfor %}
       </tbody>
     </table>
     </div>
@@ -345,9 +249,9 @@
       $('#liste_devis').DataTable();
   } );
   </script>
-  
+
      <script>
-        
+
      $( ".quantite" ).on( "focusout",function (){
           var produitid=$(this).attr('id');
             $.ajax({
@@ -360,17 +264,17 @@
                 success: function (data, status, object) {
                     if (data.code == 1) {
 
-                    updateTotaux(data.prixdevente,data.sousTotalHT,data.totalHT,data.totalTVA,data.totalTTC,produitid,data.totalEntouteLettre);               
+                    updateTotaux(data.prixdevente,data.sousTotalHT,data.totalHT,data.totalTVA,data.totalTTC,produitid,data.totalEntouteLettre);
 
                 }},
                 error: function(xhr, status, error) {
                 console.log(xhr.responseText);
                 }
-            });      
+            });
      });
 
      $( ".prixachat" ).focusout(function (){
-          var produitid=$(this).attr('id'); 
+          var produitid=$(this).attr('id');
           var element = $(this);
             $.ajax({
                 type: 'POST',
@@ -383,16 +287,16 @@
 
                     updateTotaux(data.prixdevente,data.sousTotalHT,data.totalHT,data.totalTVA,data.totalTTC,produitid,data.totalEntouteLettre);
 
-                    element.text(auFormat(toFloat(element.text()))+" "+data.devise); 
+                    element.text(auFormat(toFloat(element.text()))+" "+data.devise);
                 }},
                 error: function(xhr, status, error) {
                 console.log(xhr.responseText);
                 }
-            });      
+            });
      });
 
      $( ".prixachat" ).focusin(function (){
-        $(this).text(toFloat($(this).text().replace(/[a-z]/gi,"")));     
+        $(this).text(toFloat($(this).text().replace(/[a-z]/gi,"")));
      });
 
     $('.monter').click(function () {
@@ -424,7 +328,7 @@
 
     function toFloat(nombre){
 
-      return parseFloat(nombre.replace(",","")); 
+      return parseFloat(nombre.replace(",",""));
     }
 
     function arrondi(nombre,precision) {
@@ -445,8 +349,8 @@
       var prixdeventeId= "#prixdevente"+poduitID;
 
       $("#totalHT").html(totalHTHTML);
-      $("#totalTVA").html(totalTVAHTML);                    
-      $("#totalTTC").html(totalTTCHTML);                    
+      $("#totalTVA").html(totalTVAHTML);
+      $("#totalTTC").html(totalTTCHTML);
       $(sousTotalId).html(sousTotalHT.toLocaleString('en-US'));
       $(prixdeventeId).html(prixdevente.toLocaleString('en-US'));
 

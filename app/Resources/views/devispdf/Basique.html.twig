@@ -225,7 +225,7 @@
     </tr>
     <tr>
         <th>A l'attention de :</th>
-        <td>{{ devis.destinataire }}</td>
+        <td>{{ devis.contact }}</td>
     </tr>
     <tr>
         <th>Pour le compte de :</th>
@@ -248,14 +248,14 @@
 <table class="produits">
     <thead>
     <tr>
-        <th width="10%">Qté</th>
+        <th width="10%">Qté {{ devis.abstractProduits|length }}</th>
         <th width="50%">Désignation</th>
         <th width="20%" align="right">P.U. H.T. {{ devis.devisevente.symbol }}</th>
         <th width="20%" align="right">S.T. H.T. {{ devis.devisevente.symbol }}</th>
     </tr>
     </thead>
     <tbody>
-    {% for produit in devis.produits %}
+    {% for produit in devis.abstractProduits if not produit.estFusionne %}
         <tr>
             <td align="center">{{ produit.quantite }}</td>
             <td>
@@ -264,18 +264,8 @@
                     <br>
                 {% endif %}
                 {{ produit.description|capitalize|raw }}
-                {% if not produit.garanties is empty %}
-                    <br><strong>Garantie : </strong>
-                    {% for garantie in produit.garanties %}
-                        <br>{{ garantie }}
-                    {% endfor %}
-                {% endif %}
-                {% if not produit.termes is empty %}
-                    <br><strong>Conditions particulières : </strong>
-                    {% for terme in produit.termes %}
-                        <br>{{ terme }}
-                    {% endfor %}
-                {% endif %}
+
+
             </td>
             <td align="right">{{ produit.prixVenteHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
             <td align="right">{{ produit.sousTotalHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>

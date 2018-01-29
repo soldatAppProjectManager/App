@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Controller;
+use AppBundle\Entity\AbstractDocumentClient;
 use DateTime;
 use AppBundle\Entity\ProduitFusion;
 use AppBundle\Entity\Devis;
@@ -47,15 +48,11 @@ class ProduitFusionController extends Controller
     /**
      * @Route("/create/{id}", name="ProduitFusion_create")
      */
-    public function createAction($id,Request $request)
+    public function createAction(AbstractDocumentClient $devis,Request $request)
     {
         $ProduitFusion = new ProduitFusion;
-
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($id);
                         
-        $ProduitFusion->setDevis($devis);
+        $ProduitFusion->setDocumentClient($devis);
 
         $form = $this->createForm(ProduitFusionFormType::class,$ProduitFusion);
 
@@ -76,7 +73,7 @@ class ProduitFusionController extends Controller
         }
 
         return $this->render('ProduitFusion/create.html.twig', array(
-            'form' => $form->createView(),'id'=>$id
+            'form' => $form->createView(),'id'=> $devis->getId()
         ));
     }
 

@@ -216,7 +216,7 @@
 				<td class="soustotal" style="text-align:right; padding-right:20px border-right: 0.5px solid #000000;">{{ produit.sousTotalHT|number_format(2, ',', '.')}} {{ devis.devisevente.symbol }}</td>
 	        </tr>
 		    {% endif %}{% endfor %}	    	
-		    {% for produit in devis.produits %}{% if not produit.estFusionné and not produit.optionnel %}
+		    {% for produit in devis.produits %}{% if not produit.estFusionne and not produit.optionnel %}
 			<tr>
 				<td>{% if not produit.designation is empty %}<strong>{{produit.designation|capitalize}} : </strong><br>{% endif %}
 					{{ produit.description|capitalize|raw}}

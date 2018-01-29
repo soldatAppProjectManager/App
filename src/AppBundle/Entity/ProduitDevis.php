@@ -1,21 +1,8 @@
 <?php
 
 namespace AppBundle\Entity;
-
 use Doctrine\ORM\Mapping as ORM;
-use AppBundle\Entity\Parametres;
-use AppBundle\Entity\Devis;
-use AppBundle\Entity\garantie;
-use AppBundle\Entity\TermeCommercial;
-use AppBundle\Tools\devisExcel;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\OneToOne;
-use Doctrine\ORM\Mapping\JoinTable;
-
-use Doctrine\Common\Collections\ArrayCollection;
-use Doctrine\ORM\Mapping\OrderBy;
-use DateTime;
 
 /**
  * ProduitDevis
@@ -23,58 +10,14 @@ use DateTime;
  * @ORM\Table(name="produit_devis")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProduitDevisRepository")
  */
-class ProduitDevis
+class ProduitDevis extends AbstractProduit
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @Assert\NotBlank()
-     * @Assert\Range(
-     *      min = 1,
-     *      max = 20000
-     * )
-     * @ORM\Column(name="quantite", type="integer")
-     */
-    private $quantite;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numero", type="integer")
-     */
-    private $numero;
-
     /**
      * @var string
      *
      * @ORM\Column(name="reference", type="string", length=255)
      */
     private $reference;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank()
-     * @ORM\Column(name="designation", type="string", length=255)
-     */
-    private $designation;
-
-    /**
-     * @var string
-     *
-     * @Assert\NotBlank()
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
 
     /**
      * @var float
@@ -111,13 +54,6 @@ class ProduitDevis
      * @ORM\Column(name="tauxSpecial", type="boolean")
      */
     private $tauxSpecial;
-
-    /**
-     * @var bool
-     * @Assert\Choice({true, false})
-     * @ORM\Column(name="optionnel", type="boolean")
-     */
-    private $optionnel;
 
     /**
      * @var bool
@@ -217,18 +153,10 @@ class ProduitDevis
     private $devisevente;
 
     /**
-     * @var \Devis
-     *
-     * @ORM\ManyToOne(targetEntity="Devis",inversedBy="produits")
-     * @ORM\JoinColumn(name="Devis_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $devis;
-
-    /**
      * Many produits have Many terms.
-     * @ManyToMany(targetEntity="TermeCommercial", inversedBy="produits")
-     * @JoinTable(name="produits_termes")
-     * @OrderBy({"nom" = "ASC"})
+     * @ORM\ManyToMany(targetEntity="TermeCommercial", inversedBy="produits")
+     * @ORM\JoinTable(name="produits_termes")
+     * @ORM\OrderBy({"nom" = "ASC"})
      */
     private $termes;
 
@@ -236,37 +164,21 @@ class ProduitDevis
      * @var \ProduitFusion
      *
      * @ORM\ManyToOne(targetEntity="ProduitFusion",inversedBy="produits")
-     * @ORM\JoinColumn(name="ProduitFusion_id", referencedColumnName="id", onDelete="CASCADE")
+     * @ORM\JoinColumn(name="produit_fusion_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $ProduitFusion;
 
     /**
      * Many produits have Many terms.
-     * @ManyToMany(targetEntity="garantie", inversedBy="produits")
-     * @JoinTable(name="produits_garanties")
-     * @OrderBy({"nom" = "ASC"})
+     * @ORM\ManyToMany(targetEntity="garantie", inversedBy="produits")
+     * @ORM\JoinTable(name="produits_garanties")
+     * @ORM\OrderBy({"nom" = "ASC"})
      */
     private $garanties;
 
 
-    public function __construct(AppBundle\Tools\devisExcel $produitExcel = null)
+    public function __construct()
     {
-
-        if ($produitExcel) {
-            $this->marge = 0;
-            $this->setDevis($devis->getId());
-            $this->setQuantite($produitExcel['quantite']);
-            $this->setDescription($produitExcel['description']);
-            $this->setPrixachatht($produitExcel['prixachatht']);
-            $this->setFraisapproche($produitExcel['fraisapproche']);
-            $this->setTermepaiementfournisseur($produitExcel['quantite']);
-            $this->setMetier($produitExcel['quantite']);
-            $this->setTypeproduit($produitExcel['quantite']);
-            $this->setDeviseachat($produitExcel['quantite']);
-            $this->setFournisseur($produitExcel['quantite']);
-            $this->setTauxTVA($produitExcel['quantite']);
-            $this->setTauxAchat();
-        } else {
             $this->setTauxAchat(1);
             $this->setQuantite(1);
             $this->setMarge(0.12);
@@ -274,7 +186,6 @@ class ProduitDevis
 
             $this->termes = new \Doctrine\Common\Collections\ArrayCollection();
             $this->garanties = new \Doctrine\Common\Collections\ArrayCollection();
-        }
     }
 
     public function __toString()
@@ -282,16 +193,6 @@ class ProduitDevis
         return $this->getQuantite() . "X - " . $this->getDesignation() . " - " . $this->getFournisseur()->getNom();
     }
 
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
 
     /**
      * Set quantite
@@ -318,54 +219,6 @@ class ProduitDevis
     }
 
     /**
-     * Set designation
-     *
-     * @param string $designation
-     *
-     * @return ProduitDevis
-     */
-    public function setDesignation($designation)
-    {
-        $this->designation = $designation;
-
-        return $this;
-    }
-
-    /**
-     * Get designation
-     *
-     * @return string
-     */
-    public function getDesignation()
-    {
-        return $this->designation;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return ProduitDevis
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
      * Set prixachatht
      *
      * @param float $prixachatht
@@ -386,8 +239,8 @@ class ProduitDevis
      */
     public function getPrixachatht()
     {
-        if ($this->typeproduit != NULL and $this->typeproduit->getId() == 1 and $this->marge != (1 - $this->getDevis()->getCoutMoyenService())) {
-            $this->marge = 1 - $this->getDevis()->getCoutMoyenService();
+        if ($this->typeproduit != NULL and $this->typeproduit->getId() == 1 and $this->marge != (1 - $this->getDocumentClient()->getCoutMoyenService())) {
+            $this->marge = 1 - $this->getDocumentClient()->getCoutMoyenService();
             $this->setPrixachatht($this->getPrixachatht() * (1 - $this->marge));
             return $this->prixachatht;
         } else return $this->prixachatht;
@@ -428,8 +281,8 @@ class ProduitDevis
     public function setMarge($marge)
     {
 
-        if ($this->typeproduit != NULL and $this->typeproduit->getId() == 1 and $this->marge != (1 - $this->getDevis()->getCoutMoyenService())) {
-            $this->marge = 1 - $this->getDevis()->getCoutMoyenService();
+        if ($this->typeproduit != NULL and $this->typeproduit->getId() == 1 and $this->marge != (1 - $this->getDocumentClient()->getCoutMoyenService())) {
+            $this->marge = 1 - $this->getDocumentClient()->getCoutMoyenService();
             $this->setPrixachatht($this->getPrixachatht() * (1 - $this->marge));
 
         } else $this->marge = round($marge, 8);
@@ -444,8 +297,8 @@ class ProduitDevis
      */
     public function getMarge()
     {
-        if ($this->typeproduit != NULL and $this->typeproduit->getId() == 1 and $this->marge != (1 - $this->getDevis()->getCoutMoyenService())) {
-            $this->marge = 1 - $this->getDevis()->getCoutMoyenService();
+        if ($this->typeproduit != NULL and $this->typeproduit->getId() == 1 and $this->marge != (1 - $this->getDocumentClient()->getCoutMoyenService())) {
+            $this->marge = 1 - $this->getDocumentClient()->getCoutMoyenService();
             $this->setPrixachatht($this->getPrixachatht() * (1 - $this->marge));
             return $this->marge;
         } else return $this->marge;
@@ -453,7 +306,7 @@ class ProduitDevis
 
     public function getPrixVenteHT()
     {
-        return round(($this->prixachatht * (1 + $this->fraisapproche) * ($this->getTauxAchat())) / (1 - $this->marge) / $this->getDevis()->getTauxVente(), 0, PHP_ROUND_HALF_UP);
+        return round(($this->prixachatht * (1 + $this->fraisapproche) * ($this->getTauxAchat())) / (1 - $this->marge) / $this->getDocumentClient()->getTauxVente(), 0, PHP_ROUND_HALF_UP);
     }
 
     public function getMarkUp()
@@ -520,7 +373,7 @@ class ProduitDevis
     public function setTypeproduit(\AppBundle\Entity\TypeProduit $typeproduit = null)
     {
         if ($typeproduit->getId() == 1) {
-            $this->setMarge(1 - $this->getDevis()->getCoutMoyenService());
+            $this->setMarge(1 - $this->getDocumentClient()->getCoutMoyenService());
             $this->setPrixachatht($this->getPrixachatht() * (1 - $this->getMarge()));
         }
 
@@ -588,31 +441,6 @@ class ProduitDevis
     }
 
     /**
-     * Set devis
-     *
-     * @param \AppBundle\Entity\Devis $devis
-     *
-     * @return ProduitDevis
-     */
-    public function setDevis(\AppBundle\Entity\Devis $devis = null)
-    {
-
-        $this->devis = $devis;
-
-        return $this;
-    }
-
-    /**
-     * Get devis
-     *
-     * @return \AppBundle\Entity\Devis
-     */
-    public function getDevis()
-    {
-        return $this->devis;
-    }
-
-    /**
      * Set fournisseur
      *
      * @param \AppBundle\Entity\Fournisseur $fournisseur
@@ -636,15 +464,9 @@ class ProduitDevis
         return $this->fournisseur;
     }
 
-
-    public function getSousTotalHT()
-    {
-        return round($this->quantite * $this->getPrixVenteHT(), 2);
-    }
-
     public function getFraisFinanciers($TauxFinancementTresorerie)
     {
-        $DelaiRecouvrement = $this->devis->getClient()->getDelaipaiementconstate();
+        $DelaiRecouvrement = $this->getDocumentClient()->getClient()->getDelaipaiementconstate();
         $TermeFournisseur = $this->fournisseur->getTermepaiement();
 
         return round((1 + $this->tauxTVA) * $this->getSousTotalHT() * $TauxFinancementTresorerie * ($DelaiRecouvrement - $TermeFournisseur) / 365, 2);
@@ -657,7 +479,6 @@ class ProduitDevis
 
     public function getMargeBrute($TauxFinancementTresorerie)
     {
-
         return round($this->getSousTotalHT() - $this->getTotalPrixDeRevient() - $this->getFraisFinanciers($TauxFinancementTresorerie), 2);
     }
 
@@ -718,36 +539,12 @@ class ProduitDevis
 
     public function mettreAJourTauxAchat()
     {
-        $TauxFinancementTresorerie = $this->getDevis()->getTauxFinancementTresorerie();
+        $TauxFinancementTresorerie = $this->getDocumentClient()->getTauxFinancementTresorerie();
 
-        $coefficientChange = $TauxFinancementTresorerie * ($this->getDevis()->getValidite() + $this->getFournisseur()->getTermepaiement()) / 365;
+        $coefficientChange = $TauxFinancementTresorerie * ($this->getDocumentClient()->getValidite() + $this->getFournisseur()->getTermepaiement()) / 365;
 
         if ($this->getDeviseachat()->getCode() == "MAD") return $this->setTauxAchat($this->getDeviseachat()->getTauxAchat());
         else return $this->setTauxAchat((1 + $coefficientChange) * $this->getDeviseachat()->getTauxAchat());
-    }
-
-    /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return ProduitDevis
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return integer
-     */
-    public function getNumero()
-    {
-        return $this->numero;
     }
 
     /**
@@ -759,7 +556,7 @@ class ProduitDevis
      */
     public function setReference($reference = null)
     {
-        $this->reference = $this->getDevis()->getDatecreation()->format('Y/m') . "/" . $this->getFournisseur()->getNom() . "/" . $this->getDesignation() . "/" . $this->getDevis()->getId();
+        $this->reference = $this->getDocumentClient()->getDatecreation()->format('Y/m') . "/" . $this->getFournisseur()->getNom() . "/" . $this->getDesignation() . "/" . $this->getDocumentClient()->getId();
 
         return $this;
     }
@@ -777,38 +574,15 @@ class ProduitDevis
 
     public function monter()
     {
-        if ($this->getNumero() > 1) {
-            $this->setNumero($this->getNumero() - 1);
+        if ($this->getOrdre() > 1) {
+            $this->setOrdre($this->getOrdre() - 1);
         }
     }
 
     public function descendre()
     {
-        $this->setNumero($this->getNumero() + 1);
+        $this->setOrdre($this->getOrdre() + 1);
     }
-
-    public function fromExcel(Array $produitExcel, $i, $devis, $fournisseur, $Metier, $typeProduit, $deviseVente)
-    {
-        $this->setReference(" ");
-        $this->setNumero($i);
-        $this->setDevis($devis);
-        $this->setQuantite($produitExcel['quantite']);
-        $this->setDescription($produitExcel['description']);
-        $this->setDesignation(" ");
-        $this->setMarge($produitExcel['marge']);
-        $this->setReferenceoffre("Inconnue");
-        $this->setPrixachatht($produitExcel['prixachatht']);
-        $this->setFraisapproche($produitExcel['fraisapproche']);
-        $this->setTermepaiementfournisseur($produitExcel['quantite']);
-        $this->setMetier($Metier);
-        $this->setTypeproduit($typeProduit);
-        $this->setDeviseachat($fournisseur->getDevisevente());
-        $this->setFournisseur($fournisseur);
-        $this->setTauxTVA(0.2);
-        $this->setTauxAchat($produitExcel['tauxAchat']);
-        $this->setDevisevente($deviseVente);
-    }
-
 
     /**
      * Add terme
@@ -928,7 +702,7 @@ class ProduitDevis
 
     // public function setReferenceAuto()
     // {
-    //     $this->reference = $this->getDevis()->getDatecreation()->format('Y/m')."/".$this->getFournisseur()->getNom(). "/". $this->getDesignation();
+    //     $this->reference = $this->getDocumentClient()->getDatecreation()->format('Y/m')."/".$this->getFournisseur()->getNom(). "/". $this->getDesignation();
 
     //     return $this;
     // }
@@ -1008,30 +782,6 @@ class ProduitDevis
     }
 
     /**
-     * Set optionnel
-     *
-     * @param boolean $optionnel
-     *
-     * @return ProduitDevis
-     */
-    public function setOptionnel($optionnel)
-    {
-        $this->optionnel = $optionnel;
-
-        return $this;
-    }
-
-    /**
-     * Get optionnel
-     *
-     * @return boolean
-     */
-    public function getOptionnel()
-    {
-        return $this->optionnel;
-    }
-
-    /**
      * Set produitFusion
      *
      * @param \AppBundle\Entity\ProduitFusion $produitFusion
@@ -1054,10 +804,4 @@ class ProduitDevis
     {
         return $this->ProduitFusion;
     }
-
-    public function estFusionné()
-    {
-        return $this->getProduitFusion() != NULL;
-    }
-
 }

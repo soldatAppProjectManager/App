@@ -50,28 +50,22 @@ class ProduitDevisController extends Controller
     /**
      * @Route("/create/{id}", name="produitdevis_create")
      */
-    public function createAction($id,Request $request)
+    public function createAction(Devis $devis,Request $request)
     {
         $produitdevis = new ProduitDevis;
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($id);
                         
-        $produitdevis->setDevis($devis);
-
+        $produitdevis->setDocumentClient($devis);
 
         $form = $this->createForm(ProduitDevisFormType::class,$produitdevis);
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-
             $produitdevis->setDevisevente($this->getDoctrine()
                             ->getRepository('AppBundle:Monnaie')
                             ->find(3));
 
-
-            $produitdevis->setnumero($devis->getProduits()->count()+1);
+            $produitdevis->setOrdre($devis->getAbstractProduits()->count()+1);
             $produitdevis->setReference();
 
             $em = $this->getDoctrine()->getManager();
@@ -81,7 +75,7 @@ class ProduitDevisController extends Controller
 
             $this->addFlash('notice','Produit de devis Ajouté');
 
-            return $this->redirectToRoute('devis_apercu',array('id' => $produitdevis->getDevis()->getId()));
+            return $this->redirectToRoute('devis_apercu',array('id' => $produitdevis->getDocumentClient()->getId()));
         }
 
         return $this->render('produitdevis/create.html.twig', array(
@@ -106,18 +100,10 @@ class ProduitDevisController extends Controller
     /**
      * @Route("/deleteConfirmed/{id}", name="produitdevis_delete_confirmed")
      */
-    public function deleteConfirmedAction($id,Request $request)
+    public function deleteConfirmedAction(ProduitDevis $produitdevis,Request $request)
     {
-        // replace this example code with whatever you need
-        $produitdevis = $this->getDoctrine()
-                    ->getRepository('AppBundle:ProduitDevis')
-                    ->find($id);
 
-        $devis = $this->getDoctrine()
-                    ->getRepository('AppBundle:Devis')
-                    ->find($produitdevis->getDevis());
-
-        $devis->remonterSuivants($produitdevis);
+        $devis = $produitdevis->getDocumentClient();
  
         $em = $this->getDoctrine()->getManager();
 
@@ -132,40 +118,52 @@ class ProduitDevisController extends Controller
     /**
      * @Route("/edit/{id}", name="produitdevis_edit")
      */
-    public function editAction($id,Request $request)
+    public function editAction(ProduitDevis $produitDevis,Request $request)
     {
-        $produitdevis = $this->getDoctrine()
-                        ->getRepository('AppBundle:ProduitDevis')
-                        ->find($id);
+        $devis = $produitDevis->getDocumentClient();
 
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($produitdevis->getDevis());                        
-
-        $form = $this->createForm(ProduitDevisFormType::class,$produitdevis);
+        $form = $this->createForm(ProduitDevisFormType::class, $produitDevis);
 
 
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()){
-
             //$produitdevis->mettreAJourTauxAchat();
-            $produitdevis->setReference();
+            $produitDevis->setReference();
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
             $this->addFlash('notice','Produit de devis Mis à jour');
 
-
-
             return $this->redirectToRoute('devis_apercu',array(   'id' => $devis->getId()));
         }
+
 
         // replace this example code with whatever you need
         return $this->render('produitdevis/edit.html.twig',array(   'form' => $form->createView(),
                                                                     'devis' => $devis,
-                                                                    'produit' => $produitdevis));
+                                                                    'produit' => $produitDevis));
+    }
+
+    private function getErrorMessages($form) {
+        $errors = array();
+
+        foreach ($form->getErrors() as $key => $error) {
+            if ($form->isRoot()) {
+                $errors['#'][] = $error->getMessage();
+            } else {
+                $errors[] = $error->getMessage();
+            }
+        }
+
+        foreach ($form->all() as $child) {
+            if (!$child->isValid()) {
+                $errors[$child->getName()] = $this->getErrorMessages($child);
+            }
+        }
+
+        return $errors;
     }
 
     /**

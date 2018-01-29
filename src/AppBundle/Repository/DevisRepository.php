@@ -14,7 +14,7 @@ class DevisRepository extends \Doctrine\ORM\EntityRepository
 
         $date = new \DateTime('last monday');
 
-         return $this 	->createQueryBuilder()
+         return $this->createQueryBuilder()
                         ->select('devis', 'commercial','client')
                         ->from('AppBundle:Devis', 'devis')
                         ->innerJoin('devis.commercial', 'commercial')

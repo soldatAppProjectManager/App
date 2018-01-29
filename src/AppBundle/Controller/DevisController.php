@@ -122,13 +122,8 @@ class DevisController extends Controller
     /**
      * @Route("/lignes/{id}", name="devis_lignes")
      */
-    public function lignesAction($id,Request $request)
+    public function lignesAction(Devis $devis,Request $request)
     {
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($id);
-
-        
         // replace this example code with whatever you need
         return $this->render('devis/lignes.html.twig',array('devis' => $devis));
     }
@@ -153,19 +148,15 @@ class DevisController extends Controller
     /**
      * @Route("/actualiser/{id}", name="devis_actualisertauxachat")
      */
-    public function actualiserTauxAchatAction($id,Request $request)
+    public function actualiserTauxAchatAction(Devis $devis,Request $request)
     {
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($id);
-
         $this->get('app.service.currencycollector')->update();
         $devis->mettreAJourTauxAchat();
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
         // replace this example code with whatever you need
-        return $this->render('devis/voir.html.twig',array('devis' => $devis));
+        return $this->redirectToRoute('devis_voirprofitabilite', ['id' => $devis->getId()]);
     }
 
     /**

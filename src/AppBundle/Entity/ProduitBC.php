@@ -48,7 +48,6 @@ class ProduitBC
      */
     private $reference;
     
-
     /**
      * @var string
      *

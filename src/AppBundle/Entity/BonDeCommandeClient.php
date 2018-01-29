@@ -2,52 +2,16 @@
 
 namespace AppBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Devis;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinTable;
 /**
  * BonDeCommandeClient
  *
  * @ORM\Table(name="bon_de_commande_client")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BonDeCommandeClientRepository")
  */
-class BonDeCommandeClient
+class BonDeCommandeClient extends AbstractDocumentClient
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="User_id", referencedColumnName="id")
-     */
-    private $commercial;
-
-    /**
-     * @var \Client
-     *
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(name="Client_id", referencedColumnName="id")
-     */
-    private $client;
-
-    /**
-     * @var \contact
-     *
-     * @ORM\ManyToOne(targetEntity="contact")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
-     */
-    private $contact;
 
     /**
      * @var \Devis
@@ -79,18 +43,6 @@ class BonDeCommandeClient
     private $echeance;
 
     /**
-    * @ORM\OneToMany(targetEntity="ProduitBC", mappedBy="BonDeCommandeClient", cascade={"persist"})
-    */
-    private $produits;
-
-    /**
-     * Many BC have Many termes.
-     * @ManyToMany(targetEntity="TermeCommercial", inversedBy="bonDeCommandes")
-     * @JoinTable(name="bc_termes")
-     */
-    private $termes;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="numeroDeBonDeCommandeClient", type="string", length=255)
@@ -103,7 +55,6 @@ class BonDeCommandeClient
      * @ORM\Column(name="fichier", type="string", length=255)
      */
     private $fichier;
-
 
     /**
      * @var bool
@@ -264,30 +215,6 @@ class BonDeCommandeClient
     }
 
     /**
-     * Set contact
-     *
-     * @param \AppBundle\Entity\contact $contact
-     *
-     * @return BonDeCommandeClient
-     */
-    public function setContact(\AppBundle\Entity\contact $contact = null)
-    {
-        $this->contact = $contact;
-
-        return $this;
-    }
-
-    /**
-     * Get contact
-     *
-     * @return \AppBundle\Entity\contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
      * Set devis
      *
      * @param \AppBundle\Entity\Devis $devis
@@ -316,8 +243,8 @@ class BonDeCommandeClient
      */
     public function __construct()
     {
-        $this->ProduitBC = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->termes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProduitBC = new ArrayCollection();
+        $this->termes = new ArrayCollection();
     }
 
     /**
@@ -436,7 +363,10 @@ class BonDeCommandeClient
      */
     public function addProduit(\AppBundle\Entity\ProduitBC $produit)
     {
-        $this->produits[] = $produit;
+        $produit->setBonDeCommandeClient($this);
+        if (!$this->getProduits()->contains($produit)) {
+            $this->produits[] = $produit;
+        }
 
         return $this;
     }
