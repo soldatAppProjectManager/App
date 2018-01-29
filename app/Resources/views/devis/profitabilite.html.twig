@@ -184,7 +184,7 @@
             <th style="min-width:15%; text-align: right;">Charges Financières</th>
             <td align="right"></td>
             <td align="right">{{(devis.FraisFinanciers)| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</td>
-            <th style="text-align:center;"></th>    
+            <th style="text-align:center;"></th>
             <td align="center" {% if (devis.TauxFraisFinanciers*100) <= 0 %}class="positive"{% else %}class="negative"{% endif %}>{{(devis.TauxFraisFinanciers*100) | number_format(2, '.', ',')}}%</td>
             <td align="center">Recouvrement moyen : {{devis.client.delaipaiementconstate}} Jours</td>
           </tr>
