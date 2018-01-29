@@ -2,7 +2,7 @@
 {% block stylesheets %}
 {{ parent() }}
 
-<link href="{{ asset('/css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
 {% endblock %}
 
 {% block title %} Voir Devis {{devis.client.nom}} n°{{devis.id}} {% endblock %}
@@ -227,7 +227,7 @@
 {% block javascripts %}
   {{ parent() }}
 
-  <script src="{{ asset('/js/jquery.dataTables.min.js') }}"></script>
+  <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
   <script>
   $(document).ready(function() {
       $('#liste_devis').DataTable({
