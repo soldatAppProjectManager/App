@@ -166,6 +166,7 @@
             text-align: center;
             width: 100%;
         }
+
     </style>
 </head>
 <body>
@@ -211,6 +212,40 @@
         </tr>
     </table>
     <br>
+</div>
+
+
+<div class="footer">
+    <table class="piedDePage" >
+        <tbody>
+        <tr>
+            <th>Contacts</th>
+            <th>Informations Juridiques</th>
+            <th>Identifiants de l'entreprise</th>
+        </tr>
+        <tr>
+            <td valign="top" >
+                {{ devis.piedDePage.adresse }}
+                <br>
+                {{ devis.piedDePage.Telephone }}
+                <br>
+                {{ devis.piedDePage.fax }}
+                <br>
+                {{ devis.piedDePage.email }}
+            <td valign="top" >
+                {{ company_name }} {{ devis.piedDePage.formejuridique }}<br>
+                Au capital de {{ devis.piedDePage.capital }}<br>
+                Registre de Commerce : {{ devis.piedDePage.rc }}
+            </td>
+            <td valign="top" >
+                ICE : {{ devis.piedDePage.ice }}<br>
+                Patente : {{ devis.piedDePage.patente }}<br>
+                CNSS : {{ devis.piedDePage.cnss }}
+            </td>
+        </tr>
+        </tbody>
+    </table>
+    <p class="page"></p>
 </div>
 
 <table class="client" >
@@ -334,48 +369,6 @@
     </tbody>
 </table>
 
-<div class="footer">
-    <table class="piedDePage">
-        <tbody>
-        <tr>
-            <th>Contacts</th>
-            <th>Informations Juridiques</th>
-            <th>Identifiants de l'entreprise</th>
-        </tr>
-
-        <tr>
-            <td>{{ devis.piedDePage.adresse }}</td>
-            <td>{{ company_name }} {{ devis.piedDePage.formejuridique }}</td>
-            <td>ICE : {{ devis.piedDePage.ice }}</td>
-        </tr>
-
-        <tr>
-            <td>{{ devis.piedDePage.Telephone }}</td>
-            <td>Au capital de {{ devis.piedDePage.capital }}</td>
-            <td>Patente : {{ devis.piedDePage.patente }}</td>
-        </tr>
-
-        <tr>
-            <td>{{ devis.piedDePage.fax }}</td>
-            <td>Registre de Commerce : {{ devis.piedDePage.rc }}</td>
-            <td>CNSS : {{ devis.piedDePage.cnss }}</td>
-            <td></td>
-        </tr>
-
-        <tr>
-            <td>{{ devis.piedDePage.email }}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        <tr>
-            <td>{{ devis.piedDePage.siteweb }}</td>
-            <td></td>
-            <td></td>
-        </tr>
-        </tbody>
-    </table>
-    <p class="page"></p>
-</div>
 <div class="page-number"></div>
 
 </body>
