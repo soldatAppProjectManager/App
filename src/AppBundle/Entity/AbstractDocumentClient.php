@@ -91,8 +91,9 @@ abstract class AbstractDocumentClient
     public function __construct()
     {
         $this->abstractProduits = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->produits = new \Doctrine\Common\Collections\ArrayCollection();
         $this->termes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->setDatecreation(new \DateTime());
+        $this->setDatemodification(new \DateTime());
     }
 
     /**
@@ -296,7 +297,7 @@ abstract class AbstractDocumentClient
     public function getProduits()
     {
         return $this->abstractProduits->filter(function(AbstractProduit $abstractProduit) {
-            if($abstractProduit instanceof ProduitDevis) {
+            if($abstractProduit instanceof ProduitDevis or $abstractProduit instanceof ProduitBC) {
                 return $abstractProduit;
             }
         });

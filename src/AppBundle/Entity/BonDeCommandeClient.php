@@ -4,6 +4,8 @@ namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 /**
  * BonDeCommandeClient
  *
@@ -61,16 +63,13 @@ class BonDeCommandeClient extends AbstractDocumentClient
      *
      * @ORM\Column(name="verrouille", type="boolean")
      */
-    private $verrouille;   
+    private $verrouille;
 
     /**
-     * Set fichier
-     *
-     * @param string $fichier
-     *
-     * @return BonDeCommandeClient
+     * @param UploadedFile $fichier
+     * @return $this
      */
-    public function setFichier($fichier)
+    public function setFichier(UploadedFile $fichier)
     {
         
         $this->fichier  =   "BC-".$this->getDatedereception()->format('Y-m').
@@ -343,9 +342,11 @@ class BonDeCommandeClient extends AbstractDocumentClient
     public function getTotalHT()
     {
         $totalHT = 0;
-
-        foreach ($this->produits as $produit) {
-        $totalHT += $produit->getSoustotalht();
+        /** @var AbstractProduit $produit */
+        foreach ($this->getAbstractProduits() as $produit) {
+            if(!$produit->estFusionne()) {
+                $totalHT += $produit->getSoustotalht();
+            }
         }
 
 
@@ -379,16 +380,6 @@ class BonDeCommandeClient extends AbstractDocumentClient
     public function removeProduit(\AppBundle\Entity\ProduitBC $produit)
     {
         $this->produits->removeElement($produit);
-    }
-
-    /**
-     * Get produits
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProduits()
-    {
-        return $this->produits;
     }
 
 
@@ -451,7 +442,8 @@ class BonDeCommandeClient extends AbstractDocumentClient
     {
         $prixRevient = 0;
 
-        foreach ($this->produits as $produit) {
+        /** @var ProduitBC $produit */
+        foreach ($this->abstractProduits as $produit) {
         $prixRevient += $produit->getTotalPrixDeRevient();
         }
 
@@ -471,18 +463,19 @@ class BonDeCommandeClient extends AbstractDocumentClient
 
     public function getMarkUp()
     {
-        return round(($this->getTotalHT() - $this->getTotalPrixRevient())/$this->getTotalPrixRevient(),4);
+        return $this->getTotalPrixRevient() > 0 ? round(($this->getTotalHT() - $this->getTotalPrixRevient())/$this->getTotalPrixRevient(),4) : 0;
     }
 
-    public function getTauxResultatDeChange(){
-        return $this->getResultatDeChange()/$this->getTotalHT();
+    public function getTauxResultatDeChange() {
+        return $this->getTotalHT() > 0 ? $this->getResultatDeChange()/$this->getTotalHT() : 0;
     }
 
     public function getResultatDeChange()
     {
         $resultatDeChange = 0;
 
-        foreach ($this->produits as $produit) {
+        /** @var ProduitBC $produit */
+        foreach ($this->getProduits() as $produit) {
         $resultatDeChange += $produit->getResultatDeChange();
         }
         return round($resultatDeChange,4);

@@ -290,4 +290,9 @@ abstract class AbstractProduit
             return false;
         }
     }
+
+    public function isProduct() {
+        return $this instanceof ProduitDevis;
+    }
+
 }

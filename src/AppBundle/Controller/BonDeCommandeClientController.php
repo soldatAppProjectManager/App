@@ -95,13 +95,13 @@ class BonDeCommandeClientController extends Controller
         $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
+        if ($form->isSubmitted()) {
             /** @var UploadedFile $file */
             $file= $form['Fichier']->getData();
             $em = $this->getDoctrine()->getManager();
 
             $BonDeCommandeClient->setCommercial($devis->getCommercial());
-            $BonDeCommandeClient->setContact($devis->getDestinataire());
+            $BonDeCommandeClient->setContact($devis->getContact());
             $BonDeCommandeClient->setClient($devis->getClient());
             $BonDeCommandeClient->setDevis($devis);
             $BonDeCommandeClient->setVerrouille(false);
@@ -130,7 +130,6 @@ class BonDeCommandeClientController extends Controller
             foreach ($devis->getTermes() as $terme) {
                 $BonDeCommandeClient->addTerme($terme);
             }
-            
             $em->persist($BonDeCommandeClient);
             $em->flush();
 

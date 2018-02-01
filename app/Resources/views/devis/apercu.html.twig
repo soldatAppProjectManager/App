@@ -88,11 +88,13 @@
 
   <div class="row">
     <div class="well" style="background-color: #fcfcfc">
-      <table class="table table-hover">
+        <form action="{{ path('monter_produit') }}" METHOD="post" >
+      <table class="table table-hover"  >
         <thead>
           <tr>
-            <th style="text-align:center;">#</th>
-            <th>article</th>
+            <th style="text-align:center;">
+                <button type="submit" class="btn btn-success" ><i class="fa fa-sort-numeric-asc" ></i></button>
+            </th>
             <th>Quantité</th>
             <th>Description</th>
             <th>Prix Unitaire</th>
@@ -100,11 +102,12 @@
           </tr>
         </thead>
         <tbody>
-          {% for produit in devis.produits %}
+          {% for produit in devis.abstractProduits %}
           {% if not produit.estFusionne %}
             <tr>
-              <td align="center"><button type="button" class="btn  btn-sm monter invisible" id="{{ produit.id }}"><span class="fa fa-arrow-circle-up"></span> Monter</button></td>
-              <td scope="row">{{ produit.ordre }} </td>
+              <td align="center">
+                  <input name="ordre[{{ produit.id }}]" type="number" class="form-control input-sm" value="{{ produit.ordre }}" >
+              </td>
               <td class="quantite" {{modifiable|raw}} id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
               <td>
                 {% if produit.designation != " " %}
@@ -114,6 +117,7 @@
 
                 {{ produit.description | capitalize | raw }}
                 <br>
+                  {% if produit.isProduct %}
                 {% if produit.garanties|length  > 0 %}
                     <strong>Garantie :</strong> <br>
                 {% endif %}
@@ -127,74 +131,45 @@
                 {% for terme in produit.termes %}
                   {{terme.categorie.nom |capitalize }} : {{terme.description|capitalize}} <br>
                 {% endfor %}
+                  {% endif %}
               </td>
-              <td  class="prixachat" {{modifiable|raw}} id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
               <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} </td>
               <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
               </tr>
           {% endif %}
           {% endfor %}
-          {% for produit in devis.fusionProduits %}
-          {% if not produit.estVide %}
-            <tr>
-              <td align="center"><button type="button" class="btn  btn-sm monter invisible" id="{{ produit.id }}"><span class="fa fa-arrow-circle-up"></span> Monter</button></td>
-              <td scope="row">#NA </td>
-              <td class="quantite" {{modifiable|raw}} id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
-              <td>
-                {% if produit.designation != " " %}
-                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
-                  <br>
-                {% endif %}
-
-                {{ produit.description | capitalize | raw }}
-              </td>
-              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} </td>
-              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
-              <td style="min-width:250px">
-                {# <a type="button" class="btn btn-default" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a> #}
-              </td>
-              </tr>
-          {% endif %}
-          {% endfor %}
+          <tr>
+              <td colspan="5" ></td>
+          </tr>
             <tr>
               <td style="border-top: 0px"></td>
-              <th scope="row" style="border-top: 0px"></th>
               <td style="border-top: 0px"></td>
-              <td style="border-top: 0px"></td>
-              <td style="border-top: 0px"></td>
-              <td><strong>TOTAL HT :</strong></td>
+              <td style="float: right" ><strong>TOTAL HT :</strong></td>
               <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</strong></td>
               <td></td>
             </tr>
-            <tr>
-              <td style="border-top: 0px"></td>
-              <th scope="row" style="border-top: 0px"></th>
+          <tr>
               <td style="border-top: 0px"></td>
               <td style="border-top: 0px"></td>
-              <td style="border-top: 0px"></td>
-              <td>TOTAL TVA : </td>
+              <td style="float: right" >TOTAL TVA : </td>
               <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</td>
               <td  style="border-top: 0px"></td>
-            </tr>
-             <tr>
-              <td style="border-top: 0px"></td>
-              <th scope="row" style="border-top: 0px"></th>
+          </tr>
+          <tr>
               <td style="border-top: 0px"></td>
               <td style="border-top: 0px"></td>
-              <td style="border-top: 0px"></td>
-              <td><strong>TOTAL TTC: </strong></td>
+              <td style="float: right" ><strong>TOTAL TTC: </strong></td>
               <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</strong></td>
               <td style="border-top: 0px"></td>
-            </tr>
-             <tr>
-              <td style="border-top: 0px"></td>
-              <td style="border-top: 0px"></td>
-              <td style="border-top: 0px"></td>
-              <td id="enTouteLettre" align="right" colspan="3"><i>La somme du présent devis est arreté à : <strong>{{devis.getTotalTTC() | localizednumber('spellout','default','fr')}} {{devis.deviseVente.symbol}} TTC.</strong></i></td>
+          </tr>
+          <tr>
+              <td id="enTouteLettre" align="right" colspan="4"><i>La somme du présent devis est arreté à : <strong>{{devis.getTotalTTC() | localizednumber('spellout','default','fr')}} {{devis.deviseVente.symbol}} TTC.</strong></i></td>
               <td style="border-top: 2px"></td>
-            </tr>
+          </tr>
+
         </tbody>
       </table>
+        </form>
     </div>
   </div>
 

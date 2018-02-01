@@ -160,10 +160,10 @@
               <td>
                 {% if produit.designation != " " %}
                   <strong>{{ produit.designation |capitalize | nl2br}}</strong>
-                  <br>              
+                  <br>
                 {% endif %}
-                {{ produit.description [:30] | capitalize | raw }}
-                <br>       
+                {{ produit.description|raw }}
+                <br>
               </td>
               <td>{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
               <td>{{ produit.metier.nom [:10]}}... </td>

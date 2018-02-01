@@ -16,51 +16,14 @@ use DateTime;
  * @ORM\Table(name="produitbc")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProduitBCRepository")
  */
-class ProduitBC
+class ProduitBC extends AbstractProduit
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="quantite", type="integer")
-     */
-    private $quantite;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numero", type="integer")
-     */
-    private $numero;
-
     /**
      * @var string
      *
      * @ORM\Column(name="reference", type="string", length=255)
      */
     private $reference;
-    
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="designation", type="string", length=255)
-     */
-    private $designation;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
 
     /**
      * @var float
@@ -84,7 +47,7 @@ class ProduitBC
     private $fraisapproche;
 
     /**
-     * @var \Monnaie
+     * @var Monnaie
      *
      * @ORM\ManyToOne(targetEntity="Monnaie", cascade={"persist"})
      * @ORM\JoinColumn(name="Devise_Achat_id", referencedColumnName="id")
@@ -96,14 +59,7 @@ class ProduitBC
      *
      * @ORM\Column(name="tauxAchat", type="float")
      */
-    private $tauxAchat;    
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prixDeVente", type="float")
-     */
-    private $prixDeVenteHT;
+    private $tauxAchat;
 
     /**
      * @var string
@@ -145,14 +101,6 @@ class ProduitBC
     private $devisevente;
 
     /**
-     * @var \BonDeCommandeClient
-     *
-     * @ORM\ManyToOne(targetEntity="BonDeCommandeClient",inversedBy="produits")
-     * @ORM\JoinColumn(name="BonDeCommandeClient_id", referencedColumnName="id",onDelete="CASCADE")
-     */
-    private $BonDeCommandeClient; 
-
-    /**
      * @var \statutProduit
      *
      * @ORM\ManyToOne(targetEntity="statutProduit", cascade={"persist"})
@@ -160,7 +108,7 @@ class ProduitBC
      */
     private $statut;
 
-    public function deProduitDevis($produitdevis){
+    public function deProduitDevis(ProduitDevis $produitdevis){
         $this->setQuantite($produitdevis->getQuantite());
         $this->setReference($produitdevis->getReference());
         $this->setDesignation($produitdevis->getDesignation());
@@ -178,140 +126,9 @@ class ProduitBC
         $this->setDevisevente($produitdevis->getDevisevente());
     }
 
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set quantite
-     *
-     * @param integer $quantite
-     *
-     * @return ProduitDevis
-     */
-    public function setQuantite($quantite)
-    {
-        $this->quantite = $quantite;
-
-        return $this;
-    }
-
-    /**
-     * Get quantite
-     *
-     * @return int
-     */
-    public function getQuantite()
-    {
-        return $this->quantite;
-    }
-
-    /**
-     * Set designation
-     *
-     * @param string $designation
-     *
-     * @return ProduitDevis
-     */
-    public function setDesignation($designation)
-    {
-        $this->designation = $designation;
-
-        return $this;
-    }
-
-    /**
-     * Get designation
-     *
-     * @return string
-     */
-    public function getDesignation()
-    {
-        return $this->designation;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return ProduitDevis
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set prixachatht
-     *
-     * @param float $prixachatht
-     *
-     * @return ProduitDevis
-     */
-    public function setPrixachatht($prixachatht)
-    {
-        $this->prixachatht = $prixachatht;
-
-        return $this;
-    }
-
-    /**
-     * Get prixachatht
-     *
-     * @return float
-     */
-    public function getPrixachatht()
-    {
-        return $this->prixachatht;
-    }
-
-    /**
-     * Set fraisapproche
-     *
-     * @param float $fraisapproche
-     *
-     * @return ProduitDevis
-     */
-    public function setFraisapproche($fraisapproche)
-    {
-        $this->fraisapproche = $fraisapproche;
-
-        return $this;
-    }
-
-    /**
-     * Get fraisapproche
-     *
-     * @return float
-     */
-    public function getFraisapproche()
-    {
-        return $this->fraisapproche;
-    }
-
-
     public function getMarge()
     {
-        return $this->prixDeVenteHT-round($this->prixachatht*(1+$this->fraisapproche)*$this->deviseachat->getTauxAchat(),2);
+        return $this->getPrixDeVenteHT()-round($this->prixachatht*(1+$this->fraisapproche)*$this->deviseachat->getTauxAchat(),2);
     }
 
     public function getPrixVenteHT()
@@ -696,5 +513,53 @@ class ProduitBC
 
     public function estLivré(){
         return $this->getStatut()->getId()==6;
+    }
+
+    /**
+     * Set prixachatht
+     *
+     * @param float $prixachatht
+     *
+     * @return ProduitBC
+     */
+    public function setPrixachatht($prixachatht)
+    {
+        $this->prixachatht = $prixachatht;
+
+        return $this;
+    }
+
+    /**
+     * Get prixachatht
+     *
+     * @return float
+     */
+    public function getPrixachatht()
+    {
+        return $this->prixachatht;
+    }
+
+    /**
+     * Set fraisapproche
+     *
+     * @param float $fraisapproche
+     *
+     * @return ProduitBC
+     */
+    public function setFraisapproche($fraisapproche)
+    {
+        $this->fraisapproche = $fraisapproche;
+
+        return $this;
+    }
+
+    /**
+     * Get fraisapproche
+     *
+     * @return float
+     */
+    public function getFraisapproche()
+    {
+        return $this->fraisapproche;
     }
 }

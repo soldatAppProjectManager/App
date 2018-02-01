@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\AbstractProduit;
 use DateTime;
 use DateInterval;
 use AppBundle\Entity\Parametres;
@@ -439,35 +440,20 @@ class DevisController extends Controller
      */
     public function monterProduitAction(Request $request)
     {
-
-         if ($request->isXmlHttpRequest()) {
-            $devisid = $request->request->get('devisid');
-            $produitid = $request->request->get('produitid');
-
-            $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($devisid);
-
+        $produit = null;
+        foreach ($request->request->get('ordre') as $key => $value) {
+            /** @var AbstractProduit $produit */
             $produit = $this->getDoctrine()
-                        ->getRepository('AppBundle:ProduitDevis')
-                        ->find($produitid);
+                ->getRepository(AbstractProduit::class)
+                ->find($key);
 
-            if(!$devis->getProduits()->isEmpty() && !$devis->estPremier($produit)) {
-                $precedent = $this->getDoctrine()
-                            ->getRepository('AppBundle:ProduitDevis')
-                            ->find($devis->precedent($produit));
-
-                $produit->monter();
-                $precedent->descendre();
-            }
+            $produit->setOrdre($value);
+        }
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            return new JsonResponse(array('code'=> 1));
-        } else {
-            return $this->redirectToRoute('homepage');
-        }
+            return $this->redirectToRoute('devis_apercu',['id' => $produit->getDocumentClient()->getId()]);
     }
 
     /**

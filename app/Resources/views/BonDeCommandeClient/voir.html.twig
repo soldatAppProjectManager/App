@@ -99,7 +99,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for produit in BonDeCommandeClient.produits %}
+    {% for produit in BonDeCommandeClient.abstractproduits %}
       <tr>
         <th scope="row">{{ produit.id }} </th>
         <td id="{{ produit.id }}" class="quantite" {% if BonDeCommandeClient.verrouille  == false %} contenteditable="true"  {% endif %}><strong>{{ produit.quantite }}</strong></td>

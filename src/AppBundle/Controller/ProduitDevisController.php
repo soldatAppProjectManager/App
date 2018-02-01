@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Controller;
+use AppBundle\Entity\AbstractProduit;
 use DateTime;
 use AppBundle\Entity\ProduitDevis;
 use AppBundle\Entity\Devis;
@@ -87,14 +88,14 @@ class ProduitDevisController extends Controller
     /**
      * @Route("/delete/{id}", name="produitdevis_delete")
      */
-    public function deleteAction($id,Request $request)
+    public function deleteAction(ProduitDevis $produitDevis,Request $request)
     {
-        // replace this example code with whatever you need
-       $produitdevis = $this->getDoctrine()
-                        ->getRepository('AppBundle:ProduitDevis')
-                        ->find($id);
-
-        return $this->render('produitdevis/delete.html.twig',array('id'=> $id,'designation' => $produitdevis->getDesignation(),'devisId' => $produitdevis->getDevis()->getId()));
+        return $this->render('produitdevis/delete.html.twig',[
+            'id'=> $produitDevis->getId(),
+            'designation' => $produitDevis->getDesignation(),
+            'devisId' => $produitDevis->getDocumentClient()->getId()
+        ]
+        );
     }
 
     /**
@@ -123,7 +124,6 @@ class ProduitDevisController extends Controller
         $devis = $produitDevis->getDocumentClient();
 
         $form = $this->createForm(ProduitDevisFormType::class, $produitDevis);
-
 
         $form->handleRequest($request);
 
@@ -175,7 +175,8 @@ class ProduitDevisController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
 
-            $produit = $this->getDoctrine()->getRepository('AppBundle:ProduitDevis')->find($request->request->get('produit'));
+            /** @var ProduitDevis $produit */
+            $produit = $this->getDoctrine()->getRepository(AbstractProduit::class)->find($request->request->get('produit'));
             
             $F = new \NumberFormatter("fr_FR", \NumberFormatter::SPELLOUT);
             $F->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 2);
@@ -192,10 +193,10 @@ class ProduitDevisController extends Controller
                 'prixdevente'           => $F2->format($produit->getPrixVenteHT()),
                 'devise'                => $produit->getDeviseachat()->getCode(),
                 'sousTotalHT'           => $F2->format($produit->getSousTotalHT()),
-                'totalHT'               => $F2->format($produit->getDevis()->getTotalHT()),
-                'totalTVA'              => $F2->format($produit->getDevis()->getTotalTVA()),               
-                'totalTTC'              => $F2->format($produit->getDevis()->getTotalTTC()),
-                'totalEntouteLettre'    => $F->format($produit->getDevis()->getTotalTTC())
+                'totalHT'               => $F2->format($produit->getDocumentClient()->getTotalHT()),
+                'totalTVA'              => $F2->format($produit->getDocumentClient()->getTotalTVA()),
+                'totalTTC'              => $F2->format($produit->getDocumentClient()->getTotalTTC()),
+                'totalEntouteLettre'    => $F->format($produit->getDocumentClient()->getTotalTTC())
             ));
 
         } 
