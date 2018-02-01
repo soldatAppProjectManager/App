@@ -451,10 +451,11 @@ class Devis extends AbstractDocumentClient
     {
         $FraisFinanciers = 0;
 
-        foreach ($this->getProduits() as $produit) {
-            if ($produit->estFusionne())
-                if (!$produit->getOptionnel()) $FraisFinanciers += $produit->getProduitFusion()->getQuantite() * $produit->getFraisFinanciers($this->TauxFinancementTresorerie);
-                else
+        foreach ($this->produits as $produit) {
+            if ($produit->estFusionné()) {
+                if (!$produit->getOptionnel())
+                    $FraisFinanciers += $produit->getProduitFusion()->getQuantite() * $produit->getFraisFinanciers($this->TauxFinancementTresorerie);
+            } else
                     if (!$produit->getOptionnel()) $FraisFinanciers += $produit->getFraisFinanciers($this->TauxFinancementTresorerie);
         }
         return round($FraisFinanciers / $this->getDeviseVente()->getTauxAchat(), 2);
