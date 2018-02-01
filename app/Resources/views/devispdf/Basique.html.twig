@@ -173,8 +173,8 @@
 <div class="header">
     <table class="entete" width="100%;" >
         <tr>
-            <td rowspan="4" align="center">
-                <img src="img/solution_data.png"><br>
+            <td rowspan="4" align="center"  >
+                <img height="85" width="204" src="img/LOGO-SD-HR.png"><br>
             </td>
             <th class="numero" rowspan="4">
                 Devis n°{{ devis.getReference }}
@@ -235,7 +235,7 @@
             <td valign="top" >
                 {{ company_name }} {{ devis.piedDePage.formejuridique }}<br>
                 Au capital de {{ devis.piedDePage.capital }}<br>
-                Registre de Commerce : {{ devis.piedDePage.rc }}
+                RC : {{ devis.piedDePage.rc }}
             </td>
             <td valign="top" >
                 ICE : {{ devis.piedDePage.ice }}<br>
@@ -308,7 +308,7 @@
                 {% if not produit.termes is empty %}
                     <br><strong>Conditions particulières : </strong>
                     {% for terme in produit.termes %}
-                        <br>{{ terme }}
+                        <br>{{ terme.nom|capitalize ~" - "~ terme.description  }}
                     {% endfor %}
                 {% endif %}
             </td>
