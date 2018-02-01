@@ -61,16 +61,16 @@
 					{{ form_widget(form.quantite) }}
 					</div>
 
+					<div class="col-md-3 form-group {% if not form.fournisseur.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.fournisseur) }}
+                        {{ form_errors(form.fournisseur) }}
+                        {{ form_widget(form.fournisseur) }}
+					</div>
+
 					<div class="col-md-3 form-group {% if not form.prixachatht.vars.valid %} has-error {% endif %}">
 						{{ form_label(form.prixachatht) }}
 						{{ form_errors(form.prixachatht) }}
 						{{ form_widget(form.prixachatht) }}
-					</div>
-
-					<div class="col-md-3 form-group {% if not form.fournisseur.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.fournisseur) }}
-						{{ form_errors(form.fournisseur) }}
-						{{ form_widget(form.fournisseur) }}
 					</div>
 
 					<div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
@@ -82,14 +82,15 @@
 				<div class="row">
 					<div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
 						{{ form_label(form.tauxTVA) }}
-						{{ form_errors(form.tauxTVA) }}
+                        {{ form_errors(form.tauxTVA) }}
 						{{ form_widget(form.tauxTVA) }}
 					</div>
 					<div class="col-md-3">
 					</div>
 					<div class="col-md-3">
-						<label >Prix de Vente H.T. </label>
-						<input type="text" id="produit_devis_form_prixventeht" class="form-control prixdevente" >
+                        {{ form_label(form.prixVenteHT) }}
+                        {{ form_errors(form.prixVenteHT) }}
+                        {{ form_widget(form.prixVenteHT) }}
 					</div>
 					<div class="col-md-3">
 						<label >Sous-total H.T. </label>
@@ -202,7 +203,7 @@
  * -----------------------------------Comportements-----------------------------------------------------//
  */
 		$( document ).ready(function() {
-			$("#produit_devis_form_prixventeht").val(auFormat(0));
+			$("#produit_devis_form_prixVenteHT").val(auFormat(0));
 			$("#produit_devis_form_soustotalht").val(auFormat(0));
 			$("#produit_devis_form_commercial").prop( "disabled", true );
 			$("#produit_devis_form_commercial").empty();
@@ -242,7 +243,7 @@
 
 						setPrixDeVente();
 						setSousTotal();
-				      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 				      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
 				      	$("#produit_devis_form_commercial").prop( "disabled", false );
@@ -281,17 +282,17 @@
         				$(this).prop('style', 'background-color: red;');
 						setPrixDeVente();
 						setSousTotal();
-				      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 				      	return;
         			}
         		}
 				setPrixDeVente();
 				setSousTotal();
-		      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+		      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 		      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
         });
 
-        $('#produit_devis_form_prixventeht').on('change', function (e) {
+        $('#produit_devis_form_prixVenteHT').on('change', function (e) {
 		      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
         		
         		$(this).val($(this).val().replace(".",","));
@@ -369,7 +370,7 @@
 						setPrixDeVente();
 						setSousTotal();
 
-				      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 				      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
 				      	$("#produit_devis_form_garanties option").removeAttr("selected");
@@ -398,7 +399,7 @@
 
 
 		function setPrixDeVente(){
-			if(!prixIsNaN()) $("#produit_devis_form_prixventeht").val(auFormat(arrondi(toFloat($("#produit_devis_form_tauxAchat").val())*
+			if(!prixIsNaN()) $("#produit_devis_form_prixVenteHT").val(auFormat(arrondi(toFloat($("#produit_devis_form_tauxAchat").val())*
 		        													toFloat($("#produit_devis_form_prixachatht").val())*
 		        													(1+toFloat($('#produit_devis_form_fraisapproche').val())/100)/
 		        													(1-toFloat($("#produit_devis_form_marge").val())/100),0)));			
@@ -415,7 +416,7 @@
 		}
 
 		function getPrixDeVenteClean(){
-  				return toFloat($("#produit_devis_form_prixventeht").val());  
+  				return toFloat($("#produit_devis_form_prixVenteHT").val());
 		}		
 
 

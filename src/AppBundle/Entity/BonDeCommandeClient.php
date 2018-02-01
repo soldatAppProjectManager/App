@@ -2,52 +2,18 @@
 
 namespace AppBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use AppBundle\Entity\Devis;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinTable;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+
 /**
  * BonDeCommandeClient
  *
  * @ORM\Table(name="bon_de_commande_client")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\BonDeCommandeClientRepository")
  */
-class BonDeCommandeClient
+class BonDeCommandeClient extends AbstractDocumentClient
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="User_id", referencedColumnName="id")
-     */
-    private $commercial;
-
-    /**
-     * @var \Client
-     *
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(name="Client_id", referencedColumnName="id")
-     */
-    private $client;
-
-    /**
-     * @var \contact
-     *
-     * @ORM\ManyToOne(targetEntity="contact")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
-     */
-    private $contact;
 
     /**
      * @var \Devis
@@ -79,18 +45,6 @@ class BonDeCommandeClient
     private $echeance;
 
     /**
-    * @ORM\OneToMany(targetEntity="ProduitBC", mappedBy="BonDeCommandeClient", cascade={"persist"})
-    */
-    private $produits;
-
-    /**
-     * Many BC have Many termes.
-     * @ManyToMany(targetEntity="TermeCommercial", inversedBy="bonDeCommandes")
-     * @JoinTable(name="bc_termes")
-     */
-    private $termes;
-
-    /**
      * @var string
      *
      * @ORM\Column(name="numeroDeBonDeCommandeClient", type="string", length=255)
@@ -104,22 +58,18 @@ class BonDeCommandeClient
      */
     private $fichier;
 
-
     /**
      * @var bool
      *
      * @ORM\Column(name="verrouille", type="boolean")
      */
-    private $verrouille;   
+    private $verrouille;
 
     /**
-     * Set fichier
-     *
-     * @param string $fichier
-     *
-     * @return BonDeCommandeClient
+     * @param UploadedFile $fichier
+     * @return $this
      */
-    public function setFichier($fichier)
+    public function setFichier(UploadedFile $fichier)
     {
         
         $this->fichier  =   "BC-".$this->getDatedereception()->format('Y-m').
@@ -264,30 +214,6 @@ class BonDeCommandeClient
     }
 
     /**
-     * Set contact
-     *
-     * @param \AppBundle\Entity\contact $contact
-     *
-     * @return BonDeCommandeClient
-     */
-    public function setContact(\AppBundle\Entity\contact $contact = null)
-    {
-        $this->contact = $contact;
-
-        return $this;
-    }
-
-    /**
-     * Get contact
-     *
-     * @return \AppBundle\Entity\contact
-     */
-    public function getContact()
-    {
-        return $this->contact;
-    }
-
-    /**
      * Set devis
      *
      * @param \AppBundle\Entity\Devis $devis
@@ -316,8 +242,8 @@ class BonDeCommandeClient
      */
     public function __construct()
     {
-        $this->ProduitBC = new \Doctrine\Common\Collections\ArrayCollection();
-        $this->termes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->ProduitBC = new ArrayCollection();
+        $this->termes = new ArrayCollection();
     }
 
     /**
@@ -416,9 +342,11 @@ class BonDeCommandeClient
     public function getTotalHT()
     {
         $totalHT = 0;
-
-        foreach ($this->produits as $produit) {
-        $totalHT += $produit->getSoustotalht();
+        /** @var AbstractProduit $produit */
+        foreach ($this->getAbstractProduits() as $produit) {
+            if(!$produit->estFusionne()) {
+                $totalHT += $produit->getSoustotalht();
+            }
         }
 
 
@@ -436,7 +364,10 @@ class BonDeCommandeClient
      */
     public function addProduit(\AppBundle\Entity\ProduitBC $produit)
     {
-        $this->produits[] = $produit;
+        $produit->setBonDeCommandeClient($this);
+        if (!$this->getProduits()->contains($produit)) {
+            $this->produits[] = $produit;
+        }
 
         return $this;
     }
@@ -449,16 +380,6 @@ class BonDeCommandeClient
     public function removeProduit(\AppBundle\Entity\ProduitBC $produit)
     {
         $this->produits->removeElement($produit);
-    }
-
-    /**
-     * Get produits
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProduits()
-    {
-        return $this->produits;
     }
 
 
@@ -521,7 +442,8 @@ class BonDeCommandeClient
     {
         $prixRevient = 0;
 
-        foreach ($this->produits as $produit) {
+        /** @var ProduitBC $produit */
+        foreach ($this->abstractProduits as $produit) {
         $prixRevient += $produit->getTotalPrixDeRevient();
         }
 
@@ -541,18 +463,19 @@ class BonDeCommandeClient
 
     public function getMarkUp()
     {
-        return round(($this->getTotalHT() - $this->getTotalPrixRevient())/$this->getTotalPrixRevient(),4);
+        return $this->getTotalPrixRevient() > 0 ? round(($this->getTotalHT() - $this->getTotalPrixRevient())/$this->getTotalPrixRevient(),4) : 0;
     }
 
-    public function getTauxResultatDeChange(){
-        return $this->getResultatDeChange()/$this->getTotalHT();
+    public function getTauxResultatDeChange() {
+        return $this->getTotalHT() > 0 ? $this->getResultatDeChange()/$this->getTotalHT() : 0;
     }
 
     public function getResultatDeChange()
     {
         $resultatDeChange = 0;
 
-        foreach ($this->produits as $produit) {
+        /** @var ProduitBC $produit */
+        foreach ($this->getProduits() as $produit) {
         $resultatDeChange += $produit->getResultatDeChange();
         }
         return round($resultatDeChange,4);

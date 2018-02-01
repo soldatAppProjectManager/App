@@ -20,6 +20,7 @@ use AppBundle\Entity\TermesBCRelation;
 
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -88,66 +89,51 @@ class BonDeCommandeClientController extends Controller
     /**
      * @Route("/create/{id}", name="BonDeCommandeClient_create")
      */
-    public function createAction($id,Request $request)
+    public function createAction(Devis $devis,Request $request)
     {
         $BonDeCommandeClient = new BonDeCommandeClient;
-
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($id);
-
-        $form = $this->createForm(BonDeCommandeClientFormType::class,$BonDeCommandeClient);  
-
+        $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
-
-
+        if ($form->isSubmitted()) {
+            /** @var UploadedFile $file */
             $file= $form['Fichier']->getData();
-
-
-
             $em = $this->getDoctrine()->getManager();
 
             $BonDeCommandeClient->setCommercial($devis->getCommercial());
-            $BonDeCommandeClient->setContact($devis->getDestinataire());
+            $BonDeCommandeClient->setContact($devis->getContact());
             $BonDeCommandeClient->setClient($devis->getClient());
             $BonDeCommandeClient->setDevis($devis);
-            $BonDeCommandeClient->setFichier($file);
             $BonDeCommandeClient->setVerrouille(false);
 
-
-            $file->move(
-                $this->getParameter('repertoire_bcclient'),
-                $BonDeCommandeClient->getFichier()
+            if(!empty($file)) {
+                $BonDeCommandeClient->setFichier($file);
+                $file->move(
+                    $this->getParameter('repertoire_bcclient'),
+                    $BonDeCommandeClient->getFichier()
                 );
-
-            $i=0;
+            }
 
             $statut = $this->getDoctrine()
                             ->getRepository('AppBundle:statutProduit')
-                            ->find(7);            
+                            ->find(7);
 
+            $i=0;
             foreach ($devis->getProduits() as $produit) {
                 $produitBC = new ProduitBC;
                 $produitBC->deProduitDevis($produit);
                 $produitBC->setNumero(++$i);
                 $produitBC->setBonDeCommandeClient($BonDeCommandeClient);
                 $produitBC->setStatut($statut);
-                $em->persist($produitBC);
             }
-
 
             foreach ($devis->getTermes() as $terme) {
                 $BonDeCommandeClient->addTerme($terme);
             }
-            
             $em->persist($BonDeCommandeClient);
-
-
             $em->flush();
 
-            $this->addFlash('notice','BonDeCommandeClient Ajouté');
+            $this->addFlash('notice',sprintf('#%d ,Bon de commande client ajouté', $BonDeCommandeClient->getId()));
 
             return $this->redirectToRoute('BonDeCommandeClient_list');
         }
