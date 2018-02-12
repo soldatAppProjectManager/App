@@ -2,7 +2,7 @@
     <meta charset='utf-8'>
 
     <link rel="icon" href="{{ asset('img/favicon_SD.png') }}" />
-    <title>Devis N° {{ devis.id }}</title>
+    <title>Bon de command fournisseur N° {{ bcf.id }}</title>
 
     <style type="text/css">
         * {
@@ -177,13 +177,13 @@
                 <img height="85" width="204" src="img/LOGO-SD-HR.png"><br>
             </td>
             <th class="numero" rowspan="4">
-                Devis n°{{ devis.getReference }}
+                Bon de commande n°{{ bcf.id }}
             </th>
             <th>
                 Gestionnaire :
             </th>
             <td>
-                {{ devis.commercial }}
+                {#{{ bcf.commercial }}#}
             </td>
         </tr>
         <tr>
@@ -191,7 +191,7 @@
                 Email:
             </th>
             <td>
-                {{ devis.commercial.email }}
+                {#{{ bcf.commercial.email }}#}
             </td>
         </tr>
         <tr>
@@ -199,7 +199,7 @@
                 Telephone :
             </th>
             <td>
-                {{ devis.commercial.telephone }}
+                {#{{ bcf.commercial.telephone }}#}
             </td>
         </tr>
         <tr>
@@ -207,7 +207,7 @@
                 Valide jusqu'au
             </th>
             <td>
-                {{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
+                {#{{ bcf.datemodification|date_modify(""~bcf.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}#}
             </td>
         </tr>
     </table>
@@ -225,22 +225,22 @@
         </tr>
         <tr>
             <td valign="top" >
-                {{ devis.piedDePage.adresse }}
+                {{ bcf.modele.piedDePage.adresse }}
                 <br>
-                {{ devis.piedDePage.Telephone }}
+                {{ bcf.modele.piedDePage.Telephone }}
                 <br>
-                {{ devis.piedDePage.fax }}
+                {{ bcf.modele.piedDePage.fax }}
                 <br>
-                {{ devis.piedDePage.email }}
+                {{ bcf.modele.piedDePage.email }}
             <td valign="top" >
-                {{ company_name }} {{ devis.piedDePage.formejuridique }}<br>
-                Au capital de {{ devis.piedDePage.capital }}<br>
-                RC : {{ devis.piedDePage.rc }}
+                {{ company_name }} {{ bcf.modele.piedDePage.formejuridique }}<br>
+                Au capital de {{ bcf.modele.piedDePage.capital }}<br>
+                RC : {{ bcf.modele.piedDePage.rc }}
             </td>
             <td valign="top" >
-                ICE : {{ devis.piedDePage.ice }}<br>
-                Patente : {{ devis.piedDePage.patente }}<br>
-                CNSS : {{ devis.piedDePage.cnss }}
+                ICE : {{ bcf.modele.piedDePage.ice }}<br>
+                Patente : {{ bcf.modele.piedDePage.patente }}<br>
+                CNSS : {{ bcf.modele.piedDePage.cnss }}
             </td>
         </tr>
         </tbody>
@@ -252,7 +252,7 @@
     <tbody>
     <tr>
         <th>Objet du devis :</th>
-        <td style="width: 200px;" >{{ devis.titre }}</td>
+        <td style="width: 200px;" >titre</td>
     </tr>
     <tr>
         <th>Date :</th>
@@ -260,22 +260,11 @@
     </tr>
     <tr>
         <th>A l'attention de :</th>
-        <td>{{ devis.contact }}</td>
+        <td>Contact</td>
     </tr>
     <tr>
         <th>Pour le compte de :</th>
-        <td>{{ devis.client.nom }}</td>
-    </tr>
-    </tbody>
-</table>
-<br>
-<table class="introduction">
-    <tbody>
-    <tr>
-        <th></th>
-    </tr>
-    <tr>
-        <td>{{ devis.introduction.getTexte |nl2br }}</td>
+        <td></td>
     </tr>
     </tbody>
 </table>
@@ -283,39 +272,26 @@
 <table class="produits">
     <thead>
     <tr>
-        <th width="10%">Qté {{ devis.abstractProduits|length }}</th>
+        <th width="10%">Qté {{ bcf.produits|length }}</th>
         <th width="50%">Désignation</th>
-        <th width="20%" align="right">P.U. H.T. {{ devis.devisevente.symbol }}</th>
-        <th width="20%" align="right">S.T. H.T. {{ devis.devisevente.symbol }}</th>
+        <th width="20%" align="right">P.U. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
+        <th width="20%" align="right">S.T. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
     </tr>
     </thead>
     <tbody>
-    {% for produit in devis.abstractProduits if not produit.estFusionne %}
+    {% for produit in bcf.produits if not produit.estFusionne %}
         <tr>
             <td align="center">{{ produit.quantite }}</td>
             <td>
                 {% if produit.designation|trim != '' %}
-                    <strong>{{ produit.designation|capitalize }} : </strong>
+                    <strong>{{ produit.produitDevis.designation|capitalize }} : </strong>
                     <br>
                 {% endif %}
-                {{ produit.description|capitalize|raw }}
-                {% if produit.isProduct %}
-                {% if not produit.garanties is empty %}
-                    <br><strong>Garantie : </strong>
-                    {% for garantie in produit.garanties %}
-                        <br>{{ garantie }}
-                    {% endfor %}
-                {% endif %}
-                {% if not produit.termes is empty %}
-                    <br><strong>Conditions particulières : </strong>
-                    {% for terme in produit.termes %}
-                        <br>{{ terme.nom|capitalize ~" - "~ terme.description  }}
-                    {% endfor %}
-                {% endif %}
-                {% endif %}
+                {{ produit.produitDevis.description|capitalize|raw }}
+
             </td>
-            <td align="right">{{ produit.prixVenteHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
-            <td align="right">{{ produit.sousTotalHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+            <td align="right">{{ produit.prixachatht|number_format(2, ',', '.') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
+            <td align="right">{{ (produit.quantite * produit.prixachatht)|number_format(2, ',', '.') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
         </tr>
     {% endfor %}
     </tbody>
@@ -325,51 +301,37 @@
     <tbody>
     <tr>
         <th>Total HT</th>
-        <td>{{ devis.getTotalHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+        <td></td>
     </tr>
     <tr>
         <th>Total T.V.A.</th>
-        <td>{{ devis.getTotalTVA|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+        <td></td>
     </tr>
     <tr>
         <th>Total TTC</th>
-        <td>{{ devis.getTotalTTC|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+        <td></td>
     </tr>
     <tr>
         <td colspan="2"><i>La somme du présent devis est arretée à :
-                <strong>{{ devis.totalTTC|localizednumber('spellout','default','fr_FR')|capitalize }} {{ devis.devisevente.nom }}
+                <strong>
                     TTC.</strong></i></td>
     </tr>
     </tbody>
 </table>
 <br><br><br><br><br><br><br><br><br><br>
-{% if not devis.termes is empty %}
-    <strong><u> Conditions commerciales générales : </u></strong><br><br>
-    <table class="termes">
-        <tbody>
-
-        {% for terme in devis.termes %}
-            <tr>
-                <th>{{ terme.categorie.nom|capitalize }} :</th>
-                <td>{{ terme.description|capitalize }}</td>
-            </tr>
-        {% endfor %}
-        </tbody>
-    </table>
-{% endif %}
 <br><br>
-<table class="signature">
-    <tbody>
-    <tr>
-        <td>Cordialement,</td>
-    </tr>
-    <tr>
-        <th>{{ devis.commercial.civilite }} {{ devis.commercial.prenom }} {{ devis.commercial.nom }}</th>
-    <tr>
-        <th>{{ devis.Commercial.poste }}</th>
-    </tr>
-    </tbody>
-</table>
+{#<table class="signature">#}
+    {#<tbody>#}
+    {#<tr>#}
+        {#<td>Cordialement,</td>#}
+    {#</tr>#}
+    {#<tr>#}
+        {#<th>{{ bcf.commercial.civilite }} {{ bcf.commercial.prenom }} {{ bcf.commercial.nom }}</th>#}
+    {#<tr>#}
+        {#<th>{{ bcf.Commercial.poste }}</th>#}
+    {#</tr>#}
+    {#</tbody>#}
+{#</table>#}
 
 <div class="page-number"></div>
 

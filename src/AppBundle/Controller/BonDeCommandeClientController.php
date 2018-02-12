@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ProduitFusion;
 use DateTime;
 
 use AppBundle\Entity\Parametres;
@@ -18,6 +19,7 @@ use AppBundle\Entity\Entete;
 use AppBundle\Entity\BonDeCommandeClient;
 use AppBundle\Entity\TermesBCRelation;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -119,19 +121,49 @@ class BonDeCommandeClientController extends Controller
                             ->find(7);
 
             $i=0;
+            /** @var ProduitFusion $produitFusion */
+            foreach ($devis->getProduitsFusion() as $produitFusion) {
+                $produitFusBC = new ProduitFusion();
+                $produitFusBC->setDesignation($produitFusion->getDesignation());
+                $produitFusBC->setDescription($produitFusion->getDescription());
+                $produitFusBC->setQuantite($produitFusion->getQuantite());
+                $produitFusBC->setOrdre($produitFusBC->getOrdre());
+                $produitFusBC->setDocumentClient($BonDeCommandeClient);
+                $produitFusBC->setOptionnel($produitFusion->getOptionnel());
+                $produitFusBC->setPrixVenteHT($produitFusion->getPrixVenteHT());
+
+                /** @var ProduitDevis $produit */
+                foreach ($produitFusion->getProduits() as $produit) {
+                    $produitBC = new ProduitBC;
+                    $produitBC->deProduitDevis($produit);
+                    $produitBC->setOrdre($produit->getOrdre());
+                    $produitBC->setDocumentClient($BonDeCommandeClient);
+                    $produitBC->setProduitFusion($produitFusBC);
+                    $produitBC->setStatut($statut);
+                    $produitFusion->addProduit($produitBC);
+                }
+
+                $BonDeCommandeClient->addAbstractProduit($produitFusBC);
+            }
+
+            /** @var ProduitDevis $produit */
             foreach ($devis->getProduits() as $produit) {
-                $produitBC = new ProduitBC;
-                $produitBC->deProduitDevis($produit);
-                $produitBC->setNumero(++$i);
-                $produitBC->setBonDeCommandeClient($BonDeCommandeClient);
-                $produitBC->setStatut($statut);
+                if(!$produit->estFusionne()) {
+                    $produitBC = new ProduitBC;
+                    $produitBC->deProduitDevis($produit);
+                    $produitBC->setOrdre($produit->getOrdre());
+                    $produitBC->setDocumentClient($BonDeCommandeClient);
+                    $produitBC->setStatut($statut);
+                    $BonDeCommandeClient->addAbstractProduit($produitBC);
+                }
             }
 
             foreach ($devis->getTermes() as $terme) {
                 $BonDeCommandeClient->addTerme($terme);
             }
+
             $em->persist($BonDeCommandeClient);
-            $em->flush();
+             $em->flush();
 
             $this->addFlash('notice',sprintf('#%d ,Bon de commande client ajouté', $BonDeCommandeClient->getId()));
 

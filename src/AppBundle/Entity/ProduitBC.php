@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Entity\Parametres;
 use AppBundle\Entity\Devis;
 use AppBundle\Tools\devisExcel;
@@ -18,6 +19,9 @@ use DateTime;
  */
 class ProduitBC extends AbstractProduit
 {
+
+    const DISCRIMINATOR = 'produitbc';
+
     /**
      * @var string
      *
@@ -108,6 +112,33 @@ class ProduitBC extends AbstractProduit
      */
     private $statut;
 
+    /**
+     * @var ProduitDevis
+     *
+     * @ORM\ManyToOne(targetEntity="ProduitDevis")
+     * @ORM\JoinColumn(name="produit_devis_id", referencedColumnName="id")
+     */
+    private $produitDevis;
+
+    /**
+     * @var float
+     * @Assert\NotBlank()
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 20000000
+     * )
+     * @ORM\Column(name="marge", type="float")
+     */
+    private $marge;
+
+    public function getgaranties() {
+        return $this->getProduitDevis()->getGaranties();
+    }
+
+    public function gettermes() {
+        return $this->getProduitDevis()->getTermes();
+    }
+
     public function deProduitDevis(ProduitDevis $produitdevis){
         $this->setQuantite($produitdevis->getQuantite());
         $this->setReference($produitdevis->getReference());
@@ -118,22 +149,15 @@ class ProduitBC extends AbstractProduit
         $this->setTauxTVA($produitdevis->getTauxTVA());
         $this->setDeviseachat($produitdevis->getDeviseachat());
         $this->setTauxAchat($produitdevis->getTauxAchat());
-        $this->setPrixDeVenteHT($produitdevis->getPrixVenteHT());
+        $this->setPrixVenteHT($produitdevis->getPrixVenteHT());
         $this->setReferenceoffre($produitdevis->getReferenceoffre());
         $this->setMetier($produitdevis->getMetier());
         $this->setTypeproduit($produitdevis->getTypeproduit());
         $this->setFournisseur($produitdevis->getFournisseur());
         $this->setDevisevente($produitdevis->getDevisevente());
-    }
-
-    public function getMarge()
-    {
-        return $this->getPrixDeVenteHT()-round($this->prixachatht*(1+$this->fraisapproche)*$this->deviseachat->getTauxAchat(),2);
-    }
-
-    public function getPrixVenteHT()
-    {
-        return $this->prixDeVenteHT;
+        $this->setOptionnel($produitdevis->getOptionnel());
+        $this->setProduitDevis($produitdevis);
+        $this->setMarge($produitdevis->getMarge());
     }
 
     /**
@@ -284,13 +308,13 @@ class ProduitBC extends AbstractProduit
 
     public function getSousTotalHT()
     {
-        return $this->quantite*$this->getPrixVenteHT();
+        return $this->quantite * $this->getPrixVenteHT();
 
     }
 
     public function getFraisFinanciers($TauxFinancementTresorerie)
     {
-        $DelaiRecouvrement = $this->getBonDeCommandeClient()->getClient()->getDelaipaiementconstate();
+        $DelaiRecouvrement = $this->getDocumentClient()->getClient()->getDelaipaiementconstate();
         $TermeFournisseur = $this->fournisseur->getTermepaiement();
 
         return round(1.2*$this->getSousTotalHT()*$TauxFinancementTresorerie*($DelaiRecouvrement-$TermeFournisseur)/365,2);
@@ -306,12 +330,10 @@ class ProduitBC extends AbstractProduit
         return round($this->getSousTotalHT() - $this->getTotalPrixDeRevient() - $this->getFraisFinanciers($TauxFinancementTresorerie)+$this->getResultatDeChange(),2);
     }
 
-
     public function getResultatDeChange()
     {
         // echo round($this->getTotalPrixDeRevient() - $this->prixachatht*(1+$this->fraisapproche)*$this->getTauxAchat()*$this->quantite,2) ."<br>";
         return round($this->getTotalPrixDeRevient() - $this->prixachatht*(1+$this->fraisapproche)*$this->getTauxAchat()*$this->quantite,2);
-
     }
 
 
@@ -371,30 +393,6 @@ class ProduitBC extends AbstractProduit
     }
 
     /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return ProduitDevis
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return integer
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
      * Set reference
      *
      * @param string $reference
@@ -431,55 +429,6 @@ class ProduitBC extends AbstractProduit
     public function descendre()
     {
         $this->setNumero($this->getNumero()+1);
-    }
-
-
-    /**
-     * Set prixDeVenteHT
-     *
-     * @param float $prixDeVenteHT
-     *
-     * @return ProduitBC
-     */
-    public function setPrixDeVenteHT($prixDeVenteHT)
-    {
-        $this->prixDeVenteHT = $prixDeVenteHT;
-
-        return $this;
-    }
-
-    /**
-     * Get prixDeVenteHT
-     *
-     * @return float
-     */
-    public function getPrixDeVenteHT()
-    {
-        return $this->prixDeVenteHT;
-    }
-
-    /**
-     * Set bonDeCommandeClient
-     *
-     * @param \AppBundle\Entity\BonDeCommandeClient $bonDeCommandeClient
-     *
-     * @return ProduitBC
-     */
-    public function setBonDeCommandeClient(\AppBundle\Entity\BonDeCommandeClient $bonDeCommandeClient = null)
-    {
-        $this->BonDeCommandeClient = $bonDeCommandeClient;
-
-        return $this;
-    }
-
-    /**
-     * Get bonDeCommandeClient
-     *
-     * @return \AppBundle\Entity\BonDeCommandeClient
-     */
-    public function getBonDeCommandeClient()
-    {
-        return $this->BonDeCommandeClient;
     }
 
     /**
@@ -561,5 +510,53 @@ class ProduitBC extends AbstractProduit
     public function getFraisapproche()
     {
         return $this->fraisapproche;
+    }
+
+    /**
+     * Set produitDevis
+     *
+     * @param \AppBundle\Entity\ProduitDevis $produitDevis
+     *
+     * @return ProduitBC
+     */
+    public function setProduitDevis(\AppBundle\Entity\ProduitDevis $produitDevis = null)
+    {
+        $this->produitDevis = $produitDevis;
+
+        return $this;
+    }
+
+    /**
+     * Get produitDevis
+     *
+     * @return \AppBundle\Entity\ProduitDevis
+     */
+    public function getProduitDevis()
+    {
+        return $this->produitDevis;
+    }
+
+    /**
+     * Set marge
+     *
+     * @param float $marge
+     *
+     * @return ProduitBC
+     */
+    public function setMarge($marge)
+    {
+        $this->marge = $marge;
+
+        return $this;
+    }
+
+    /**
+     * Get marge
+     *
+     * @return float
+     */
+    public function getMarge()
+    {
+        return $this->marge;
     }
 }

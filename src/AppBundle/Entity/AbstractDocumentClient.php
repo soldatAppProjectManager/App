@@ -199,15 +199,14 @@ abstract class AbstractDocumentClient
      *
      * @return AbstractDocumentClient
      */
-    public function addAbstractProduit(\AppBundle\Entity\AbstractProduit $abstractProduit)
+    public function addAbstractProduit(AbstractProduit $abstractProduit)
     {
-        if ($this->produits->isEmpty()) {
-            $abstractProduit->setOrdre(1);
-        } else {
-            $abstractProduit->setOrdre($this->produits->count() + 1);
+        $abstractProduit->setDocumentClient($this);
+        if(null == $abstractProduit->getOrdre()) {
+            $abstractProduit->setOrdre($this->getAbstractProduits()->count() + 1);
         }
-        
-        $this->produits[] = $abstractProduit;
+
+        $this->abstractProduits->add($abstractProduit);
 
         return $this;
     }
@@ -301,6 +300,32 @@ abstract class AbstractDocumentClient
                 return $abstractProduit;
             }
         });
+    }
+
+    /**
+     * @return \Doctrine\Common\Collections\ArrayCollection
+     */
+    public function getProduitsFusion()
+    {
+        return $this->abstractProduits->filter(function(AbstractProduit $abstractProduit) {
+            if($abstractProduit instanceof ProduitFusion) {
+                return $abstractProduit;
+            }
+        });
+    }
+
+
+    public function getTotalHT()
+    {
+        $totalHT = 0;
+        /** @var ProduitDevis $produit */
+        foreach ($this->getAbstractProduits() as $produit) {
+            if (!$produit->getOptionnel() && !$produit->estFusionne()){
+                $totalHT += $produit->getSoustotalht();
+            }
+        }
+
+        return round($totalHT, 2);
     }
 
 }

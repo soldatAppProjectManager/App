@@ -20,8 +20,10 @@ use Doctrine\ORM\Mapping\OrderBy;
 class ProduitFusion extends AbstractProduit
 {
 
+    const DISCRIMINATOR = 'fusion';
+
     /**
-    * @ORM\OneToMany(targetEntity="ProduitDevis", mappedBy="ProduitFusion", cascade={"persist"})
+    * @ORM\OneToMany(targetEntity="AbstractProduit", mappedBy="ProduitFusion", cascade={"all"})
     * @OrderBy({"ordre" = "ASC"})
     */
     private $produits;
@@ -38,11 +40,11 @@ class ProduitFusion extends AbstractProduit
     /**
      * Add produit
      *
-     * @param \AppBundle\Entity\ProduitDevis $produit
+     * @param \AppBundle\Entity\AbstractProduit $produit
      *
      * @return ProduitFusion
      */
-    public function addProduit(\AppBundle\Entity\ProduitDevis $produit)
+    public function addProduit(\AppBundle\Entity\AbstractProduit $produit)
     {
         $this->produits[] = $produit;
 
@@ -52,9 +54,9 @@ class ProduitFusion extends AbstractProduit
     /**
      * Remove produit
      *
-     * @param \AppBundle\Entity\ProduitDevis $produit
+     * @param \AppBundle\Entity\AbstractProduit $produit
      */
-    public function removeProduit(\AppBundle\Entity\ProduitDevis $produit)
+    public function removeProduit(\AppBundle\Entity\AbstractProduit $produit)
     {
         $this->produits->removeElement($produit);
     }
@@ -76,8 +78,9 @@ class ProduitFusion extends AbstractProduit
     public function getPrixRevientUnitaire()
     {
         $prixRevient = 0;
-
+/** @var ProduitBC $produit */
         foreach ($this->produits as $produit) {
+            if($produit->isProduct())
             $prixRevient += $produit->getTotalPrixDeRevient();
         } 
         return round($prixRevient,2);

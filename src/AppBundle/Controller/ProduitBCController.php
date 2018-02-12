@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Controller;
+use AppBundle\Entity\BonDeCommandeClient;
 use DateTime;
 use AppBundle\Entity\ProduitBC;
 use AppBundle\Entity\Devis;
@@ -117,21 +118,16 @@ class ProduitBCController extends Controller
     /**
      * @Route("/edit/{id}", name="ProduitBC_edit")
      */
-    public function editAction($id,Request $request)
+    public function editAction(ProduitBC $produitBC,Request $request)
     {
-        $ProduitBC = $this->getDoctrine()
-                        ->getRepository('AppBundle:ProduitBC')
-                        ->find($id);
+        /** @var BonDeCommandeClient $bcc */
+        $bcc = $produitBC->getDocumentClient();
 
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($ProduitBC->getDevis());
-
-        $form = $this->createForm(ProduitBCFormType::class,$ProduitBC);                
+        $form = $this->createForm(ProduitBCFormType::class, $produitBC);
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
             $TauxFinancementTresorerie = $this->getDoctrine()
                         ->getRepository('AppBundle:Parametres')
@@ -139,8 +135,7 @@ class ProduitBCController extends Controller
 
             $now = new DateTime('now');
 
-            $devis->setDatemodification($now);
-            $devis->setNumversion($devis->getNumversion()+1);
+            $bcc->setDatemodification($now);
 
             //$ProduitBC->mettreAJourTauxAchat();
 
@@ -151,15 +146,16 @@ class ProduitBCController extends Controller
 
 
 
-            return $this->redirectToRoute('devis_voir',array(   'id' => $devis->getId()));
+            return $this->redirectToRoute('BonDeCommandeClient_voir',array(   'id' => $bcc->getId()));
         }
 
         // replace this example code with whatever you need
-        return $this->render('ProduitBC/edit.html.twig',array(   'form' => $form->createView(),
-                                                                    'designation' => $ProduitBC->getDesignation(),
-                                                                    'id' => $ProduitBC->getDevis()->getId(),
-                                                                    'deviseSymbol'=>$ProduitBC->getDeviseachat()->getSymbol(),
-                                                                    'deviseTaux'=> $ProduitBC->getDeviseachat()->getTauxAchat())
+        return $this->render('ProduitBC/edit.html.twig',array('form' => $form->createView(),
+                                                                    'designation' => $produitBC->getDesignation(),
+                                                                    'id' => $produitBC->getDocumentClient()->getId(),
+                                                                    'produit' => $produitBC,
+                                                                    'deviseSymbol'=>$produitBC->getDeviseachat()->getSymbol(),
+                                                                    'deviseTaux'=> $produitBC->getDeviseachat()->getTauxAchat())
         );
     }
 

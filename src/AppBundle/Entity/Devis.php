@@ -337,21 +337,6 @@ class Devis extends AbstractDocumentClient
         return $this->validite;
     }
 
-
-    public function getTotalHT()
-    {
-        $totalHT = 0;
-        /** @var ProduitDevis $produit */
-        foreach ($this->abstractProduits as $produit) {
-            if (!$produit->getOptionnel()){
-                $totalHT += $produit->getSoustotalht();
-            }
-        }
-
-        return round($totalHT, 2);
-    }
-
-
     public function getTotalHTOptions()
     {
         $totalHT = 0;
@@ -450,9 +435,9 @@ class Devis extends AbstractDocumentClient
     public function getFraisFinanciers()
     {
         $FraisFinanciers = 0;
-
-        foreach ($this->produits as $produit) {
-            if ($produit->estFusionné()) {
+/** @var ProduitDevis $produit */
+        foreach ($this->getProduits() as $produit) {
+            if ($produit->estFusionne()) {
                 if (!$produit->getOptionnel())
                     $FraisFinanciers += $produit->getProduitFusion()->getQuantite() * $produit->getFraisFinanciers($this->TauxFinancementTresorerie);
             } else
@@ -929,8 +914,10 @@ class Devis extends AbstractDocumentClient
     public function getRevenuParMetier()
     {
         $revenu = [];
+        /** @var ProduitDevis $produit */
         foreach ($this->getProduits() as $produit) {
-
+            if(!empty($produit->getMetier()))
+            {
             $quantité = $produit->estFusionne() ? $produit->getProduitFusion()->getQuantite() : 1;
 
             if (isset($revenu[$produit->getMetier()->getNom()])) {
@@ -945,6 +932,7 @@ class Devis extends AbstractDocumentClient
                 $revenu[$produit->getMetier()->getNom()]["nom"] = $produit->getMetier()->getNom();
             }
         }
+        }
         return $revenu;
     }
 
@@ -953,6 +941,7 @@ class Devis extends AbstractDocumentClient
         $revenu =[];
         foreach ($this->getProduits() as $produit) {
             $quantité = $produit->estFusionne() ? $produit->getProduitFusion()->getQuantite() : 1;
+            if(!empty($produit->getTypeproduit())) {
             if (isset($revenu[$produit->getTypeproduit()->getNom()])) {
                 $revenu[$produit->getTypeproduit()->getNom()]["revenu"] += $quantité * $produit->getSousTotalHT();
                 $revenu[$produit->getTypeproduit()->getNom()]["articles"] += 1;
@@ -964,18 +953,22 @@ class Devis extends AbstractDocumentClient
                 $revenu[$produit->getTypeproduit()->getNom()]["nom"] = $produit->getTypeproduit()->getNom();
             }
         }
+        }
         return $revenu;
     }
 
     public function getMargeParMetier()
     {
+        $revenu = [];
         foreach ($this->getProduits() as $produit) {
-
+            if(!empty($produit->getMetier()))
+            {
             if (isset($revenu[$produit->getMetier()->getNom()])) {
                 $revenu[$produit->getMetier()->getNom()]["marge"] += $produit->getMargeBrute($this->getTauxFinancementTresorerie());
             } else {
                 $revenu[$produit->getMetier()->getNom()]["marge"] = $produit->getMargeBrute($this->getTauxFinancementTresorerie());
                 $revenu[$produit->getMetier()->getNom()]["nom"] = $produit->getMetier()->getNom();
+            }
             }
         }
         return $revenu;
@@ -984,12 +977,14 @@ class Devis extends AbstractDocumentClient
     public function getMargeParTypeProduit()
     {
         foreach ($this->getProduits() as $produit) {
-
+            if(!empty($produit->getTypeproduit()))
+            {
             if (isset($revenu[$produit->getTypeproduit()->getNom()])) {
                 $revenu[$produit->getTypeproduit()->getNom()]["marge"] += $produit->getMargeBrute($this->getTauxFinancementTresorerie());
             } else {
                 $revenu[$produit->getTypeproduit()->getNom()]["marge"] = $produit->getMargeBrute($this->getTauxFinancementTresorerie());
                 $revenu[$produit->getTypeproduit()->getNom()]["nom"] = $produit->getTypeproduit()->getNom();
+            }
             }
         }
         return $revenu;
@@ -999,8 +994,12 @@ class Devis extends AbstractDocumentClient
     public function getAchatsParFournisseur()
     {
         $revenu = [];
+        /** @var ProduitDevis $produit */
         foreach ($this->getProduits() as $produit) {
+            if($produit->isProduct()) {
             $quantité = $produit->estFusionne() ? $produit->getProduitFusion()->getQuantite() : 1;
+            if(!empty($produit->getFournisseur()))
+            {
             if (isset($revenu[$produit->getFournisseur()->getNom()])) {
                 $revenu[$produit->getFournisseur()->getNom()]["revenu"] += $quantité * $produit->getPrixachatht() * $produit->getQuantite();
                 $revenu[$produit->getFournisseur()->getNom()]["articles"] += 1;
@@ -1011,6 +1010,8 @@ class Devis extends AbstractDocumentClient
                 $revenu[$produit->getFournisseur()->getNom()]["pieces"] = $quantité * $produit->getQuantite();
                 $revenu[$produit->getFournisseur()->getNom()]["nom"] = $produit->getFournisseur()->getNom();
                 $revenu[$produit->getFournisseur()->getNom()]["devise"] = $produit->getDeviseachat()->getSymbol();
+            }
+            }
             }
         }
         return $revenu;

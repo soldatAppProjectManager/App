@@ -64,9 +64,6 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th style="text-align:center;">
-              {# <a type="button" class="btn btn-success" href="{{ url('produitdevis_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a> #}
-            </th>
             <th>article</th>
             <th>Quantité</th>
             <th>Description</th>
@@ -77,9 +74,9 @@
           </tr>
         </thead>
         <tbody>
-          {% for produit in ProduitFusion.produits %}
+          {% for produit in ProduitFusion.documentClient.produits %}
+              {% if not produit.estFusionne or produit.ProduitFusion.id == ProduitFusion.id %}
             <tr>
-              <td align="center"><button type="button" class="btn  btn-sm monter" id="{{ produit.id }}"><span class="fa fa-arrow-circle-up"></span> Monter</button></td>
               <td scope="row">{{ produit.ordre }} </td>
               <td class="quantite" contenteditable="true" id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
               <td>
@@ -108,10 +105,15 @@
               <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
               <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
               <td style="min-width:250px">
-                <a type="button" class="btn btn-warning" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
+                <a type="button" class="btn btn-warning" href="{{ url(produit.routeNameEdit, {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
+                  {% if produit.estFusionne %}
                 <a type="button" class="btn btn-danger" href="{{ url('ProduitFusion_remove', {'id' : ProduitFusion.id,'produitid' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Retirer</a>
+                  {% else %}
+                <a type="button" class="btn btn-success" href="{{ url('ProduitFusion_add', {'id' : ProduitFusion.id, 'produitid' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Ajouter à la fusion</a>
+                  {% endif %}
               </td>
               </tr>
+          {% endif %}
           {% endfor %}
             <tr>
               <td style="border-top: 0px"></td>
@@ -128,68 +130,6 @@
     </div>
   </div>
 
-  <hr>
-
-  <div class="row">
-    <div class="well" style="background-color: #fcfcfc">
-      <table class="table table-hover">
-        <thead>
-          <tr>
-{#             <th style="text-align:center;">
-               <a type="button" class="btn btn-success" href="{{ url('produitdevis_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
-            </th> #}
-            <th>article<span class="badge" >fusion</span> </th>
-            <th>Quantité</th>
-            <th>Description</th>
-            <th>Prix d'achat total</th>
-            <th>Prix Unitaire</th>
-            <th>Sous-total</th>
-            <th></th>
-          </tr>
-        </thead>
-        <tbody>
-          {% for produit in ProduitFusion.documentClient.produits %}
-            <tr>
-              <td scope="row">{{ produit.ordre }} {% if produit.estFusionne %}<span class="badge" >fusion</span>{% endif %}</td>
-              <td class="quantite" contenteditable="true" id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
-              <td>
-                {% if produit.designation != " " %}
-                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
-                  <br>
-                {% endif %}
-
-                {{ produit.description | capitalize | raw }}
-                <br>
-                {% if produit.garanties|length  > 0 %}
-                    <strong>Garantie :</strong> <br>
-                {% endif %}
-                {% for garantie in produit.garanties %}
-                  {{garantie|capitalize }}<br>
-                {% endfor %}
-
-                {% if produit.termes|length  > 0 %}
-                     <strong>Conditions particulières :</strong> <br>
-                {% endif %}
-                {% for terme in produit.termes %}
-                  {{terme.categorie.nom |capitalize }} : {{terme.description}}|capitalize <br>
-                {% endfor %}
-              </td>
-              <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
-              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
-              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
-              <td style="min-width:250px">
-
-                  <a type="button" {% if produit.estFusionne %} disabled {% endif %} class="btn btn-success" href="{{ url('ProduitFusion_add', {'id' : ProduitFusion.id,'produitid' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Ajouter à la fusion</a>
-
-              </td>
-              </tr>
-          {% endfor %}
-        </tbody>  
-      </table>
-    </div>
-  </div>
-
-  <hr>
 
 </div>
 {% endblock %}

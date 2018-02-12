@@ -58,7 +58,7 @@
                   {% for achat in devis.getAchatsParFournisseur %} 
                     <tr>
                       <th>{{achat.nom[:10]}}... <span class="badge" >{{achat.articles}}</span>  <span class="badge" >{{achat.pieces}}</span> </th>
-                      <td>{{achat.revenu| number_format(2, '.', ',')}} <strong>{{achat.devise}}</strong></td>              
+                      <td>{{achat.revenu| number_format(2, '.', ',')}} <strong>{{achat.devise}}</strong></td>
                     </tr>
                   {% endfor %}  
                     <tr>

@@ -41,10 +41,11 @@
 							<td style="width:19%; vertical-align:middle;">
 								<a type="button" class="label label-default" href="{{ url('BonDeCommandeClient_voir', {'id' : chaque_BonDeCommandeClient.id})}}">Voir</a>
 								<a type="button" class="label label-warning" href="{{ url('BonDeCommandeClient_edit', {'id' : chaque_BonDeCommandeClient.id})}}">Edit</a>
-								 {% if chaque_BonDeCommandeClient.verrouille  == false %} <a type="button" class="label label-danger" href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"})}}"><i class="fa fa-lock" aria-hidden="true"></i> verrouiller</a>{% else %}<a type="button" href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"})}}" class="label label-primary"><i class="fa fa-unlock" aria-hidden="true"></i> déverouiller</a> {% endif %}
+								 {% if chaque_BonDeCommandeClient.verrouille  == false %}<a type="button" class="label label-danger" href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"})}}"><i class="fa fa-lock" aria-hidden="true"></i> verrouiller</a>{% else %}<a type="button" href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"})}}" class="label label-primary"><i class="fa fa-unlock" aria-hidden="true"></i> déverouiller</a> {% endif %}
 								<a type="button" class="label label-danger" href="{{ url('BonDeCommandeClient_delete', {'id' : chaque_BonDeCommandeClient.id})}}">Suppr</a>
+								<a type="button" class="label label-info" href="{{ url('BonDeCommandeFournisseur_generate', {'id' : chaque_BonDeCommandeClient.id})}}">BC fournisseur</a>
 							</td>
-							</tr>
+						</tr>
 					{% endfor %}
 				</tbody>
 			</table>

@@ -12,6 +12,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class ProduitDevis extends AbstractProduit
 {
+    const DISCRIMINATOR = 'produitdevis';
+
     /**
      * @var string
      *
@@ -159,14 +161,6 @@ class ProduitDevis extends AbstractProduit
      * @ORM\OrderBy({"nom" = "ASC"})
      */
     private $termes;
-
-    /**
-     * @var \ProduitFusion
-     *
-     * @ORM\ManyToOne(targetEntity="ProduitFusion",inversedBy="produits")
-     * @ORM\JoinColumn(name="produit_fusion_id", referencedColumnName="id", onDelete="CASCADE")
-     */
-    private $ProduitFusion;
 
     /**
      * Many produits have Many terms.
@@ -779,29 +773,5 @@ class ProduitDevis extends AbstractProduit
     public function getCummulable()
     {
         return $this->cummulable;
-    }
-
-    /**
-     * Set produitFusion
-     *
-     * @param \AppBundle\Entity\ProduitFusion $produitFusion
-     *
-     * @return ProduitDevis
-     */
-    public function setProduitFusion(\AppBundle\Entity\ProduitFusion $produitFusion = null)
-    {
-        $this->ProduitFusion = $produitFusion;
-
-        return $this;
-    }
-
-    /**
-     * Get produitFusion
-     *
-     * @return \AppBundle\Entity\ProduitFusion
-     */
-    public function getProduitFusion()
-    {
-        return $this->ProduitFusion;
     }
 }

@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 use AppBundle\Entity\AbstractDocumentClient;
+use AppBundle\Entity\AbstractProduit;
 use DateTime;
 use AppBundle\Entity\ProduitFusion;
 use AppBundle\Entity\Devis;
@@ -80,40 +81,33 @@ class ProduitFusionController extends Controller
     /**
      * @Route("/add/{id}/{produitid}", name="ProduitFusion_add")
      */
-    public function addAction($id,$produitid,Request $request)
+    public function addAction($id,AbstractProduit $produitid,Request $request)
     {
-       $produitdevis = $this->getDoctrine()
-                        ->getRepository('AppBundle:ProduitDevis')
-                        ->find($produitid);   
 
-        // replace this example code with whatever you need
+        /** @var ProduitFusion $ProduitFusion */
        $ProduitFusion = $this->getDoctrine()
                         ->getRepository('AppBundle:ProduitFusion')
                         ->find($id);
 
-        if($produitdevis->getProduitFusion()== NULL) {
-           $produitdevis->setProduitFusion($ProduitFusion);
+        if($produitid->getProduitFusion()== NULL) {
+            $produitid->setProduitFusion($ProduitFusion);
             $em = $this->getDoctrine()->getManager();
-            $em->flush();           
+            $em->flush();
         }
-        return $this->redirectToRoute('ProduitFusion_voir',array('id' => $id));
+        return $this->redirectToRoute('ProduitFusion_voir',array('id' => $ProduitFusion->getId()));
     }
 
     /**
      * @Route("/remove/{id}/{produitid}", name="ProduitFusion_remove")
      */
-    public function removeAction($id,$produitid,Request $request)
+    public function removeAction($id,AbstractProduit $produitid,Request $request)
     {
-       $produitdevis = $this->getDoctrine()
-                        ->getRepository('AppBundle:ProduitDevis')
-                        ->find($produitid);   
-
         // replace this example code with whatever you need
        $ProduitFusion = $this->getDoctrine()
                         ->getRepository('AppBundle:ProduitFusion')
                         ->find($id);
 
-        $produitdevis->setProduitFusion(NULL);
+        $produitid->setProduitFusion(NULL);
         $em = $this->getDoctrine()->getManager();
         $em->flush();           
         
@@ -123,21 +117,17 @@ class ProduitFusionController extends Controller
     /**
      * @Route("/deleteConfirmed/{id}", name="ProduitFusion_delete_confirmed")
      */
-    public function deleteConfirmedAction($id,Request $request)
+    public function deleteConfirmedAction(ProduitFusion $produitFusion,Request $request)
     {
-        // replace this example code with whatever you need
-        $ProduitFusion = $this->getDoctrine()
-                    ->getRepository('AppBundle:ProduitFusion')
-                    ->find($id);
  
         $em = $this->getDoctrine()->getManager();
 
-        $em->remove($ProduitFusion);
+        $em->remove($produitFusion);
         $em->flush();
 
         $this->addFlash('notice','Produit de devis Effacé');
 
-        return $this->redirectToRoute('devis_voir',array('id' => $ProduitFusion->getDevis()->getId()));
+        return $this->redirectToRoute('devis_apercu',array('id' => $produitFusion->getDocumentClient()->getId()));
     }
 
     /**

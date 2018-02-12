@@ -54,7 +54,7 @@ class BonDeCommandeClient extends AbstractDocumentClient
     /**
      * @var string
      *
-     * @ORM\Column(name="fichier", type="string", length=255)
+     * @ORM\Column(name="fichier", type="string", length=255, nullable = true)
      */
     private $fichier;
 
@@ -71,8 +71,9 @@ class BonDeCommandeClient extends AbstractDocumentClient
      */
     public function setFichier(UploadedFile $fichier)
     {
+
         
-        $this->fichier  =   "BC-".$this->getDatedereception()->format('Y-m').
+        $this->fichier  =   "BC-".
                             "-".$this->getDevis()->getClient()->getNom().
                             "-".$this->getNumeroDeBonDeCommandeClient().
                             '.'.$fichier->guessExtension();
@@ -242,7 +243,7 @@ class BonDeCommandeClient extends AbstractDocumentClient
      */
     public function __construct()
     {
-        $this->ProduitBC = new ArrayCollection();
+        parent::__construct();
         $this->termes = new ArrayCollection();
     }
 
@@ -338,51 +339,6 @@ class BonDeCommandeClient extends AbstractDocumentClient
         return $this->termes;
     }
 
-
-    public function getTotalHT()
-    {
-        $totalHT = 0;
-        /** @var AbstractProduit $produit */
-        foreach ($this->getAbstractProduits() as $produit) {
-            if(!$produit->estFusionne()) {
-                $totalHT += $produit->getSoustotalht();
-            }
-        }
-
-
-        return round($totalHT,2);
-    }
-
-
-
-    /**
-     * Add produit
-     *
-     * @param \AppBundle\Entity\ProduitBC $produit
-     *
-     * @return BonDeCommandeClient
-     */
-    public function addProduit(\AppBundle\Entity\ProduitBC $produit)
-    {
-        $produit->setBonDeCommandeClient($this);
-        if (!$this->getProduits()->contains($produit)) {
-            $this->produits[] = $produit;
-        }
-
-        return $this;
-    }
-
-    /**
-     * Remove produit
-     *
-     * @param \AppBundle\Entity\ProduitBC $produit
-     */
-    public function removeProduit(\AppBundle\Entity\ProduitBC $produit)
-    {
-        $this->produits->removeElement($produit);
-    }
-
-
     public function getTauxMargeBrute(){
 
         return $this->getMargeBrute()/$this->getTotalHT();
@@ -414,7 +370,7 @@ class BonDeCommandeClient extends AbstractDocumentClient
     {
         $totalTVA = 0;
 
-        foreach ($this->produits as $produit) {
+        foreach ($this->getProduits() as $produit) {
         $totalTVA += $produit->getSoustotalHT()*$produit->getTauxTVA();
         }
 
@@ -430,7 +386,7 @@ class BonDeCommandeClient extends AbstractDocumentClient
     {
         $margeBrute = 0;
 
-        foreach ($this->produits as $produit) {
+        foreach ($this->getProduits() as $produit) {
         $margeBrute += $produit->getMargeBrute($this->getDevis()->getTauxFinancementTresorerie());
         }
 
@@ -454,7 +410,7 @@ class BonDeCommandeClient extends AbstractDocumentClient
     {
         $FraisFinanciers = 0;
 
-        foreach ($this->produits as $produit) {
+        foreach ($this->getProduits() as $produit) {
         $FraisFinanciers += $produit->getFraisFinanciers($this->getDevis()->getTauxFinancementTresorerie());
         }
 

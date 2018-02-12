@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Form;
+use AppBundle\Entity\ModeleBCF;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -25,6 +26,7 @@ class FournisseurFormType extends AbstractType
             ->add('fa', PercentType::class, array('attr' => array('class' => 'form-control'), 'label' => 'Frais d Approches '))
             ->add('faSurtaxe', PercentType::class, array('attr' => array('class' => 'form-control'), 'label' => 'Frais d Approches surtaxés '))
             ->add('termepaiement', IntegerType::class, array('attr' => array('class' => 'form-control')))
+            ->add('modele')
             ->add('devisevente', EntityType::class, array('class' => 'AppBundle:Monnaie','attr' => array('class' => 'form-control'), 'label' => 'Devise de vente '));
     }
 

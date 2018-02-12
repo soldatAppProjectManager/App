@@ -12,6 +12,13 @@ use Symfony\Component\Validator\Constraints as Assert;
  * @ORM\Entity()
  * @ORM\Table(name="abstract_produit")
  * @ORM\InheritanceType("JOINED")
+ * @ORM\DiscriminatorMap(
+ *   {
+ *     ProduitDevis::DISCRIMINATOR = ProduitDevis::class,
+ *     ProduitFusion::DISCRIMINATOR = ProduitFusion::class,
+ *     ProduitBC::DISCRIMINATOR = ProduitBC::class,
+ *   }
+ * )
  * @ORM\HasLifecycleCallbacks()
  */
 abstract class AbstractProduit
@@ -54,7 +61,7 @@ abstract class AbstractProduit
     /**
      * @var \Devis
      *
-     * @ORM\ManyToOne(targetEntity="Devis", inversedBy="abstractProduits")
+     * @ORM\ManyToOne(targetEntity="AbstractDocumentClient", inversedBy="abstractProduits")
      * @ORM\JoinColumn(name="abstract_document_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $documentClient;
@@ -73,8 +80,6 @@ abstract class AbstractProduit
      */
     private $optionnel;
 
-
-
     /**
      * @var string
      * @Assert\Range(
@@ -84,6 +89,14 @@ abstract class AbstractProduit
      * @ORM\Column(name="prix_vente_ht", type="string", length=255)
      */
     private $prixVenteHT;
+
+    /**
+     * @var \ProduitFusion
+     *
+     * @ORM\ManyToOne(targetEntity="ProduitFusion",inversedBy="produits")
+     * @ORM\JoinColumn(name="produit_fusion_id", referencedColumnName="id", onDelete="CASCADE")
+     */
+    private $ProduitFusion;
 
     /**
      * Get id
@@ -209,7 +222,7 @@ abstract class AbstractProduit
      *
      * @return AbstractProduit
      */
-    public function setDocumentClient(\AppBundle\Entity\Devis $documentClient = null)
+    public function setDocumentClient(AbstractDocumentClient $documentClient = null)
     {
         $this->documentClient = $documentClient;
 
@@ -284,7 +297,7 @@ abstract class AbstractProduit
 
     public function estFusionne()
     {
-        if($this instanceof ProduitDevis) {
+        if($this instanceof ProduitDevis or $this instanceof  ProduitBC) {
             return !empty($this->getProduitFusion());
         } else {
             return false;
@@ -292,7 +305,41 @@ abstract class AbstractProduit
     }
 
     public function isProduct() {
-        return $this instanceof ProduitDevis;
+        return $this instanceof ProduitDevis or $this instanceof ProduitBC;
+    }
+
+    /**
+     * Set produitFusion
+     *
+     * @param \AppBundle\Entity\ProduitFusion $produitFusion
+     *
+     * @return ProduitDevis
+     */
+    public function setProduitFusion(\AppBundle\Entity\ProduitFusion $produitFusion = null)
+    {
+        $this->ProduitFusion = $produitFusion;
+
+        return $this;
+    }
+
+    /**
+     * Get produitFusion
+     *
+     * @return \AppBundle\Entity\ProduitFusion
+     */
+    public function getProduitFusion()
+    {
+        return $this->ProduitFusion;
+    }
+
+    public function getRouteNameEdit()
+    {
+        if ($this instanceof ProduitFusion)
+            return 'ProduitFusion_edit';
+        elseif ($this instanceof ProduitBC)
+            return 'ProduitBC_edit';
+        elseif ($this instanceof ProduitDevis)
+            return 'produitdevis_edit';
     }
 
 }
