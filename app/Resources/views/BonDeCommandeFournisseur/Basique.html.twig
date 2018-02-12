@@ -272,16 +272,16 @@
 <table class="produits">
     <thead>
     <tr>
-        <th width="10%">Qté {{ bcf.produits|length }}</th>
+        <th width="10%">Qté</th>
         <th width="50%">Désignation</th>
         <th width="20%" align="right">P.U. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
         <th width="20%" align="right">S.T. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
     </tr>
     </thead>
     <tbody>
-    {% for produit in bcf.produits if not produit.estFusionne %}
+    {% for produit in bcf.produits %}
         <tr>
-            <td align="center">{{ produit.quantite }}</td>
+            <td align="center">{{ produit.quantiteFournisseur }}</td>
             <td>
                 {% if produit.designation|trim != '' %}
                     <strong>{{ produit.produitDevis.designation|capitalize }} : </strong>

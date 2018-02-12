@@ -559,4 +559,16 @@ class ProduitBC extends AbstractProduit
     {
         return $this->marge;
     }
+
+    public function getQuantiteFournisseur()
+    {
+        $qte = $this->getQuantite();
+
+        if($this->estFusionne()) {
+            $qte = $qte * $this->getProduitFusion()->getQuantite();
+        }
+
+        return $qte;
+    }
+
 }

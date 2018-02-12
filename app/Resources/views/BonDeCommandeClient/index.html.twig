@@ -1,9 +1,9 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-{{ parent() }}
+    {{ parent() }}
 
-<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet"/>
 
 
 
@@ -11,63 +11,82 @@
 {% endblock %}
 
 {% block body %}
-	<h1>Liste des Bon de Commande client</h1>
-	<p class="lead">Consulter et editer les Bons de Commande client utilisées dans la gestion commerciale.
+    <h1>Liste des Bon de Commande client</h1>
+    <p class="lead">Consulter et editer les Bons de Commande client utilisées dans la gestion commerciale.
 
-	<div class="row">
-		<div class="col-lg-12">
-			<hr>
-			<table id="liste_devis" class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Client</th>
-						<th>Référence</th>
-						<th>Date de réception</th>
-						<th>Commercial</th>
-						<th>Total H.T.</th>
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for chaque_BonDeCommandeClient in BonDeCommandeClient %}
-						<tr>
-							<th scope="row">{{ chaque_BonDeCommandeClient.id }}  </th>
-							<strong><td>{{ chaque_BonDeCommandeClient.client.nom }} </td></strong>
-							<td>{{ chaque_BonDeCommandeClient.numeroDeBonDeCommandeClient }} </td>
-							<td>{{ chaque_BonDeCommandeClient.datedereception |date("d/m/Y")}} </td>
-							<td>{{ chaque_BonDeCommandeClient.commercial.prenom }} {{ chaque_BonDeCommandeClient.commercial.nom }} </td>
-							<td align="right"><strong>{{ chaque_BonDeCommandeClient.getTotalHT | number_format(2, '.', ',')}} </strong></td>
-							<td style="width:19%; vertical-align:middle;">
-								<a type="button" class="label label-default" href="{{ url('BonDeCommandeClient_voir', {'id' : chaque_BonDeCommandeClient.id})}}">Voir</a>
-								<a type="button" class="label label-warning" href="{{ url('BonDeCommandeClient_edit', {'id' : chaque_BonDeCommandeClient.id})}}">Edit</a>
-								 {% if chaque_BonDeCommandeClient.verrouille  == false %}<a type="button" class="label label-danger" href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"})}}"><i class="fa fa-lock" aria-hidden="true"></i> verrouiller</a>{% else %}<a type="button" href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"})}}" class="label label-primary"><i class="fa fa-unlock" aria-hidden="true"></i> déverouiller</a> {% endif %}
-								<a type="button" class="label label-danger" href="{{ url('BonDeCommandeClient_delete', {'id' : chaque_BonDeCommandeClient.id})}}">Suppr</a>
-								<a type="button" class="label label-info" href="{{ url('BonDeCommandeFournisseur_generate', {'id' : chaque_BonDeCommandeClient.id})}}">BC fournisseur</a>
-							</td>
-						</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-				<hr>
-		</div>
-	</div>
+    <div class="row">
+        <div class="col-lg-12">
+            <hr>
+            <table id="liste_devis" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Client</th>
+                    <th>Référence</th>
+                    <th>Date de réception</th>
+                    <th>Commercial</th>
+                    <th>Total H.T.</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for chaque_BonDeCommandeClient in BonDeCommandeClient %}
+                    <tr>
+                        <th scope="row">{{ chaque_BonDeCommandeClient.id }}  </th>
+                        <strong>
+                            <td>{{ chaque_BonDeCommandeClient.client.nom }} </td>
+                        </strong>
+                        <td>{{ chaque_BonDeCommandeClient.numeroDeBonDeCommandeClient }} </td>
+                        <td>{{ chaque_BonDeCommandeClient.datedereception |date("d/m/Y") }} </td>
+                        <td>{{ chaque_BonDeCommandeClient.commercial.prenom }} {{ chaque_BonDeCommandeClient.commercial.nom }} </td>
+                        <td align="right">
+                            <strong>{{ chaque_BonDeCommandeClient.getTotalHT | number_format(2, '.', ',') }} </strong>
+                        </td>
+                        <td style="width:19%; vertical-align:middle;">
+                            <a type="button" class="label label-default"
+                               href="{{ url('BonDeCommandeClient_voir', {'id' : chaque_BonDeCommandeClient.id}) }}">Voir</a>
+                            <a type="button" class="label label-warning"
+                               href="{{ url('BonDeCommandeClient_edit', {'id' : chaque_BonDeCommandeClient.id}) }}">Edit</a>
+                            {% if chaque_BonDeCommandeClient.verrouille  == false %}
+                                <a type="button" class="label label-danger"
+                                   href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"}) }}">
+                                    <i class="fa fa-lock" aria-hidden="true"></i> verrouiller</a>
+                            {% else %}
+                                <a type="button"
+                                        href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"}) }}"
+                                        class="label label-primary"><i class="fa fa-unlock" aria-hidden="true"></i>
+                                    déverouiller
+                                </a>
+                            <a type="button" class="label label-info"
+                               href="{{ url('BonDeCommandeFournisseur_generate', {'id' : chaque_BonDeCommandeClient.id}) }}">BC
+                                fournisseur</a>
+                            {% endif %}
+                            <a type="button" class="label label-danger"
+                               href="{{ url('BonDeCommandeClient_delete', {'id' : chaque_BonDeCommandeClient.id}) }}">Suppr</a>
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
 
-	{{ parent() }}
+    {{ parent() }}
 
     <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-    
-	<script>
-	$(document).ready(function() {
-	    $('#liste_devis').DataTable();
-	} );
-	$.extend($.fn.dataTableExt.oStdClasses, {
-    "sFilterInput": "form-control",
-    "sLengthSelect": "form-control"
-});
-	</script>
+
+    <script>
+        $(document).ready(function () {
+            $('#liste_devis').DataTable();
+        });
+        $.extend($.fn.dataTableExt.oStdClasses, {
+            "sFilterInput": "form-control",
+            "sLengthSelect": "form-control"
+        });
+    </script>
 
 {% endblock %}
