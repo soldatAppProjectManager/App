@@ -453,7 +453,13 @@ class ProduitDevis
 
     public function getPrixVenteHT()
     {
-        return round(($this->prixachatht * (1 + $this->fraisapproche) * ($this->getTauxAchat())) / (1 - $this->marge) / $this->getDevis()->getTauxVente(), 0, PHP_ROUND_HALF_UP);
+        $prixVente = ($this->prixachatht * (1 + $this->fraisapproche) * ($this->getTauxAchat())) / (1 - $this->marge) / $this->getDevis()->getTauxVente();
+
+        if($this->getTypeproduit()->getPrecision() > 2) {
+            return round($prixVente, $this->getTypeproduit()->getPrecision(), PHP_ROUND_HALF_UP);
+        } else {
+            return round($prixVente, 0, PHP_ROUND_HALF_UP);
+        }
     }
 
     public function getMarkUp()
@@ -639,7 +645,7 @@ class ProduitDevis
 
     public function getSousTotalHT()
     {
-        return round($this->quantite * $this->getPrixVenteHT(), 2);
+        return round($this->quantite * $this->getPrixVenteHT(), $this->getTypeproduit()->getPrecision());
     }
 
     public function getFraisFinanciers($TauxFinancementTresorerie)

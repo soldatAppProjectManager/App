@@ -1,4 +1,4 @@
-<head>
+﻿<head>
     <meta charset='utf-8'>
 
     <link rel="icon" href="{{ asset('img/favicon_SD.png') }}" />
@@ -319,27 +319,6 @@
     </tbody>
 </table>
 <br>
-<table class="totaux">
-    <tbody>
-    <tr>
-        <th>Total HT</th>
-        <td>{{ devis.getTotalHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
-    </tr>
-    <tr>
-        <th>Total T.V.A.</th>
-        <td>{{ devis.getTotalTVA|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
-    </tr>
-    <tr>
-        <th>Total TTC</th>
-        <td>{{ devis.getTotalTTC|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
-    </tr>
-    <tr>
-        <td colspan="2"><i>La somme du présent devis est arretée à :
-                <strong>{{ devis.totalTTC|localizednumber('spellout','default','fr_FR')|capitalize }} {{ devis.devisevente.nom }}
-                    TTC.</strong></i></td>
-    </tr>
-    </tbody>
-</table>
 <br><br><br><br><br><br><br><br><br><br>
 {% if not devis.termes is empty %}
     <strong><u> Conditions commerciales générales : </u></strong><br><br>

@@ -14,6 +14,7 @@
 						<th>#</th>
 						<th>Nom</th>
 						<th>Description</th>
+						<th>Précision</th>
 						<th></th>
 					</tr>
 				</thead>
@@ -23,6 +24,7 @@
 							<th scope="row">{{ typeproduit.id }} </th>
 							<td>{{ typeproduit.nom }} </td>
 							<td>{{ typeproduit.description }} </td>
+							<td>{{ typeproduit.precision }} </td>
 							<td>
 								<a type="button" class="btn btn-default" href="{{ url('typeproduit_voir', {'id' : typeproduit.id})}}">Voir</a>
 								<a type="button" class="btn btn-warning" href="{{ url('typeproduit_edit', {'id' : typeproduit.id})}}">Editer</a>
