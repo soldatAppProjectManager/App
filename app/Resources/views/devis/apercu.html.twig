@@ -174,7 +174,7 @@
                 {% endfor %}            
               </td>
               <td  class="prixachat" {{modifiable|raw}} id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
-              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} </td>
+              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(produit.typeproduit.precision , '.', ',') }} {{devis.deviseVente.symbol}} </td>
               <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
               <td style="min-width:250px">
                 <a type="button" class="btn btn-default visible" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a>
