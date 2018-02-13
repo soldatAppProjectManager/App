@@ -207,7 +207,7 @@
                 Valide jusqu'au
             </th>
             <td>
-                {{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
+                {{ devis.firstDateFournisseur|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
             </td>
         </tr>
     </table>
