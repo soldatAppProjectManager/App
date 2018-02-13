@@ -35,6 +35,12 @@ class TypeProduit
      */
     private $description;
 
+    /**
+     * @var int
+     *
+     * @ORM\Column(name="_precision", type="smallint")
+     */
+    private $precision;
 
     /**
      * Get id
@@ -100,4 +106,28 @@ class TypeProduit
     }
 
 
+
+    /**
+     * Set precision
+     *
+     * @param integer $precision
+     *
+     * @return TypeProduit
+     */
+    public function setPrecision($precision)
+    {
+        $this->precision = $precision;
+
+        return $this;
+    }
+
+    /**
+     * Get precision
+     *
+     * @return integer
+     */
+    public function getPrecision()
+    {
+        return $this->precision;
+    }
 }

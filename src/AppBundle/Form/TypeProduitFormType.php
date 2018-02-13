@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\IntegerType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -20,6 +21,7 @@ class TypeProduitFormType extends AbstractType
     	$builder
             ->add('nom', TextType::class, array('attr' => array('class' => 'form-control')))
             ->add('description', TextType::class, array('attr' => array('class' => 'form-control')))
+            ->add('precision', IntegerType::class, array('attr' => array('class' => 'form-control')))
             ->add('save', SubmitType::class, array('label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-primary')));
     }
 
