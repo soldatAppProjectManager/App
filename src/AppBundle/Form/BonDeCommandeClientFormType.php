@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Form;
+
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -21,17 +22,37 @@ class BonDeCommandeClientFormType extends AbstractType
 
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-    	$builder
-            ->add('datedereception', DateType::class, array('widget' =>'single_text'))
-            ->add('datebondecommande', DateType::class, array('widget' =>'single_text'))
-            ->add('Fichier', FileType::class, array('mapped' => false,'attr' => array('class' => 'filestyle','data-buttonText' => ' Choisir', 'data-buttonName' => "btn-success")))
-            ->add('numeroDeBonDeCommandeClient', TextType::class, array('attr' => array( 'placeholder'=> 'Référence du BC')))
-            ->add('echeance', IntegerType::class, array('attr' => array('placeholder'=> 'Durée en jours')));
+        $builder
+            ->add('datedereception', DateType::class, [
+                'widget' => 'single_text',
+                'required' => true,
+            ])
+            ->add('datebondecommande', DateType::class, ['widget' => 'single_text'])
+            ->add('Fichier', FileType::class, [
+                'mapped' => false,
+                'required' => true,
+                'attr' => [
+                    'class' => 'filestyle',
+                    'data-buttonText' => ' Choisir',
+                    'data-buttonName' => "btn-success"
+                ]])
+            ->add('numeroDeBonDeCommandeClient', TextType::class, [
+                'required' => true,
+                'attr' => [
+                    'placeholder' => 'Référence du BC'
+                ]
+            ])
+            ->add('echeance', IntegerType::class, [
+                    'required' => true,
+                    'attr' => [
+                        'placeholder' => 'Durée en jours'
+                    ]]
+            );
     }
 
     public function configureOptions(OptionsResolver $resolver)
     {
-    	$resolver->setDefaults([
+        $resolver->setDefaults([
             'data_class' => 'AppBundle\Entity\BonDeCommandeClient'
         ]);
     }

@@ -39,7 +39,7 @@
 							<th scope="row">{{ chaque_devis.reference	 }} </th>
 							<td><strong>{{ chaque_devis.client.nom }} </strong></td>
 							<td>{% if chaque_devis.estCommande %} Commande {% elseif chaque_devis.draft %} Devis {% else %} Publié {% endif %}</td>
-							<td>{{ chaque_devis.titre }} <span class="badge" >{{ chaque_devis.produits |length }}</span> </td>
+							<td>{{ chaque_devis.titre }} <span class="badge" >{{ chaque_devis.abstractProduits |length }}</span> </td>
 							<td>{{ chaque_devis.datemodification |localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y")}} </td>
 							{% if chaque_devis.commercial %}
 								<td>{{ chaque_devis.commercial.prenom }} {{ chaque_devis.commercial.nom }} </td>

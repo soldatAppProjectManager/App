@@ -39,7 +39,12 @@
 						{{ form_label(form.faSurtaxe) }}
 						{{ form_errors(form.faSurtaxe) }}
 						{{ form_widget(form.faSurtaxe) }}						
-					</div>					
+					</div>
+					<div class="col-md-3 form-group {% if not form.faSurtaxe.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.modele) }}
+                        {{ form_errors(form.modele) }}
+                        {{ form_widget(form.modele) }}
+					</div>
 				</div>
 
 			</div>

@@ -2,15 +2,9 @@
 
 namespace AppBundle\Entity;
 
-use DateTime;
 use Doctrine\ORM\Mapping as ORM;
 use Doctrine\Common\Collections\ArrayCollection;
-use \PHPExcel;
-use \PHPExcel_IOFactory;
-use Doctrine\ORM\Mapping\OrderBy;
 use Symfony\Component\Validator\Constraints as Assert;
-use Doctrine\ORM\Mapping\ManyToMany;
-use Doctrine\ORM\Mapping\JoinTable;
 
 /**
  * Devis
@@ -18,25 +12,8 @@ use Doctrine\ORM\Mapping\JoinTable;
  * @ORM\Table(name="devis")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\DevisRepository")
  */
-class Devis
+class Devis extends AbstractDocumentClient
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
-
-    /**
-     * @var \User
-     *
-     * @ORM\ManyToOne(targetEntity="User")
-     * @ORM\JoinColumn(name="User_id", referencedColumnName="id")
-     */
-    private $commercial;
-
 
     /**
      * @var \Entete
@@ -45,14 +22,6 @@ class Devis
      * @ORM\JoinColumn(name="Entete_id", referencedColumnName="id")
      */
     private $introduction;
-
-    /**
-     * @var \Client
-     * @Assert\NotBlank()
-     * @ORM\ManyToOne(targetEntity="Client")
-     * @ORM\JoinColumn(name="Client_id", referencedColumnName="id")
-     */
-    private $client;
 
     /**
      * @var \TravailLivraison
@@ -126,7 +95,7 @@ class Devis
      *
      * @ORM\Column(name="numero", type="integer")
      */
-    private $numero;
+    private $numero = 0;
 
     /**
      * @var int
@@ -134,20 +103,6 @@ class Devis
      * @ORM\Column(name="numversion", type="integer")
      */
     private $numversion;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datecreation", type="datetime")
-     */
-    private $datecreation;
-
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="datemodification", type="datetime")
-     */
-    private $datemodification;
 
     /**
      * @var \DateTime
@@ -181,32 +136,9 @@ class Devis
     private $numdemande;
 
     /**
-     * @ORM\OneToMany(targetEntity="ProduitFusion", mappedBy="devis", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="ProduitFusion", mappedBy="documentClient", cascade={"persist"})
      */
     private $fusionProduits;
-
-    /**
-     * @ORM\OneToMany(targetEntity="ProduitDevis", mappedBy="devis", cascade={"persist"})
-     * @OrderBy({"numero" = "ASC"})
-     */
-    private $produits;
-
-    private $lignes;
-
-    /**
-     * Many Users have Many termes.
-     * @ManyToMany(targetEntity="TermeCommercial", inversedBy="devis")
-     * @JoinTable(name="devis_termes")
-     */
-    private $termes;
-
-    /**
-     * @var \destinataire
-     * @Assert\NotBlank()
-     * @ORM\ManyToOne(targetEntity="contact")
-     * @ORM\JoinColumn(name="contact_id", referencedColumnName="id")
-     */
-    private $destinataire;
 
     /**
      * @var \piedDePage
@@ -238,9 +170,9 @@ class Devis
 
     public function __construct($numero, $DeviseVenteDefaut, $CoutMoyenService, $TauxFinancementTresorerie, $Travailminimum, $commercial)
     {
-        $now = new DateTime("now");
+        $now = new \DateTime("now");
 
-        $this->produits = new ArrayCollection();
+        $this->abstractProduits = new ArrayCollection();
         $this->termes = new ArrayCollection();
         $this->BonDeCommandes = new ArrayCollection();
 
@@ -405,29 +337,11 @@ class Devis
         return $this->validite;
     }
 
-
-    public function getTotalHT()
-    {
-        $totalHT = 0;
-        /** @var ProduitDevis $produit */
-        foreach ($this->produits as $produit) {
-            if (!$produit->estFusionné() and !$produit->getOptionnel()) $totalHT += $produit->getSoustotalht();
-        }
-
-        /** @var ProduitFusion $produit */
-        foreach ($this->getFusionProduits() as $produit) {
-            if (!$produit->estVide() and !$produit->getOptionnel()) $totalHT += $produit->getSoustotalht();
-        }
-
-        return round($totalHT, 2);
-    }
-
-
     public function getTotalHTOptions()
     {
         $totalHT = 0;
 
-        //foreach ($this->produits as $produit) {if (!$produit->estFusionné() and $produit->getOptionnel()) $totalHT += $produit->getSoustotalht();}
+        //foreach ($this->produits as $produit) {if (!$produit->estFusionne() and $produit->getOptionnel()) $totalHT += $produit->getSoustotalht();}
 
         foreach ($this->getFusionProduits() as $produit) {
             if (!$produit->estVide() and $produit->getOptionnel()) $totalHT += $produit->getSoustotalht();
@@ -440,15 +354,14 @@ class Devis
     {
         $totalTVA = 0;
 
-        foreach ($this->produits as $produit) {
-            if (!$produit->estFusionné() and !$produit->getOptionnel()) $totalTVA += $produit->getSoustotalHT() * $produit->getTauxTVA();
-        }
-
-
-        // echo $totalTVA."<br>";
-
-        foreach ($this->getFusionProduits() as $produit) {
-            if (!$produit->estVide() and !$produit->getOptionnel()) $totalTVA += $produit->getTotalTVA();
+        foreach ($this->abstractProduits as $produit) {
+            if (!$produit->getOptionnel()){
+                if($produit instanceof ProduitDevis) {
+                    $totalTVA += $produit->getSoustotalHT() * $produit->getTauxTVA();
+                } else {
+                    $produit->getTotalTVA();
+                }
+            }
         }
 
         return round($totalTVA, 2);
@@ -459,7 +372,7 @@ class Devis
     {
         $totalTVA = 0;
 
-        //foreach ($this->produits as $produit) {if (!$produit->estFusionné() and !$produit->getOptionnel()) $totalTVA += $produit->getSoustotalHT()*$produit->getTauxTVA();}
+        //foreach ($this->produits as $produit) {if (!$produit->estFusionne() and !$produit->getOptionnel()) $totalTVA += $produit->getSoustotalHT()*$produit->getTauxTVA();}
 
         // echo $totalTVA."<br>";
 
@@ -484,9 +397,9 @@ class Devis
     {
         $margeBrute = 0;
 
-        foreach ($this->produits as $produit) {
+        foreach ($this->getProduits() as $produit) {
 
-            if ($produit->estFusionné()) {
+            if ($produit->estFusionne()) {
 
                 if (!$produit->getOptionnel()) $margeBrute += $produit->getProduitFusion()->getQuantite() * $produit->getMargeBrute($this->TauxFinancementTresorerie);
             } else {
@@ -506,8 +419,8 @@ class Devis
         $prixRevient = 0;
 
         /** @var ProduitDevis $produit */
-        foreach ($this->produits as $produit) {
-            if ($produit->estFusionné()) {
+        foreach ($this->getProduits() as $produit) {
+            if ($produit->estFusionne()) {
                 if (!$produit->getOptionnel()) $prixRevient += $produit->getProduitFusion()->getQuantite() * $produit->getTotalPrixDeRevient() / $this->getDeviseVente()->getTauxAchat();
             } else {
                 if (!$produit->getOptionnel()) {
@@ -522,9 +435,9 @@ class Devis
     public function getFraisFinanciers()
     {
         $FraisFinanciers = 0;
-
-        foreach ($this->produits as $produit) {
-            if ($produit->estFusionné()) {
+/** @var ProduitDevis $produit */
+        foreach ($this->getProduits() as $produit) {
+            if ($produit->estFusionne()) {
                 if (!$produit->getOptionnel())
                     $FraisFinanciers += $produit->getProduitFusion()->getQuantite() * $produit->getFraisFinanciers($this->TauxFinancementTresorerie);
             } else
@@ -542,8 +455,8 @@ class Devis
     {
         $resultatDeChange = 0;
 
-        foreach ($this->produits as $produit) {
-            if ($produit->estFusionné() and !$produit->getOptionnel()) $resultatDeChange += $produit->getProduitFusion()->getQuantite() * $produit->getResultatDeChange();
+        foreach ($this->getProduits() as $produit) {
+            if ($produit->estFusionne() and !$produit->getOptionnel()) $resultatDeChange += $produit->getProduitFusion()->getQuantite() * $produit->getResultatDeChange();
             else if (!$produit->getOptionnel()) $resultatDeChange += $produit->getResultatDeChange();
         }
 
@@ -568,99 +481,6 @@ class Devis
     public function getMargeNette()
     {
         return $this->getMargeBrute() - ($this->getTotalHT() * $this->getTauxChargesExploitation());
-    }
-
-    /**
-     * Add produit
-     *
-     * @param \AppBundle\Entity\ProduitDevis $produit
-     *
-     * @return Devis
-     */
-    public function addProduit(\AppBundle\Entity\ProduitDevis $produit)
-    {
-
-        if ($this->produits->isEmpty()) {
-            $produit->setNumero(1);
-        } else {
-            $produit->setNumero($this->produits->count());
-            $this->produits[] = $produit;
-        }
-        return $this;
-    }
-
-    /**
-     * Remove produit
-     *
-     * @param \AppBundle\Entity\ProduitDevis $produit
-     */
-    public function removeProduit(\AppBundle\Entity\ProduitDevis $produit)
-    {
-
-        $this->produits->removeElement($produit);
-    }
-
-    /**
-     * Get produits
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getProduits()
-    {
-        return $this->produits;
-    }
-
-    public function setProduits($produits)
-    {
-        return $this->produits = $produits;
-    }
-
-    /**
-     * Set commercial
-     *
-     * @param \AppBundle\Entity\Commercial $commercial
-     *
-     * @return Devis
-     */
-    public function setCommercial(\AppBundle\Entity\User $commercial = null)
-    {
-        $this->commercial = $commercial;
-
-        return $this;
-    }
-
-    /**
-     * Get commercial
-     *
-     * @return \AppBundle\Entity\Commercial
-     */
-    public function getCommercial()
-    {
-        return $this->commercial;
-    }
-
-    /**
-     * Set client
-     *
-     * @param \AppBundle\Entity\Client $client
-     *
-     * @return Devis
-     */
-    public function setClient(\AppBundle\Entity\Client $client = null)
-    {
-        $this->client = $client;
-
-        return $this;
-    }
-
-    /**
-     * Get client
-     *
-     * @return \AppBundle\Entity\Client
-     */
-    public function getClient()
-    {
-        return $this->client;
     }
 
     /**
@@ -888,31 +708,6 @@ class Devis
         return $this->piedDePage;
     }
 
-
-    /**
-     * Set destinataire
-     *
-     * @param \AppBundle\Entity\contact $destinataire
-     *
-     * @return Devis
-     */
-    public function setDestinataire(\AppBundle\Entity\contact $destinataire = null)
-    {
-        $this->destinataire = $destinataire;
-
-        return $this;
-    }
-
-    /**
-     * Get destinataire
-     *
-     * @return \AppBundle\Entity\contact
-     */
-    public function getDestinataire()
-    {
-        return $this->destinataire;
-    }
-
     public function setNumeros()
     {
         $i = 0;
@@ -928,61 +723,7 @@ class Devis
         }
     }
 
-    public function remonter($produit)
-    {
-        if (!$this->getProduits()->isEmpty() && !$this->estPremier($produit)) {
 
-            $precedent = $this->precedent($produit);
-
-            $produit->monter();
-            $precedent->descendre();
-        }
-    }
-
-    public function estDernier($produit)
-    {
-        if ($this->getProduits()->isEmpty()) {
-            return false;
-        } else {
-            return $produit->getNumero() == $this->getProduits()->count();
-        }
-    }
-
-    public function estPremier($produit)
-    {
-        if ($this->getProduits()->isEmpty()) {
-            return false;
-        } else {
-            return $produit->getNumero() == 1;
-        }
-    }
-
-    public function precedent($produit)
-    {
-
-        if (!$this->getProduits()->isEmpty() && !$this->estPremier($produit)) {
-            foreach ($this->getProduits() as $precedent) {
-                if ($precedent->getNumero() + 1 == $produit->getNumero()) {
-                    return $precedent;
-                }
-            }
-        }
-        return null;
-
-    }
-
-    public function getProduitSuivant($produit)
-    {
-
-        if (!$this->getProduits()->isEmpty() && !$this->estDernier($produit)) {
-            foreach ($this->getProduits() as $suivant) {
-                if ($suivant->getNumero() - 1 == $produit->getNumero()) {
-                    return $suivant;
-                }
-            }
-        }
-        return null;
-    }
 
     public function __toString()
     {
@@ -1027,17 +768,6 @@ class Devis
     public function getCoefficientChange()
     {
         return $this->getTauxFinancementTresorerie() * $this->getValidite() / 365 + 0.0075;
-    }
-
-    public function remonterSuivants($produit)
-    {
-
-        if (!$this->estDernier($produit)) {
-            $suivant = $this->getProduitSuivant($produit);
-            $this->remonterSuivants($suivant);
-            $suivant->monter();
-
-        }
     }
 
     public function reinitialiserNumeros()
@@ -1183,9 +913,12 @@ class Devis
 
     public function getRevenuParMetier()
     {
+        $revenu = [];
+        /** @var ProduitDevis $produit */
         foreach ($this->getProduits() as $produit) {
-
-            $quantité = $produit->estFusionné() ? $produit->getProduitFusion()->getQuantite() : 1;
+            if(!empty($produit->getMetier()))
+            {
+            $quantité = $produit->estFusionne() ? $produit->getProduitFusion()->getQuantite() : 1;
 
             if (isset($revenu[$produit->getMetier()->getNom()])) {
 
@@ -1199,13 +932,16 @@ class Devis
                 $revenu[$produit->getMetier()->getNom()]["nom"] = $produit->getMetier()->getNom();
             }
         }
+        }
         return $revenu;
     }
 
     public function getRevenuParTypeProduit()
     {
+        $revenu =[];
         foreach ($this->getProduits() as $produit) {
-            $quantité = $produit->estFusionné() ? $produit->getProduitFusion()->getQuantite() : 1;
+            $quantité = $produit->estFusionne() ? $produit->getProduitFusion()->getQuantite() : 1;
+            if(!empty($produit->getTypeproduit())) {
             if (isset($revenu[$produit->getTypeproduit()->getNom()])) {
                 $revenu[$produit->getTypeproduit()->getNom()]["revenu"] += $quantité * $produit->getSousTotalHT();
                 $revenu[$produit->getTypeproduit()->getNom()]["articles"] += 1;
@@ -1217,18 +953,22 @@ class Devis
                 $revenu[$produit->getTypeproduit()->getNom()]["nom"] = $produit->getTypeproduit()->getNom();
             }
         }
+        }
         return $revenu;
     }
 
     public function getMargeParMetier()
     {
+        $revenu = [];
         foreach ($this->getProduits() as $produit) {
-
+            if(!empty($produit->getMetier()))
+            {
             if (isset($revenu[$produit->getMetier()->getNom()])) {
                 $revenu[$produit->getMetier()->getNom()]["marge"] += $produit->getMargeBrute($this->getTauxFinancementTresorerie());
             } else {
                 $revenu[$produit->getMetier()->getNom()]["marge"] = $produit->getMargeBrute($this->getTauxFinancementTresorerie());
                 $revenu[$produit->getMetier()->getNom()]["nom"] = $produit->getMetier()->getNom();
+            }
             }
         }
         return $revenu;
@@ -1237,12 +977,14 @@ class Devis
     public function getMargeParTypeProduit()
     {
         foreach ($this->getProduits() as $produit) {
-
+            if(!empty($produit->getTypeproduit()))
+            {
             if (isset($revenu[$produit->getTypeproduit()->getNom()])) {
                 $revenu[$produit->getTypeproduit()->getNom()]["marge"] += $produit->getMargeBrute($this->getTauxFinancementTresorerie());
             } else {
                 $revenu[$produit->getTypeproduit()->getNom()]["marge"] = $produit->getMargeBrute($this->getTauxFinancementTresorerie());
                 $revenu[$produit->getTypeproduit()->getNom()]["nom"] = $produit->getTypeproduit()->getNom();
+            }
             }
         }
         return $revenu;
@@ -1251,8 +993,13 @@ class Devis
 
     public function getAchatsParFournisseur()
     {
+        $revenu = [];
+        /** @var ProduitDevis $produit */
         foreach ($this->getProduits() as $produit) {
-            $quantité = $produit->estFusionné() ? $produit->getProduitFusion()->getQuantite() : 1;
+            if($produit->isProduct()) {
+            $quantité = $produit->estFusionne() ? $produit->getProduitFusion()->getQuantite() : 1;
+            if(!empty($produit->getFournisseur()))
+            {
             if (isset($revenu[$produit->getFournisseur()->getNom()])) {
                 $revenu[$produit->getFournisseur()->getNom()]["revenu"] += $quantité * $produit->getPrixachatht() * $produit->getQuantite();
                 $revenu[$produit->getFournisseur()->getNom()]["articles"] += 1;
@@ -1263,6 +1010,8 @@ class Devis
                 $revenu[$produit->getFournisseur()->getNom()]["pieces"] = $quantité * $produit->getQuantite();
                 $revenu[$produit->getFournisseur()->getNom()]["nom"] = $produit->getFournisseur()->getNom();
                 $revenu[$produit->getFournisseur()->getNom()]["devise"] = $produit->getDeviseachat()->getSymbol();
+            }
+            }
             }
         }
         return $revenu;
@@ -1469,7 +1218,7 @@ class Devis
 
 
         foreach ($this->produits as $produit) {
-            if (!$produit->estFusionné() and !$produit->getOptionnel()) {
+            if (!$produit->estFusionne() and !$produit->getOptionnel()) {
 
                 $ligne = new LigneDevis();
                 $ligne->setDevis($this);
@@ -1490,4 +1239,28 @@ class Devis
     }
 
 
+
+    /**
+     * Add abstractProduit
+     *
+     * @param \AppBundle\Entity\AbstractProduit $abstractProduit
+     *
+     * @return Devis
+     */
+    public function addAbstractProduit(\AppBundle\Entity\AbstractProduit $abstractProduit)
+    {
+        $this->abstractProduits[] = $abstractProduit;
+
+        return $this;
+    }
+
+    /**
+     * Remove abstractProduit
+     *
+     * @param \AppBundle\Entity\AbstractProduit $abstractProduit
+     */
+    public function removeAbstractProduit(\AppBundle\Entity\AbstractProduit $abstractProduit)
+    {
+        $this->abstractProduits->removeElement($abstractProduit);
+    }
 }

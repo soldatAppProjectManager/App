@@ -99,29 +99,37 @@
     </tr>
   </thead>
   <tbody>
-    {% for produit in BonDeCommandeClient.produits %}
-      <tr>
-        <th scope="row">{{ produit.id }} </th>
-        <td id="{{ produit.id }}" class="quantite" {% if BonDeCommandeClient.verrouille  == false %} contenteditable="true"  {% endif %}><strong>{{ produit.quantite }}</strong></td>
-        <td>{{ produit.designation | capitalize | raw}} </td>
-        <td>{{ produit.description | capitalize | raw}} </td>
-        <td style="min-width:110px">
-            <select class="selectpicker form-control statutProduit" produit="{{produit.id}}">
-                  {% for statut in statuts %}
-                      <option value="{{statut.id}}" {% if statut.nom == produit.statut.nom %} selected {% endif %}>{{statut.nom}}</option>
-                  {% endfor %}            
-            </select>
-        </td>
+    {% for produit in BonDeCommandeClient.abstractproduits if not produit.estFusionne %}
+        <tr {% if not produit.isProduct  %} style="font-weight: bold" {% endif %} >
+            <th scope="row">{{ produit.id }}</th>
+            <td id="{{ produit.id }}" class="quantite" {% if BonDeCommandeClient.verrouille  == false %} contenteditable="true"  {% endif %}><strong>{{ produit.quantite }}</strong></td>
+            <td>{{ produit.designation | capitalize | raw}} </td>
+            <td>{{ produit.description | capitalize | raw}} </td>
+            <td style="min-width:110px">
+                {% if produit.isProduct %}
+                    <select class="selectpicker form-control statutProduit" produit="{{produit.id}}">
+                        {% for statut in statuts %}
+                            <option value="{{statut.id}}" {% if statut.nom == produit.statut.nom %} selected {% endif %}>{{statut.nom}}</option>
+                        {% endfor %}
+                    </select>
+                {% endif %}
+            </td>
 
-        <td style="min-width:110px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
-        <td>{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
-        <td style="min-width:250px">
-          <a type="button" class="btn btn-default" href="{{ url('ProduitBC_voir', {'id' : produit.id})}}">Voir</a>
-          {% if BonDeCommandeClient.verrouille  == false %} 
-          <a type="button" class="btn btn-warning" href="{{ url('ProduitBC_edit', {'id' : produit.id})}}">Editer</a>
-          <a type="button" class="btn btn-danger" href="{{ url('ProduitBC_delete_confirmed', {'id' : produit.id,'bcid' : BonDeCommandeClient.id})}}">Effacer</a>
-        {% endif %}
-        </td>
+            <td style="min-width:110px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
+            <td>{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
+            <td style="min-width:250px">
+                {% if not produit.isProduct %}
+                    <a type="button" class="btn btn-default" href="{{ url('ProduitFusion_voir', {'id' : produit.id})}}">Voir</a>
+                {% endif %}
+                {% if BonDeCommandeClient.verrouille  == false %}
+                    {% if produit.isProduct %}
+                        <a type="button" class="btn btn-warning" href="{{ url('ProduitBC_edit', {'id' : produit.id})}}">Editer</a>
+                    {% else %}
+                        <a type="button" class="btn btn-warning" href="{{ url('ProduitFusion_edit', {'id' : produit.id})}}">Editer</a>
+                    {% endif %}
+                    <a type="button" class="btn btn-danger" href="{{ url('ProduitBC_delete_confirmed', {'id' : produit.id,'bcid' : BonDeCommandeClient.id})}}">Effacer</a>
+                {% endif %}
+            </td>
         </tr>
     {% endfor %}
       <tr>

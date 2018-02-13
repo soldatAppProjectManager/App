@@ -1,0 +1,35 @@
+
+<div class="row">
+
+    <br>
+    <a type="button" title="Retour à liste des devis" href="{{ url('devis_list') }}" class="btn btn-default">Retour à la liste</a>
+    <a type="button" title="Finaliser un devis change la version du devis" class="btn btn-primary invisible" href="{{ url('devis_publier_pdf', {'id' : devis.id})}}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Publier le devis pdf</a>
+    <a type="button" title="Actualiser le taux de change de chaque produit"  class="btn btn-success invisible" href="{{ url('devis_actualisertauxachat', {'id' : devis.id})}}"><i class="fa fa-refresh" aria-hidden="true"></i> Actualiser le taux de change</a>
+</div>
+
+<div class="row">
+    <div style="float: left;" ><h1>Devis : <small>{{ devis }} </small></h1></div>
+    <div style="float: right;" >
+        <br>
+        <a type="button" class="btn btn-success btn-sm visible" href="{{ url('devis_nouvelleversion', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Nouvelle Version</a>
+        <a type="button" class="btn btn-warning btn-sm invisible" href="{{ url('devis_edit', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+        <a type="button" class="btn btn-primary btn-sm invisible" href="{{ url('devis_apercupdf', {'id' : devis.id})}}"  target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Aperçu en PDF</a>
+    </div>
+</div>
+
+<div class="row">
+    <ul class="nav nav-tabs">
+    <li  {% if type == 'apercu' %} class="active" {% endif %}  >
+        <a href="{{ url('devis_apercu', {'id' : devis.id})}}">Aperçu du devis</a>
+    </li>
+    <li  {% if type == 'produit' %} class="active" {% endif %}  >
+        <a href="{{ url('devis_produits', {'id' : devis.id})}}">Produits</a>
+    </li>
+    <li {% if type == 'fusion' %} class="active" {% endif %} >
+        <a href="{{ url('devis_fusions', {'id' : devis.id})}}">Produits de fusion</a>
+    </li>
+    <li {% if type == 'profitabilite' %} class="active" {% endif %} >
+        <a href="{{ url('devis_voirprofitabilite', {'id' : devis.id})}}">Analyse financière</a>
+    </li>
+</ul>
+</div>
