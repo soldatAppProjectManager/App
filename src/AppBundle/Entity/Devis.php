@@ -1488,7 +1488,7 @@ class Devis
         }
     }
 
-    public function getFirstDateFournisseur() {
+    public function getMinDateFournisseur() {
 
         $dates = [];
         /** @var ProduitDevis $produit */
