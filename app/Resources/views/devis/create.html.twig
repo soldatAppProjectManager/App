@@ -23,10 +23,10 @@
 					</span>
 						</div>
 					</div>
-					<div class="col-md-6 form-group {% if not form.destinataire.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.destinataire) }}
-						{{ form_errors(form.destinataire)}}
-						{{ form_widget(form.destinataire) }}
+					<div class="col-md-6 form-group {% if not form.contact.vars.valid %} has-error {% endif %}">
+						{{ form_label(form.contact) }}
+						{{ form_errors(form.contact)}}
+						{{ form_widget(form.contact) }}
 					</div>			
 				</div>
 				<div class="row">
@@ -138,19 +138,19 @@
                 success: function (data, status, object) {
                     if (data.code == 1) {
 
- 						$("#devis_form_destinataire").prop( "disabled", false );
+ 						$("#devis_form_contact").prop( "disabled", false );
                     	$.each(data.contacts, function (i, item) {
 						    
 						    if (item.defaut) {
-							    $('#devis_form_destinataire').append($('<option>', { 
+							    $('#devis_form_contact').append($('<option>', { 
 							        value: item.id,
 							        text : item.civilite + " " +item.prenom + " " + item.nom,
 							        selected : true
 							    }));
-						    	$('#devis_form_destinataire').prop( 'selected' );
+						    	$('#devis_form_contact').prop( 'selected' );
 							}
 							else {
-							    $('#devis_form_destinataire').append($('<option>', { 
+							    $('#devis_form_contact').append($('<option>', { 
 							        value: item.id,
 							        text : item.civilite + " " +item.prenom + " " + item.nom
 							    }));
@@ -221,8 +221,8 @@
 			// if (charges>=10) {
 			$('#progressbarcharges').addClass('progress-bar-danger');		
 			// }
-			$("#devis_form_destinataire").empty();
-			$("#devis_form_destinataire").prop( "disabled", true );
+			$("#devis_form_contact").empty();
+			$("#devis_form_contact").prop( "disabled", true );
         	var initialsize = {{travailmaximum}}*100;
         	$('#progressbarcharges').css('width',(100*initialsize/13)+'%');
          	$('#progressbarcharges').text("Charges : "+(initialsize).toFixed(2)+" %");
