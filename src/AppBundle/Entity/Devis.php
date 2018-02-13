@@ -263,7 +263,6 @@ class Devis
 
     function __clone()
     {
-
         $produits = $this->getProduits();
         $fusions = $this->getFusionProduits();
 
@@ -1489,5 +1488,17 @@ class Devis
         }
     }
 
+    public function getMinDateFournisseur() {
+
+        $dates = [];
+        /** @var ProduitDevis $produit */
+        foreach ($this->getProduits() as $produit) {
+            if(!empty( $produit->getDateoffre())) {
+                $dates[] = $produit->getDateoffre();
+            }
+        }
+
+        return min($dates);
+    }
 
 }
