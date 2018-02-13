@@ -395,7 +395,7 @@
 			if(!prixIsNaN()) $("#produit_devis_form_prixventeht").val(auFormat(arrondi(toFloat($("#produit_devis_form_tauxAchat").val())*
 		        													toFloat($("#produit_devis_form_prixachatht").val())*
 		        													(1+toFloat($('#produit_devis_form_fraisapproche').val())/100)/
-		        													(1-toFloat($("#produit_devis_form_marge").val())/100),0)));			
+		        													(1-toFloat($("#produit_devis_form_marge").val())/100), {{ produit.typeproduit.precision }})));
 		}
 
 		function setMarge(){
@@ -405,7 +405,7 @@
 		}
 
 		function setSousTotal(){
-		        $("#produit_devis_form_soustotalht").val(auFormat(arrondi(getPrixDeVenteClean()*$("#produit_devis_form_quantite").val(),0)));			
+		        $("#produit_devis_form_soustotalht").val(auFormat(arrondi(getPrixDeVenteClean()*$("#produit_devis_form_quantite").val(), {{ produit.typeproduit.precision }})));
 		}
 
 		function getPrixDeVenteClean(){
