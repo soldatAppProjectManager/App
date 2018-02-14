@@ -259,14 +259,21 @@ class Monnaie {
             libxml_use_internal_errors(false);
 
             $lignes = $dom->getElementsByTagName('tbody')->item(0)->getElementsByTagName('tr');
+
+            $label = $this->getCode() == "USD" ? "DOLLAR U.S.A" : strtoupper($this->getNom());
+
             foreach ($lignes as $ligne) {
-                if (strpos($ligne->childNodes->item(0)->childNodes->item(1)->getAttribute('title'),$this->getCode()) !== FALSE) {
-                    $val = floatval($formateur->parse($ligne->childNodes->item(2)->firstChild->textContent));
-                    $this->setTauxAchat($val * (1 - $commession));
-                    $this->setTauxVente($val * (1 + $commession));
+                if (strpos($ligne->nodeValue ,$label) !== FALSE) {
+                    $chaine = trim($ligne->nodeValue);
+                    $values = preg_split("/[\s]+/", $chaine);
+                    $val = floatval($formateur->parse(preg_replace('/[^0-9.,]+/', '', $values[count($values) - 2])));
+                    if($val > 0) {
+                        $this->setTauxAchat($val * (1 - $commession));
+                        $this->setTauxVente($val * (1 + $commession));
+                    }
                 }
             }
-        $this->setDateCreation($now);
+            $this->setDateCreation($now);
         }
     }
 
