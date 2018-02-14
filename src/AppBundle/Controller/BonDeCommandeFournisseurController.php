@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\BonDeCommandeFournisseur;
 use AppBundle\Entity\ProduitDevis;
+use AppBundle\Entity\statutProduit;
 use DateTime;
 
 use AppBundle\Entity\ProduitBC;
@@ -52,7 +53,9 @@ class BonDeCommandeFournisseurController extends Controller
     {
         $em = $this->getDoctrine()->getManager();
 
-        /** @var ProduitDevis $produit */
+        $statusCmdFournisseur = $em->getRepository(statutProduit::class)->find(1);
+
+        /** @var ProduitBC $produit */
         foreach ($bonDeCommandeClient->getProduits() as $produit) {
             $bcf = $em->getRepository(BonDeCommandeFournisseur::class)
                 ->findOneBy(['bonDeCommandeClient' => $bonDeCommandeClient, 'fournisseur' => $produit->getFournisseur()]);
@@ -60,9 +63,11 @@ class BonDeCommandeFournisseurController extends Controller
             if(empty($bcf)) {
                 $bcf = new BonDeCommandeFournisseur();
                 $bcf->setFournisseur($produit->getFournisseur())->setBonDeCommandeClient($bonDeCommandeClient)->setDate(new DateTime());
+                $bcf->setModele($bcf->getFournisseur()->getModele());
                 $em->persist($bcf);
             }
 
+            $produit->setStatut($statusCmdFournisseur);
             $bcf->addProduit($produit);
             $em->flush();
         }
@@ -73,7 +78,7 @@ class BonDeCommandeFournisseurController extends Controller
     /**
      * @Route("/apercu_pdf/{id}", name="BonDeCommandeFournisseur_apercu_pdf")
      */
-    public function apercuPdfaction(BonDeCommandeFournisseur $bonDeCommandeFournisseur) {
+    public function apercuPdfAction(BonDeCommandeFournisseur $bonDeCommandeFournisseur) {
         // instantiate and use the dompdf class
         $dompdf = new Dompdf();
         // $dompdf->loadHtml($devisHtml->getHtml());
@@ -94,4 +99,13 @@ class BonDeCommandeFournisseurController extends Controller
 
         return new BinaryFileResponse($filename);
     }
+
+    /**
+     * @Route("/reception/{id}", name="BonDeCommandeFournisseur_reception")
+     */
+    public function receptionAction(BonDeCommandeFournisseur $bonDeCommandeFournisseur) {
+        // replace this example code with whatever you need
+        return $this->render('BonDeCommandeFournisseur/reception.html.twig',array('bonDeCommandesFournisseur' => $bonDeCommandeFournisseur));
+    }
+
 }

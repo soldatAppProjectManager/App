@@ -140,4 +140,8 @@ class ProduitFusion extends AbstractProduit
         return $this->numero;
     }
 
+    public function getTypeproduit() {
+        $type = new TypeProduit();
+        return $type->setPrecision(2);
+    }
 }

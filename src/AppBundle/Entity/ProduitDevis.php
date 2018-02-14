@@ -300,9 +300,9 @@ class ProduitDevis extends AbstractProduit
 
     public function getPrixVenteHT()
     {
-        $prixVente = ($this->prixachatht * (1 + $this->fraisapproche) * ($this->getTauxAchat())) / (1 - $this->marge) / $this->getDevis()->getTauxVente();
+        $prixVente = ($this->prixachatht * (1 + $this->fraisapproche) * ($this->getTauxAchat())) / (1 - $this->marge) / $this->getDocumentClient()->getTauxVente();
 
-        if($this->getTypeproduit()->getPrecision() > 2) {
+        if($this->getTypeproduit() && $this->getTypeproduit()->getPrecision() > 2) {
             return round($prixVente, $this->getTypeproduit()->getPrecision(), PHP_ROUND_HALF_UP);
         } else {
             return round($prixVente, 0, PHP_ROUND_HALF_UP);

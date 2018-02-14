@@ -32,13 +32,16 @@
                 {% for bcf in bonDeCommandesFournisseur %}
                     <tr>
                         <th scope="row">{{ bcf.id }}  </th>
-                        <strong><td>{{ bcf.fournisseur.nom }} {{ bcf.produits|length }}</td></strong>
+                        <strong><td>{{ bcf.fournisseur.nom }}</td></strong>
                         <td>{{ bcf.date |date("d/m/Y")}} </td>
                         <td><a href="{{ path('BonDeCommandeClient_voir', {'id' : bcf.bonDeCommandeClient.id }) }}"  target="_blank" >{{ bcf.bonDeCommandeClient }}</a></td>
                         <td align="right"><strong>{{ bcf.getTotal | number_format(2, '.', ',')}} </strong></td>
                         <td>
-                            <a class="btn btn-primary" href="{{ path('BonDeCommandeFournisseur_apercu_pdf', {'id': bcf.id }) }}" target="_blank">
+                            <a class="btn btn-sm btn-primary" href="{{ path('BonDeCommandeFournisseur_apercu_pdf', {'id': bcf.id }) }}" target="_blank">
                                 <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Aperçu en PDF
+                            </a>
+                            <a class="btn btn-sm btn-warning" href="{{ path('BonDeCommandeFournisseur_apercu_pdf', {'id': bcf.id }) }}" target="_blank">
+                                <i class="fa fa-file-pdf-o" aria-hidden="true"></i> Réception
                             </a>
                         </td>
                     </tr>
