@@ -3,8 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\BonDeCommandeFournisseur;
+use AppBundle\Entity\BonDeReception;
 use AppBundle\Entity\ProduitDevis;
 use AppBundle\Entity\statutProduit;
+use AppBundle\Form\BonDeReceptionType;
 use DateTime;
 
 use AppBundle\Entity\ProduitBC;
@@ -104,8 +106,15 @@ class BonDeCommandeFournisseurController extends Controller
      * @Route("/reception/{id}", name="BonDeCommandeFournisseur_reception")
      */
     public function receptionAction(BonDeCommandeFournisseur $bonDeCommandeFournisseur) {
-        // replace this example code with whatever you need
-        return $this->render('BonDeCommandeFournisseur/reception.html.twig',array('bonDeCommandesFournisseur' => $bonDeCommandeFournisseur));
+
+        $bonDeReception = new BonDeReception();
+
+        $form = $this->createForm(BonDeReceptionType::class, $bonDeReception);
+
+        return $this->render('BonDeCommandeFournisseur/reception.html.twig',[
+            'bonDeCommandesFournisseur' => $bonDeCommandeFournisseur,
+            'form' => $form,
+        ]);
     }
 
 }
