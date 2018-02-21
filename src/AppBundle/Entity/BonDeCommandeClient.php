@@ -65,6 +65,12 @@ class BonDeCommandeClient extends AbstractDocumentClient
      */
     private $verrouille;
 
+
+    /**
+     * @ORM\OneToMany(targetEntity="BonDeCommandeFournisseur", mappedBy="bonDeCommandeFournisseur")
+     */
+    private $bonsDeCommandeFournisseur;
+
     /**
      * @param UploadedFile $fichier
      * @return $this
@@ -245,6 +251,7 @@ class BonDeCommandeClient extends AbstractDocumentClient
     {
         parent::__construct();
         $this->termes = new ArrayCollection();
+        $this->bonsDeCommandeFournisseur = new ArrayCollection();
     }
 
     /**
@@ -399,7 +406,7 @@ class BonDeCommandeClient extends AbstractDocumentClient
         $prixRevient = 0;
 
         /** @var ProduitBC $produit */
-        foreach ($this->abstractProduits as $produit) {
+        foreach ($this->getProduits() as $produit) {
         $prixRevient += $produit->getTotalPrixDeRevient();
         }
 
@@ -528,5 +535,62 @@ class BonDeCommandeClient extends AbstractDocumentClient
         foreach ($this->getProduits() as $produit) {if (!$produit->estLivré()) return false;}
         return true;
     }
+
+
+    /**
+     * Add bonsDeCommandeFournisseur
+     *
+     * @param \AppBundle\Entity\BonDeCommandeFournisseur $bonsDeCommandeFournisseur
+     *
+     * @return BonDeCommandeClient
+     */
+    public function addBonsDeCommandeFournisseur(\AppBundle\Entity\BonDeCommandeFournisseur $bonsDeCommandeFournisseur)
+    {
+        $this->bonsDeCommandeFournisseur[] = $bonsDeCommandeFournisseur;
+
+        return $this;
+    }
+
+    /**
+     * Remove bonsDeCommandeFournisseur
+     *
+     * @param \AppBundle\Entity\BonDeCommandeFournisseur $bonsDeCommandeFournisseur
+     */
+    public function removeBonsDeCommandeFournisseur(\AppBundle\Entity\BonDeCommandeFournisseur $bonsDeCommandeFournisseur)
+    {
+        $this->bonsDeCommandeFournisseur->removeElement($bonsDeCommandeFournisseur);
+    }
+
+    /**
+     * Get bonsDeCommandeFournisseur
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getBonsDeCommandeFournisseur()
+    {
+        return $this->bonsDeCommandeFournisseur;
+    }
+
+    /**
+     * @return string
+     */
+    public function getClassTitle() {
+        return "Bon de commande";
+    }
+
+    public function getRouteNameVoir()
+    {
+        return "BonDeCommandeClient_voir";
+    }
+
+    public function hasProductsInStock() {
+        /** @var ProduitBC $produit */
+        foreach ($this->getProduits() as $produit) {
+            if(in_array($produit->getStatut()->getId(), [2, 8])) {
+                return true;
+            }
+        }
+    }
+
 
 }

@@ -2,7 +2,9 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * BonDeReception
@@ -33,9 +35,21 @@ class BonDeReception
      */
     private $bonDeCommandeFournisseur;
 
+    /**
+     * @ORM\OneToMany(targetEntity="ReceptionProduit", mappedBy="bonDeReception", cascade={"persist"})
+     */
+    private $receptionProduits;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="FileSd", cascade={"persist"})
+     */
+    private $file;
+
+
     public function __construct()
     {
         $this->date = new \DateTime();
+        $this->receptionProduits = new ArrayCollection();
     }
 
     /**
@@ -94,5 +108,66 @@ class BonDeReception
     public function getBonDeCommandeFournisseur()
     {
         return $this->bonDeCommandeFournisseur;
+    }
+
+    /**
+     * Add receptionProduit
+     *
+     * @param \AppBundle\Entity\ReceptionProduit $receptionProduit
+     *
+     * @return BonDeReception
+     */
+    public function addReceptionProduit(\AppBundle\Entity\ReceptionProduit $receptionProduit)
+    {
+        if(!$this->receptionProduits->contains($receptionProduit)) {
+            $receptionProduit->setBonDeReception($this);
+            $this->receptionProduits[] = $receptionProduit;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove receptionProduit
+     *
+     * @param \AppBundle\Entity\ReceptionProduit $receptionProduit
+     */
+    public function removeReceptionProduit(\AppBundle\Entity\ReceptionProduit $receptionProduit)
+    {
+        $this->receptionProduits->removeElement($receptionProduit);
+    }
+
+    /**
+     * Get receptionProduits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getReceptionProduits()
+    {
+        return $this->receptionProduits;
+    }
+
+    /**
+     * Set file
+     *
+     * @param \AppBundle\Entity\FileSd $file
+     *
+     * @return BonDeReception
+     */
+    public function setFile(\AppBundle\Entity\FileSd $file = null)
+    {
+        $this->file = $file;
+
+        return $this;
+    }
+
+    /**
+     * Get file
+     *
+     * @return \AppBundle\Entity\FileSd
+     */
+    public function getFile()
+    {
+        return $this->file;
     }
 }

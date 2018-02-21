@@ -215,6 +215,10 @@
         
 		$( "form" ).submit(function() {
         	$("#produit_devis_form_deviseachat").prop('disabled',false);
+
+
+            var prixVente = $("#produit_devis_form_prixVenteHT").val().replace(' ', '');
+            $("#produit_devis_form_prixVenteHT").val(prixVente);
     	});
 
         $('#produit_devis_form_fournisseur').on('change', function (e) {

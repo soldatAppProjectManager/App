@@ -28,6 +28,10 @@ class Serie
      */
     private $numero;
 
+    /**
+     * @ORM\ManyToOne(targetEntity="ReceptionProduit", inversedBy="series" )
+     */
+    private $receptionProduit;
 
     /**
      * Get id
@@ -62,4 +66,34 @@ class Serie
     {
         return $this->numero;
     }
+
+    /**
+     * Set receptionProduit
+     *
+     * @param \AppBundle\Entity\ReceptionProduit $receptionProduit
+     *
+     * @return Serie
+     */
+    public function setReceptionProduit(\AppBundle\Entity\ReceptionProduit $receptionProduit = null)
+    {
+        $this->receptionProduit = $receptionProduit;
+
+        return $this;
+    }
+
+    /**
+     * Get receptionProduit
+     *
+     * @return \AppBundle\Entity\ReceptionProduit
+     */
+    public function getReceptionProduit()
+    {
+        return $this->receptionProduit;
+    }
+
+    public function __toString()
+    {
+        return $this->getNumero();
+    }
+
 }

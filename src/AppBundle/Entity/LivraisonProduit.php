@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * ReceptionProduit
+ * LivraisonProduit
  *
- * @ORM\Table(name="reception_produit")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\ReceptionProduitRepository")
+ * @ORM\Table(name="livraison_produit")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\LivraisonProduitRepository")
  */
-class ReceptionProduit
+class LivraisonProduit
 {
     /**
      * @var int
@@ -24,19 +24,14 @@ class ReceptionProduit
     /**
      * @var int
      *
-     * @ORM\Column(name="quantite", type="integer")
+     * @ORM\Column(name="quantite", type="smallint")
      */
     private $quantite;
 
     /**
-     * @var int
+     * @ORM\ManyToOne(targetEntity="Livraison", inversedBy="livraisonProduits" )
      */
-    public $numSeries;
-
-    /**
-     * @ORM\ManyToOne(targetEntity="BonDeReception", inversedBy="receptionProduits" )
-     */
-    private $bonDeReception;
+    private $livraison;
 
     /**
      * @ORM\ManyToOne(targetEntity="ProduitBC")
@@ -44,12 +39,7 @@ class ReceptionProduit
     private $produit;
 
     /**
-     * @ORM\ManyToOne(targetEntity="LieuStock")
-     */
-    private $lieuStock;
-
-    /**
-     * @ORM\OneToMany(targetEntity="Serie", mappedBy="receptionProduit", cascade={"persist"})
+     * @ORM\ManyToMany(targetEntity="Serie")
      */
     private $series;
 
@@ -68,7 +58,7 @@ class ReceptionProduit
      *
      * @param integer $quantite
      *
-     * @return ReceptionProduit
+     * @return LivraisonProduit
      */
     public function setQuantite($quantite)
     {
@@ -88,27 +78,27 @@ class ReceptionProduit
     }
 
     /**
-     * Set bonDeReception
+     * Set livraison
      *
-     * @param \AppBundle\Entity\BonDeReception $bonDeReception
+     * @param \AppBundle\Entity\Livraison $livraison
      *
-     * @return ReceptionProduit
+     * @return LivraisonProduit
      */
-    public function setBonDeReception(\AppBundle\Entity\BonDeReception $bonDeReception = null)
+    public function setLivraison(\AppBundle\Entity\Livraison $livraison = null)
     {
-        $this->bonDeReception = $bonDeReception;
+        $this->livraison = $livraison;
 
         return $this;
     }
 
     /**
-     * Get bonDeReception
+     * Get livraison
      *
-     * @return \AppBundle\Entity\BonDeReception
+     * @return \AppBundle\Entity\Livraison
      */
-    public function getBonDeReception()
+    public function getLivraison()
     {
-        return $this->bonDeReception;
+        return $this->livraison;
     }
 
     /**
@@ -116,7 +106,7 @@ class ReceptionProduit
      *
      * @param \AppBundle\Entity\ProduitBC $produit
      *
-     * @return ReceptionProduit
+     * @return LivraisonProduit
      */
     public function setProduit(\AppBundle\Entity\ProduitBC $produit = null)
     {
@@ -134,30 +124,6 @@ class ReceptionProduit
     {
         return $this->produit;
     }
-
-    /**
-     * Set lieuStock
-     *
-     * @param \AppBundle\Entity\LieuStock $lieuStock
-     *
-     * @return ReceptionProduit
-     */
-    public function setLieuStock(\AppBundle\Entity\LieuStock $lieuStock = null)
-    {
-        $this->lieuStock = $lieuStock;
-
-        return $this;
-    }
-
-    /**
-     * Get lieuStock
-     *
-     * @return \AppBundle\Entity\LieuStock
-     */
-    public function getLieuStock()
-    {
-        return $this->lieuStock;
-    }
     /**
      * Constructor
      */
@@ -171,14 +137,11 @@ class ReceptionProduit
      *
      * @param \AppBundle\Entity\Serie $series
      *
-     * @return ReceptionProduit
+     * @return LivraisonProduit
      */
     public function addSeries(\AppBundle\Entity\Serie $series)
     {
-        if(!$this->series->contains($series)){
-            $series->setReceptionProduit($this);
-            $this->series[] = $series;
-        }
+        $this->series[] = $series;
 
         return $this;
     }

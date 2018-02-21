@@ -11,7 +11,7 @@
 {% block body %}
 <div class="row">
       <br>
-      <a type="button" href="{{ url('devis_apercu', {'id' : ProduitFusion.documentClient.id})}}" class="btn btn-default">Retour au devis</a>
+      <a type="button" href="{{ url(ProduitFusion.documentClient.routeNameVoir, {'id' : ProduitFusion.documentClient.id})}}" class="btn btn-default">Retour au {{ ProduitFusion.documentClient.classTitle }}</a>
       <h1>Consulter un produit de fusion</h1>
         <p class="lead">Consulter un produit de fusion.</p>
 </div>

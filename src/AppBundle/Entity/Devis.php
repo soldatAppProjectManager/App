@@ -157,7 +157,7 @@ class Devis extends AbstractDocumentClient
     /**
      * @var \modeleDevis
      * @ORM\ManyToOne(targetEntity="modeleDevis")
-     * @ORM\JoinColumn(name="modeleDevis_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="modele_devis_id", referencedColumnName="id")
      */
     private $modele;
 
@@ -1273,5 +1273,14 @@ class Devis extends AbstractDocumentClient
     public function removeAbstractProduit(\AppBundle\Entity\AbstractProduit $abstractProduit)
     {
         $this->abstractProduits->removeElement($abstractProduit);
+    }
+
+    public function getClassTitle() {
+        return "Devis";
+    }
+
+    public function getRouteNameVoir()
+    {
+        return "devis_apercu";
     }
 }

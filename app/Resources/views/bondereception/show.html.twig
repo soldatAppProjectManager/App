@@ -1,0 +1,63 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Bon de reception N° {{ bonDeReception.id }}</h1>
+    <div class="row">
+        <div class="col-md-6">
+            <table class="table table-striped">
+                <tbody>
+                <tr>
+                    <th>Id</th>
+                    <td>{{ bonDeReception.id }}</td>
+                </tr>
+                <tr>
+                    <th>Date</th>
+                    <td>{% if bonDeReception.date %}{{ bonDeReception.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                </tr>
+                <tr>
+                    <th>Fournisseur</th>
+                    <td>
+                        {% if bonDeReception.bonDeCommandeFournisseur %}
+                            {{ bonDeReception.bonDeCommandeFournisseur.fournisseur }}
+                        {% endif %}
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+
+            <fieldset>
+                <legend>Produits</legend>
+                <table class="table table-striped">
+                    <thead>
+                    <th>Produit</th>
+                    <th>Qte</th>
+                    <th>Stock</th>
+                    </thead>
+                    <tbody>
+                    {% for reception in bonDeReception.receptionProduits %}
+                        <tr>
+                            <td>{{ reception.produit }}</td>
+                            <td>{{ reception.quantite }}</td>
+                            <td>{% if reception.lieuStock %}{{ reception.lieuStock.nom }}{% endif %}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </fieldset>
+            <a class="btn btn-default" href="{{ path('reception_index') }}">Retour à la liste</a>
+        </div>
+        {% if bonDeReception.file %}
+            <div class="col-md-6">
+                <a target="_blank" style="float: right;" class="btn btn-primary"
+                   href="{{ asset(bonDeReception.file.fullPath) }}">afficher en
+                    plein écran</a>
+                <br>
+                <br>
+                <div>
+                    <object data="{{ asset(bonDeReception.file.fullPath) }}" type="{{ bonDeReception.file.mimeType }}"
+                            width="100%" height="300px;"></object>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

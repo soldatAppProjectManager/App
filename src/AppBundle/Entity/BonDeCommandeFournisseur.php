@@ -219,4 +219,18 @@ class BonDeCommandeFournisseur
     {
         return $this->modele;
     }
+
+    public function isReceived() {
+        if($this->produits->count() == 0) {
+            return false;
+        }
+        /** @var ProduitBC $produit */
+        foreach ($this->getProduits() as $produit) {
+            if($produit->getStatut()->getId() !== 2) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 }

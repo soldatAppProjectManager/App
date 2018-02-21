@@ -12,6 +12,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class statutProduit
 {
+
+    const STATUT_A_LIVRER = [2, 8, 9];
+
     /**
      * @var int
      *

@@ -83,9 +83,7 @@ class BonDeCommandeClientController extends Controller
                         ->find($id);
 
         // replace this example code with whatever you need
-        return $this->render('BonDeCommandeClient/profitabilite.html.twig',array( 'BonDeCommandeClient' => $BonDeCommandeClient,
-
-                                                                    ));
+        return $this->render('BonDeCommandeClient/profitabilite.html.twig', array('BonDeCommandeClient' => $BonDeCommandeClient));
     }
 
     /**
@@ -332,6 +330,4 @@ class BonDeCommandeClientController extends Controller
 
         return $response;
     }
-
-
 }

@@ -2,233 +2,272 @@
 
 
 {% block stylesheets %}
-  {{ parent() }}
+    {{ parent() }}
 
-  <style>
+    <style>
 
-    table.pnl {
-    padding: 2px;
-    }
+        table.pnl {
+            padding: 2px;
+        }
 
-    table.charges {
-    padding: 0px;
-    }
+        table.charges {
+            padding: 0px;
+        }
 
-    table.pnl tr:nth-child(even){
-    background-color:#FFF; 
-    }
+        table.pnl tr:nth-child(even) {
+            background-color: #FFF;
+        }
 
-    table.pnl th    {
-    border-bottom: 2px solid #C8C8C8;
-    border-left: 0; 
-    border-right: 0; 
-    border-top: 0;            
-    }
+        table.pnl th {
+            border-bottom: 2px solid #C8C8C8;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
 
-    table.pnl td    {
-      border-bottom: 2px solid #C8C8C8;
-      border-left: 0; 
-      border-right: 0; 
-      border-top: 0;            
-    }
+        table.pnl td {
+            border-bottom: 2px solid #C8C8C8;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
 
-    table.charges td    {
-    border-bottom: 0;
-    border-left: 0; 
-    border-right: 0; 
-    border-top: 0;            
-    }
+        table.charges td {
+            border-bottom: 0;
+            border-left: 0;
+            border-right: 0;
+            border-top: 0;
+        }
 
-    td.positive {
-        color: MediumSeaGreen;
-    }
+        td.positive {
+            color: MediumSeaGreen;
+        }
 
-    td.negative {
-      color: red;
-    }
+        td.negative {
+            color: red;
+        }
 
 
-  </style>
+    </style>
 
-    {% endblock %}
+{% endblock %}
 
-{% block title %} Profitabilité {{BonDeCommandeClient}} {% endblock %}
+{% block title %} Profitabilité {{ BonDeCommandeClient }} {% endblock %}
 {% block body %}
 
 
 
-<div class="row">
-      <br>
-      <a type="button" title="Retour à liste des devis" href="{{ url('BonDeCommandeClient_list') }}" class="btn btn-default">Retour à la liste</a>
-      <h1>Consulter un Bon de commande </h1>
-        <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports </p>
-</div>
-<div class="row">
-  <ul class="nav nav-tabs"> 
-    <li >
-      <a href="{{ url('BonDeCommandeClient_voir', {'id' : BonDeCommandeClient.id})}}">Bon de commande</a>
-    </li> 
-    <li class="active">
-      <a href="{{ url('BonDeCommandeClient_voirprofitabilite', {'id' : BonDeCommandeClient.id})}}">Profitabilité</a>
-    </li> 
-  </ul>
-</div>
-<br>
-<div class="container-fluid">
-  <div class="row">
-    <div class="well" style="background-color: #fcfcfc; width:45%;">
-    <table class="table"  style="width:100%">
-    <tbody>
-      <tr>
-        <th style="min-width:15%">Nom du Client :</th>
-        <td align="left"><strong>{{BonDeCommandeClient.client.nom}}</strong></td>
-      </tr>
-      <tr>
-        <th style="min-width:10%">Nom du commercial :</th>
-        <td align="left">{{BonDeCommandeClient.commercial.prenom}} {{BonDeCommandeClient.commercial.nom}}</td>
-      </tr>
-      <tr>
-        <th style="min-width:10%">Référence du BonDeCommandeClient :</th>
-        <td align="left"><strong>{{ BonDeCommandeClient.numeroDeBonDeCommandeClient }}</strong> </td>
-      </tr>
-      <tr>
-        <th style="min-width:10%">Document client :</th>
-        <td align="left"><a href="{{ url('BonDeCommandeClient_fichier', {'id' : BonDeCommandeClient.id})}}">{{ BonDeCommandeClient.fichier }}</a> </td>
-      </tr>
-      <tr>
-        <th style="min-width:10%">Echéance du BC :</th>
-        <td align="left">{{BonDeCommandeClient.echeance}} Jours à compter de {{BonDeCommandeClient.datedereception |date('F j, Y, g:i a')}}</td>
-      </tr>
-          <tr>
-            <td></td>
-            <td>
-              <a type="button" class="btn btn-warning" href="{{ url('BonDeCommandeClient_edit', {'id' : BonDeCommandeClient.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-            </td>
-          </tr>      
-    </tbody>
-    </table>
+    <div class="row">
+        <br>
+        <a type="button" title="Retour à liste des devis" href="{{ url('BonDeCommandeClient_list') }}"
+           class="btn btn-default">Retour à la liste</a>
+        <h1>Consulter un Bon de commande </h1>
+        <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports
+        </p>
     </div>
-  </div>
-  <hr>
+    <div class="row">
+        <ul class="nav nav-tabs">
+            <li>
+                <a href="{{ url('BonDeCommandeClient_voir', {'id' : BonDeCommandeClient.id}) }}">Bon de commande</a>
+            </li>
+            <li class="active">
+                <a href="{{ url('BonDeCommandeClient_voirprofitabilite', {'id' : BonDeCommandeClient.id}) }}">Profitabilité</a>
+            </li>
+        </ul>
+    </div>
+    <br>
+    <div class="container-fluid">
+    <div class="row">
+        <div class="well" style="background-color: #fcfcfc; width:45%;">
+            <table class="table" style="width:100%">
+                <tbody>
+                <tr>
+                    <th style="min-width:15%">Nom du Client :</th>
+                    <td align="left"><strong>{{ BonDeCommandeClient.client.nom }}</strong></td>
+                </tr>
+                <tr>
+                    <th style="min-width:10%">Nom du commercial :</th>
+                    <td align="left">{{ BonDeCommandeClient.commercial.prenom }} {{ BonDeCommandeClient.commercial.nom }}</td>
+                </tr>
+                <tr>
+                    <th style="min-width:10%">Référence du BonDeCommandeClient :</th>
+                    <td align="left"><strong>{{ BonDeCommandeClient.numeroDeBonDeCommandeClient }}</strong></td>
+                </tr>
+                <tr>
+                    <th style="min-width:10%">Document client :</th>
+                    <td align="left"><a
+                                href="{{ url('BonDeCommandeClient_fichier', {'id' : BonDeCommandeClient.id}) }}">{{ BonDeCommandeClient.fichier }}</a>
+                    </td>
+                </tr>
+                <tr>
+                    <th style="min-width:10%">Echéance du BC :</th>
+                    <td align="left">{{ BonDeCommandeClient.echeance }} Jours à compter
+                        de {{ BonDeCommandeClient.datedereception |date('F j, Y, g:i a') }}</td>
+                </tr>
+                <tr>
+                    <td></td>
+                    <td>
+                        <a type="button" class="btn btn-warning"
+                           href="{{ url('BonDeCommandeClient_edit', {'id' : BonDeCommandeClient.id}) }}"><i
+                                    class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+    <hr>
 
 
+    {# <div class="well" style="background-color: #fcfcfc;"> #}
+    <div class="row">
+        <table class="pnl" style="width:100%">
+            <tbody>
+            <tr>
+                <th style="min-width:10%; text-align: center;">Calcul</th>
+                <th style="min-width:10%; text-align: right;">Rubrique</th>
+                <th style="text-align: right;">Produits</th>
+                <th style="text-align: right;">Charges</th>
+                <th style="text-align: center;">Résultats</th>
+                <th style="text-align: center;">Taux</th>
+                <th style="text-align: center;">Information</th>
+            </tr>
 
+            <tr>
+                <td style="text-align: center;">A</td>
+                <th style="min-width:15%; text-align: right;">Chiffre d'affaire</th>
+                <td align="right">{{ BonDeCommandeClient.TotalHT | number_format(2, '.', ',') }} Dh</td>
+                <td></td>
+                <td style="text-align:center;"></td>
+                <td align="center"
+                        {% if (BonDeCommandeClient.MarkUP*100) < 10 %}
+                    class="negative"
+                {% else %}
+                    class="positive"
+                        {% endif %}>
+                    Markup : {{ (BonDeCommandeClient.MarkUP*100) | number_format(2, '.', ',') }}%
+                </td>
+                <td style="text-align: center;"></td>
+            </tr>
 
+            <tr title="Inclus dans la marge brute">
+                <td style="text-align: center;">B</td>
+                {% if BonDeCommandeClient.getResultatDeChange() >= 0 %}
+                    <th style="min-width:15%; text-align: right;">Gain de Change</th>
+                    <td align="right">{{ (BonDeCommandeClient.getResultatDeChange()) | number_format(2, ',', '.') }}Dh
+                    </td>
+                    <td align="right"></td>
+                    <th style="text-align:center;"></th>
+                    <td align="center"
+                        {% if ((BonDeCommandeClient.getResultatDeChange()/BonDeCommandeClient.TotalHT)*100) <= 0.5 %}class="negative"
+                        {% else %}class="positive"{% endif %}>
+                        {{ ((BonDeCommandeClient.getResultatDeChange()/BonDeCommandeClient.TotalHT)*100) | number_format(2, '.', ',') }}
+                        %
+                    </td>
 
+                {% else %}
+                    <th style="min-width:15%; text-align: right;">Perte de Change</th>
+                    <td align="right"></td>
+                    <td align="right">{{ ((-1) * BonDeCommandeClient.getResultatDeChange()) | number_format(2, '.', ',') }}
+                        Dh
+                    </td>
+                    <th style="text-align:center;"></th>
+                    <td align="center"
+                        class="negative">{{ (BonDeCommandeClient.TauxResultatDeChange * 100 ) | number_format(2, '.', ',') }}
+                        %
+                    </td>
+                {% endif %}
+                <td style="text-align: center;">Dernière mise à jour des taux :
+                    <br>{{ BonDeCommandeClient.devis.datemiseajourchange| localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y") }}
+                </td>
+            </tr>
 
+            <tr>
+                <td style="text-align: center;">C</td>
+                <th style="min-width:15%; text-align: right;">Charges Financières</th>
+                <td align="right"></td>
+                <td align="right">{{ (BonDeCommandeClient.FraisFinanciers)| number_format(2, '.', ',') }} Dh</td>
+                <th style="text-align:center;"></th>
+                <td align="center" {% if (BonDeCommandeClient.TauxFraisFinanciers*100) <= 0 %}class="positive"
+                    {% else %}class="negative"{% endif %}>{{ (BonDeCommandeClient.TauxFraisFinanciers*100) | number_format(2, '.', ',') }}
+                    %
+                </td>
+                <td align="center">Recouvrement moyen : {{ BonDeCommandeClient.client.delaipaiementconstate }}Jours
+                </td>
+            </tr>
 
+            <tr>
+                <td style="text-align: center;">D</td>
+                <th style="min-width:15%; text-align: right;">Achats revendus</th>
+                <td align="right"></td>
+                <td align="right">{{ BonDeCommandeClient.getTotalPrixRevient()| number_format(2, '.', ',') }} Dh</td>
+                <th style="text-align:center;"></th>
+                <td align="center">{{ (BonDeCommandeClient.getTotalPrixRevient()/BonDeCommandeClient.TotalHT*100) | number_format(2, '.', ',') }}
+                    %
+                </td>
+                <td align="center"></td>
+            </tr>
 
-  {# <div class="well" style="background-color: #fcfcfc;"> #}
-  <div class="row">
-    <table class="pnl"  style="width:100%">
-        <tbody>
-          <tr>
-            <th style="min-width:10%; text-align: center;">Calcul</th>
-            <th style="min-width:10%; text-align: right;">Rubrique</th>
-            <th style="text-align: right;">Produits</th>
-            <th style="text-align: right;">Charges</th>
-            <th style="text-align: center;">Résultats</th>
-            <th style="text-align: center;">Taux</th>
-            <th style="text-align: center;">Information</th>
-          </tr>
+            <tr>
+                <td style="text-align: center;">Mb = A - (C + D)</td>
+                <th style="min-width:15%; text-align: right;">Marge brute</th>
+                <td align="right"></td>
+                <td></td>
+                <th style="text-align:center;">{{ BonDeCommandeClient.MargeBrute | number_format(2, '.', ',') }} Dh</th>
+                <td align="center" {% if (BonDeCommandeClient.TauxMargeBrute*100) < 10 %}class="negative"
+                    {% else %}class="positive"{% endif %}> {{ (BonDeCommandeClient.TauxMargeBrute*100) | number_format(2, '.', ',') }}
+                    %
+                </td>
+                <td></td>
 
-          <tr>
-            <td style="text-align: center;">A </td>
-            <th style="min-width:15%; text-align: right;" >Chiffre d'affaire</th>
-            <td align="right">{{BonDeCommandeClient.TotalHT | number_format(2, '.', ',')}} Dh</td>
-            <td></td>
-            <td style="text-align:center;"></td>    
-            <td align="center" {% if (BonDeCommandeClient.MarkUP*100) < 10 %}class="negative"{% else %}class="positive"{% endif %}>Markup : {{(BonDeCommandeClient.MarkUP*100) | number_format(2, '.', ',')}}%</td>
-            <td style="text-align: center;"></td>
-          </tr>
-
-          <tr title="Inclus dans la marge brute">
-            <td style="text-align: center;">B </td>
-            {% if BonDeCommandeClient.getResultatDeChange() >= 0 %}
-              <th style="min-width:15%; text-align: right;" >Gain de Change</th>
-              <td align="right">{{ (BonDeCommandeClient.getResultatDeChange()) | number_format(2, ',', '.')}} Dh</td>
-              <td align="right"></td>
-              <th style="text-align:center;"></th>    
-              <td align="center" {% if ((BonDeCommandeClient.getResultatDeChange()/BonDeCommandeClient.TotalHT)*100) <= 0.5 %}class="negative"{% else %}class="positive"{% endif %}>
-                {{((BonDeCommandeClient.getResultatDeChange()/BonDeCommandeClient.TotalHT)*100) | number_format(2, '.', ',')}}%
-              </td>
-
-            {% else %}
-              <th style="min-width:15%; text-align: right;">Perte de Change</th>
-              <td align="right"></td>
-              <td align="right">{{ ((-1) * BonDeCommandeClient.getResultatDeChange()) | number_format(2, '.', ',')}} Dh</td>  
-              <th style="text-align:center;"></th>    
-              <td align="center" class="negative">{{ (BonDeCommandeClient.TauxResultatDeChange * 100 ) | number_format(2, '.', ',') }} %</td>
-            {% endif %}
-            <td style="text-align: center;">Dernière mise à jour des taux : <br>{{ BonDeCommandeClient.devis.datemiseajourchange| localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y") }}
-            </td>
-          </tr>
-
-          <tr>
-            <td style="text-align: center;">C </td>
-            <th style="min-width:15%; text-align: right;">Charges Financières</th>
-            <td align="right"></td>
-            <td align="right">{{(BonDeCommandeClient.FraisFinanciers)| number_format(2, '.', ',')}} Dh</td>
-            <th style="text-align:center;"></th>    
-            <td align="center" {% if (BonDeCommandeClient.TauxFraisFinanciers*100) <= 0 %}class="positive"{% else %}class="negative"{% endif %}>{{(BonDeCommandeClient.TauxFraisFinanciers*100) | number_format(2, '.', ',')}}%</td>
-            <td align="center">Recouvrement moyen : {{BonDeCommandeClient.client.delaipaiementconstate}} Jours</td>
-          </tr>
-
-          <tr>
-            <td style="text-align: center;">D </td>
-            <th style="min-width:15%; text-align: right;">Achats revendus</th>
-            <td align="right"></td>
-            <td align="right">{{BonDeCommandeClient.getTotalPrixRevient()| number_format(2, '.', ',')}} Dh</td>
-            <th style="text-align:center;"></th>    
-            <td align="center">{{(BonDeCommandeClient.getTotalPrixRevient()/BonDeCommandeClient.TotalHT*100) | number_format(2, '.', ',')}}%</td>
-            <td align="center"></td>
-          </tr>
-
-          <tr>
-            <td style="text-align: center;">Mb = A - (C + D) </td>
-            <th style="min-width:15%; text-align: right;">Marge brute</th>
-            <td align="right"></td>    
-            <td></td>    
-            <th style="text-align:center;">{{BonDeCommandeClient.MargeBrute | number_format(2, '.', ',')}} Dh</th>
-            <td align="center" {% if (BonDeCommandeClient.TauxMargeBrute*100) < 10 %}class="negative"{% else %}class="positive"{% endif %}> {{(BonDeCommandeClient.TauxMargeBrute*100) | number_format(2, '.', ',')}}%</td>
-            <td></td>
-
-          </tr>
-          <tr>
-            <td style="text-align: center;">E </td>
-            <th style="min-width:15%; text-align: right;">Charge d'exploitation</th>
-            <td align="right"></td>
-            <td align="right">{{BonDeCommandeClient.ValeurChargesDExploitation | number_format(2, '.', ',')}} Dh</td>
-            <td align="right"></td>    
-            <td align="center">{{(BonDeCommandeClient.getTauxChargesExploitation*100) | number_format(2, '.', ',')}}%</td>
-            <td>
-              <span class="label label-default">{{ BonDeCommandeClient.devis.TravailAvantVente.nom }}</span>
-              <span class="label label-default">{{ BonDeCommandeClient.devis.TravailCommercial.nom }}</span>
-              <span class="label label-default">{{ BonDeCommandeClient.devis.TravailImport.nom }}</span>
-              <span class="label label-default">{{ BonDeCommandeClient.devis.TravailLivraison.nom }}</span>
-            </td>
-          </tr>
-           <tr>
-            <td style="text-align: center;">Mn = Mb - E </td>
-            <th style="min-width:15%; text-align: right;">Marge Nette</th>
-            <td align="right"></td>    
-            <td align="right"></td>    
-            <th style="text-align:center;">{{BonDeCommandeClient.MargeNette | number_format(2, '.', ',')}} Dh</th>
-            <td align="center" {% if (BonDeCommandeClient.TauxMargeNette*100)  < 7 %}class="negative"{% else %}class="positive"{% endif %}>{{(BonDeCommandeClient.TauxMargeNette*100) | number_format(2, '.', ',')}}%</td>
-            <td></td>
-            <td></td>
-          </tr>
-           <tr>
-            <td style="text-align: center;">Mnn = Mn * 0.7 </td>
-            <th style="min-width:15%;  text-align: right;">Marge Nette apres impôts</th>
-            <td align="right"></td>    
-            <td align="right"></td>    
-            <th style="text-align:center;">{{(BonDeCommandeClient.MargeNette*0.7) | number_format(2, '.', ',')}} Dh</th>
-            <td align="center" {% if (100*BonDeCommandeClient.MargeNette*0.7/BonDeCommandeClient.TotalHT) < 5 %}class="negative"{% else %}class="positive"{% endif %}>{{(100*BonDeCommandeClient.MargeNette*0.7/BonDeCommandeClient.TotalHT) | number_format(2, '.', ',')}}%</td>
-            <td></td>
-          </tr>
-        </tbody>
-    </table>
-  </div>
-  <br><br>
+            </tr>
+            <tr>
+                <td style="text-align: center;">E</td>
+                <th style="min-width:15%; text-align: right;">Charge d'exploitation</th>
+                <td align="right"></td>
+                <td align="right">{{ BonDeCommandeClient.ValeurChargesDExploitation | number_format(2, '.', ',') }}Dh
+                </td>
+                <td align="right"></td>
+                <td align="center">{{ (BonDeCommandeClient.getTauxChargesExploitation*100) | number_format(2, '.', ',') }}
+                    %
+                </td>
+                <td>
+                    <span class="label label-default">{{ BonDeCommandeClient.devis.TravailAvantVente.nom }}</span>
+                    <span class="label label-default">{{ BonDeCommandeClient.devis.TravailCommercial.nom }}</span>
+                    <span class="label label-default">{{ BonDeCommandeClient.devis.TravailImport.nom }}</span>
+                    <span class="label label-default">{{ BonDeCommandeClient.devis.TravailLivraison.nom }}</span>
+                </td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">Mn = Mb - E</td>
+                <th style="min-width:15%; text-align: right;">Marge Nette</th>
+                <td align="right"></td>
+                <td align="right"></td>
+                <th style="text-align:center;">{{ BonDeCommandeClient.MargeNette | number_format(2, '.', ',') }} Dh</th>
+                <td align="center" {% if (BonDeCommandeClient.TauxMargeNette*100)  < 7 %}class="negative"
+                    {% else %}class="positive"{% endif %}>{{ (BonDeCommandeClient.TauxMargeNette*100) | number_format(2, '.', ',') }}
+                    %
+                </td>
+                <td></td>
+                <td></td>
+            </tr>
+            <tr>
+                <td style="text-align: center;">Mnn = Mn * 0.7</td>
+                <th style="min-width:15%;  text-align: right;">Marge Nette apres impôts</th>
+                <td align="right"></td>
+                <td align="right"></td>
+                <th style="text-align:center;">{{ (BonDeCommandeClient.MargeNette*0.7) | number_format(2, '.', ',') }}
+                    Dh
+                </th>
+                <td align="center"
+                    {% if (100*BonDeCommandeClient.MargeNette*0.7/BonDeCommandeClient.TotalHT) < 5 %}class="negative"
+                    {% else %}class="positive"{% endif %}>{{ (100*BonDeCommandeClient.MargeNette*0.7/BonDeCommandeClient.TotalHT) | number_format(2, '.', ',') }}
+                    %
+                </td>
+                <td></td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+    <br><br>
 {% endblock %}

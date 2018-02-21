@@ -257,6 +257,20 @@ class ProduitBC extends AbstractProduit
     }
 
     /**
+     * @ORM\OneToMany(targetEntity="ReceptionProduit", mappedBy="produit")
+     */
+    private $receptionProduits;
+
+    /**
+     * @ORM\OneToMany(targetEntity="LivraisonProduit", mappedBy="produit")
+     */
+    private $livraisonProduits;
+
+    public function getReceptionProduits() {
+        return $this->receptionProduits;
+    }
+
+    /**
      * Set devisevente
      *
      * @param \AppBundle\Entity\Monnaie $devisevente
@@ -571,4 +585,95 @@ class ProduitBC extends AbstractProduit
         return $qte;
     }
 
+
+    public function __toString()
+    {
+        return $this->getDesignation();
+    }
+
+    public function getResteReception() {
+        $reste = $this->getQuantite();
+        /** @var ReceptionProduit $reception */
+        foreach ($this->receptionProduits as $reception) {
+            $reste= $reste - $reception->getQuantite();
+        }
+
+        return $reste;
+    }
+
+    public function getResteLivraison() {
+        $reste = $this->getQuantite();
+        /** @var LivraisonProduit $livraisonProduit */
+        foreach ($this->livraisonProduits as $livraisonProduit) {
+            $reste= $reste - $livraisonProduit->getQuantite();
+        }
+
+        return $reste;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->receptionProduits = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add receptionProduit
+     *
+     * @param \AppBundle\Entity\ReceptionProduit $receptionProduit
+     *
+     * @return ProduitBC
+     */
+    public function addReceptionProduit(\AppBundle\Entity\ReceptionProduit $receptionProduit)
+    {
+        $this->receptionProduits[] = $receptionProduit;
+
+        return $this;
+    }
+
+    /**
+     * Remove receptionProduit
+     *
+     * @param \AppBundle\Entity\ReceptionProduit $receptionProduit
+     */
+    public function removeReceptionProduit(\AppBundle\Entity\ReceptionProduit $receptionProduit)
+    {
+        $this->receptionProduits->removeElement($receptionProduit);
+    }
+
+    /**
+     * Add livraisonProduit
+     *
+     * @param \AppBundle\Entity\LivraisonProduit $livraisonProduit
+     *
+     * @return ProduitBC
+     */
+    public function addLivraisonProduit(\AppBundle\Entity\LivraisonProduit $livraisonProduit)
+    {
+        $this->livraisonProduits[] = $livraisonProduit;
+
+        return $this;
+    }
+
+    /**
+     * Remove livraisonProduit
+     *
+     * @param \AppBundle\Entity\LivraisonProduit $livraisonProduit
+     */
+    public function removeLivraisonProduit(\AppBundle\Entity\LivraisonProduit $livraisonProduit)
+    {
+        $this->livraisonProduits->removeElement($livraisonProduit);
+    }
+
+    /**
+     * Get livraisonProduits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLivraisonProduits()
+    {
+        return $this->livraisonProduits;
+    }
 }

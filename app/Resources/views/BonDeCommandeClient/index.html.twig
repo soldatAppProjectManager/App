@@ -5,9 +5,6 @@
 
     <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet"/>
 
-
-
-
 {% endblock %}
 
 {% block body %}
@@ -42,27 +39,42 @@
                         <td align="right">
                             <strong>{{ chaque_BonDeCommandeClient.getTotalHT | number_format(2, '.', ',') }} </strong>
                         </td>
-                        <td style="width:19%; vertical-align:middle;">
-                            <a type="button" class="label label-default"
+                        <td>
+                            <a class="btn btn-xs btn-info"
                                href="{{ url('BonDeCommandeClient_voir', {'id' : chaque_BonDeCommandeClient.id}) }}">Voir</a>
-                            <a type="button" class="label label-warning"
+                            <a class="btn btn-xs btn-warning"
                                href="{{ url('BonDeCommandeClient_edit', {'id' : chaque_BonDeCommandeClient.id}) }}">Edit</a>
-                            {% if chaque_BonDeCommandeClient.verrouille  == false %}
-                                <a type="button" class="label label-danger"
-                                   href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"}) }}">
-                                    <i class="fa fa-lock" aria-hidden="true"></i> verrouiller</a>
-                            {% else %}
-                                <a type="button"
-                                        href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"}) }}"
-                                        class="label label-primary"><i class="fa fa-unlock" aria-hidden="true"></i>
-                                    déverouiller
-                                </a>
-                            <a type="button" class="label label-info"
-                               href="{{ url('BonDeCommandeFournisseur_generate', {'id' : chaque_BonDeCommandeClient.id}) }}">BC
-                                fournisseur</a>
-                            {% endif %}
-                            <a type="button" class="label label-danger"
-                               href="{{ url('BonDeCommandeClient_delete', {'id' : chaque_BonDeCommandeClient.id}) }}">Suppr</a>
+                            <div class="dropdown">
+                                <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdownMenu1"
+                                        data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                    Autre actions
+                                    <span class="caret"></span>
+                                </button>
+                                <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                    {% if chaque_BonDeCommandeClient.verrouille  == false %}
+                                        <li>
+                                            <a href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"}) }}">Verrouiller</a>
+                                        </li>
+                                    {% else %}
+                                        <li>
+                                            <a href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_BonDeCommandeClient.id,'source' : "index"}) }}">Déverouiller</a>
+                                        </li>
+                                        <li>
+                                            <a href="{{ url('BonDeCommandeFournisseur_generate', {'id' : chaque_BonDeCommandeClient.id}) }}">BC
+                                                fournisseur</a>
+                                        </li>
+                                    {% endif %}
+                                    {% if chaque_BonDeCommandeClient.hasProductsInStock %}
+                                        <li>
+                                            <a href="{{ url('livraison_bc', {'id' : chaque_BonDeCommandeClient.id}) }}">Faire
+                                                une livraison</a></li>
+                                    {% endif %}
+                                    <li role="separator" class="divider"></li>
+                                    <li>
+                                        <a href="{{ url('BonDeCommandeClient_delete', {'id' : chaque_BonDeCommandeClient.id}) }}">Suppr</a>
+                                    </li>
+                                </ul>
+                            </div>
                         </td>
                     </tr>
                 {% endfor %}

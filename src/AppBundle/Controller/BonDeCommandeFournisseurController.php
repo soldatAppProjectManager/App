@@ -5,6 +5,8 @@ namespace AppBundle\Controller;
 use AppBundle\Entity\BonDeCommandeFournisseur;
 use AppBundle\Entity\BonDeReception;
 use AppBundle\Entity\ProduitDevis;
+use AppBundle\Entity\ReceptionProduit;
+use AppBundle\Entity\Serie;
 use AppBundle\Entity\statutProduit;
 use AppBundle\Form\BonDeReceptionType;
 use DateTime;
@@ -105,15 +107,65 @@ class BonDeCommandeFournisseurController extends Controller
     /**
      * @Route("/reception/{id}", name="BonDeCommandeFournisseur_reception")
      */
-    public function receptionAction(BonDeCommandeFournisseur $bonDeCommandeFournisseur) {
+    public function receptionAction(BonDeCommandeFournisseur $bonDeCommandeFournisseur, Request $request) {
 
         $bonDeReception = new BonDeReception();
 
+        /** @var ProduitBC$produit */
+        foreach ($bonDeCommandeFournisseur->getProduits() as $produit) {
+            if($produit->getResteReception() > 0)
+            {
+                $recPro = new ReceptionProduit();
+                $recPro->setProduit($produit);
+                $recPro->setQuantite($produit->getResteReception());
+                $bonDeReception->addReceptionProduit($recPro);
+            }
+        }
+
         $form = $this->createForm(BonDeReceptionType::class, $bonDeReception);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $bonDeReception->setBonDeCommandeFournisseur($bonDeCommandeFournisseur);
+            $em = $this->getDoctrine()->getManager();
+            if($form->getData()->getFile()->getFile() !== null) {
+                $bonDeReception->getFile()->upload($this->getParameter('repertoire_bl_fournisseur'));
+            } else {
+                $bonDeReception->setFile(null);
+            }
+
+            /** @var ReceptionProduit $receptionProduit */
+            foreach ($bonDeReception->getReceptionProduits() as $receptionProduit) {
+                if($receptionProduit->getQuantite() === 0) {
+                    $bonDeReception->removeReceptionProduit($receptionProduit);
+                    continue;
+                } elseif ($receptionProduit->getQuantite() === $receptionProduit->getProduit()->getQuantite()) {
+                    $receptionProduit->getProduit()->setStatut($em->getRepository(statutProduit::class)->find(2));
+                } else {
+                    $receptionProduit->getProduit()->setStatut($em->getRepository(statutProduit::class)->find(8));
+                }
+
+                $nSeries = explode(",", $receptionProduit->numSeries);
+                foreach ($nSeries as $ns) {
+                    $serie = new Serie();
+                    $serie->setNumero($ns);
+                    $receptionProduit->addSeries($serie);
+                }
+            }
+
+            if($bonDeReception->getReceptionProduits()->count() > 0) {
+                $em->persist($bonDeReception);
+                $em->flush();
+                $this->addFlash('notice', 'Bon de réception ajouté');
+            } else {
+                $this->addFlash('error', 'Bon de réception refusé : aucun produit reçu');
+            }
+
+            return $this->redirectToRoute('reception_show',['id' => $bonDeReception->getId()]);
+        }
 
         return $this->render('BonDeCommandeFournisseur/reception.html.twig',[
             'bonDeCommandesFournisseur' => $bonDeCommandeFournisseur,
-            'form' => $form,
+            'form' => $form->createView(),
         ]);
     }
 

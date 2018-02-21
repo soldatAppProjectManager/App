@@ -74,6 +74,11 @@ abstract class AbstractDocumentClient
      */
     protected $datemodification;
 
+
+    public abstract function getClassTitle();
+
+    public abstract function getRouteNameVoir();
+
     /**
      * Get id
      *

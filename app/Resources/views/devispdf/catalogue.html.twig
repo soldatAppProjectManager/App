@@ -1,4 +1,4 @@
-﻿<head>
+﻿﻿<head>
     <meta charset='utf-8'>
 
     <link rel="icon" href="{{ asset('img/favicon_SD.png') }}" />
@@ -207,7 +207,7 @@
                 Valide jusqu'au
             </th>
             <td>
-                {{ devis.minDateFournisseur|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
+                {{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
             </td>
         </tr>
     </table>
@@ -260,7 +260,7 @@
     </tr>
     <tr>
         <th>A l'attention de :</th>
-        <td>{{ devis.destinataire }}</td>
+        <td>{{ devis.contact }}</td>
     </tr>
     <tr>
         <th>Pour le compte de :</th>
@@ -318,8 +318,7 @@
     {% endfor %}
     </tbody>
 </table>
-<br>
-<br><br><br><br><br><br><br><br><br><br>
+<br><br>
 {% if not devis.termes is empty %}
     <strong><u> Conditions commerciales générales : </u></strong><br><br>
     <table class="termes">

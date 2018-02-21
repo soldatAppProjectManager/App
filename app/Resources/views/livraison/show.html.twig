@@ -1,0 +1,24 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Livraisonproduit</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ livraisonProduit.id }}</td>
+            </tr>
+            <tr>
+                <th>Quantite</th>
+                <td>{{ livraisonProduit.quantite }}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('livraison_index') }}">Back to the list</a>
+        </li>
+    </ul>
+{% endblock %}
