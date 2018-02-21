@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\ProduitFusion;
 use DateTime;
 
 use AppBundle\Entity\Parametres;
@@ -18,8 +19,10 @@ use AppBundle\Entity\Entete;
 use AppBundle\Entity\BonDeCommandeClient;
 use AppBundle\Entity\TermesBCRelation;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 
@@ -80,74 +83,87 @@ class BonDeCommandeClientController extends Controller
                         ->find($id);
 
         // replace this example code with whatever you need
-        return $this->render('BonDeCommandeClient/profitabilite.html.twig',array( 'BonDeCommandeClient' => $BonDeCommandeClient,
-
-                                                                    ));
+        return $this->render('BonDeCommandeClient/profitabilite.html.twig', array('BonDeCommandeClient' => $BonDeCommandeClient));
     }
 
     /**
      * @Route("/create/{id}", name="BonDeCommandeClient_create")
      */
-    public function createAction($id,Request $request)
+    public function createAction(Devis $devis,Request $request)
     {
         $BonDeCommandeClient = new BonDeCommandeClient;
-
-        $devis = $this->getDoctrine()
-                        ->getRepository('AppBundle:Devis')
-                        ->find($id);
-
-        $form = $this->createForm(BonDeCommandeClientFormType::class,$BonDeCommandeClient);  
-
+        $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
-
-
+        if ($form->isSubmitted()) {
+            /** @var UploadedFile $file */
             $file= $form['Fichier']->getData();
-
-
-
             $em = $this->getDoctrine()->getManager();
 
             $BonDeCommandeClient->setCommercial($devis->getCommercial());
-            $BonDeCommandeClient->setContact($devis->getDestinataire());
+            $BonDeCommandeClient->setContact($devis->getContact());
             $BonDeCommandeClient->setClient($devis->getClient());
             $BonDeCommandeClient->setDevis($devis);
-            $BonDeCommandeClient->setFichier($file);
             $BonDeCommandeClient->setVerrouille(false);
 
-
-            $file->move(
-                $this->getParameter('repertoire_bcclient'),
-                $BonDeCommandeClient->getFichier()
+            if(!empty($file)) {
+                $BonDeCommandeClient->setFichier($file);
+                $file->move(
+                    $this->getParameter('repertoire_bcclient'),
+                    $BonDeCommandeClient->getFichier()
                 );
-
-            $i=0;
+            }
 
             $statut = $this->getDoctrine()
                             ->getRepository('AppBundle:statutProduit')
-                            ->find(7);            
+                            ->find(7);
 
-            foreach ($devis->getProduits() as $produit) {
-                $produitBC = new ProduitBC;
-                $produitBC->deProduitDevis($produit);
-                $produitBC->setNumero(++$i);
-                $produitBC->setBonDeCommandeClient($BonDeCommandeClient);
-                $produitBC->setStatut($statut);
-                $em->persist($produitBC);
+            $i=0;
+            /** @var ProduitFusion $produitFusion */
+            foreach ($devis->getProduitsFusion() as $produitFusion) {
+                $produitFusBC = new ProduitFusion();
+                $produitFusBC->setDesignation($produitFusion->getDesignation());
+                $produitFusBC->setDescription($produitFusion->getDescription());
+                $produitFusBC->setQuantite($produitFusion->getQuantite());
+                $produitFusBC->setOrdre($produitFusBC->getOrdre());
+                $produitFusBC->setDocumentClient($BonDeCommandeClient);
+                $produitFusBC->setOptionnel($produitFusion->getOptionnel());
+                $produitFusBC->setPrixVenteHT($produitFusion->getPrixVenteHT());
+
+                /** @var ProduitDevis $produit */
+                foreach ($produitFusion->getProduits() as $produit) {
+                    $produitBC = new ProduitBC;
+                    $produitBC->deProduitDevis($produit);
+                    $produitBC->setOrdre($produit->getOrdre());
+                    $produitBC->setDocumentClient($BonDeCommandeClient);
+                    $produitBC->setProduitFusion($produitFusBC);
+                    $produitBC->setStatut($statut);
+                    $produitFusion->addProduit($produitBC);
+                }
+
+                $BonDeCommandeClient->addAbstractProduit($produitFusBC);
             }
 
+            /** @var ProduitDevis $produit */
+            foreach ($devis->getProduits() as $produit) {
+                if(!$produit->estFusionne()) {
+                    $produitBC = new ProduitBC;
+                    $produitBC->deProduitDevis($produit);
+                    $produitBC->setOrdre($produit->getOrdre());
+                    $produitBC->setDocumentClient($BonDeCommandeClient);
+                    $produitBC->setStatut($statut);
+                    $BonDeCommandeClient->addAbstractProduit($produitBC);
+                }
+            }
 
             foreach ($devis->getTermes() as $terme) {
                 $BonDeCommandeClient->addTerme($terme);
             }
-            
+
             $em->persist($BonDeCommandeClient);
+             $em->flush();
 
-
-            $em->flush();
-
-            $this->addFlash('notice','BonDeCommandeClient Ajouté');
+            $this->addFlash('notice',sprintf('#%d ,Bon de commande client ajouté', $BonDeCommandeClient->getId()));
 
             return $this->redirectToRoute('BonDeCommandeClient_list');
         }
@@ -314,6 +330,4 @@ class BonDeCommandeClientController extends Controller
 
         return $response;
     }
-
-
 }

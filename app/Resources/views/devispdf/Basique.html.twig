@@ -207,7 +207,7 @@
                 Valide jusqu'au
             </th>
             <td>
-                {{ devis.minDateFournisseur|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
+                {{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
             </td>
         </tr>
     </table>
@@ -260,7 +260,7 @@
     </tr>
     <tr>
         <th>A l'attention de :</th>
-        <td>{{ devis.destinataire }}</td>
+        <td>{{ devis.contact }}</td>
     </tr>
     <tr>
         <th>Pour le compte de :</th>
@@ -290,7 +290,7 @@
     </tr>
     </thead>
     <tbody>
-    {% for produit in devis.produits %}
+    {% for produit in devis.abstractProduits if not produit.estFusionne %}
         <tr>
             <td align="center">{{ produit.quantite }}</td>
             <td>
@@ -299,6 +299,7 @@
                     <br>
                 {% endif %}
                 {{ produit.description|capitalize|raw }}
+                {% if produit.isProduct %}
                 {% if not produit.garanties is empty %}
                     <br><strong>Garantie : </strong>
                     {% for garantie in produit.garanties %}
@@ -310,6 +311,7 @@
                     {% for terme in produit.termes %}
                         <br>{{ terme.nom|capitalize ~" - "~ terme.description  }}
                     {% endfor %}
+                {% endif %}
                 {% endif %}
             </td>
             <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', '.') }} {{ devis.devisevente.symbol }}</td>

@@ -1,0 +1,64 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="{{ asset('css/bootstrap-tagsinput.css') }}" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <h1>Recéption des produits : #{{ bonDeCommandesFournisseur.id }} {{ bonDeCommandesFournisseur.fournisseur }}</h1>
+    {{ form_start(form) }}
+    {{ form_widget(form._token) }}
+
+    <div class="col-lg-12">
+        <div class="row well well-lg">
+            <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.date) }}
+                    {{ form_errors(form.date) }}
+                    {{ form_widget(form.date) }}
+                </div>
+            </div>
+
+            <div class="col-md-9 form-group">
+                {{ form_label(form.file) }}
+                {{ form_errors(form.file) }}
+                {{ form_widget(form.file.file) }}
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>Produits</legend>
+            <div class="row " >
+            {% for receptionField in form.receptionProduits %}
+                    <div class="col-md-3 form-group ">
+                        <div class="well well-lg">
+                            <h5>{{ receptionField.vars.data.produit.designation }}</h5>
+                            <hr>
+                        {{ form_errors(receptionField) }}
+                        {{ form_widget(receptionField) }}
+                    </div>
+                </div>
+            {% endfor %}
+            </div>
+        </fieldset>
+
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+
+    <script src="{{ asset('js/bootstrap-tagsinput.js') }}"></script>
+    <script>
+        $( ".qteRecu" ).each(function( index ) {
+            $( this ).prop('min', 0).prop('max', $(this).val());
+        });
+
+        $(".numSeries").tagsinput('items')
+    </script>
+
+{% endblock %}

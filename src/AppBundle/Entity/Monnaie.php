@@ -248,8 +248,7 @@ class Monnaie {
         $commession = 0.01;
         $formateur = new \NumberFormatter( 'fr_FR', NumberFormatter::DECIMAL );
 
-        if ($now->diff($this->getDateCreation())->days > 0) {
-
+        if ($now->diff($this->getDateCreation())->days > -1) {
             $curl = new Curl();
             $curl->get('http://www.bkam.ma/Marches/Principaux-indicateurs/Marche-des-changes/Cours-de-change/Cours-de-reference');
 

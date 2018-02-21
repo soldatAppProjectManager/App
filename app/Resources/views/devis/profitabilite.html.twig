@@ -54,83 +54,11 @@
 
 {% block title %} Profitabilité {{devis}} {% endblock %}
 {% block body %}
-<div class="row">
-      <br>
-      <a type="button" title="Retour à liste des devis" href="{{ url('devis_list') }}" class="btn btn-default">Retour à la liste</a>
-      <a type="button" title="Finaliser un devis change la version du devis" class="btn btn-primary" href="{{ url('devis_publier_pdf', {'id' : devis.id})}}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Publier le devis pdf</a>
-      <a type="button" title="Actualiser le taux de change de chaque produit"  class="btn btn-success" href="{{ url('devis_actualisertauxachat', {'id' : devis.id})}}"><i class="fa fa-refresh" aria-hidden="true"></i> Actualiser le taux de change</a>
 
-      <h1>Consulter un devis </h1>
-        <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale.<br> A venir, les rapports </p>
-</div>
+    {% include 'devis/devis_nav.html.twig' with {'devis': devis, type: 'profitabilite' } %}
 
-<div class="row">
-  <ul class="nav nav-tabs"> 
-    <li>
-      <a href="{{ url('devis_apercu', {'id' : devis.id})}}">Aperçu du devis</a>
-    </li> 
-    <li>
-      <a href="{{ url('devis_produits', {'id' : devis.id})}}">Produits</a>
-    </li> 
-    <li>
-      <a href="{{ url('devis_fusions', {'id' : devis.id})}}">Produits de fusion</a>
-    </li> 
-    <li>
-      <a href="{{ url('devis_lignes', {'id' : devis.id})}}">Lignes</a>
-    </li> 
-    <li  class="active">
-      <a href="{{ url('devis_voirprofitabilite', {'id' : devis.id})}}">Analyse financière</a>
-    </li> 
-  </ul>
-</div>
-
+<br>
 <div class="container-fluid">
-
-  <div class="row">
-    <br>
-    <p class="lead" align="left">Devis : <small>{{ devis }} </small></p>
-  </div>
-
-
-  <div class="row">
-    <div class="well" style="background-color: #fcfcfc; width:45%;">
-    <table class="table"  style="width:100%">
-        <tbody>
-          <tr>
-            <th style="min-width:15%">Nom du Client :</th>
-            <td align="left"><a type="button" class="btn btn-default" href="{{ url('client_voir', {'id' : devis.client.id})}}"><strong>{{devis.client.nom |capitalize }}</strong></a>
-            </td>
-          </tr>
-          <tr>
-            <th style="min-width:15%">Destinataire :</th>
-            <td align="left"><strong>{{devis.destinataire.civilite |capitalize  }} {{devis.destinataire.prenom |capitalize }} {{devis.destinataire.nom |capitalize }}</strong></td>
-          </tr>
-          <tr>
-            <th style="min-width:10%">Nom du commercial :</th>
-            <td align="left">{{devis.commercial.prenom}} {{devis.commercial.nom}}</td>
-          </tr>
-          <tr>
-            <th style="min-width:10%">Référence du devis :</th>
-            <td align="left"><strong>{{devis.reference}}</strong></td>
-          </tr>
-          <tr>
-            <th style="min-width:10%">Valide jusqu'au :</th>
-            <td align="left">{{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y") |capitalize }}</td>
-          </tr>
-          <tr>
-            <td></td>
-            <td>
-              <a type="button" class="btn btn-warning" href="{{ url('devis_edit', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
-              <a type="button" class="btn btn-primary" href="{{ url('devis_apercupdf', {'id' : devis.id})}}"  target="_blank"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Aperçu en PDF</a>
-            </td>
-          </tr>
-        </tbody>
-    </table>
-    </div>
-  </div>
-  <hr>
-
-
   {# <div class="well" style="background-color: #fcfcfc;"> #}
   <div class="row">
     <table class="pnl"  style="width:100%">

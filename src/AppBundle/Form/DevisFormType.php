@@ -41,7 +41,7 @@ class DevisFormType extends AbstractType
                                                     'query_builder' =>  $this->getEntityManager()->getRepository('AppBundle:Client')->trouverSesClientsQB($devis->getCommercial()->getId()),
                                                     'attr' => array('class' => 'selectpicker','title' => 'Selectionner un client','data-live-search'=>'true')))
             
-            ->add('destinataire', EntityType::class, array('class' => 'AppBundle:contact'))
+            ->add('contact', EntityType::class, array('class' => 'AppBundle:contact'))
 
             ->add('TravailLivraison', EntityType::class, array( 'class' => 'AppBundle:TravailLivraison',
                                                                 'query_builder' =>  $this->getEntityManager()->getRepository('AppBundle:TravailLivraison')->findAllByDescCharge(),

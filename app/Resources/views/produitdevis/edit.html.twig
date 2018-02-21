@@ -86,9 +86,11 @@
 					</div>
 					<div class="col-md-3">
 					</div>
+
 					<div class="col-md-3">
-						<label >Prix de Vente H.T. </label>
-						<input type="text" id="produit_devis_form_prixventeht" class="form-control prixdevente" >
+                        {{ form_label(form.prixVenteHT) }}
+                        {{ form_errors(form.prixVenteHT) }}
+                        {{ form_widget(form.prixVenteHT) }}
 					</div>
 					<div class="col-md-3">
 						<label >Sous-total H.T. </label>
@@ -207,6 +209,9 @@
         
 		$( "form" ).submit(function() {
         	$("#produit_devis_form_deviseachat").prop('disabled',false);
+
+            var prixVente = $("#produit_devis_form_prixVenteHT").val().replace(' ', '');
+            $("#produit_devis_form_prixVenteHT").val(prixVente);
     	});
 
         $('#produit_devis_form_fournisseur').on('change', function (e) {
@@ -235,7 +240,7 @@
 
 						setPrixDeVente();
 						setSousTotal();
-				      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 				      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
 				      	$('#produit_devis_form_commercial').empty();
@@ -275,18 +280,18 @@
         				$(this).prop('style', 'background-color: red;');
 						setPrixDeVente();
 						setSousTotal();
-				      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 				      	return;
         			}
         		}
 				setPrixDeVente();
 				setSousTotal();
-		      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+		      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 		      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
         });
 
 
-        $('#produit_devis_form_prixventeht').on('change', function (e) {
+        $('#produit_devis_form_prixVenteHT').on('change', function (e) {
 		      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
         		
         		$(this).val($(this).val().replace(".",","));
@@ -365,7 +370,7 @@
 						setPrixDeVente();
 						setSousTotal();
 
-				      	$("#produit_devis_form_prixventeht").prop('style', 'background-color: #DBDADA;');
+				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
 				      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
                     	$.each(data.produitdevis.garanties, function (i, garantie) {
@@ -409,7 +414,7 @@
 		}
 
 		function getPrixDeVenteClean(){
-  				return toFloat($("#produit_devis_form_prixventeht").val());  
+  				return toFloat($("#produit_devis_form_prixVenteHT").val());  
 		}		
 
 
@@ -436,7 +441,7 @@
 		}
 
 		function auFormat(nombre){
-			return nombre.toLocaleString('de-DE', { minimumFractionDigits: 2});
+			return nombre.toLocaleString('fr-FR', { minimumFractionDigits: 2});
 		}
 
 		function prixMin(){

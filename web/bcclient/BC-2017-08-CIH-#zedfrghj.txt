@@ -1,1 +1,0 @@
-192.168.0.84 - - [11/Aug/2017:14:22:54 +0200] "GET / HTTP/1.1" 500 185 "-" "Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/60.0.3112.90 Safari/537.36"

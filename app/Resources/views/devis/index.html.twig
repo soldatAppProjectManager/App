@@ -1,89 +1,103 @@
 {% extends 'base.html.twig' %}
 
 {% block stylesheets %}
-{{ parent() }}
+    {{ parent() }}
 
-<link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/jquery.dataTables.min.css') }}" rel="stylesheet"/>
 {% endblock %}
 {% block title %}Liste des devis{% endblock %}
 {% block body %}
-<div class="row">
-	<h1>Liste des devis</h1>
-		<p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale .<br> A venir, les rapports </p>
-</div>
-	<div class="row">
-		<div class="col-lg-12">
+    <div class="row">
+        <h1>Liste des devis</h1>
+        <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale .<br> A venir, les rapports
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-lg-12">
 
 
-			<a href="{{ url('devis_create')}}" class="btn btn-primary" >
-				<i class="fa fa-plus" aria-hidden="true"></i> Créer un devis
-			</a>
+            <a href="{{ url('devis_create') }}" class="btn btn-primary">
+                <i class="fa fa-plus" aria-hidden="true"></i> Créer un devis
+            </a>
 
-			<hr>
-			<table id="liste_devis" class="table table-striped table-bordered">
-				<thead>
-					<tr>
-						<th>#</th>
-						<th>Client</th>
-						<th>Statut</th>
-						<th>Titre <span class="badge" >nombre de produits</span> </th>				
-						<th>Date de modification</th>
-						<th>Commercial</th>
-						<th>Total H.T.</th>		
-						<th></th>
-					</tr>
-				</thead>
-				<tbody>
-					{% for chaque_devis in devis %}
-						<tr>
-							<th scope="row">{{ chaque_devis.reference	 }} </th>
-							<td><strong>{{ chaque_devis.client.nom }} </strong></td>
-							<td>{% if chaque_devis.estCommande %} Commande {% elseif chaque_devis.draft %} Devis {% else %} Publié {% endif %}</td>
-							<td>{{ chaque_devis.titre }} <span class="badge" >{{ chaque_devis.produits |length }}</span> </td>
-							<td>{{ chaque_devis.datemodification |localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y")}} </td>
-							{% if chaque_devis.commercial %}
-								<td>{{ chaque_devis.commercial.prenom }} {{ chaque_devis.commercial.nom }} </td>
-							{% else %}
-								<td> NULL </td>
-							{% endif %}
-							<td align="right"><strong>{{ chaque_devis.totalht | number_format(2, '.', ',')}} {{chaque_devis.deviseVente.symbol}} </strong></td>
-							<td style="width:300px; vertical-align:middle;">
-								<a type="button" class="btn btn-default btn-sm" href="{{ url('devis_apercu', {'id' : chaque_devis.id})}}"><i class="fa fa-search" aria-hidden="true"></i> Voir</a>
-								{# <a type="button" class="label label-warning" href="{{ url('devis_edit', {'id' : chaque_devis.id})}}">Edit</a> #}
-								<a type="button" class="btn btn-primary btn-sm" href="{{ url('devis_copie', {'id' : chaque_devis.id})}}"><i class="fa fa-clone" aria-hidden="true"></i> Copy</a>
-								<a type="button" class="btn btn-success btn-sm" href="{{ url('BonDeCommandeClient_create', {'id' : chaque_devis.id})}}"><i class="fa fa-check" aria-hidden="true"></i> BC</a>
-								{% if chaque_devis.draft %}
-									{% if chaque_devis.BonDeCommandes|length == 0 %}
-								<a type="button" class="btn btn-danger btn-sm" href="{{ url('devis_delete', {'id' : chaque_devis.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Suppr</a>{% endif %}
-									{% endif %}
-							</td>
-							</tr>
-					{% endfor %}
-				</tbody>
-			</table>
-				<hr>
+            <hr>
+            <table id="liste_devis" class="table table-striped table-bordered">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Client</th>
+                    <th>Statut</th>
+                    <th>Titre <span class="badge">nombre de produits</span></th>
+                    <th>Date de modification</th>
+                    <th>Commercial</th>
+                    <th>Total H.T.</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% for chaque_devis in devis %}
+                    <tr>
+                        <th scope="row">{{ chaque_devis.reference }} </th>
+                        <td><strong>{{ chaque_devis.client.nom }} </strong></td>
+                        <td>{% if chaque_devis.estCommande %} Commande {% elseif chaque_devis.draft %} Devis {% else %} Publié {% endif %}</td>
+                        <td>{{ chaque_devis.titre }} <span
+                                    class="badge">{{ chaque_devis.abstractProduits |length }}</span></td>
+                        <td>{{ chaque_devis.datemodification |localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y") }} </td>
+                        {% if chaque_devis.commercial %}
+                            <td>{{ chaque_devis.commercial.prenom }} {{ chaque_devis.commercial.nom }} </td>
+                        {% else %}
+                            <td> NULL</td>
+                        {% endif %}
+                        <td align="right">
+                            <strong>{{ chaque_devis.totalht | number_format(2, '.', ',') }} {{ chaque_devis.deviseVente.symbol }} </strong>
+                        </td>
+                        <td style="width:300px; vertical-align:middle;">
+                            <a type="button" class="btn btn-default btn-sm"
+                               href="{{ url('devis_apercu', {'id' : chaque_devis.id}) }}"><i class="fa fa-search"
+                                                                                             aria-hidden="true"></i>
+                                Voir</a>
+                            {# <a type="button" class="label label-warning" href="{{ url('devis_edit', {'id' : chaque_devis.id})}}">Edit</a> #}
+                            <a type="button" class="btn btn-primary btn-sm"
+                               href="{{ url('devis_copie', {'id' : chaque_devis.id}) }}"><i class="fa fa-clone"
+                                                                                            aria-hidden="true"></i> Copy</a>
+                            <a type="button" class="btn btn-success btn-sm"
+                               href="{{ url('BonDeCommandeClient_create', {'id' : chaque_devis.id}) }}"><i
+                                        class="fa fa-check" aria-hidden="true"></i> BC</a>
+                            {% if chaque_devis.draft %}
+                                {% if chaque_devis.BonDeCommandes|length == 0 %}
+                                <a type="button" class="btn btn-danger btn-sm"
+                                   href="{{ url('devis_delete', {'id' : chaque_devis.id}) }}"><i class="fa fa-trash-o"
+                                                                                                 aria-hidden="true"></i>
+                                    Suppr</a>{% endif %}
+                            {% endif %}
+                        </td>
+                    </tr>
+                {% endfor %}
+                </tbody>
+            </table>
+            <hr>
 
 
-		</div>
-	</div>
-	<br><br><br><br><br><br><br><br><br><br><br><br><br><br>
+        </div>
+    </div>
+    <br><br><br><br><br><br><br><br><br><br><br><br><br><br>
 {% endblock %}
  
 {% block javascripts %}
 
-	{{ parent() }}
-  	<script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
-	<script>
-	$(document).ready(function() {
-	    $('#liste_devis').DataTable({
-		  "pageLength": 50
-		} );
-	} );
-	$.extend($.fn.dataTableExt.oStdClasses, {
-    "sFilterInput": "form-control",
-    "sLengthSelect": "form-control"
-});
-	</script>
+    {{ parent() }}
+    <script src="{{ asset('js/jquery.dataTables.min.js') }}"></script>
+    <script>
+        $(document).ready(function () {
+            $('#liste_devis').DataTable({
+                "pageLength": 50
+            });
+        });
+        $.extend($.fn.dataTableExt.oStdClasses, {
+            "sFilterInput": "form-control",
+            "sLengthSelect": "form-control"
+        });
+    </script>
 
 {% endblock %}
 

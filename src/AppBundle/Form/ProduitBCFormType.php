@@ -30,15 +30,17 @@ class ProduitBCFormType extends AbstractType
             ->add('description', TextareaType::class, array('attr' => array('class' => 'form-control','rows'=> '5', 'cols' => '200')))
             ->add('fournisseur', EntityType::class, array('class' => 'AppBundle:Fournisseur','choice_label' => 'nom','attr' => array('class' => 'form-control fournisseur')))
             ->add('prixachatht', MoneyType::class, array('attr' => array('class' => 'form-control prixdachat impactprix'), 'label' => 'Prix d Achat H.T. '))
+            ->add('prixVenteHT', MoneyType::class, array('attr' => array('class' => 'prixdevente form-control'), 'label' => 'Prix de Vente H.T.'))
             ->add('fraisapproche', PercentType::class, array('attr' => array('class' => 'form-control fa impactprix')))
             ->add('tauxTVA', PercentType::class, array('attr' => array('class' => 'form-control', 'value' => 20), 'label' => 'Taux de TVA'))
             ->add('deviseachat', EntityType::class, array('class' => 'AppBundle:Monnaie','choice_label' => 'nom','attr' => array('class' => 'form-control devise')))
             ->add('tauxAchat', NumberType::class, array('attr' => array('class' => 'form-control tauxachat impactprix','placeholder' => "Taux de change")))
             ->add('marge', PercentType::class, array('attr' => array('class' => 'form-control marge impactprix')))
-            ->add('referenceoffre', TextType::class, array('attr' => array('class' => 'form-control')))
-            ->add('metier', EntityType::class, array('class' => 'AppBundle:Metier','choice_label' => 'nom','attr' => array('class' => 'form-control')))
-            ->add('typeproduit', EntityType::class, array('class' => 'AppBundle:TypeProduit','choice_label' => 'nom','attr' => array('class' => 'form-control')))
-            ->add('save', SubmitType::class, array('label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-primary')));
+//            ->add('referenceoffre', TextType::class, array('attr' => array('class' => 'form-control')))
+//            ->add('metier', EntityType::class, array('class' => 'AppBundle:Metier','choice_label' => 'nom','attr' => array('class' => 'form-control')))
+//            ->add('typeproduit', EntityType::class, array('class' => 'AppBundle:TypeProduit','choice_label' => 'nom','attr' => array('class' => 'form-control')))
+//            ->add('save', SubmitType::class, array('label' => 'Enregistrer', 'attr' => array('class' => 'btn btn-primary')))
+        ;
     }
 
     public function configureOptions(OptionsResolver $resolver)

@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use AppBundle\Entity\Parametres;
 use AppBundle\Entity\Devis;
 use AppBundle\Tools\devisExcel;
@@ -16,30 +17,10 @@ use DateTime;
  * @ORM\Table(name="produitbc")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\ProduitBCRepository")
  */
-class ProduitBC
+class ProduitBC extends AbstractProduit
 {
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="id", type="integer")
-     * @ORM\Id
-     * @ORM\GeneratedValue(strategy="AUTO")
-     */
-    private $id;
 
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="quantite", type="integer")
-     */
-    private $quantite;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="numero", type="integer")
-     */
-    private $numero;
+    const DISCRIMINATOR = 'produitbc';
 
     /**
      * @var string
@@ -47,21 +28,6 @@ class ProduitBC
      * @ORM\Column(name="reference", type="string", length=255)
      */
     private $reference;
-    
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="designation", type="string", length=255)
-     */
-    private $designation;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="description", type="text")
-     */
-    private $description;
 
     /**
      * @var float
@@ -85,7 +51,7 @@ class ProduitBC
     private $fraisapproche;
 
     /**
-     * @var \Monnaie
+     * @var Monnaie
      *
      * @ORM\ManyToOne(targetEntity="Monnaie", cascade={"persist"})
      * @ORM\JoinColumn(name="Devise_Achat_id", referencedColumnName="id")
@@ -97,14 +63,7 @@ class ProduitBC
      *
      * @ORM\Column(name="tauxAchat", type="float")
      */
-    private $tauxAchat;    
-
-    /**
-     * @var float
-     *
-     * @ORM\Column(name="prixDeVente", type="float")
-     */
-    private $prixDeVenteHT;
+    private $tauxAchat;
 
     /**
      * @var string
@@ -146,14 +105,6 @@ class ProduitBC
     private $devisevente;
 
     /**
-     * @var \BonDeCommandeClient
-     *
-     * @ORM\ManyToOne(targetEntity="BonDeCommandeClient",inversedBy="produits")
-     * @ORM\JoinColumn(name="BonDeCommandeClient_id", referencedColumnName="id",onDelete="CASCADE")
-     */
-    private $BonDeCommandeClient; 
-
-    /**
      * @var \statutProduit
      *
      * @ORM\ManyToOne(targetEntity="statutProduit", cascade={"persist"})
@@ -161,7 +112,34 @@ class ProduitBC
      */
     private $statut;
 
-    public function deProduitDevis($produitdevis){
+    /**
+     * @var ProduitDevis
+     *
+     * @ORM\ManyToOne(targetEntity="ProduitDevis")
+     * @ORM\JoinColumn(name="produit_devis_id", referencedColumnName="id")
+     */
+    private $produitDevis;
+
+    /**
+     * @var float
+     * @Assert\NotBlank()
+     * @Assert\Range(
+     *      min = 0,
+     *      max = 20000000
+     * )
+     * @ORM\Column(name="marge", type="float")
+     */
+    private $marge;
+
+    public function getgaranties() {
+        return $this->getProduitDevis()->getGaranties();
+    }
+
+    public function gettermes() {
+        return $this->getProduitDevis()->getTermes();
+    }
+
+    public function deProduitDevis(ProduitDevis $produitdevis){
         $this->setQuantite($produitdevis->getQuantite());
         $this->setReference($produitdevis->getReference());
         $this->setDesignation($produitdevis->getDesignation());
@@ -171,153 +149,15 @@ class ProduitBC
         $this->setTauxTVA($produitdevis->getTauxTVA());
         $this->setDeviseachat($produitdevis->getDeviseachat());
         $this->setTauxAchat($produitdevis->getTauxAchat());
-        $this->setPrixDeVenteHT($produitdevis->getPrixVenteHT());
+        $this->setPrixVenteHT($produitdevis->getPrixVenteHT());
         $this->setReferenceoffre($produitdevis->getReferenceoffre());
         $this->setMetier($produitdevis->getMetier());
         $this->setTypeproduit($produitdevis->getTypeproduit());
         $this->setFournisseur($produitdevis->getFournisseur());
         $this->setDevisevente($produitdevis->getDevisevente());
-    }
-
-    /**
-     * Get id
-     *
-     * @return int
-     */
-    public function getId()
-    {
-        return $this->id;
-    }
-
-    /**
-     * Set quantite
-     *
-     * @param integer $quantite
-     *
-     * @return ProduitDevis
-     */
-    public function setQuantite($quantite)
-    {
-        $this->quantite = $quantite;
-
-        return $this;
-    }
-
-    /**
-     * Get quantite
-     *
-     * @return int
-     */
-    public function getQuantite()
-    {
-        return $this->quantite;
-    }
-
-    /**
-     * Set designation
-     *
-     * @param string $designation
-     *
-     * @return ProduitDevis
-     */
-    public function setDesignation($designation)
-    {
-        $this->designation = $designation;
-
-        return $this;
-    }
-
-    /**
-     * Get designation
-     *
-     * @return string
-     */
-    public function getDesignation()
-    {
-        return $this->designation;
-    }
-
-    /**
-     * Set description
-     *
-     * @param string $description
-     *
-     * @return ProduitDevis
-     */
-    public function setDescription($description)
-    {
-        $this->description = $description;
-
-        return $this;
-    }
-
-    /**
-     * Get description
-     *
-     * @return string
-     */
-    public function getDescription()
-    {
-        return $this->description;
-    }
-
-    /**
-     * Set prixachatht
-     *
-     * @param float $prixachatht
-     *
-     * @return ProduitDevis
-     */
-    public function setPrixachatht($prixachatht)
-    {
-        $this->prixachatht = $prixachatht;
-
-        return $this;
-    }
-
-    /**
-     * Get prixachatht
-     *
-     * @return float
-     */
-    public function getPrixachatht()
-    {
-        return $this->prixachatht;
-    }
-
-    /**
-     * Set fraisapproche
-     *
-     * @param float $fraisapproche
-     *
-     * @return ProduitDevis
-     */
-    public function setFraisapproche($fraisapproche)
-    {
-        $this->fraisapproche = $fraisapproche;
-
-        return $this;
-    }
-
-    /**
-     * Get fraisapproche
-     *
-     * @return float
-     */
-    public function getFraisapproche()
-    {
-        return $this->fraisapproche;
-    }
-
-
-    public function getMarge()
-    {
-        return $this->prixDeVenteHT-round($this->prixachatht*(1+$this->fraisapproche)*$this->deviseachat->getTauxAchat(),2);
-    }
-
-    public function getPrixVenteHT()
-    {
-        return $this->prixDeVenteHT;
+        $this->setOptionnel($produitdevis->getOptionnel());
+        $this->setProduitDevis($produitdevis);
+        $this->setMarge($produitdevis->getMarge());
     }
 
     /**
@@ -417,6 +257,20 @@ class ProduitBC
     }
 
     /**
+     * @ORM\OneToMany(targetEntity="ReceptionProduit", mappedBy="produit")
+     */
+    private $receptionProduits;
+
+    /**
+     * @ORM\OneToMany(targetEntity="LivraisonProduit", mappedBy="produit")
+     */
+    private $livraisonProduits;
+
+    public function getReceptionProduits() {
+        return $this->receptionProduits;
+    }
+
+    /**
      * Set devisevente
      *
      * @param \AppBundle\Entity\Monnaie $devisevente
@@ -468,13 +322,13 @@ class ProduitBC
 
     public function getSousTotalHT()
     {
-        return $this->quantite*$this->getPrixVenteHT();
+        return $this->quantite * $this->getPrixVenteHT();
 
     }
 
     public function getFraisFinanciers($TauxFinancementTresorerie)
     {
-        $DelaiRecouvrement = $this->getBonDeCommandeClient()->getClient()->getDelaipaiementconstate();
+        $DelaiRecouvrement = $this->getDocumentClient()->getClient()->getDelaipaiementconstate();
         $TermeFournisseur = $this->fournisseur->getTermepaiement();
 
         return round(1.2*$this->getSousTotalHT()*$TauxFinancementTresorerie*($DelaiRecouvrement-$TermeFournisseur)/365,2);
@@ -490,12 +344,10 @@ class ProduitBC
         return round($this->getSousTotalHT() - $this->getTotalPrixDeRevient() - $this->getFraisFinanciers($TauxFinancementTresorerie)+$this->getResultatDeChange(),2);
     }
 
-
     public function getResultatDeChange()
     {
         // echo round($this->getTotalPrixDeRevient() - $this->prixachatht*(1+$this->fraisapproche)*$this->getTauxAchat()*$this->quantite,2) ."<br>";
         return round($this->getTotalPrixDeRevient() - $this->prixachatht*(1+$this->fraisapproche)*$this->getTauxAchat()*$this->quantite,2);
-
     }
 
 
@@ -555,30 +407,6 @@ class ProduitBC
     }
 
     /**
-     * Set numero
-     *
-     * @param integer $numero
-     *
-     * @return ProduitDevis
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return integer
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
      * Set reference
      *
      * @param string $reference
@@ -617,55 +445,6 @@ class ProduitBC
         $this->setNumero($this->getNumero()+1);
     }
 
-
-    /**
-     * Set prixDeVenteHT
-     *
-     * @param float $prixDeVenteHT
-     *
-     * @return ProduitBC
-     */
-    public function setPrixDeVenteHT($prixDeVenteHT)
-    {
-        $this->prixDeVenteHT = $prixDeVenteHT;
-
-        return $this;
-    }
-
-    /**
-     * Get prixDeVenteHT
-     *
-     * @return float
-     */
-    public function getPrixDeVenteHT()
-    {
-        return $this->prixDeVenteHT;
-    }
-
-    /**
-     * Set bonDeCommandeClient
-     *
-     * @param \AppBundle\Entity\BonDeCommandeClient $bonDeCommandeClient
-     *
-     * @return ProduitBC
-     */
-    public function setBonDeCommandeClient(\AppBundle\Entity\BonDeCommandeClient $bonDeCommandeClient = null)
-    {
-        $this->BonDeCommandeClient = $bonDeCommandeClient;
-
-        return $this;
-    }
-
-    /**
-     * Get bonDeCommandeClient
-     *
-     * @return \AppBundle\Entity\BonDeCommandeClient
-     */
-    public function getBonDeCommandeClient()
-    {
-        return $this->BonDeCommandeClient;
-    }
-
     /**
      * Set statut
      *
@@ -697,5 +476,204 @@ class ProduitBC
 
     public function estLivré(){
         return $this->getStatut()->getId()==6;
+    }
+
+    /**
+     * Set prixachatht
+     *
+     * @param float $prixachatht
+     *
+     * @return ProduitBC
+     */
+    public function setPrixachatht($prixachatht)
+    {
+        $this->prixachatht = $prixachatht;
+
+        return $this;
+    }
+
+    /**
+     * Get prixachatht
+     *
+     * @return float
+     */
+    public function getPrixachatht()
+    {
+        return $this->prixachatht;
+    }
+
+    /**
+     * Set fraisapproche
+     *
+     * @param float $fraisapproche
+     *
+     * @return ProduitBC
+     */
+    public function setFraisapproche($fraisapproche)
+    {
+        $this->fraisapproche = $fraisapproche;
+
+        return $this;
+    }
+
+    /**
+     * Get fraisapproche
+     *
+     * @return float
+     */
+    public function getFraisapproche()
+    {
+        return $this->fraisapproche;
+    }
+
+    /**
+     * Set produitDevis
+     *
+     * @param \AppBundle\Entity\ProduitDevis $produitDevis
+     *
+     * @return ProduitBC
+     */
+    public function setProduitDevis(\AppBundle\Entity\ProduitDevis $produitDevis = null)
+    {
+        $this->produitDevis = $produitDevis;
+
+        return $this;
+    }
+
+    /**
+     * Get produitDevis
+     *
+     * @return \AppBundle\Entity\ProduitDevis
+     */
+    public function getProduitDevis()
+    {
+        return $this->produitDevis;
+    }
+
+    /**
+     * Set marge
+     *
+     * @param float $marge
+     *
+     * @return ProduitBC
+     */
+    public function setMarge($marge)
+    {
+        $this->marge = $marge;
+
+        return $this;
+    }
+
+    /**
+     * Get marge
+     *
+     * @return float
+     */
+    public function getMarge()
+    {
+        return $this->marge;
+    }
+
+    public function getQuantiteFournisseur()
+    {
+        $qte = $this->getQuantite();
+
+        if($this->estFusionne()) {
+            $qte = $qte * $this->getProduitFusion()->getQuantite();
+        }
+
+        return $qte;
+    }
+
+
+    public function __toString()
+    {
+        return $this->getDesignation();
+    }
+
+    public function getResteReception() {
+        $reste = $this->getQuantite();
+        /** @var ReceptionProduit $reception */
+        foreach ($this->receptionProduits as $reception) {
+            $reste= $reste - $reception->getQuantite();
+        }
+
+        return $reste;
+    }
+
+    public function getResteLivraison() {
+        $reste = $this->getQuantite();
+        /** @var LivraisonProduit $livraisonProduit */
+        foreach ($this->livraisonProduits as $livraisonProduit) {
+            $reste= $reste - $livraisonProduit->getQuantite();
+        }
+
+        return $reste;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->receptionProduits = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add receptionProduit
+     *
+     * @param \AppBundle\Entity\ReceptionProduit $receptionProduit
+     *
+     * @return ProduitBC
+     */
+    public function addReceptionProduit(\AppBundle\Entity\ReceptionProduit $receptionProduit)
+    {
+        $this->receptionProduits[] = $receptionProduit;
+
+        return $this;
+    }
+
+    /**
+     * Remove receptionProduit
+     *
+     * @param \AppBundle\Entity\ReceptionProduit $receptionProduit
+     */
+    public function removeReceptionProduit(\AppBundle\Entity\ReceptionProduit $receptionProduit)
+    {
+        $this->receptionProduits->removeElement($receptionProduit);
+    }
+
+    /**
+     * Add livraisonProduit
+     *
+     * @param \AppBundle\Entity\LivraisonProduit $livraisonProduit
+     *
+     * @return ProduitBC
+     */
+    public function addLivraisonProduit(\AppBundle\Entity\LivraisonProduit $livraisonProduit)
+    {
+        $this->livraisonProduits[] = $livraisonProduit;
+
+        return $this;
+    }
+
+    /**
+     * Remove livraisonProduit
+     *
+     * @param \AppBundle\Entity\LivraisonProduit $livraisonProduit
+     */
+    public function removeLivraisonProduit(\AppBundle\Entity\LivraisonProduit $livraisonProduit)
+    {
+        $this->livraisonProduits->removeElement($livraisonProduit);
+    }
+
+    /**
+     * Get livraisonProduits
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getLivraisonProduits()
+    {
+        return $this->livraisonProduits;
     }
 }

@@ -64,6 +64,13 @@ class Fournisseur
     * @ORM\OneToMany(targetEntity="contact", mappedBy="fournisseur",cascade={"persist"})
     */
     private $contacts;
+    
+    /**
+     * @var ModeleBCF
+     * @ORM\ManyToOne(targetEntity="ModeleBCF")
+     * @ORM\JoinColumn(name="modele_bcf_id", referencedColumnName="id")
+     */
+    private $modele;
 
 
     /**
@@ -265,5 +272,29 @@ class Fournisseur
     public function getFaSurtaxe()
     {
         return $this->faSurtaxe;
+    }
+
+    /**
+     * Set modele
+     *
+     * @param \AppBundle\Entity\ModeleBCF $modele
+     *
+     * @return Fournisseur
+     */
+    public function setModele(\AppBundle\Entity\ModeleBCF $modele = null)
+    {
+        $this->modele = $modele;
+
+        return $this;
+    }
+
+    /**
+     * Get modele
+     *
+     * @return \AppBundle\Entity\ModeleBCF
+     */
+    public function getModele()
+    {
+        return $this->modele;
     }
 }
