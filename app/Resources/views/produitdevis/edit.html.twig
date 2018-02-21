@@ -204,7 +204,7 @@
 				setPrixDeVente();
 				setSousTotal();
 				$('#produit_devis_form_prixachatht').next().text("{{produit.deviseachat.symbol}}"); 
-			tinymce.init({selector: '#produit_devis_form_description'});
+			tinymce.init({selector: '#produit_devis_form_description',plugins: "code"});
 		});
         
 		$( "form" ).submit(function() {
