@@ -416,7 +416,7 @@ class DevisController extends Controller
     public function fichierAction($id,Request $request)
     {
         /** @var Devis $devis */
-        $devis = clone $this->getDoctrine()
+        $devis = $this->getDoctrine()
                         ->getRepository('AppBundle:Devis')
                         ->find($id);
 

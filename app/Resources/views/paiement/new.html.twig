@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+
+    <h1>
+        Ajouter un nouveau paiement pour la facture : #{{ facture.numero }}
+    </h1>
+    {{ form_start(form) }}
+    {{ form_widget(form._token) }}
+
+    <div class="col-lg-12">
+        <div class="row well well-lg">
+            <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.date) }}
+                    {{ form_widget(form.date) }}
+                    {{ form_errors(form.date) }}
+                </div>
+            </div>
+            <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.valeur) }}
+                    {{ form_widget(form.valeur) }}
+                    {{ form_errors(form.valeur) }}
+                </div>
+            </div>
+            <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.mode) }}
+                    {{ form_widget(form.mode) }}
+                    {{ form_errors(form.mode) }}
+                </div>
+            </div>
+            <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.numero) }}
+                    {{ form_widget(form.numero) }}
+                    {{ form_errors(form.numero) }}
+                </div>
+            </div>
+            <div class="col-md-9 form-group">
+                {% if form.file.vars.data %}
+                    <div class="col-md-6">
+                        <a target="_blank" style="float: right;"
+                           href="{{ asset(form.file.vars.data.fullPath) }}">afficher en
+                            plein écran</a>
+                        <br>
+                        <br>
+                        <div>
+                            <object data="{{ asset(form.file.vars.data.fullPath) }}" type="{{ form.file.vars.data.mimeType }}"
+                                    width="100%" height="300px;"></object>
+                        </div>
+                    </div>
+                {% endif %}
+                {{ form_label(form.file) }}
+                {{ form_widget(form.file.file) }}
+                {{ form_errors(form.file.file) }}
+            </div>
+            <div class="col-md-3 form-group">
+                <div class=" pull-right">
+                    {{ form_label(form.save) }}
+                    {{ form_widget(form.save) }}
+                </div>
+            </div>
+
+        </div>
+
+    </div>
+
+    {{ form_end(form) }}
+{% endblock %}

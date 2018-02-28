@@ -31,7 +31,7 @@
                 <tbody>
                 {% for bcf in bonDeCommandesFournisseur %}
                     <tr>
-                        <th scope="row">{{ bcf.id }}  </th>
+                        <th scope="row">{{ bcf.reference }}  </th>
                         <strong><td>{{ bcf.fournisseur.nom }}</td></strong>
                         <td>{{ bcf.date |date("d/m/Y")}} </td>
                         <td><a href="{{ path('BonDeCommandeClient_voir', {'id' : bcf.bonDeCommandeClient.id }) }}"  target="_blank" >{{ bcf.bonDeCommandeClient }}</a></td>

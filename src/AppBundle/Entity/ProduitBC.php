@@ -319,13 +319,6 @@ class ProduitBC extends AbstractProduit
         return $this->fournisseur;
     }
 
-
-    public function getSousTotalHT()
-    {
-        return $this->quantite * $this->getPrixVenteHT();
-
-    }
-
     public function getFraisFinanciers($TauxFinancementTresorerie)
     {
         $DelaiRecouvrement = $this->getDocumentClient()->getClient()->getDelaipaiementconstate();
@@ -676,4 +669,11 @@ class ProduitBC extends AbstractProduit
     {
         return $this->livraisonProduits;
     }
+
+
+    public function getSousTotalHT()
+    {
+        return round($this->quantite * $this->getPrixVenteHT(), $this->getTypeproduit()->getPrecision());
+    }
+
 }

@@ -26,7 +26,7 @@ class DevisRepository extends \Doctrine\ORM\EntityRepository
     }
 
     public function getIncrement(){
-         return $this   ->createQueryBuilder('devis')
+         return $this->createQueryBuilder('devis')
                         ->select('MAX(devis.numero)+1')
                         ->getQuery()->getSingleScalarResult();
     }

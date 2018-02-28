@@ -4,6 +4,7 @@ namespace AppBundle\Controller;
 
 use AppBundle\Entity\BonDeCommandeFournisseur;
 use AppBundle\Entity\BonDeReception;
+use AppBundle\Entity\ModeleBCF;
 use AppBundle\Entity\ProduitDevis;
 use AppBundle\Entity\ReceptionProduit;
 use AppBundle\Entity\Serie;
@@ -59,20 +60,29 @@ class BonDeCommandeFournisseurController extends Controller
 
         $statusCmdFournisseur = $em->getRepository(statutProduit::class)->find(1);
 
+        $basiqueModele = $em->getRepository(ModeleBCF::class)->find(1);
+
         /** @var ProduitBC $produit */
         foreach ($bonDeCommandeClient->getProduits() as $produit) {
             $bcf = $em->getRepository(BonDeCommandeFournisseur::class)
                 ->findOneBy(['bonDeCommandeClient' => $bonDeCommandeClient, 'fournisseur' => $produit->getFournisseur()]);
 
+
             if(empty($bcf)) {
+                $countBCF = $em->getRepository(BonDeCommandeFournisseur::class)->count();
                 $bcf = new BonDeCommandeFournisseur();
                 $bcf->setFournisseur($produit->getFournisseur())->setBonDeCommandeClient($bonDeCommandeClient)->setDate(new DateTime());
-                $bcf->setModele($bcf->getFournisseur()->getModele());
+                $bcf->generateRef($countBCF);
+                $bcf->setModele($basiqueModele);
+                if(!empty($bcf->getFournisseur()->getModele())) {
+                    $bcf->setModele($bcf->getFournisseur()->getModele());
+                }
                 $em->persist($bcf);
             }
 
             $produit->setStatut($statusCmdFournisseur);
             $bcf->addProduit($produit);
+            $bcf->setCommercial($bonDeCommandeClient->getCommercial());
             $em->flush();
         }
 

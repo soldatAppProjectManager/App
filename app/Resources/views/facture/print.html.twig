@@ -1,0 +1,134 @@
+<head>
+    <meta charset='utf-8'>
+
+    <link rel="icon" href="{{ asset('img/favicon_SD.png') }}"/>
+    <title>Facture N° {{ facture.reference }}</title>
+    {{ include('::style.html.twig') }}
+</head>
+<body>
+<div class="header">
+    <table border="0" width="100%">
+        <tr>
+            <td width="50%">
+                <img height="85" width="204" src="img/LOGO-SD-HR.png">
+            </td>
+            <td>
+                <h1 style="font-size: 100%;">Facture {{ facture.reference }}</h1>
+                Date de faturation : {{ facture.date|date('d/m/Y') }}
+            </td>
+        </tr>
+    </table>
+</div>
+<hr>
+<br>
+{% set client = facture.bonDeCommandeClient.client %}
+<table border="0.5px" >
+    <thead>
+    <tr>
+        <th align="center" style="background-color: #C9C9C9" >
+            Client
+        </th>
+    </tr>
+    </thead>
+    <tbody>
+    <tr>
+        <td width="50%" style="padding: 3px;" >
+            <span style="font-size: 22px;font-weight: bolder;">{{ client.nom }}</span><br>
+            <span style="font-size: 13px;">
+                Adresse : {{ client.address }}<br>
+                Téléphone : {{ client.tel }} <br>
+                Bon de commande : {{ facture.bonDeCommandeClient.numeroDeBonDeCommandeClient }}
+            </span>
+        </td>
+    </tr>
+    </tbody>
+</table>
+<br>
+<br>
+
+<table class="produits" style="font-size: 13px;">
+    <thead>
+    <tr>
+        <th width="10%">Qté</th>
+        <th width="50%">Désignation</th>
+        <th width="20%" align="right">P.U. H.T. {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</th>
+        <th width="20%" align="right">S.T. H.T. {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for produit in facture.bonDeCommandeClient.abstractProduits if not produit.estFusionne %}
+        <tr>
+            <td align="center">{{ produit.quantite }}</td>
+            <td>
+                {% if produit.designation|trim != '' %}
+                    <strong>{{ produit.designation|capitalize }} : </strong>
+                    <br>
+                {% endif %}
+                {{ produit.description|raw }}
+                {% if produit.isProduct %}
+                    {% if not produit.garanties is empty %}
+                        <br><strong>Garantie : </strong>
+                        {% for garantie in produit.garanties %}
+                            <br>{{ garantie }}
+                        {% endfor %}
+                    {% endif %}
+                    {% if not produit.termes is empty %}
+                        <br><strong>Conditions particulières : </strong>
+                        {% for terme in produit.termes %}
+                            <br>{{ terme.nom|capitalize ~" - "~ terme.description }}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </td>
+            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+            <td align="right">
+                {{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', '.') }}
+                {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}
+                &nbsp;
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br>
+{% if facture.modePaiement %}
+    Mode de paiement : {{ facture.modePaiement }}
+{% endif %}
+<br>
+
+<table class="totaux">
+    <tbody>
+    <tr>
+        <th>Total HT</th>
+        <td>{{ facture.bonDeCommandeClient.getTotalHT|number_format(2, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+    </tr>
+    <tr>
+        <th>Total T.V.A.</th>
+        <td>{{ facture.bonDeCommandeClient.getTotalTVA|number_format(2, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+    </tr>
+    <tr>
+        <th>Total TTC</th>
+        <td>{{ facture.bonDeCommandeClient.getTotalTTC|number_format(2, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+    </tr>
+    <tr>
+        <td colspan="2"><i>La somme de la présente facture est arretée à :
+                <strong>{{ facture.bonDeCommandeClient.devis.totalTTC|localizednumber('spellout','default','fr_FR')|capitalize }} {{ facture.bonDeCommandeClient.devis.devisevente.nom }}
+                    TTC.</strong></i>
+        </td>
+    </tr>
+    </tbody>
+</table>
+
+<div class="footer">
+    {% include '::footer.html.twig' with {'footer': facture.bonDeCommandeClient.devis.piedDePage} %}
+    <p class="page"></p>
+</div>
+<br>
+<br>
+
+<br>
+
+
+<div class="page-number"></div>
+
+</body>

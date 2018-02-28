@@ -69,6 +69,8 @@
                                             <a href="{{ url('livraison_bc', {'id' : chaque_BonDeCommandeClient.id}) }}">Faire
                                                 une livraison</a></li>
                                     {% endif %}
+                                    <li>
+                                        <a href="{{ url('facture_generate', {'id' : chaque_BonDeCommandeClient.id}) }}">Générer la facture</a></li>
                                     <li role="separator" class="divider"></li>
                                     <li>
                                         <a href="{{ url('BonDeCommandeClient_delete', {'id' : chaque_BonDeCommandeClient.id}) }}">Suppr</a>

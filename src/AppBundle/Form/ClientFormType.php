@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -48,7 +49,9 @@ class ClientFormType extends AbstractType
             ->add('commercial', EntityType::class, array('class' => 'AppBundle:User','choice_label' => 'nom','attr' => array('class' => 'form-control')))
             ->add('prive', ChoiceType::class, array('attr' => array('class' => 'selectpicker','title' => 'Indiquer s\'sil s\'agit d\'un client public'),
                 'choices' => array( 'Public' => false, 
-                                    'Privé' => true), 'label' => 'Type de client'));
+                                    'Privé' => true), 'label' => 'Type de client'))
+            ->add('address', TextareaType::class)
+            ->add('tel', null, ['label' => 'Téléphone']);
     }
 
     public function configureOptions(OptionsResolver $resolver)

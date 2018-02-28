@@ -52,11 +52,26 @@ class BonDeCommandeFournisseur
     private $date;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="reference", type="string", nullable=true)
+     */
+    private $reference;
+
+    /**
      * @var ModeleBCF
      * @ORM\ManyToOne(targetEntity="ModeleBCF")
      * @ORM\JoinColumn(name="modele_bcf_id", referencedColumnName="id")
      */
     private $modele;
+
+    /**
+     * @var User
+     *
+     * @ORM\ManyToOne(targetEntity="User")
+     * @ORM\JoinColumn(name="commercial_id", referencedColumnName="id")
+     */
+    protected $commercial;
 
     /**
      * Get id
@@ -139,12 +154,23 @@ class BonDeCommandeFournisseur
     {
         return $this->bonDeCommandeClient;
     }
+
     /**
      * Constructor
      */
     public function __construct()
     {
         $this->produits = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    public function generateRef($countBcf = 0)
+    {
+        $ref = sprintf(
+            'BC%s%s-%s',
+            str_repeat('0', AbstractDocumentClient::NBR_ZERO_IN_REFERENCE - strlen((string) $countBcf)),
+            $countBcf + 1,
+            date('Y'));
+        $this->setReference($ref);
     }
 
     /**
@@ -156,7 +182,7 @@ class BonDeCommandeFournisseur
      */
     public function addProduit(\AppBundle\Entity\ProduitBC $produit)
     {
-        if(!$this->produits->contains($produit))
+        if (!$this->produits->contains($produit))
             $this->produits[] = $produit;
 
         return $this;
@@ -185,7 +211,8 @@ class BonDeCommandeFournisseur
     /**
      * @return float|int
      */
-    public function getTotal() {
+    public function getTotal()
+    {
         $total = 0;
         /** @var ProduitBC $produit */
         foreach ($this->getProduits() as $produit) {
@@ -195,6 +222,22 @@ class BonDeCommandeFournisseur
         return $total;
     }
 
+    public function getTotalTVA()
+    {
+        $totalTVA = 0;
+        /** @var ProduitBC $produit */
+        foreach ($this->getProduits() as $produit) {
+            $totalTVA += $produit->getQuantite() * $produit->getPrixachatht() * $produit->getTauxTVA();
+        }
+
+        return round($totalTVA, 2);
+    }
+
+
+    public function getTotalTTC()
+    {
+        return $this->getTotal() + $this->getTotalTVA();
+    }
 
     /**
      * Set modele
@@ -220,17 +263,66 @@ class BonDeCommandeFournisseur
         return $this->modele;
     }
 
-    public function isReceived() {
-        if($this->produits->count() == 0) {
+    public function isReceived()
+    {
+        if ($this->produits->count() == 0) {
             return false;
         }
         /** @var ProduitBC $produit */
         foreach ($this->getProduits() as $produit) {
-            if($produit->getStatut()->getId() !== 2) {
+            if ($produit->getStatut()->getId() !== 2) {
                 return false;
             }
         }
 
         return true;
+    }
+
+    /**
+     * Set commercial
+     *
+     * @param \AppBundle\Entity\User $commercial
+     *
+     * @return BonDeCommandeFournisseur
+     */
+    public function setCommercial(\AppBundle\Entity\User $commercial = null)
+    {
+        $this->commercial = $commercial;
+
+        return $this;
+    }
+
+    /**
+     * Get commercial
+     *
+     * @return \AppBundle\Entity\User
+     */
+    public function getCommercial()
+    {
+        return $this->commercial;
+    }
+
+    /**
+     * Set reference
+     *
+     * @param string $reference
+     *
+     * @return BonDeCommandeFournisseur
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * Get reference
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
     }
 }

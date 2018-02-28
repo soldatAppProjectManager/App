@@ -55,8 +55,11 @@ class FileSd
     private $size;
 
     /**
-     * @var UploadedFile
-     * @Assert\File(maxSize="6000000")
+     * @Assert\File(
+     *     maxSize = "1024k",
+     *     mimeTypes = {"application/pdf", "application/x-pdf", "image/*"},
+     *     mimeTypesMessage = "Please upload a valid PDF"
+     * )
      */
     private $file;
 
@@ -81,12 +84,12 @@ class FileSd
         $this->uuid = uniqid() . '.' . $this->file->guessExtension();
         $this->originalName = $this->file->getClientOriginalName();
         $this->directotPath = $directory;
-        $this->fullPath = $this->getDirectotPath(). '/' . $this->uuid;
+        $this->fullPath = $this->getDirectotPath() . '/' . $this->uuid;
         $this->mimeType = $this->getFile()->getMimeType();
         $this->size = $this->file->getSize();
 
 
-        $this->file->move($directory , $this->uuid);
+        $this->file->move($directory, $this->uuid);
 
         unset($this->file);
     }
