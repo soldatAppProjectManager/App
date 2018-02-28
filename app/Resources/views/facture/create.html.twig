@@ -1,0 +1,32 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+{% endblock %}
+
+{% block body %}
+<h1>
+    générer la facture pour bon de commande: #{{ bcc }}
+</h1>
+{{ form_start(form) }}
+    {{ form_widget(form._token) }}
+
+<div class="col-lg-12">
+    <div class="row well well-lg">
+        <div class="col-md-3 form-group ">
+            <div class="input date form_datetime">
+                {{ form_label(form.date) }}
+                {{ form_errors(form.date) }}
+                {{ form_widget(form.date) }}
+            </div>
+        </div> <div class="col-md-3 form-group ">
+                {{ form_label(form.modePaiement) }}
+                {{ form_errors(form.modePaiement) }}
+                {{ form_widget(form.modePaiement) }}
+        </div>
+
+    </div>
+</div>
+
+    {{ form_end(form) }}
+    {% endblock %}

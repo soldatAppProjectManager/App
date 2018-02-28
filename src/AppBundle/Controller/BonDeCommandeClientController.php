@@ -2,7 +2,9 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Facture;
 use AppBundle\Entity\ProduitFusion;
+use AppBundle\Form\FactureType;
 use DateTime;
 
 use AppBundle\Entity\Parametres;
@@ -46,41 +48,41 @@ class BonDeCommandeClientController extends Controller
     public function indexAction(Request $request)
     {
         $BonDeCommandeClient = $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->findAll();
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->findAll();
 
         // replace this example code with whatever you need
-        return $this->render('BonDeCommandeClient/index.html.twig',array('BonDeCommandeClient' => $BonDeCommandeClient));
+        return $this->render('BonDeCommandeClient/index.html.twig', array('BonDeCommandeClient' => $BonDeCommandeClient));
     }
 
     /**
      * @Route("/voir/{id}", name="BonDeCommandeClient_voir")
      */
-    public function voirAction($id,Request $request)
+    public function voirAction($id, Request $request)
     {
         $BonDeCommandeClient = $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->find($id);
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->find($id);
 
         $statuts = $this->getDoctrine()
-                        ->getRepository('AppBundle:statutProduit')
-                        ->findAll();
+            ->getRepository('AppBundle:statutProduit')
+            ->findAll();
 
         // replace this example code with whatever you need
-        return $this->render('BonDeCommandeClient/voir.html.twig',array('BonDeCommandeClient' => $BonDeCommandeClient,
+        return $this->render('BonDeCommandeClient/voir.html.twig', array('BonDeCommandeClient' => $BonDeCommandeClient,
             'statuts' => $statuts
-            ));
+        ));
     }
 
 
     /**
      * @Route("/profitabilite/{id}", name="BonDeCommandeClient_voirprofitabilite")
      */
-    public function voirProfitabiliteAction($id,Request $request)
+    public function voirProfitabiliteAction($id, Request $request)
     {
         $BonDeCommandeClient = $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->find($id);
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->find($id);
 
         // replace this example code with whatever you need
         return $this->render('BonDeCommandeClient/profitabilite.html.twig', array('BonDeCommandeClient' => $BonDeCommandeClient));
@@ -89,7 +91,7 @@ class BonDeCommandeClientController extends Controller
     /**
      * @Route("/create/{id}", name="BonDeCommandeClient_create")
      */
-    public function createAction(Devis $devis,Request $request)
+    public function createAction(Devis $devis, Request $request)
     {
         $BonDeCommandeClient = new BonDeCommandeClient;
         $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
@@ -97,7 +99,7 @@ class BonDeCommandeClientController extends Controller
 
         if ($form->isSubmitted()) {
             /** @var UploadedFile $file */
-            $file= $form['Fichier']->getData();
+            $file = $form['Fichier']->getData();
             $em = $this->getDoctrine()->getManager();
 
             $BonDeCommandeClient->setCommercial($devis->getCommercial());
@@ -106,7 +108,7 @@ class BonDeCommandeClientController extends Controller
             $BonDeCommandeClient->setDevis($devis);
             $BonDeCommandeClient->setVerrouille(false);
 
-            if(!empty($file)) {
+            if (!empty($file)) {
                 $BonDeCommandeClient->setFichier($file);
                 $file->move(
                     $this->getParameter('repertoire_bcclient'),
@@ -115,10 +117,10 @@ class BonDeCommandeClientController extends Controller
             }
 
             $statut = $this->getDoctrine()
-                            ->getRepository('AppBundle:statutProduit')
-                            ->find(7);
+                ->getRepository('AppBundle:statutProduit')
+                ->find(7);
 
-            $i=0;
+            $i = 0;
             /** @var ProduitFusion $produitFusion */
             foreach ($devis->getProduitsFusion() as $produitFusion) {
                 $produitFusBC = new ProduitFusion();
@@ -146,7 +148,7 @@ class BonDeCommandeClientController extends Controller
 
             /** @var ProduitDevis $produit */
             foreach ($devis->getProduits() as $produit) {
-                if(!$produit->estFusionne()) {
+                if (!$produit->estFusionne()) {
                     $produitBC = new ProduitBC;
                     $produitBC->deProduitDevis($produit);
                     $produitBC->setOrdre($produit->getOrdre());
@@ -161,9 +163,9 @@ class BonDeCommandeClientController extends Controller
             }
 
             $em->persist($BonDeCommandeClient);
-             $em->flush();
+            $em->flush();
 
-            $this->addFlash('notice',sprintf('#%d ,Bon de commande client ajouté', $BonDeCommandeClient->getId()));
+            $this->addFlash('notice', sprintf('#%d ,Bon de commande client ajouté', $BonDeCommandeClient->getId()));
 
             return $this->redirectToRoute('BonDeCommandeClient_list');
         }
@@ -177,25 +179,25 @@ class BonDeCommandeClientController extends Controller
     /**
      * @Route("/delete/{id}", name="BonDeCommandeClient_delete")
      */
-    public function deleteAction($id,Request $request)
+    public function deleteAction($id, Request $request)
     {
         // replace this example code with whatever you need
-       $BonDeCommandeClient = $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->find($id);
+        $BonDeCommandeClient = $this->getDoctrine()
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->find($id);
 
-        return $this->render('BonDeCommandeClient/delete.html.twig',array('id'=> $id,'BonDeCommandeClient' => $BonDeCommandeClient));
+        return $this->render('BonDeCommandeClient/delete.html.twig', array('id' => $id, 'BonDeCommandeClient' => $BonDeCommandeClient));
     }
 
     /**
      * @Route("/deleteConfirmed/{id}", name="BonDeCommandeClient_delete_confirmed")
      */
-    public function deleteConfirmedAction($id,Request $request)
+    public function deleteConfirmedAction($id, Request $request)
     {
         // replace this example code with whatever you need
-       $BonDeCommandeClient = $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->find($id);
+        $BonDeCommandeClient = $this->getDoctrine()
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->find($id);
 
 
         $em = $this->getDoctrine()->getManager();
@@ -203,131 +205,168 @@ class BonDeCommandeClientController extends Controller
         $em->remove($BonDeCommandeClient);
         $em->flush();
 
-        $this->addFlash('notice','BonDeCommandeClient Effacé');
+        $this->addFlash('notice', 'BonDeCommandeClient Effacé');
 
-        return $this->redirectToRoute('BonDeCommandeClient_list',array('id'=> $id));
+        return $this->redirectToRoute('BonDeCommandeClient_list', array('id' => $id));
     }
 
     /**
      * @Route("/verrouille/{source}/{id}", name="BonDeCommandeClient_verrouille")
      */
-    public function verrouilleAction($id,$source,Request $request)
+    public function verrouilleAction($id, $source, Request $request)
     {
         // replace this example code with whatever you need
-       $BonDeCommandeClient = $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->find($id);
+        $BonDeCommandeClient = $this->getDoctrine()
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->find($id);
 
 
         $em = $this->getDoctrine()->getManager();
 
-        $BonDeCommandeClient->setVerrouille(!$BonDeCommandeClient->getVerrouille()) ;
+        $BonDeCommandeClient->setVerrouille(!$BonDeCommandeClient->getVerrouille());
 
         $em->persist($BonDeCommandeClient);
         $em->flush();
-        
+
         $message = $BonDeCommandeClient->getVerrouille() ? 'BonDeCommandeClient verrouillé' : 'BonDeCommandeClient déverrouillé';
 
-        $this->addFlash('notice',$message);
+        $this->addFlash('notice', $message);
 
         if ($source == "index") return $this->redirectToRoute('BonDeCommandeClient_list');
-        else return $this->redirectToRoute('BonDeCommandeClient_voir',array('id' => $BonDeCommandeClient->getId()));
+        else return $this->redirectToRoute('BonDeCommandeClient_voir', array('id' => $BonDeCommandeClient->getId()));
     }
 
 
     /**
      * @Route("/edit/{id}", name="BonDeCommandeClient_edit")
      */
-    public function editAction($id,Request $request)
+    public function editAction($id, Request $request)
     {
         $BonDeCommandeClient = $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->find($id);
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->find($id);
 
-        $form = $this->createForm(BonDeCommandeClientFormType::class,$BonDeCommandeClient);  
+        $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
 
         $form->handleRequest($request);
 
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
 
-            $file= $form['Fichier']->getData();
+            $file = $form['Fichier']->getData();
 
             if (isset($file)) $file->move(
                 $this->getParameter('repertoire_bcclient'),
                 $BonDeCommandeClient->getFichier()
-                );
+            );
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->addFlash('notice','BonDeCommandeClient Mis à jour');
+            $this->addFlash('notice', 'BonDeCommandeClient Mis à jour');
 
-            return $this->redirectToRoute('BonDeCommandeClient_voir',array('id' => $BonDeCommandeClient->getId()));
+            return $this->redirectToRoute('BonDeCommandeClient_voir', array('id' => $BonDeCommandeClient->getId()));
         }
 
         // replace this example code with whatever you need
-        return $this->render('BonDeCommandeClient/edit.html.twig',array('form' => $form->createView(),'BonDeCommandeClient' => $BonDeCommandeClient));
+        return $this->render('BonDeCommandeClient/edit.html.twig', array('form' => $form->createView(), 'BonDeCommandeClient' => $BonDeCommandeClient));
     }
 
-        /**
-         *
-         * @Route("/majDevis", name="maj_bc")
-         * @Method("POST")
-         */
-        public function updateQuantityAction(Request $request)
-        {
-            if ($request->isXmlHttpRequest()) {
+    /**
+     *
+     * @Route("/majDevis", name="maj_bc")
+     * @Method("POST")
+     */
+    public function updateQuantityAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
 
-                $produit = $this->getDoctrine()->getRepository('AppBundle:ProduitDevis')->find($request->request->get('produit'));
+            $produit = $this->getDoctrine()->getRepository('AppBundle:ProduitDevis')->find($request->request->get('produit'));
 
-                $F = new \NumberFormatter("fr_FR", \NumberFormatter::SPELLOUT);
-                $F->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 2);
+            $F = new \NumberFormatter("fr_FR", \NumberFormatter::SPELLOUT);
+            $F->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 2);
 
-                $F2 =new \NumberFormatter("en-US",  \NumberFormatter::PATTERN_DECIMAL, '#,##0.00');
+            $F2 = new \NumberFormatter("en-US", \NumberFormatter::PATTERN_DECIMAL, '#,##0.00');
 
-                $produit->setQuantite($request->request->get('quantite'));
+            $produit->setQuantite($request->request->get('quantite'));
 
-                $em = $this->getDoctrine()->getManager();
-                $em->persist($produit);
-                $em->flush();
+            $em = $this->getDoctrine()->getManager();
+            $em->persist($produit);
+            $em->flush();
 
-                return new JsonResponse(array(
-                    'code'                  => 1,
-                    'sousTotalHT'           => $F2->format($produit->getSousTotalHT()),
-                    'totalHT'               => $F2->format($produit->getDevis()->getTotalHT()),
-                    'totalTVA'              => $F2->format($produit->getDevis()->getTotalTVA()),
-                    'totalTTC'              => $F2->format($produit->getDevis()->getTotalTTC()),
-                    'totalEntouteLettre'    => $F->format($produit->getDevis()->getTotalTTC())
-                ));
+            return new JsonResponse(array(
+                'code' => 1,
+                'sousTotalHT' => $F2->format($produit->getSousTotalHT()),
+                'totalHT' => $F2->format($produit->getDevis()->getTotalHT()),
+                'totalTVA' => $F2->format($produit->getDevis()->getTotalTVA()),
+                'totalTTC' => $F2->format($produit->getDevis()->getTotalTTC()),
+                'totalEntouteLettre' => $F->format($produit->getDevis()->getTotalTTC())
+            ));
 
-               return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('homepage');
 
 
-            } else {
-                return $this->redirectToRoute('homepage');
-            }
+        } else {
+            return $this->redirectToRoute('homepage');
         }
+    }
 
 
     /**
      * @Route("/fichier/{id}", name="BonDeCommandeClient_fichier")
      */
-    public function fichierAction($id,Request $request)
+    public function fichierAction($id, Request $request)
     {
         $BonDeCommandeClient = clone $this->getDoctrine()
-                        ->getRepository('AppBundle:BonDeCommandeClient')
-                        ->find($id);
+            ->getRepository('AppBundle:BonDeCommandeClient')
+            ->find($id);
 
-        $file =  $this->getParameter('repertoire_bcclient')."/".$BonDeCommandeClient->getFichier();
+        $file = $this->getParameter('repertoire_bcclient') . "/" . $BonDeCommandeClient->getFichier();
 
         $response = new BinaryFileResponse($file);
 
         $response->setContentDisposition(
             ResponseHeaderBag::DISPOSITION_ATTACHMENT,
             $BonDeCommandeClient->getFichier()
-        );        
+        );
 
         return $response;
+    }
+
+    /**
+     * @Route("/{id}/generate_facture", name="facture_generate")
+     */
+    public function generateFactureAction(BonDeCommandeClient $bonDeCommandeClient, Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+        /** @var Facture $facture */
+        $facture = $em->getRepository(Facture::class)->findOneBy(['bonDeCommandeClient' => $bonDeCommandeClient]);
+        if ($facture) {
+            $this->addFlash('error', 'Une facture a été déjà générée pour ce bon de commande par ' . $facture->getUser());
+            return $this->redirectToRoute('BonDeCommandeClient_list');
+        }
+
+        $facture = new Facture();
+        $facture->setUser($this->getUser());
+        $facture->setDate(new DateTime());
+        $facture->setBonDeCommandeClient($bonDeCommandeClient);
+
+        $form = $this->createForm(FactureType::class, $facture);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $facture->generateRef($em->getRepository(Facture::class)->count());
+            $em->persist($facture);
+            $em->flush();
+            $facture->setNumero($facture->getId());
+            $em->flush();
+            $this->addFlash('notice', 'Votre facture a été générée avec succès');
+            return $this->redirectToRoute('BonDeCommandeClient_list');
+        }
+
+        return $this->render('facture/create.html.twig', [
+            'bcc' => $bonDeCommandeClient,
+            'form' => $form->createView(),
+        ]);
+
     }
 }

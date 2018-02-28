@@ -15,6 +15,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 abstract class AbstractDocumentClient
 {
+
+    const NBR_ZERO_IN_REFERENCE = 5;
+
     /**
      * @var int
      *

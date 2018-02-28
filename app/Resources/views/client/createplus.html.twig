@@ -41,14 +41,24 @@
 							{{ form_widget(form.commercial) }}						
 						</div>
 					{% endif %}
-					<div class="col-md-4" align="center">
+					<div class="col-md-4" >
+                        {{ form_label(form.tel) }}
+                        {{ form_errors(form.tel) }}
+                        {{ form_widget(form.tel) }}
 					</div>
 					<div class="col-md-4 form-group {% if not form.prive.vars.valid %} has-error {% endif %}">
 						{{ form_label(form.prive) }}
 						{{ form_errors(form.prive) }}
 						{{ form_widget(form.prive) }}
 					</div>
-				</div>			
+				</div>
+				<div class="row" >
+					<div class="col-md-6 form-group">
+                        {{ form_label(form.address) }}
+                        {{ form_errors(form.address) }}
+                        {{ form_widget(form.address) }}
+					</div>
+				</div>
 			</div>
 			<hr>			
 

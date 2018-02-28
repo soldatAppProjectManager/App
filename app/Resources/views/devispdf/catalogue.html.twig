@@ -233,7 +233,7 @@
                 <br>
                 {{ devis.piedDePage.email }}
             <td valign="top" >
-                {{ company_name }} {{ devis.piedDePage.formejuridique }}<br>
+                SOLDAT {{ devis.piedDePage.formejuridique }}<br>
                 Au capital de {{ devis.piedDePage.capital }}<br>
                 RC : {{ devis.piedDePage.rc }}
             </td>
@@ -295,10 +295,10 @@
             <td align="center">{{ produit.quantite }}</td>
             <td>
                 {% if produit.designation|trim != '' %}
-                    <strong>{{ produit.designation|capitalize }} : </strong>
+                    <strong>{{ produit.designation }} : </strong>
                     <br>
                 {% endif %}
-                {{ produit.description|capitalize|raw }}
+                {{ produit.description|raw }}
                 {% if not produit.garanties is empty %}
                     <br><strong>Garantie : </strong>
                     {% for garantie in produit.garanties %}

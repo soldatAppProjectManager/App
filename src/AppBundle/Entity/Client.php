@@ -38,6 +38,19 @@ class Client
      */
     private $secteur;
 
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @ORM\Column(name="address", type="text")
+     */
+    private $address;
+
+    /**
+     * @var string
+     * @Assert\NotBlank()
+     * @ORM\Column(name="tel", type="string", length=64)
+     */
+    private $tel;
 
     /**
      * @var bool
@@ -294,5 +307,53 @@ class Client
     public function getDeviseachat()
     {
         return $this->deviseachat;
+    }
+
+    /**
+     * Set address
+     *
+     * @param string $address
+     *
+     * @return Client
+     */
+    public function setAddress($address)
+    {
+        $this->address = $address;
+
+        return $this;
+    }
+
+    /**
+     * Get address
+     *
+     * @return string
+     */
+    public function getAddress()
+    {
+        return $this->address;
+    }
+
+    /**
+     * Set tel
+     *
+     * @param string $tel
+     *
+     * @return Client
+     */
+    public function setTel($tel)
+    {
+        $this->tel = $tel;
+
+        return $this;
+    }
+
+    /**
+     * Get tel
+     *
+     * @return string
+     */
+    public function getTel()
+    {
+        return $this->tel;
     }
 }

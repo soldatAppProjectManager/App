@@ -55,6 +55,24 @@ class Livraison
     private $livraisonProduits;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="reference", type="string", length=16, nullable=true)
+     */
+    private $reference;
+
+
+    public function generateRef($count = 0)
+    {
+        $ref = sprintf(
+            'BL%s%s-%s',
+            str_repeat('0', AbstractDocumentClient::NBR_ZERO_IN_REFERENCE - strlen((string) $count)),
+            $count + 1,
+            date('Y'));
+        $this->setReference($ref);
+    }
+
+    /**
      * Get id
      *
      * @return int
@@ -200,5 +218,29 @@ class Livraison
     public function getBonDeCommandeClient()
     {
         return $this->bonDeCommandeClient;
+    }
+
+    /**
+     * Set reference
+     *
+     * @param string $reference
+     *
+     * @return Livraison
+     */
+    public function setReference($reference)
+    {
+        $this->reference = $reference;
+
+        return $this;
+    }
+
+    /**
+     * Get reference
+     *
+     * @return string
+     */
+    public function getReference()
+    {
+        return $this->reference;
     }
 }

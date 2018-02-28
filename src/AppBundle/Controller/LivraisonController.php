@@ -9,9 +9,11 @@ use AppBundle\Entity\ProduitBC;
 use AppBundle\Entity\statutProduit;
 use AppBundle\Form\BonDeReceptionType;
 use AppBundle\Form\LivraisonType;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -44,11 +46,50 @@ class LivraisonController extends Controller
      * @Route("/{id}", name="livraison_show")
      * @Method("GET")
      */
-    public function showAction(LivraisonProduit $livraisonProduit)
+    public function showAction(Livraison $livraison)
     {
         return $this->render('livraison/show.html.twig', array(
-            'livraison' => $livraisonProduit,
+            'livraison' => $livraison,
         ));
+    }
+
+    /**
+     * @Route("/{id}/edit", name="livraison_edit")
+     */
+    public function editAction(Livraison $livraison, Request $request)
+    {
+        $form = $this->createForm(LivraisonType::class, $livraison);
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            $this->addFlash('notice', 'Bon de livraison modifié');
+            return $this->redirectToRoute('livraison_index');
+        }
+
+        return $this->render('livraison/edit.html.twig', [
+            'form' => $form->createView(),
+            'livraison' => $livraison,
+        ]);
+    }
+
+    /**
+     * @Route("/{id}/print", name="livraison_print")
+     */
+    public function printAction(Livraison $livraison, Request $request)
+    {
+        $dompdf = new Dompdf();
+        $html = $this->render('livraison/print.html.twig' ,array('livraison' => $livraison))->getContent();
+        $dompdf->loadHtml($html);
+
+        $dompdf->render();
+
+        $filename =  $this->getParameter('repertoire_export')."/bl_".$livraison->getId().".pdf";
+
+        file_put_contents($filename, $dompdf->output());
+
+        return new BinaryFileResponse($filename);
     }
 
 
@@ -57,6 +98,7 @@ class LivraisonController extends Controller
      */
     public function LivraisonAction(BonDeCommandeClient $bcc, Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $livraison = new Livraison();
         $livraison->setDate(new \DateTime());
         $livraison->setBonDeCommandeClient($bcc);
@@ -79,7 +121,6 @@ class LivraisonController extends Controller
         $form = $this->createForm(LivraisonType::class, $livraison);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             /** @var LivraisonProduit $livraisonProduit */
             foreach ($livraison->getLivraisonProduits() as $livraisonProduit) {
@@ -95,6 +136,7 @@ class LivraisonController extends Controller
                 }
             }
 
+            $livraison->generateRef($em->getRepository(Livraison::class)->count());
             $em->persist($livraison);
             $em->flush();
 
