@@ -1,0 +1,92 @@
+<head>
+    <meta charset='utf-8'>
+
+    <link rel="icon" href="{{ asset('img/favicon_SD.png') }}"/>
+    <title>Bon de livraison N° {{ livraison.id }}</title>
+    {{ include('::style.html.twig') }}
+</head>
+<body>
+<div class="header">
+    <table border="0" width="100%">
+        <tr>
+            <td width="50%">
+                <img height="85" width="204" src="img/LOGO-SD-HR.png">
+            </td>
+            <td>
+                <h1 style="font-size: 100%;">Bon de livraison {{ livraison.reference }}</h1>
+                Date de livraison : {{ livraison.date|date('d/m/Y') }}
+            </td>
+        </tr>
+    </table>
+</div>
+<hr>
+<br>
+{% set client = livraison.bonDeCommandeClient.client %}
+<table>
+    <tr>
+        <td width="50%">
+            <span style="font-size: 22px;font-weight: bolder;">{{ client.nom }}</span><br>
+            <span style="font-size: 13px;">
+                Lieu de livraison : {{ livraison.lieu }}<br>
+            </span>
+        </td>
+        <td></td>
+    </tr>
+</table>
+<br>
+<br>
+
+<table class="produits" style="font-size: 13px;">
+    <thead>
+    <tr>
+        <th width="10%">Qté</th>
+        <th width="50%">Désignation</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for livPro in livraison.livraisonProduits %}
+        <tr>
+            <td align="center">{{ livPro.quantite }}</td>
+            <td>
+                {% if livPro.produit.designation|trim != '' %}
+                    <strong>{{ livPro.produit.designation }} : </strong>
+                    <br>
+                {% endif %}
+                {{ livPro.produit.description|raw }}
+                {% if livPro.produit.isProduct %}
+                    {% if not livPro.produit.garanties is empty %}
+                        <br><strong>Garantie : </strong>
+                        {% for garantie in livPro.produit.garanties %}
+                            <br>{{ garantie }}
+                        {% endfor %}
+                    {% endif %}
+                    {% if not livPro.produit.termes is empty %}
+                        <br><strong>Conditions particulières : </strong>
+                        {% for terme in livPro.produit.termes %}
+                            <br>{{ terme.nom|capitalize ~" - "~ terme.description }}
+                        {% endfor %}
+                    {% endif %}
+                {% endif %}
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
+<br>
+<br>
+
+
+
+<div class="footer">
+    {% include '::footer.html.twig' with {'footer': livraison.bonDeCommandeClient.devis.piedDePage} %}
+    <p class="page"></p>
+</div>
+<br>
+<br>
+
+<br>
+
+
+<div class="page-number"></div>
+
+</body>
