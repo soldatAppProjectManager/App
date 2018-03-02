@@ -18,3 +18,6 @@ parameters:
     repertoire_export: 'devisexport'
     repertoire_rapportexport: 'rapportexport'
     repertoire_modeledevis: '%kernel.project_dir%/app/Resources/views/devispdf'
+    repertoire_paiement: uploads/paiement
+    repertoire_bl_fournisseur: uploads/bl_fournisseur
+    repertoire_ticket: uploads/ticket
