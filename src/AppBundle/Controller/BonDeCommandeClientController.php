@@ -360,7 +360,7 @@ class BonDeCommandeClientController extends Controller
             $facture->setNumero($facture->getId());
             $em->flush();
             $this->addFlash('notice', 'Votre facture a été générée avec succès');
-            return $this->redirectToRoute('BonDeCommandeClient_list');
+            return $this->redirectToRoute('facture_index');
         }
 
         return $this->render('facture/create.html.twig', [

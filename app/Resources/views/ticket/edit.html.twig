@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} modification ticket{% endblock %}
+{% block body %}
+    <h1>Ticket {{ ticket.reference }}</h1>
+
+    {{ form_start(form) }}
+    <div class=" well well-lg">
+        <div class="row">
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.date) }}
+                {{ form_widget(form.date) }}
+                {{ form_errors(form.date) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.serie) }}
+                {{ form_widget(form.serie) }}
+                {{ form_errors(form.serie) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.client) }}
+                {{ form_widget(form.client) }}
+                {{ form_errors(form.client) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.tel) }}
+                {{ form_widget(form.tel) }}
+                {{ form_errors(form.tel) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-12 form-group ">
+                {{ form_label(form.objet) }}
+                {{ form_widget(form.objet) }}
+                {{ form_errors(form.objet) }}
+            </div>
+            <div class="col-md-12 form-group ">
+                {{ form_label(form.description) }}
+                {{ form_widget(form.description) }}
+                {{ form_errors(form.description) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.priority) }}
+                {{ form_widget(form.priority) }}
+                {{ form_errors(form.priority) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.affectedTo) }}
+                {{ form_widget(form.affectedTo) }}
+                {{ form_errors(form.affectedTo) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.file) }}
+                {{ form_widget(form.file.file) }}
+                {{ form_errors(form.file.file) }}
+                {% if form.file.vars.data %}
+                    <br>
+                    <a target="_blank"
+                       href="{{ asset(form.file.vars.data.fullPath) }}">afficher en
+                        plein écran</a>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+    <a class="btn btn-default" href="{{ path('ticket_index') }}">Annuler</a>
+    <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
+    {{ form_end(form) }}
+{% endblock %}

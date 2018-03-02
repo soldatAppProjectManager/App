@@ -6,33 +6,41 @@
     {{ include('::style.html.twig') }}
 </head>
 <body>
+{% set client = livraison.bonDeCommandeClient.client %}
 <div class="header">
-    <table border="0" width="100%">
+    <table width="100%">
         <tr>
-            <td width="50%">
+            <td style="width: 240px;">
                 <img height="85" width="204" src="img/LOGO-SD-HR.png">
             </td>
-            <td>
-                <h1 style="font-size: 100%;">Bon de livraison {{ livraison.reference }}</h1>
-                Date de livraison : {{ livraison.date|date('d/m/Y') }}
+            <td style="width: 240px;">
+                <h2 style="font-size: 100%;">Bon de livraison <br>{{ livraison.reference }}</h2>
+                <table>
+                    <tr>
+                        <td>Date :</td>
+                        <td>{{ livraison.date|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Bon de commande :</td>
+                        <td>{{ livraison.bonDeCommandeClient.numeroDeBonDeCommandeClient }}</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="vertical-align: top">
+                <b>Adressé à:</b><br>
+                {{ client.nom }}<br>
+                {% if client.address %}
+                    {{ client.address }}<br>
+                {% endif %}
+
+                {% if client.tel %}
+                    {{ client.tel }} <br>
+                {% endif %}
+                <b>Contact :</b> {{ livraison.bonDeCommandeClient.contact }}
             </td>
         </tr>
     </table>
 </div>
-<hr>
-<br>
-{% set client = livraison.bonDeCommandeClient.client %}
-<table>
-    <tr>
-        <td width="50%">
-            <span style="font-size: 22px;font-weight: bolder;">{{ client.nom }}</span><br>
-            <span style="font-size: 13px;">
-                Lieu de livraison : {{ livraison.lieu }}<br>
-            </span>
-        </td>
-        <td></td>
-    </tr>
-</table>
 <br>
 <br>
 
@@ -41,6 +49,7 @@
     <tr>
         <th width="10%">Qté</th>
         <th width="50%">Désignation</th>
+        <th width="40%">Numéro de série</th>
     </tr>
     </thead>
     <tbody>
@@ -67,6 +76,11 @@
                         {% endfor %}
                     {% endif %}
                 {% endif %}
+            </td>
+            <td>
+                {% for serie in livPro.series %}
+                {{ serie }}
+                {% endfor %}
             </td>
         </tr>
     {% endfor %}

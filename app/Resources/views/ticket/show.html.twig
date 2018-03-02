@@ -1,0 +1,54 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}Ticket {{ ticket.reference }}{% endblock %}
+{% block body %}
+    <h1>Ticket {{ ticket.reference }}</h1>
+
+    <table class="table table-bordered" >
+        <tbody>
+            <tr>
+                <th>Date</th>
+                <td>{{ ticket.date|date('d/m/Y') }}</td>
+            </tr>
+            <tr>
+                <th>Objet</th>
+                <td>{{ ticket.objet }}</td>
+            </tr>
+            <tr>
+                <th>Description </th>
+                <td>{{ ticket.description }}</td>
+            </tr>
+            <tr>
+                <th>Responsable</th>
+                <td>{{ ticket.affectedTo }}</td>
+            </tr>
+            {% if ticket.file %}
+            <tr>
+                <th>Piece jointe</th>
+                <td>
+                        <div class="col-md-6">
+                            <a target="_blank" style="float: right;"
+                               href="{{ asset(ticket.file.fullPath) }}">afficher en
+                                plein écran</a>
+                            <br>
+                            <br>
+                            <div>
+                                <object data="{{ asset(ticket.file.fullPath) }}" type="{{ ticket.file.mimeType }}"
+                                        width="100%" height="300px;"></object>
+                            </div>
+                        </div>
+                </td>
+            </tr>
+            {% endif %}
+        </tbody>
+    </table>
+
+            <a class="btn btn-default" href="{{ path('ticket_index') }}">Retour à la liste</a>
+            <a class="btn btn-warning"  href="{{ path('ticket_edit', { 'id': ticket.id }) }}">Editer</a>
+<div class="pull-right" >
+            {{ form_start(delete_form) }}
+                <input class="btn btn-danger" type="submit" value="Delete">
+            {{ form_end(delete_form) }}</div>
+        </li>
+    </ul>
+{% endblock %}

@@ -300,7 +300,7 @@
                         </li>
                         {% if is_granted('ROLE_COMMERCIAL') or is_granted('ROLE_ADMIN')  %}
                         <li>
-                            <a href="{{ url('homepage') }}"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="{{ url('ticket_index') }}"><i class="fa fa-dashboard fa-fw"></i> Tickets</a>
                         </li>
                         {% endif %}
                         {% if (is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')) %}

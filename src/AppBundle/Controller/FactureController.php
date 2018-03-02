@@ -33,17 +33,16 @@ class FactureController extends Controller
 
 
     /**
-     * @Route("/print_pdf/{id}", name="facture_pdf")
+     * @Route("/print_pdf/{id}/{ref}", name="facture_pdf")
      */
-    public function printAction(Facture $facture)
+    public function printAction(Facture $facture, $ref = 'facture')
     {
         $dompdf = new Dompdf();
         $html = $this->render('facture/print.html.twig', ['facture' => $facture])->getContent();
         $dompdf->loadHtml($html);
 
         $dompdf->render();
-        $filename = $this->getParameter('repertoire_export') . "/facture_" . $facture->getId() . ".pdf";
-
+        $filename = $this->getParameter('repertoire_export') . "/" . $facture->getReference() . ".pdf";
         file_put_contents($filename, $dompdf->output());
 
         return new BinaryFileResponse($filename);

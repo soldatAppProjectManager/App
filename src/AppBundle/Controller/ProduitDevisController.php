@@ -76,7 +76,7 @@ class ProduitDevisController extends Controller
 
             $this->addFlash('notice','Produit de devis Ajouté');
 
-            return $this->redirectToRoute('devis_apercu',array('id' => $produitdevis->getDocumentClient()->getId()));
+            return $this->redirectToRoute('devis_produits',array('id' => $produitdevis->getDocumentClient()->getId()));
         }
 
         return $this->render('produitdevis/create.html.twig', array(
@@ -136,7 +136,7 @@ class ProduitDevisController extends Controller
 
             $this->addFlash('notice','Produit de devis Mis à jour');
 
-            return $this->redirectToRoute('devis_apercu',array(   'id' => $devis->getId()));
+            return $this->redirectToRoute('devis_produits',array(   'id' => $devis->getId()));
         }
 
 

@@ -75,9 +75,9 @@ class LivraisonController extends Controller
     }
 
     /**
-     * @Route("/{id}/print", name="livraison_print")
+     * @Route("/{id}/print/{ref}", name="livraison_print")
      */
-    public function printAction(Livraison $livraison, Request $request)
+    public function printAction(Livraison $livraison, $ref)
     {
         $dompdf = new Dompdf();
         $html = $this->render('livraison/print.html.twig' ,array('livraison' => $livraison))->getContent();
