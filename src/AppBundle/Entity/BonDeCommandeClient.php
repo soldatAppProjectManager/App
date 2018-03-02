@@ -72,22 +72,33 @@ class BonDeCommandeClient extends AbstractDocumentClient
     private $bonsDeCommandeFournisseur;
 
     /**
+     * @ORM\OneToMany(targetEntity="Livraison", mappedBy="bonDeCommandeClient")
+     */
+    private $livraisons;
+
+    public function getLivraisons()
+    {
+        return $this->livraisons;
+    }
+
+    /**
      * @param UploadedFile $fichier
      * @return $this
      */
     public function setFichier(UploadedFile $fichier)
     {
 
-        
-        $this->fichier  =   "BC-".
-                            "-".$this->getDevis()->getClient()->getNom().
-                            "-".$this->getNumeroDeBonDeCommandeClient().
-                            '.'.$fichier->guessExtension();
+
+        $this->fichier = "BC-" .
+            "-" . $this->getDevis()->getClient()->getNom() .
+            "-" . $this->getNumeroDeBonDeCommandeClient() .
+            '.' . $fichier->guessExtension();
         return $this;
     }
+
     public function __toString()
     {
-        return $this->getDatedereception()->format('Y_m')."-".$this->getNumeroDeBonDeCommandeClient()." - ".$this->getClient()->getNom();
+        return $this->getDatedereception()->format('Y_m') . "-" . $this->getNumeroDeBonDeCommandeClient() . " - " . $this->getClient()->getNom();
     }
 
     /**
@@ -346,31 +357,35 @@ class BonDeCommandeClient extends AbstractDocumentClient
         return $this->termes;
     }
 
-    public function getTauxMargeBrute(){
+    public function getTauxMargeBrute()
+    {
 
-        return $this->getMargeBrute()/$this->getTotalHT();
+        return $this->getMargeBrute() / $this->getTotalHT();
     }
 
-    public function getValeurMarkUP(){
+    public function getValeurMarkUP()
+    {
 
-        return $this->getTotalPrixRevient()*$this->getMarkUp();
+        return $this->getTotalPrixRevient() * $this->getMarkUp();
     }
 
-    public function getValeurChargesDExploitation(){
+    public function getValeurChargesDExploitation()
+    {
 
-        return $this->getTauxChargesExploitation()*$this->getTotalHT();
+        return $this->getTauxChargesExploitation() * $this->getTotalHT();
     }
 
-    public function getTauxFraisFinanciers(){
+    public function getTauxFraisFinanciers()
+    {
 
-        return $this->getFraisFinanciers()/$this->getTotalHT();
+        return $this->getFraisFinanciers() / $this->getTotalHT();
     }
 
-    public function getTauxMargeNette(){
+    public function getTauxMargeNette()
+    {
 
-        return $this->getMargeNette()/$this->getTotalHT();
+        return $this->getMargeNette() / $this->getTotalHT();
     }
-
 
 
     public function getTotalTVA()
@@ -378,15 +393,15 @@ class BonDeCommandeClient extends AbstractDocumentClient
         $totalTVA = 0;
 
         foreach ($this->getProduits() as $produit) {
-        $totalTVA += $produit->getSoustotalHT()*$produit->getTauxTVA();
+            $totalTVA += $produit->getSoustotalHT() * $produit->getTauxTVA();
         }
 
-        return round($totalTVA,2);
+        return round($totalTVA, 2);
     }
 
     public function getTotalTTC()
     {
-        return $this->getTotalHT()+$this->getTotalTVA();
+        return $this->getTotalHT() + $this->getTotalTVA();
     }
 
     public function getMargeBrute()
@@ -394,10 +409,10 @@ class BonDeCommandeClient extends AbstractDocumentClient
         $margeBrute = 0;
 
         foreach ($this->getProduits() as $produit) {
-        $margeBrute += $produit->getMargeBrute($this->getDevis()->getTauxFinancementTresorerie());
+            $margeBrute += $produit->getMargeBrute($this->getDevis()->getTauxFinancementTresorerie());
         }
 
-        return round($margeBrute,2);
+        return round($margeBrute, 2);
     }
 
 
@@ -407,10 +422,10 @@ class BonDeCommandeClient extends AbstractDocumentClient
 
         /** @var ProduitBC $produit */
         foreach ($this->getProduits() as $produit) {
-        $prixRevient += $produit->getTotalPrixDeRevient();
+            $prixRevient += $produit->getTotalPrixDeRevient();
         }
 
-        return round($prixRevient,2);
+        return round($prixRevient, 2);
     }
 
     public function getFraisFinanciers()
@@ -418,19 +433,20 @@ class BonDeCommandeClient extends AbstractDocumentClient
         $FraisFinanciers = 0;
 
         foreach ($this->getProduits() as $produit) {
-        $FraisFinanciers += $produit->getFraisFinanciers($this->getDevis()->getTauxFinancementTresorerie());
+            $FraisFinanciers += $produit->getFraisFinanciers($this->getDevis()->getTauxFinancementTresorerie());
         }
 
-        return round($FraisFinanciers,2);
+        return round($FraisFinanciers, 2);
     }
 
     public function getMarkUp()
     {
-        return $this->getTotalPrixRevient() > 0 ? round(($this->getTotalHT() - $this->getTotalPrixRevient())/$this->getTotalPrixRevient(),4) : 0;
+        return $this->getTotalPrixRevient() > 0 ? round(($this->getTotalHT() - $this->getTotalPrixRevient()) / $this->getTotalPrixRevient(), 4) : 0;
     }
 
-    public function getTauxResultatDeChange() {
-        return $this->getTotalHT() > 0 ? $this->getResultatDeChange()/$this->getTotalHT() : 0;
+    public function getTauxResultatDeChange()
+    {
+        return $this->getTotalHT() > 0 ? $this->getResultatDeChange() / $this->getTotalHT() : 0;
     }
 
     public function getResultatDeChange()
@@ -439,45 +455,43 @@ class BonDeCommandeClient extends AbstractDocumentClient
 
         /** @var ProduitBC $produit */
         foreach ($this->getProduits() as $produit) {
-        $resultatDeChange += $produit->getResultatDeChange();
+            $resultatDeChange += $produit->getResultatDeChange();
         }
-        return round($resultatDeChange,4);
-    }    
+        return round($resultatDeChange, 4);
+    }
 
     public function getTauxChargesExploitation()
     {
-        return $this->getDevis()->getTravailminimum()+$this->getDevis()->getTravailLivraison()->getCharge()+$this->getDevis()->getTravailCommercial()->getCharge()+$this->getDevis()->getTravailAvantVente()->getCharge()+$this->getDevis()->getTravailImport()->getCharge();
+        return $this->getDevis()->getTravailminimum() + $this->getDevis()->getTravailLivraison()->getCharge() + $this->getDevis()->getTravailCommercial()->getCharge() + $this->getDevis()->getTravailAvantVente()->getCharge() + $this->getDevis()->getTravailImport()->getCharge();
     }
 
     public function getMargeNette()
     {
-        return $this->getMargeBrute()-($this->getTotalHT()*$this->getTauxChargesExploitation());
+        return $this->getMargeBrute() - ($this->getTotalHT() * $this->getTauxChargesExploitation());
     }
 
 
     public function getRevenuParMetier()
-    {       
-        foreach ($this->getProduits() as $produit){
-            
+    {
+        foreach ($this->getProduits() as $produit) {
+
             if (isset($revenu[$produit->getMetier()->getNom()])) {
                 $revenu[$produit->getMetier()->getNom()]["revenu"] += $produit->getSousTotalHT();
-            }
-            else {
+            } else {
                 $revenu[$produit->getMetier()->getNom()]["revenu"] = $produit->getSousTotalHT();
                 $revenu[$produit->getMetier()->getNom()]["nom"] = $produit->getMetier()->getNom();
             }
         }
         return $revenu;
-    }     
+    }
 
     public function getRevenuParTypeProduit()
     {
-        foreach ($this->getProduits() as $produit){
-            
+        foreach ($this->getProduits() as $produit) {
+
             if (isset($revenu[$produit->getTypeproduit()->getNom()])) {
                 $revenu[$produit->getTypeproduit()->getNom()]["revenu"] += $produit->getSousTotalHT();
-            }
-            else {
+            } else {
                 $revenu[$produit->getTypeproduit()->getNom()]["revenu"] = $produit->getSousTotalHT();
                 $revenu[$produit->getTypeproduit()->getNom()]["nom"] = $produit->getTypeproduit()->getNom();
             }
@@ -486,28 +500,26 @@ class BonDeCommandeClient extends AbstractDocumentClient
     }
 
     public function getMargeParMetier()
-    {       
-        foreach ($this->getProduits() as $produit){
-            
+    {
+        foreach ($this->getProduits() as $produit) {
+
             if (isset($revenu[$produit->getMetier()->getNom()])) {
                 $revenu[$produit->getMetier()->getNom()]["marge"] += $produit->getMargeBrute($this->getDevis()->getTauxFinancementTresorerie());
-            }
-            else {
+            } else {
                 $revenu[$produit->getMetier()->getNom()]["marge"] = $produit->getMargeBrute($this->getDevis()->getTauxFinancementTresorerie());
                 $revenu[$produit->getMetier()->getNom()]["nom"] = $produit->getMetier()->getNom();
             }
         }
         return $revenu;
-    }     
+    }
 
     public function getMargeParTypeProduit()
     {
-        foreach ($this->getProduits() as $produit){
-            
+        foreach ($this->getProduits() as $produit) {
+
             if (isset($revenu[$produit->getTypeproduit()->getNom()])) {
                 $revenu[$produit->getTypeproduit()->getNom()]["marge"] += $produit->getMargeBrute($this->getDevis()->getTauxFinancementTresorerie());
-            }
-            else {
+            } else {
                 $revenu[$produit->getTypeproduit()->getNom()]["marge"] = $produit->getMargeBrute($this->getDevis()->getTauxFinancementTresorerie());
                 $revenu[$produit->getTypeproduit()->getNom()]["nom"] = $produit->getTypeproduit()->getNom();
             }
@@ -517,12 +529,11 @@ class BonDeCommandeClient extends AbstractDocumentClient
 
     public function getRevenuParDevise()
     {
-        foreach ($this->getProduits() as $produit){
-            
+        foreach ($this->getProduits() as $produit) {
+
             if (isset($revenu[$produit->getDeviseachat()->getNom()])) {
                 $revenu[$produit->getDeviseachat()->getNom()]["revenu"] += $produit->getSousTotalHT();
-            }
-            else {
+            } else {
                 $revenu[$produit->getDeviseachat()->getNom()]["revenu"] = $produit->getSousTotalHT();
                 $revenu[$produit->getDeviseachat()->getNom()]["nom"] = $produit->getDeviseachat()->getNom();
                 $revenu[$produit->getDeviseachat()->getNom()]["taux"] = $produit->getTauxAchat();
@@ -531,8 +542,11 @@ class BonDeCommandeClient extends AbstractDocumentClient
         return $revenu;
     }
 
-    public function estLivré(){
-        foreach ($this->getProduits() as $produit) {if (!$produit->estLivré()) return false;}
+    public function estLivré()
+    {
+        foreach ($this->getProduits() as $produit) {
+            if (!$produit->estLivré()) return false;
+        }
         return true;
     }
 
@@ -574,7 +588,8 @@ class BonDeCommandeClient extends AbstractDocumentClient
     /**
      * @return string
      */
-    public function getClassTitle() {
+    public function getClassTitle()
+    {
         return "Bon de commande";
     }
 
@@ -583,14 +598,39 @@ class BonDeCommandeClient extends AbstractDocumentClient
         return "BonDeCommandeClient_voir";
     }
 
-    public function hasProductsInStock() {
+    public function hasProductsInStock()
+    {
         /** @var ProduitBC $produit */
         foreach ($this->getProduits() as $produit) {
-            if(in_array($produit->getStatut()->getId(), [2, 8])) {
+            if (in_array($produit->getStatut()->getId(), [2, 8])) {
                 return true;
             }
         }
     }
 
 
+
+    /**
+     * Add livraison
+     *
+     * @param \AppBundle\Entity\Livraison $livraison
+     *
+     * @return BonDeCommandeClient
+     */
+    public function addLivraison(\AppBundle\Entity\Livraison $livraison)
+    {
+        $this->livraisons[] = $livraison;
+
+        return $this;
+    }
+
+    /**
+     * Remove livraison
+     *
+     * @param \AppBundle\Entity\Livraison $livraison
+     */
+    public function removeLivraison(\AppBundle\Entity\Livraison $livraison)
+    {
+        $this->livraisons->removeElement($livraison);
+    }
 }

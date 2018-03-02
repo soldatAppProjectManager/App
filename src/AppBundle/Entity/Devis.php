@@ -95,7 +95,7 @@ class Devis extends AbstractDocumentClient
      *
      * @ORM\Column(name="numero", type="integer")
      */
-    private $numero = 0;
+    private $numero;
 
     /**
      * @var int
@@ -204,9 +204,10 @@ class Devis extends AbstractDocumentClient
         $CloneProduits = new ArrayCollection();
         $CloneFusions = new ArrayCollection();
 
+        /** @var ProduitDevis $produit */
         foreach ($produits as $produit) {
             $CloneProduit = clone $produit;
-            $CloneProduit->setDevis($this);
+            $CloneProduit->setDocumentClient($this);
             $CloneProduits->add($CloneProduit);
         }
 

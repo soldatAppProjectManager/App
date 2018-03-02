@@ -27,7 +27,7 @@
                 <td>
                     <a class="btn btn-xs btn-info" href="{{ path('livraison_show', { 'id': livraison.id }) }}">Voir</a>
                     <a class="btn btn-xs btn-warning" href="{{ path('livraison_edit', { 'id': livraison.id }) }}">Editer</a>
-                    <a class="btn btn-xs btn-primary" target="_blank" href="{{ path('livraison_print', { 'id': livraison.id }) }}"> Afficher en pdf</a>
+                    <a class="btn btn-xs btn-primary" target="_blank" href="{{ path('livraison_print', { 'id': livraison.id , 'ref' : livraison.reference }) }}"> Afficher en pdf</a>
                 </td>
             </tr>
         {% endfor %}

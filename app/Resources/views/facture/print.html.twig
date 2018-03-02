@@ -2,50 +2,60 @@
     <meta charset='utf-8'>
 
     <link rel="icon" href="{{ asset('img/favicon_SD.png') }}"/>
-    <title>Facture N° {{ facture.reference }}</title>
+    <title>Facture {{ facture.reference }}</title>
     {{ include('::style.html.twig') }}
 </head>
 <body>
+{% set client = facture.bonDeCommandeClient.client %}
 <div class="header">
-    <table border="0" width="100%">
+    <table width="100%">
         <tr>
-            <td width="50%">
+            <td style="width: 270px;">
                 <img height="85" width="204" src="img/LOGO-SD-HR.png">
             </td>
-            <td>
+            <td style="width: 240px;">
                 <h1 style="font-size: 100%;">Facture {{ facture.reference }}</h1>
-                Date de faturation : {{ facture.date|date('d/m/Y') }}
+                <table>
+                    <tr>
+                        <td>Date :</td>
+                        <td>{{ facture.date|date('d/m/Y') }}</td>
+                    </tr>
+                    <tr>
+                        <td>Bon de commande :</td>
+                        <td>{{ facture.bonDeCommandeClient.numeroDeBonDeCommandeClient }}</td>
+                    </tr>
+                </table>
+            </td>
+            <td style="vertical-align: top;background-color: #F4F4F4;padding-top: 5px;padding-left: 5px;">
+                <b>Facturé pour :</b><br>
+                {{ client.nom }}<br>
+                {% if client.address %}
+                    {{ client.address }}<br>
+                {% endif %}
+
+                {% if client.tel %}
+                    {{ client.tel }} <br>
+                {% endif %}
+                <b>Contact :</b> {{ facture.bonDeCommandeClient.contact }}
             </td>
         </tr>
     </table>
 </div>
-<hr>
 <br>
-{% set client = facture.bonDeCommandeClient.client %}
-<table border="0.5px" >
-    <thead>
+<br>
+<br>
+<table>
     <tr>
-        <th align="center" style="background-color: #C9C9C9" >
-            Client
-        </th>
-    </tr>
-    </thead>
-    <tbody>
-    <tr>
-        <td width="50%" style="padding: 3px;" >
-            <span style="font-size: 22px;font-weight: bolder;">{{ client.nom }}</span><br>
-            <span style="font-size: 13px;">
-                Adresse : {{ client.address }}<br>
-                Téléphone : {{ client.tel }} <br>
-                Bon de commande : {{ facture.bonDeCommandeClient.numeroDeBonDeCommandeClient }}
-            </span>
+        <td align="top">Bon de livraison :</td>
+        <td>
+            {% for liv in facture.bonDeCommandeClient.livraisons %}
+                {{ liv.reference }}
+                {% if not loop.last %} | {% endif %}
+            {% endfor %}
         </td>
     </tr>
-    </tbody>
 </table>
 <br>
-<br>
-
 <table class="produits" style="font-size: 13px;">
     <thead>
     <tr>

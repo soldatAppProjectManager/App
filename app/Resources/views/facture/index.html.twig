@@ -1,5 +1,6 @@
 {% extends 'base.html.twig' %}
 
+    {% block title %} Liste des Factures{% endblock %}
 {% block body %}
     <h1>Lists des factures</h1>
 
@@ -27,7 +28,8 @@
                 <td>
                     <a class="btn btn-xs btn-warning" href="{{ path('facture_paiements', {'id' : facture.id }) }}">Paiement</a>
                     <a class="btn btn-xs btn-primary" target="_blank"
-                       href="{{ path('facture_pdf', {'id' : facture.id}) }}"> Afficher en pdf</a>
+                       href="{{ path('facture_pdf', {'id' : facture.id, 'ref' : facture.reference }) }}"> Afficher en
+                        pdf</a>
                 </td>
             </tr>
         {% endfor %}
