@@ -173,6 +173,13 @@ class ProduitDevis extends AbstractProduit
 
     public function __construct()
     {
+        $this->setTauxAchat(1);
+        $this->setQuantite(1);
+        $this->setMarge(0.12);
+        $this->setFraisapproche(0);
+
+        $this->termes = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->garanties = new \Doctrine\Common\Collections\ArrayCollection();
             $this->setTauxAchat(1);
             $this->setQuantite(1);
             $this->setMarge(0.12);
@@ -180,6 +187,7 @@ class ProduitDevis extends AbstractProduit
 
             $this->termes = new \Doctrine\Common\Collections\ArrayCollection();
             $this->garanties = new \Doctrine\Common\Collections\ArrayCollection();
+
     }
 
     public function __toString()
@@ -302,7 +310,6 @@ class ProduitDevis extends AbstractProduit
     {
         $prixVente = ($this->prixachatht * (1 + $this->fraisapproche) * ($this->getTauxAchat())) / (1 - $this->marge) / $this->getDocumentClient()->getTauxVente();
 
-        if($this->getTypeproduit() && $this->getTypeproduit()->getPrecision() > 2) {
             return round($prixVente, $this->getTypeproduit()->getPrecision(), PHP_ROUND_HALF_UP);
         } else {
             return round($prixVente, 0, PHP_ROUND_HALF_UP);
@@ -466,9 +473,13 @@ class ProduitDevis extends AbstractProduit
 
     public function getSousTotalHT()
     {
-        return round($this->quantite * $this->getPrixVenteHT(), $this->getTypeproduit()->getPrecision());
+        $precision = 2;
+        if ($this->getTypeproduit()) {
+            $precision = $this->getTypeproduit()->getPrecision();
+        }
+        return round($this->quantite * $this->getPrixVenteHT(), $precision);
     }
-  
+
     public function getFraisFinanciers($TauxFinancementTresorerie)
     {
         $DelaiRecouvrement = $this->getDocumentClient()->getClient()->getDelaipaiementconstate();
