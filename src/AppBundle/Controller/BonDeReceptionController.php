@@ -63,6 +63,11 @@ class BonDeReceptionController extends Controller
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            if ($form->getData()->getFile()->getFile()) {
+                $reception->getFile()->upload($this->getParameter('repertoire_bl_fournisseur'));
+            } elseif (null === $reception->getFile()->getId()) {
+                $reception->setFile(null);
+            }
             foreach ($reception->getReceptionProduits() as $receptionProduit) {
                 foreach ($receptionProduit->getSeries() as $serie) {
                     $em->remove($serie);
@@ -70,10 +75,7 @@ class BonDeReceptionController extends Controller
                 $em->flush();
                 $receptionProduit->explodeSerie();
             }
-            if ($form->getData()->getFile()->getFile() !== null) {
-                $reception->getFile()->upload($this->getParameter('repertoire_bl_fournisseur'));
-            }
-            $em->persist($reception);
+
             $em->flush();
             return $this->redirectToRoute('reception_show', ['id' => $reception->getId()]);
         }
