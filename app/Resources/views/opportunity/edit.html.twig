@@ -1,0 +1,129 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+    {% if opportunity.id is empty %}
+        Nouvelle opportunité
+    {% else %}
+        Modification opportunité #{{ opportunity.id }}
+    {% endif %}
+{% endblock %}
+ {% form_theme form _self %}
+    {% block _opportunity_products_entry_row %}
+        <div class="row rowProduct">
+            <div class="col-md-3">
+                {{ form_label(form.designation) }}
+                {{ form_widget(form.designation) }}
+                {{ form_errors(form.designation) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.price) }}
+                {{ form_widget(form.price) }}
+                {{ form_errors(form.price) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.quantity) }}
+                {{ form_widget(form.quantity) }}
+                {{ form_errors(form.quantity) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.trade) }}
+                {{ form_widget(form.trade) }}
+                {{ form_errors(form.trade) }}
+            </div>
+            <div class="col-md-2">
+                {{ form_label(form.productType) }}
+                {{ form_widget(form.productType) }}
+                {{ form_errors(form.productType) }}
+            </div>
+            <div class="col-md-1 button-container">
+                <br>
+                <a class="btn btn-xs btn-danger btnDeleteProduct" href="#"><i class="fa fa-trash"></i></a>
+            </div>
+        </div>
+    {% endblock %}
+{% block body %}
+    <h1>{% if opportunity.id is empty %}
+            Nouvelle opportunité
+        {% else %}
+            Modification opportunité #{{ opportunity.id }}
+        {% endif %}</h1>
+
+    {{ form_start(form) }}
+    <div class=" well well-lg">
+        <div class="row">
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.type) }}
+                {{ form_widget(form.type) }}
+                {{ form_errors(form.type) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.customer) }}
+                {{ form_widget(form.customer) }}
+                {{ form_errors(form.customer) }}
+            </div>
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.label) }}
+                {{ form_widget(form.label) }}
+                {{ form_errors(form.label) }}
+            </div>
+            <div class="col-md-9 form-group ">
+                {{ form_label(form.comment) }}
+                {{ form_widget(form.comment) }}
+                {{ form_errors(form.comment) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-3">
+                {{ form_label(form.preSale) }}
+                {{ form_widget(form.preSale) }}
+                {{ form_errors(form.preSale) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.salesEngineer) }}
+                {{ form_widget(form.salesEngineer) }}
+                {{ form_errors(form.salesEngineer) }}
+            </div>
+            <div class="col-md-3">
+                {{ form_label(form.technologies) }}
+                {{ form_widget(form.technologies) }}
+                {{ form_errors(form.technologies) }}
+            </div>
+        </div>
+
+        <fieldset>
+            <legend> {{ form_label(form.products) }}</legend>
+            {{ form_widget(form.products) }}
+            <br>
+            <a href="#"
+               id="btnNewProduct"
+               class="btn btn-xs btn-primary">Ajouter un autre produit</a>
+        </fieldset>
+    </div>
+    <a class="btn btn-default" href="{{ path('ticket_index') }}">Annuler</a>
+    <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script>
+        $(document).ready(function () {
+            $('#btnNewProduct').click(function (e) {
+                e.preventDefault();
+                var list = $('#opportunity_products');
+                var counter = list.children().length;
+                var newWidget = $("#opportunity_products").attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, counter);
+                $(newWidget).appendTo(list);
+            });
+        });
+
+        $('body').on('click', '.btnDeleteProduct', function (e) {
+            e.preventDefault();
+            $(this).parents(".rowProduct").remove();
+        });
+
+
+    </script>
+{% endblock %}

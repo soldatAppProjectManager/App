@@ -2,7 +2,7 @@
 
 {% block stylesheets %}
     {{ parent() }}
-    <link href="{{ asset('css/bootstrap-tagsinput.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/bootstrap-tagsinput.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block body %}
@@ -29,20 +29,19 @@
 
         <fieldset>
             <legend>Produits</legend>
-            <div class="row " >
-            {% for receptionField in form.receptionProduits %}
+            <div class="row ">
+                {% for receptionField in form.receptionProduits %}
                     <div class="col-md-3 form-group ">
                         <div class="well well-lg">
                             <h5>{{ receptionField.vars.data.produit.designation }}</h5>
                             <hr>
-                        {{ form_errors(receptionField) }}
-                        {{ form_widget(receptionField) }}
+                            {{ form_errors(receptionField) }}
+                            {{ form_widget(receptionField) }}
+                        </div>
                     </div>
-                </div>
-            {% endfor %}
+                {% endfor %}
             </div>
         </fieldset>
-
     </div>
 
     {{ form_end(form) }}
@@ -54,8 +53,8 @@
 
     <script src="{{ asset('js/bootstrap-tagsinput.js') }}"></script>
     <script>
-        $( ".qteRecu" ).each(function( index ) {
-            $( this ).prop('min', 0).prop('max', $(this).val());
+        $(".qteRecu").each(function (index) {
+            $(this).prop('min', 0).prop('max', $(this).val());
         });
 
         $(".numSeries").tagsinput('items')

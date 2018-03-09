@@ -32,6 +32,7 @@
                     <th>Produit</th>
                     <th>Qte</th>
                     <th>Stock</th>
+                    <th>Numéros de séries</th>
                     </thead>
                     <tbody>
                     {% for reception in bonDeReception.receptionProduits %}
@@ -39,12 +40,21 @@
                             <td>{{ reception.produit }}</td>
                             <td>{{ reception.quantite }}</td>
                             <td>{% if reception.lieuStock %}{{ reception.lieuStock.nom }}{% endif %}</td>
+                            <td>
+                                {% for serie in reception.series %}
+                                    {{ serie }}
+                                    {% if not loop.last %}
+                                        |
+                                    {% endif %}
+                                {% endfor %}
+                            </td>
                         </tr>
                     {% endfor %}
                     </tbody>
                 </table>
             </fieldset>
             <a class="btn btn-default" href="{{ path('reception_index') }}">Retour à la liste</a>
+            <a class="btn btn-warning" href="{{ path('reception_edit', { 'id' : bonDeReception.id }) }}">Modifier</a>
         </div>
         {% if bonDeReception.file %}
             <div class="col-md-6">

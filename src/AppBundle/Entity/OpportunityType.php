@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * Priority
+ * OpportunityType
  *
- * @ORM\Table(name="priority")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\PriorityRepository")
+ * @ORM\Table(name="opportunity_type")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\OpportunityTypeRepository")
  */
-class Priority
+class OpportunityType
 {
     /**
      * @var int
@@ -24,16 +24,9 @@ class Priority
     /**
      * @var string
      *
-     * @ORM\Column(name="label", type="string", length=64)
+     * @ORM\Column(name="label", type="string", length=255)
      */
     private $label;
-
-    /**
-     * @var int
-     *
-     * @ORM\Column(name="ordre", type="smallint")
-     */
-    private $ordre;
 
 
     /**
@@ -51,7 +44,7 @@ class Priority
      *
      * @param string $label
      *
-     * @return Priority
+     * @return OpportunityType
      */
     public function setLabel($label)
     {
@@ -70,27 +63,8 @@ class Priority
         return $this->label;
     }
 
-    /**
-     * Set ordre
-     *
-     * @param integer $ordre
-     *
-     * @return Priority
-     */
-    public function setOrdre($ordre)
+    public function __toString()
     {
-        $this->ordre = $ordre;
-
-        return $this;
-    }
-
-    /**
-     * Get ordre
-     *
-     * @return int
-     */
-    public function getOrdre()
-    {
-        return $this->ordre;
+        return $this->getLabel();
     }
 }

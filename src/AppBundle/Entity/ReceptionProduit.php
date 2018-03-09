@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -49,7 +50,7 @@ class ReceptionProduit
     private $lieuStock;
 
     /**
-     * @ORM\OneToMany(targetEntity="Serie", mappedBy="receptionProduit", cascade={"persist"})
+     * @ORM\OneToMany(targetEntity="Serie", mappedBy="receptionProduit", cascade={"persist","remove"})
      */
     private $series;
 
@@ -158,6 +159,7 @@ class ReceptionProduit
     {
         return $this->lieuStock;
     }
+
     /**
      * Constructor
      */
@@ -175,7 +177,7 @@ class ReceptionProduit
      */
     public function addSeries(\AppBundle\Entity\Serie $series)
     {
-        if(!$this->series->contains($series)){
+        if (!$this->series->contains($series)) {
             $series->setReceptionProduit($this);
             $this->series[] = $series;
         }
@@ -201,5 +203,29 @@ class ReceptionProduit
     public function getSeries()
     {
         return $this->series;
+    }
+
+    public function setSeries()
+    {
+        return $this->series = new ArrayCollection();
+    }
+
+
+    public function implodeSerie()
+    {
+        /** @var Serie $serie */
+        foreach ($this->getSeries() as $serie) {
+            $this->numSeries = $this->numSeries . ',' . $serie->getNumero();
+        }
+    }
+
+    public function explodeSerie()
+    {
+        $nSeries = explode(",", $this->numSeries);
+        foreach ($nSeries as $ns) {
+            $serie = new Serie();
+            $serie->setNumero($ns);
+            $this->addSeries($serie);
+        }
     }
 }

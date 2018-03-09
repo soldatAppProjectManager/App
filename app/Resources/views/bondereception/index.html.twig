@@ -26,6 +26,7 @@
                         <td>{{ bonDeReception.receptionProduits|length }}</td>
                         <td>
                             <a class="btn btn-xs btn-info" href="{{ path('reception_show', { 'id': bonDeReception.id }) }}">Voir</a>
+                            <a class="btn btn-xs btn-warning" href="{{ path('reception_edit', { 'id': bonDeReception.id }) }}">Modifier</a>
                             {% if bonDeReception.file %}
                             <a class="btn btn-xs btn-primary" target="_blank" href="{{ asset(bonDeReception.file.fullPath) }}">Afficher BL fournisseur</a>
                         {% endif %}

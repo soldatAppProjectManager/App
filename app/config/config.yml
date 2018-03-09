@@ -62,6 +62,18 @@ swiftmailer:
     password: '%mailer_password%'
     spool: { type: memory }
 
+stof_doctrine_extensions:
+    default_locale: %locale%
+    translation_fallback: true
+    orm:
+        default:
+            tree: true
+            translatable: true
+            timestampable: true
+            softdeleteable: true
+            sluggable: true
+            blameable: true
+
 services:
 
 #    service_name:

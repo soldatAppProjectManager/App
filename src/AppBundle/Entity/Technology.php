@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * StatutTicket
+ * Technology
  *
- * @ORM\Table(name="statut_ticket")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\StatutTicketRepository")
+ * @ORM\Table(name="technology")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TechnologyRepository")
  */
-class StatutTicket
+class Technology
 {
     /**
      * @var int
@@ -44,7 +44,7 @@ class StatutTicket
      *
      * @param string $label
      *
-     * @return StatutTicket
+     * @return Technology
      */
     public function setLabel($label)
     {
@@ -61,5 +61,11 @@ class StatutTicket
     public function getLabel()
     {
         return $this->label;
+    }
+
+
+    public function __toString()
+    {
+        return $this->getLabel();
     }
 }
