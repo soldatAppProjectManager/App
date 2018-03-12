@@ -2,7 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Traits\CreatedByTrait;
+use AppBundle\Entity\Traits\GenerateRefTrait;
 use Doctrine\ORM\Mapping as ORM;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
 
 /**
  * Facture
@@ -12,6 +15,10 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Facture
 {
+    use CreatedByTrait, TimestampableEntity, GenerateRefTrait;
+
+    const REF_FORMAT = 'FA%s%s-%s';
+
     /**
      * @var int
      *
@@ -27,25 +34,6 @@ class Facture
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
-
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="reference", type="string", length=16, nullable=true)
-     */
-    private $reference;
-
-    public function generateRef($count = 0)
-    {
-        $ref = sprintf(
-            'FA%s%s-%s',
-            str_repeat('0', AbstractDocumentClient::NBR_ZERO_IN_REFERENCE - strlen((string)$count)),
-            $count + 1,
-            date('Y'));
-        $this->setReference($ref);
-    }
-
 
     /**
      * @var User
@@ -157,30 +145,6 @@ class Facture
     }
 
     /**
-     * Set numero
-     *
-     * @param string $numero
-     *
-     * @return Facture
-     */
-    public function setNumero($numero)
-    {
-        $this->numero = $numero;
-
-        return $this;
-    }
-
-    /**
-     * Get numero
-     *
-     * @return string
-     */
-    public function getNumero()
-    {
-        return $this->numero;
-    }
-
-    /**
      * Constructor
      */
     public function __construct()
@@ -260,29 +224,5 @@ class Facture
     public function getModePaiement()
     {
         return $this->modePaiement;
-    }
-
-    /**
-     * Set reference
-     *
-     * @param string $reference
-     *
-     * @return Facture
-     */
-    public function setReference($reference)
-    {
-        $this->reference = $reference;
-
-        return $this;
-    }
-
-    /**
-     * Get reference
-     *
-     * @return string
-     */
-    public function getReference()
-    {
-        return $this->reference;
     }
 }

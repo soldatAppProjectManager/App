@@ -136,7 +136,7 @@ class LivraisonController extends Controller
                 }
             }
 
-            $livraison->generateRef($em->getRepository(Livraison::class)->count());
+            $livraison->generateRef($em->getRepository(Livraison::class)->getIncrement());
             $em->persist($livraison);
             $em->flush();
 

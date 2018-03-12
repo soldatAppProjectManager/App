@@ -354,10 +354,8 @@ class BonDeCommandeClientController extends Controller
         $form = $this->createForm(FactureType::class, $facture);
         $form->handleRequest($request);
         if ($form->isSubmitted() && $form->isValid()) {
-            $facture->generateRef($em->getRepository(Facture::class)->count());
+            $facture->generateRef($em->getRepository(Facture::class)->getIncrement());
             $em->persist($facture);
-            $em->flush();
-            $facture->setNumero($facture->getId());
             $em->flush();
             $this->addFlash('notice', 'Votre facture a été générée avec succès');
             return $this->redirectToRoute('facture_index');

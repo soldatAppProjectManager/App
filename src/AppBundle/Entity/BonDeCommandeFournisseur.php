@@ -5,6 +5,11 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
+use AppBundle\Entity\Traits\CreatedByTrait;
+use AppBundle\Entity\Traits\GenerateRefTrait;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+
+
 /**
  * BonDeCommandeFournisseur
  *
@@ -13,6 +18,9 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class BonDeCommandeFournisseur
 {
+    use CreatedByTrait, TimestampableEntity, GenerateRefTrait;
+
+    const REF_FORMAT = 'BC%s%s-%s';
     /**
      * @var int
      *
@@ -50,13 +58,6 @@ class BonDeCommandeFournisseur
      * @ORM\Column(name="date", type="datetime")
      */
     private $date;
-
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="reference", type="string", nullable=true)
-     */
-    private $reference;
 
     /**
      * @var ModeleBCF
@@ -161,16 +162,6 @@ class BonDeCommandeFournisseur
     public function __construct()
     {
         $this->produits = new \Doctrine\Common\Collections\ArrayCollection();
-    }
-
-    public function generateRef($countBcf = 0)
-    {
-        $ref = sprintf(
-            'BC%s%s-%s',
-            str_repeat('0', AbstractDocumentClient::NBR_ZERO_IN_REFERENCE - strlen((string) $countBcf)),
-            $countBcf + 1,
-            date('Y'));
-        $this->setReference($ref);
     }
 
     /**
@@ -300,29 +291,5 @@ class BonDeCommandeFournisseur
     public function getCommercial()
     {
         return $this->commercial;
-    }
-
-    /**
-     * Set reference
-     *
-     * @param string $reference
-     *
-     * @return BonDeCommandeFournisseur
-     */
-    public function setReference($reference)
-    {
-        $this->reference = $reference;
-
-        return $this;
-    }
-
-    /**
-     * Get reference
-     *
-     * @return string
-     */
-    public function getReference()
-    {
-        return $this->reference;
     }
 }
