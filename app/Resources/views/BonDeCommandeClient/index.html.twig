@@ -67,7 +67,9 @@
                                     {% if chaque_BonDeCommandeClient.hasProductsInStock %}
                                         <li>
                                             <a href="{{ url('livraison_bc', {'id' : chaque_BonDeCommandeClient.id}) }}">Faire
-                                                une livraison</a></li>
+                                                une livraison
+                                            </a>
+                                        </li>
                                     {% endif %}
                                     <li>
                                         <a href="{{ url('facture_generate', {'id' : chaque_BonDeCommandeClient.id}) }}">Générer la facture</a></li>
