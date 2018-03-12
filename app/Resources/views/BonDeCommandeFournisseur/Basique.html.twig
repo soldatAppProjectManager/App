@@ -10,7 +10,7 @@
 <div class="header">
     <table class="entete" width="100%;">
         <tr>
-            <td style="width: 250px;" >
+            <td style="width: 250px;">
                 <img height="85" width="204" src="img/LOGO-SD-HR.png"><br>
             </td>
             <td>
@@ -19,10 +19,12 @@
             <td>
                 <table class="client">
                     <tbody>
-                    <tr>
-                        <th>Date :</th>
-                        <td>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</td>
-                    </tr>
+                    {% if bcf.date %}
+                        <tr>
+                            <th>Date :</th>
+                            <td>{{ bcf.date|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</td>
+                        </tr>
+                    {% endif %}
                     <tr>
                         <th>A l'attention de :</th>
                         <td>{{ bcf.fournisseur.contactParDefaut }}</td>
@@ -45,21 +47,22 @@
 </div>
 <br>
 <br>
-<center style="font-size: 20px;font-weight: bolder" > Bon de commande {{ bcf.reference }}</center>
+<center style="font-size: 20px;font-weight: bolder"> Bon de commande {{ bcf.reference }}</center>
 <br>
-<table class="produits">
+<table class="produits" >
     <thead>
     <tr>
-        <th width="10%">Qté</th>
+        <th width="10%">Réf</th>
         <th width="50%">Désignation</th>
-        <th width="20%" align="right">P.U. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
-        <th width="20%" align="right">S.T. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
+        <th width="10%">Qté</th>
+        <th width="15%" align="right">P.U. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
+        <th width="16%" align="right">S.T. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
     </tr>
     </thead>
     <tbody>
     {% for produit in bcf.produits %}
         <tr>
-            <td align="center">{{ produit.quantiteFournisseur }}</td>
+            <td>&nbsp; {{ produit.produitDevis.referenceproduit }}</td>
             <td>
                 {% if produit.designation|trim != '' %}
                     <strong>{{ produit.produitDevis.designation }} : </strong>
@@ -67,6 +70,7 @@
                 {% endif %}
                 {{ produit.produitDevis.description|raw }}
             </td>
+            <td align="center">{{ produit.quantiteFournisseur }}</td>
             <td align="right">{{ produit.prixachatht|number_format(2, ',', '.') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
             <td align="right">{{ (produit.quantite * produit.prixachatht)|number_format(2, ',', '.') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
         </tr>

@@ -69,7 +69,7 @@ class BonDeCommandeFournisseurController extends Controller
 
 
             if(empty($bcf)) {
-                $countBCF = $em->getRepository(BonDeCommandeFournisseur::class)->count();
+                $countBCF = $em->getRepository(BonDeCommandeFournisseur::class)->getIncrement();
                 $bcf = new BonDeCommandeFournisseur();
                 $bcf->setFournisseur($produit->getFournisseur())->setBonDeCommandeClient($bonDeCommandeClient)->setDate(new DateTime());
                 $bcf->generateRef($countBCF);

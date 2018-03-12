@@ -6,7 +6,7 @@
     <table class="table table-striped table-bordered">
         <thead>
             <tr>
-                <th>Id</th>
+                <th>Réf</th>
                 <th>Date</th>
                 <th>Bon de commande</th>
                 <th>Lieu de livraison</th>
@@ -18,7 +18,7 @@
         <tbody>
         {% for livraison in livraisons %}
             <tr>
-                <td>{{ livraison.id }}</td>
+                <td>{{ livraison.reference }}</td>
                 <td>{{ livraison.date|date('d/m/Y') }}</td>
                 <td>{{ livraison.bonDeCommandeClient }}</td>
                 <td>{{ livraison.lieu }}</td>
