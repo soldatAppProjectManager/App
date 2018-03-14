@@ -4,7 +4,7 @@
 {% block body %}
     <h1>Liste des opportunités d'affaires</h1>
 
-    <a class="btn btn-primary" style="float: right;" href="{{ path('opportunity_edit') }}">Ajouter une opportunité</a>
+    <a class="btn btm-sm btn-primary" style="float: right;" href="{{ path('opportunity_edit') }}"><i class="fa fa-plus" ></i> Ajouter une opportunité</a>
     <br>
     <br>
     <table class="table table-striped table-bordered">
@@ -14,7 +14,6 @@
             <th>Nom du projet</th>
             <th>Client</th>
             <th>Type</th>
-            <th>Technos</th>
             <th>Total</th>
             <th>Actions</th>
         </tr>
@@ -26,14 +25,9 @@
                 <td>{{ opportunity.label }}</td>
                 <td>{{ opportunity.customer.nom }}</td>
                 <td>{{ opportunity.type }}</td>
-                <td>
-                    {% for tech in opportunity.technologies %}
-                        <span class="label label-info">{{ tech }}</span>
-                    {% endfor %}
-                </td>
                 <td class="pull text-right">{{ opportunity.total|number_format(2, '.', ' ') }}</td>
                 <td>
-                    <a class="btn btn-xs btn-warning" href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}">edit</a>
+                    <a class="btn btn-xs btn-warning" href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}"><i class="fa fa-pencil" ></i> Edit</a>
                 </td>
             </tr>
         {% endfor %}

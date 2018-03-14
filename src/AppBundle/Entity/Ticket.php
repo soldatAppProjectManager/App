@@ -2,6 +2,10 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Traits\CreatedByTrait;
+use AppBundle\Entity\Traits\UpdatedByTrait;
+use Gedmo\Timestampable\Traits\TimestampableEntity;
+
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -12,6 +16,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ticket
 {
+    use CreatedByTrait, UpdatedByTrait, TimestampableEntity;
+
     /**
      * @var int
      *
@@ -80,18 +86,6 @@ class Ticket
      */
     private $reference;
 
-    /**
-     * @var \DateTime
-     *
-     * @ORM\Column(name="created_at", type="datetimetz")
-     */
-    private $createdAt;
-
-    /**
-     * @var User
-     * @ORM\ManyToOne(targetEntity="User")
-     */
-    private $createdBy;
 
     /**
      * @var User
@@ -113,11 +107,6 @@ class Ticket
     public function getId()
     {
         return $this->id;
-    }
-
-    public function __construct()
-    {
-        $this->setCreatedAt(new \DateTime());
     }
 
     /**
@@ -203,30 +192,6 @@ class Ticket
     }
 
     /**
-     * Set createdAt
-     *
-     * @param \DateTime $createdAt
-     *
-     * @return Ticket
-     */
-    public function setCreatedAt($createdAt)
-    {
-        $this->createdAt = $createdAt;
-
-        return $this;
-    }
-
-    /**
-     * Get createdAt
-     *
-     * @return \DateTime
-     */
-    public function getCreatedAt()
-    {
-        return $this->createdAt;
-    }
-
-    /**
      * Set priority
      *
      * @param \AppBundle\Entity\Priority $priority
@@ -296,30 +261,6 @@ class Ticket
     public function getSerie()
     {
         return $this->serie;
-    }
-
-    /**
-     * Set createdBy
-     *
-     * @param \AppBundle\Entity\User $createdBy
-     *
-     * @return Ticket
-     */
-    public function setCreatedBy(\AppBundle\Entity\User $createdBy = null)
-    {
-        $this->createdBy = $createdBy;
-
-        return $this;
-    }
-
-    /**
-     * Get createdBy
-     *
-     * @return \AppBundle\Entity\User
-     */
-    public function getCreatedBy()
-    {
-        return $this->createdBy;
     }
 
     /**

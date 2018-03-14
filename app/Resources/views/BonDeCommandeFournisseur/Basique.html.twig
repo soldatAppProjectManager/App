@@ -49,20 +49,20 @@
 <br>
 <center style="font-size: 20px;font-weight: bolder"> Bon de commande {{ bcf.reference }}</center>
 <br>
-<table class="produits" >
+<table class="produits">
     <thead>
     <tr>
-        <th width="10%">Réf</th>
-        <th width="50%">Désignation</th>
+        <th width="19%">Réf</th>
+        <th width="41%">Désignation</th>
         <th width="10%">Qté</th>
-        <th width="15%" align="right">P.U. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
-        <th width="16%" align="right">S.T. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
+        <th width="12%" align="right">P.U. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
+        <th width="14%" align="right">S.T. H.T. {{ bcf.fournisseur.devisevente.symbol }}</th>
     </tr>
     </thead>
     <tbody>
     {% for produit in bcf.produits %}
         <tr>
-            <td>&nbsp; {{ produit.produitDevis.referenceproduit }}</td>
+            <td>&nbsp;{{ produit.produitDevis.referenceproduit }}&nbsp;</td>
             <td>
                 {% if produit.designation|trim != '' %}
                     <strong>{{ produit.produitDevis.designation }} : </strong>

@@ -49,6 +49,12 @@ class OProduct
     private $price;
 
     /**
+     * @var Technology
+     * @ORM\ManyToOne(targetEntity="Technology")
+     */
+    private $technology;
+
+    /**
      * @var Metier
      *
      * @ORM\ManyToOne(targetEntity="Metier")
@@ -214,5 +220,29 @@ class OProduct
     public function getProductType()
     {
         return $this->productType;
+    }
+
+    /**
+     * Set technology
+     *
+     * @param \AppBundle\Entity\Technology $technology
+     *
+     * @return OProduct
+     */
+    public function setTechnology(\AppBundle\Entity\Technology $technology = null)
+    {
+        $this->technology = $technology;
+
+        return $this;
+    }
+
+    /**
+     * Get technology
+     *
+     * @return \AppBundle\Entity\Technology
+     */
+    public function getTechnology()
+    {
+        return $this->technology;
     }
 }

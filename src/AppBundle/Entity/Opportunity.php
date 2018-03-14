@@ -48,16 +48,16 @@ class Opportunity
     private $customer;
 
     /**
+     * @var contact
+     * @ORM\ManyToOne(targetEntity="contact")
+     */
+    private $contact;
+
+    /**
      * @var Client
      * @ORM\ManyToOne(targetEntity="OpportunityType")
      */
     private $type;
-
-    /**
-     * @var Technology
-     * @ORM\ManyToMany(targetEntity="Technology")
-     */
-    private $technologies;
 
     /**
      * @ORM\OneToMany(targetEntity="OProduct", mappedBy="opportunity", cascade={"persist", "remove"})
@@ -200,42 +200,7 @@ class Opportunity
      */
     public function __construct()
     {
-        $this->technologies = new ArrayCollection();
         $this->products = new ArrayCollection();
-    }
-
-    /**
-     * Add technology
-     *
-     * @param \AppBundle\Entity\Technology $technology
-     *
-     * @return Opportunity
-     */
-    public function addTechnology(\AppBundle\Entity\Technology $technology)
-    {
-        $this->technologies[] = $technology;
-
-        return $this;
-    }
-
-    /**
-     * Remove technology
-     *
-     * @param \AppBundle\Entity\Technology $technology
-     */
-    public function removeTechnology(\AppBundle\Entity\Technology $technology)
-    {
-        $this->technologies->removeElement($technology);
-    }
-
-    /**
-     * Get technologies
-     *
-     * @return \Doctrine\Common\Collections\Collection
-     */
-    public function getTechnologies()
-    {
-        return $this->technologies;
     }
 
     /**
@@ -332,5 +297,29 @@ class Opportunity
         }
 
         return $total;
+    }
+
+    /**
+     * Set contact
+     *
+     * @param \AppBundle\Entity\contact $contact
+     *
+     * @return Opportunity
+     */
+    public function setContact(\AppBundle\Entity\contact $contact = null)
+    {
+        $this->contact = $contact;
+
+        return $this;
+    }
+
+    /**
+     * Get contact
+     *
+     * @return \AppBundle\Entity\contact
+     */
+    public function getContact()
+    {
+        return $this->contact;
     }
 }
