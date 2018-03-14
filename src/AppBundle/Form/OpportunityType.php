@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Opportunity;
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
@@ -19,9 +20,16 @@ class OpportunityType extends AbstractType
             ->add('comment', null, ['label' => 'Description'])
             ->add('salesEngineer', null, ['label' => 'Commercial'])
             ->add('preSale', null, ['label' => 'Avant vente'])
-            ->add('customer', null, ['label' => 'Client'])
+            ->add('customer', null,
+                ['label' => 'Client',
+                    'attr' => [
+                        'class' => 'selectpicker',
+                        'title' => 'Selectionner un client',
+                        'data-live-search' => 'true'
+                    ],
+                ])
+            ->add('contact', null, ['label' => 'Contact'])
             ->add('type')
-            ->add('technologies')
             ->add('products', CollectionType::class, [
                 'label' => 'Produits',
                 'entry_type' => OProductType::class,

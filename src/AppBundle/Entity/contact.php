@@ -48,21 +48,21 @@ class contact
      * @Assert\Choice({true, false})
      * @ORM\Column(name="genre", type="boolean")
      */
-    private $genre;    
+    private $genre;
 
     /**
      * @var string
      *
      * @ORM\Column(name="poste", type="string", length=255)
      */
-    private $poste; 
+    private $poste;
 
     /**
      * @var string
      *
      * @ORM\Column(name="departement", type="string", length=255)
      */
-    private $departement; 
+    private $departement;
 
     /**
      * @var string
@@ -101,8 +101,6 @@ class contact
      * @ORM\JoinColumn(name="fournisseur_id", referencedColumnName="id")
      */
     private $fournisseur;
-
-
 
 
     /**
@@ -316,10 +314,10 @@ class contact
      */
     public function setDefaut($defaut)
     {
-        if($defaut) {
-            if($this->getFournisseur() != null && $this->getClient() == null) $this->getFournisseur()->setContactParDefaut($this);
+        if ($defaut) {
+            if ($this->getFournisseur() != null && $this->getClient() == null) $this->getFournisseur()->setContactParDefaut($this);
             elseif ($this->getClient() != null && $this->getFournisseur() == null) $this->getClient()->setContactParDefaut($this);
-            }
+        }
 
         $this->defaut = $defaut;
 
@@ -336,7 +334,6 @@ class contact
         return $this->defaut;
     }
 
-    
 
     /**
      * Set departement
@@ -367,14 +364,14 @@ class contact
         $this->setGenre(true);
     }
 
-        public function estUnHomme()
+    public function estUnHomme()
     {
         $this->setGenre(false);
     }
 
     public function __toString()
     {
-        return $this->getCivilite()." ".$this->getPrenom()." ".$this->getNom() ;
+        return $this->getCivilite() . " " . $this->getPrenom() . " " . $this->getNom();
     }
 
 
@@ -387,10 +384,10 @@ class contact
      */
     public function setFournisseur(\AppBundle\Entity\Fournisseur $fournisseur = null)
     {
-        
-       if ($fournisseur->getContacts()->count()==0) {
-        $this->setDefaut(true);             
-    }
+
+        if ($fournisseur->getContacts()->count() == 0) {
+            $this->setDefaut(true);
+        }
 
         $this->fournisseur = $fournisseur;
 
@@ -405,5 +402,10 @@ class contact
     public function getFournisseur()
     {
         return $this->fournisseur;
+    }
+
+    public function getFullName()
+    {
+        return $this . $this->getCivilite() . " " . $this . $this->getPrenom() . " " . $this . $this->getNom();
     }
 }

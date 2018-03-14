@@ -9,35 +9,54 @@
 {% endblock %}
  {% form_theme form _self %}
     {% block _opportunity_products_entry_row %}
-        <div class="row rowProduct">
-            <div class="col-md-3">
-                {{ form_label(form.designation) }}
-                {{ form_widget(form.designation) }}
-                {{ form_errors(form.designation) }}
-            </div>
-            <div class="col-md-2">
-                {{ form_label(form.price) }}
-                {{ form_widget(form.price) }}
-                {{ form_errors(form.price) }}
-            </div>
-            <div class="col-md-2">
-                {{ form_label(form.quantity) }}
-                {{ form_widget(form.quantity) }}
-                {{ form_errors(form.quantity) }}
-            </div>
-            <div class="col-md-2">
-                {{ form_label(form.trade) }}
-                {{ form_widget(form.trade) }}
-                {{ form_errors(form.trade) }}
-            </div>
-            <div class="col-md-2">
-                {{ form_label(form.productType) }}
-                {{ form_widget(form.productType) }}
-                {{ form_errors(form.productType) }}
-            </div>
-            <div class="col-md-1 button-container">
-                <br>
-                <a class="btn btn-xs btn-danger btnDeleteProduct" href="#"><i class="fa fa-trash"></i></a>
+        <div class="col-md-4 rowProduct">
+            <div class="panel panel-default">
+                <div class="panel-body">
+                    <div class="row">
+                        <div class="col-md-12 button-container">
+                            <a class="pull-right btn btn-sm btn-danger btnDeleteProduct" href="#"><i
+                                        class="fa fa-times"></i></a>
+                        </div>
+                        <div class="col-md-12">
+                            {{ form_label(form.designation) }}
+                            {{ form_widget(form.designation) }}
+                            {{ form_errors(form.designation) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-6">
+                            {{ form_label(form.price) }}
+                            {{ form_widget(form.price) }}
+                            {{ form_errors(form.price) }}
+                        </div>
+                        <div class="col-md-6">
+                            {{ form_label(form.quantity) }}
+                            {{ form_widget(form.quantity) }}
+                            {{ form_errors(form.quantity) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_label(form.technology) }}
+                            {{ form_widget(form.technology) }}
+                            {{ form_errors(form.technology) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_label(form.trade) }}
+                            {{ form_widget(form.trade) }}
+                            {{ form_errors(form.trade) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12">
+                            {{ form_label(form.productType) }}
+                            {{ form_widget(form.productType) }}
+                            {{ form_errors(form.productType) }}
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
     {% endblock %}
@@ -51,57 +70,59 @@
     {{ form_start(form) }}
     <div class=" well well-lg">
         <div class="row">
-            <div class="col-md-3 form-group ">
+            <div class="col-md-4">
                 {{ form_label(form.type) }}
                 {{ form_widget(form.type) }}
                 {{ form_errors(form.type) }}
             </div>
-            <div class="col-md-3 form-group ">
+            <div class="col-md-4">
                 {{ form_label(form.customer) }}
                 {{ form_widget(form.customer) }}
                 {{ form_errors(form.customer) }}
             </div>
-            <div class="col-md-3 form-group ">
+            <div class="col-md-4">
+                {{ form_label(form.contact) }}
+                {{ form_widget(form.contact) }}
+                {{ form_errors(form.contact) }}
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-4">
                 {{ form_label(form.label) }}
                 {{ form_widget(form.label) }}
                 {{ form_errors(form.label) }}
             </div>
-            <div class="col-md-9 form-group ">
+            <div class="col-md-4">
+                {{ form_label(form.preSale) }}
+                {{ form_widget(form.preSale) }}
+                {{ form_errors(form.preSale) }}
+            </div>
+            <div class="col-md-4">
+                {{ form_label(form.salesEngineer) }}
+                {{ form_widget(form.salesEngineer) }}
+                {{ form_errors(form.salesEngineer) }}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-12 form-group ">
                 {{ form_label(form.comment) }}
                 {{ form_widget(form.comment) }}
                 {{ form_errors(form.comment) }}
             </div>
         </div>
 
-        <div class="row">
-            <div class="col-md-3">
-                {{ form_label(form.preSale) }}
-                {{ form_widget(form.preSale) }}
-                {{ form_errors(form.preSale) }}
-            </div>
-            <div class="col-md-3">
-                {{ form_label(form.salesEngineer) }}
-                {{ form_widget(form.salesEngineer) }}
-                {{ form_errors(form.salesEngineer) }}
-            </div>
-            <div class="col-md-3">
-                {{ form_label(form.technologies) }}
-                {{ form_widget(form.technologies) }}
-                {{ form_errors(form.technologies) }}
-            </div>
-        </div>
-
         <fieldset>
-            <legend> {{ form_label(form.products) }}</legend>
+            <legend> {{ form_label(form.products) }} <a href="#"
+                                                        id="btnNewProduct"
+                                                        class="btn btn-sm btn-info pull-right"><i
+                            class="fa fa-plus"></i> Ajouter un autre produit</a></legend>
             {{ form_widget(form.products) }}
             <br>
-            <a href="#"
-               id="btnNewProduct"
-               class="btn btn-xs btn-primary">Ajouter un autre produit</a>
         </fieldset>
     </div>
-    <a class="btn btn-default" href="{{ path('ticket_index') }}">Annuler</a>
-    <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
+    <a class="btn btn-default" href="{{ path('opportunity_index') }}">Annuler</a>
+    <button type="submit" class="btn btn-primary pull-right"><i class="fa fa-save"></i> Enregistrer</button>
     {{ form_end(form) }}
 {% endblock %}
 
@@ -124,6 +145,49 @@
             $(this).parents(".rowProduct").remove();
         });
 
+        $("#opportunity_contact").prop("disabled", true);
+
+        $('#opportunity_customer').change(function (e) {
+            e.preventDefault();
+            loadContacts($(this).val());
+        });
+
+        {% if form.vars.value.contact %}
+        loadContacts({{ form.vars.value.customer.id }});
+        {% endif %}
+
+        function loadContacts(customerId) {
+            $.ajax({
+                type: 'POST',
+                url: '{{ url('get_contacts') }}',
+                data: {'id': customerId},
+                dataType: "json",
+                success: function (data, status, object) {
+                    $("#opportunity_contact").empty();
+                    if (data.code == 1) {
+                        $("#opportunity_contact").prop("disabled", false);
+                        $.each(data.contacts, function (i, item) {
+                            $('#opportunity_contact').append($('<option>', {
+                                value: item.id,
+                                text: item.civilite + " " + item.prenom + " " + item.nom,
+                                selected: true
+                            }));
+                            if (item.defaut) {
+                                $('#opportunity_contact').prop('selected');
+                            }
+                        });
+
+                        {% if form.vars.value.contact %}
+                        $("#opportunity_contact option:selected").prop("selected", false);
+                        $('#opportunity_contact').val({{ form.vars.value.contact.id }});
+                        {% endif %}
+                    }
+                },
+                error: function (data, status, object) {
+                    console.log("Error : " + data.message);
+                }
+            });
+        }
 
     </script>
 {% endblock %}

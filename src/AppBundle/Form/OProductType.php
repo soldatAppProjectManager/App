@@ -18,6 +18,7 @@ class OProductType extends AbstractType
             ->add('quantity', null, ['label' => 'Quantité'])
             ->add('price', null, ['label' => 'Prix HT'])
             ->add('trade', null, ['label' => 'Métier'])
+            ->add('technology', null, ['label' => 'Technologie'])
             ->add('productType', null, ['label' => 'Type de produit']);
     }
 
