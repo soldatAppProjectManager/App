@@ -3,6 +3,7 @@
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\Traits\CreatedByTrait;
+use AppBundle\Entity\Traits\GenerateRefTrait;
 use AppBundle\Entity\Traits\UpdatedByTrait;
 use Gedmo\Timestampable\Traits\TimestampableEntity;
 
@@ -16,7 +17,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class Ticket
 {
-    use CreatedByTrait, UpdatedByTrait, TimestampableEntity;
+    use CreatedByTrait, UpdatedByTrait, TimestampableEntity, GenerateRefTrait;
+
+    const REF_FORMAT = '%s%s-%s';
 
     /**
      * @var int
@@ -80,14 +83,6 @@ class Ticket
     private $description;
 
     /**
-     * @var string
-     *
-     * @ORM\Column(name="reference", type="string", length=64)
-     */
-    private $reference;
-
-
-    /**
      * @var User
      * @ORM\ManyToOne(targetEntity="User")
      */
@@ -133,16 +128,6 @@ class Ticket
         return $this->date;
     }
 
-    public function generateRef($count = 0)
-    {
-        $ref = sprintf(
-            '%s%s-%s',
-            str_repeat('0', AbstractDocumentClient::NBR_ZERO_IN_REFERENCE - strlen((string)$count)),
-            $count + 1,
-            date('Y'));
-        $this->setReference($ref);
-    }
-
     /**
      * Set objet
      *
@@ -165,30 +150,6 @@ class Ticket
     public function getObjet()
     {
         return $this->objet;
-    }
-
-    /**
-     * Set reference
-     *
-     * @param string $reference
-     *
-     * @return Ticket
-     */
-    public function setReference($reference)
-    {
-        $this->reference = $reference;
-
-        return $this;
-    }
-
-    /**
-     * Get reference
-     *
-     * @return string
-     */
-    public function getReference()
-    {
-        return $this->reference;
     }
 
     /**

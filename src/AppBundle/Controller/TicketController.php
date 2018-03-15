@@ -48,7 +48,7 @@ class TicketController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $ticket->setCreatedBy($this->getUser());
-            $ticket->generateRef($em->getRepository(Ticket::class)->count());
+            $ticket->generateRef($em->getRepository(Ticket::class)->getIncrement());
             if ($form->getData()->getFile()->getFile() !== null) {
                 $ticket->getFile()->upload($this->getParameter('repertoire_ticket'));
             } else {
