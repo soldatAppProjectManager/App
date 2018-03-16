@@ -5,12 +5,12 @@ namespace AppBundle\Entity;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
- * StatutTicket
+ * TicketStatus
  *
- * @ORM\Table(name="statut_ticket")
- * @ORM\Entity(repositoryClass="AppBundle\Repository\StatutTicketRepository")
+ * @ORM\Table(name="ticket_status")
+ * @ORM\Entity(repositoryClass="AppBundle\Repository\TicketStatusRepository")
  */
-class StatutTicket
+class TicketStatus
 {
     /**
      * @var int
@@ -30,6 +30,14 @@ class StatutTicket
 
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="color", type="string", length=16)
+     */
+    private $color;
+
+
+    /**
      * Get id
      *
      * @return int
@@ -44,7 +52,7 @@ class StatutTicket
      *
      * @param string $label
      *
-     * @return StatutTicket
+     * @return TicketStatus
      */
     public function setLabel($label)
     {
@@ -61,5 +69,29 @@ class StatutTicket
     public function getLabel()
     {
         return $this->label;
+    }
+
+    /**
+     * Set color
+     *
+     * @param string $color
+     *
+     * @return TicketStatus
+     */
+    public function setColor($color)
+    {
+        $this->color = $color;
+
+        return $this;
+    }
+
+    /**
+     * Get color
+     *
+     * @return string
+     */
+    public function getColor()
+    {
+        return $this->color;
     }
 }
