@@ -21,3 +21,5 @@
 /web/bcclient/*
 /web/rapportexport/*
 /web/uploads/*
+/web/bower_components/*
+
