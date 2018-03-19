@@ -71,13 +71,12 @@
 {% block javascripts %}
     {{ parent() }}
     <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
-    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
     <script type="text/javascript">
         $(function () {
             $('.datetimepicker').datetimepicker({
                 locale: 'fr',
-                format: 'DD/MM/YYYY HH:ss'
+                format: "DD/MM/YYYY HH:mm",
             }).focus();
         });
     </script>

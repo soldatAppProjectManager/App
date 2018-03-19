@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
@@ -23,11 +24,25 @@ class TicketType extends AbstractType
             'required' => true,
         ])
             ->add('objet')
-            ->add('client')
+            ->add('client', null,
+                ['label' => 'Client',
+                    'attr' => [
+                        'class' => 'selectpicker',
+                        'title' => 'Selectionner un client',
+                        'data-live-search' => 'true'
+                    ],
+                ])
             ->add('tel')
             ->add('description')
             ->add('priority')
-            ->add('serie')
+            ->add('serie', null,
+                ['label' => 'Numéro de série',
+                    'attr' => [
+                        'class' => 'selectpicker',
+                        'title' => 'Selectionner un numéro de série',
+                        'data-live-search' => 'true'
+                    ],
+                ])
             ->add('file', FileSdType::class, array('label' => 'Piece jointe'))
             ->add('affectedTo');
     }
