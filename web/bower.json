@@ -1,0 +1,21 @@
+{
+  "name": "web",
+  "homepage": "https://github.com/soldatAppProjectManager/App",
+  "authors": [
+    "Majri Abdelali <abdelali.majri@solutiondata.ma>"
+  ],
+  "description": "",
+  "main": "",
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "eonasdan-bootstrap-datetimepicker": "^4.17.47",
+    "bootstrap": "v3.3.7"
+  }
+}
