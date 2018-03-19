@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\Extension\Core\Type\DateType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -14,9 +15,10 @@ class TicketType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date', DateType::class, [
+        $builder->add('date', DateTimeType::class, [
             'label' => 'Date',
             'widget' => 'single_text',
+            'format' => 'dd/MM/yyyy hh:mi',
             'required' => true,
         ])
             ->add('objet')

@@ -31,7 +31,7 @@ class Priority
     /**
      * @var int
      *
-     * @ORM\Column(name="ordre", type="smallint")
+     * @ORM\Column(name="ordre", type="smallint", unique=true)
      */
     private $ordre;
 
@@ -92,5 +92,10 @@ class Priority
     public function getOrdre()
     {
         return $this->ordre;
+    }
+
+    public function __toString()
+    {
+        return $this->getLabel();
     }
 }

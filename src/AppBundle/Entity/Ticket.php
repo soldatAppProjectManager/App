@@ -64,7 +64,7 @@ class Ticket
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetimetz")
+     * @ORM\Column(name="date", type="datetimetz", nullable=false)
      */
     private $date;
 
@@ -358,6 +358,7 @@ class Ticket
     public function __construct()
     {
         $this->histories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->date = new \DateTime();
     }
 
     /**
@@ -369,7 +370,10 @@ class Ticket
      */
     public function addHistory(\AppBundle\Entity\TicketHistory $history)
     {
-        $this->histories[] = $history;
+        if(!$this->histories->contains($history)) {
+            $this->setLastHistory($history);
+            $this->histories[] = $history;
+        }
 
         return $this;
     }
