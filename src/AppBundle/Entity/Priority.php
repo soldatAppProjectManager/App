@@ -93,4 +93,9 @@ class Priority
     {
         return $this->ordre;
     }
+
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
 }

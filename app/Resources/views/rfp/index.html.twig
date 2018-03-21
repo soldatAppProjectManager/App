@@ -1,0 +1,34 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des appels d'Offres</h1>
+
+
+    <a class="btn btn-primary" style="float: right;" href="{{ path('rfp_edit') }}" ><i class="fa fa-plus" ></i> Appel d'offre</a>
+    <br>
+    <br>
+    <table class="table table-striped table-bordered">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Date</th>
+                <th>Number</th>
+                <th>Object</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for rfp in rfps %}
+            <tr>
+                <td><a href="{{ path('rfp_show', { 'id': rfp.id }) }}">{{ rfp.id }}</a></td>
+                <td>{% if rfp.date %}{{ rfp.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+                <td>{{ rfp.number }}</td>
+                <td>{{ rfp.object }}</td>
+                <td>
+                            <a class="btn btn-warning" href="{{ path('rfp_edit', { 'id': rfp.id }) }}">edit</a>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

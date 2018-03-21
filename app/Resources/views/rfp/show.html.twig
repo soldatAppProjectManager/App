@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Rfp</h1>
+
+    <table>
+        <tbody>
+            <tr>
+                <th>Id</th>
+                <td>{{ rfp.id }}</td>
+            </tr>
+            <tr>
+                <th>Date</th>
+                <td>{% if rfp.date %}{{ rfp.date|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Number</th>
+                <td>{{ rfp.number }}</td>
+            </tr>
+            <tr>
+                <th>Object</th>
+                <td>{{ rfp.object }}</td>
+            </tr>
+            <tr>
+                <th>Createdat</th>
+                <td>{% if rfp.createdAt %}{{ rfp.createdAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+            <tr>
+                <th>Updatedat</th>
+                <td>{% if rfp.updatedAt %}{{ rfp.updatedAt|date('Y-m-d H:i:s') }}{% endif %}</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <ul>
+        <li>
+            <a href="{{ path('rfp_index') }}">Back to the list</a>
+        </li>
+        <li>
+            <a href="{{ path('rfp_edit', { 'id': rfp.id }) }}">Edit</a>
+        </li>
+        <li>
+            {{ form_start(delete_form) }}
+                <input type="submit" value="Delete">
+            {{ form_end(delete_form) }}
+        </li>
+    </ul>
+{% endblock %}
