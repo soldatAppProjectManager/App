@@ -54,10 +54,28 @@ class Opportunity
     private $contact;
 
     /**
-     * @var Client
+     * @var OpportunityType
      * @ORM\ManyToOne(targetEntity="OpportunityType")
      */
     private $type;
+
+    /**
+     * @var OpportunityStatus
+     * @ORM\ManyToOne(targetEntity="OpportunityStatus")
+     */
+    private $status;
+
+    /**
+     * @var AcquisitionMode
+     * @ORM\ManyToOne(targetEntity="AcquisitionMode")
+     */
+    private $acquisitionMode;
+
+    /**
+     * @var OpportunityProbability
+     * @ORM\ManyToOne(targetEntity="OpportunityProbability")
+     */
+    private $probability;
 
     /**
      * @ORM\OneToMany(targetEntity="OProduct", mappedBy="opportunity", cascade={"persist", "remove"})
@@ -321,5 +339,77 @@ class Opportunity
     public function getContact()
     {
         return $this->contact;
+    }
+
+    /**
+     * Set acquisitionMode
+     *
+     * @param \AppBundle\Entity\AcquisitionMode $acquisitionMode
+     *
+     * @return Opportunity
+     */
+    public function setAcquisitionMode(\AppBundle\Entity\AcquisitionMode $acquisitionMode = null)
+    {
+        $this->acquisitionMode = $acquisitionMode;
+
+        return $this;
+    }
+
+    /**
+     * Get acquisitionMode
+     *
+     * @return \AppBundle\Entity\AcquisitionMode
+     */
+    public function getAcquisitionMode()
+    {
+        return $this->acquisitionMode;
+    }
+
+    /**
+     * Set probability
+     *
+     * @param \AppBundle\Entity\OpportunityProbability $probability
+     *
+     * @return Opportunity
+     */
+    public function setProbability(\AppBundle\Entity\OpportunityProbability $probability = null)
+    {
+        $this->probability = $probability;
+
+        return $this;
+    }
+
+    /**
+     * Get probability
+     *
+     * @return \AppBundle\Entity\OpportunityProbability
+     */
+    public function getProbability()
+    {
+        return $this->probability;
+    }
+
+    /**
+     * Set status
+     *
+     * @param \AppBundle\Entity\OpportunityStatus $status
+     *
+     * @return Opportunity
+     */
+    public function setStatus(\AppBundle\Entity\OpportunityStatus $status = null)
+    {
+        $this->status = $status;
+
+        return $this;
+    }
+
+    /**
+     * Get status
+     *
+     * @return \AppBundle\Entity\OpportunityStatus
+     */
+    public function getStatus()
+    {
+        return $this->status;
     }
 }
