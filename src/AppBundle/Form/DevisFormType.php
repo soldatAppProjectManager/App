@@ -34,12 +34,13 @@ class DevisFormType extends AbstractType
             $builder->add('modele', EntityType::class, array('class' => 'AppBundle:modeleDevis', 'attr' => array('class' => 'selectpicker')));
 
         $builder
+            ->add('lot', null, array('attr' => array('class' => 'selectpicker','title' => 'Sélectionner un lot')))
             ->add('titre', TextType::class, array('attr' => array('placeholder' => 'Saisir un titre de devis explicite')))
             ->add('numdemande', TextType::class, array('attr' => array('placeholder' => 'Saisir un Numero de demande')))
             ->add('validite', IntegerType::class, array('label' => 'Validité en Jours'))
             ->add('introduction', EntityType::class, array('class' => 'AppBundle:Entete', 'attr' => array('class' => 'selectpicker')))
             ->add('client', EntityType::class, array('class' => 'AppBundle:Client',
-                'attr' => array('class' => 'selectpicker', 'title' => 'Selectionner un client', 'data-live-search' => 'true')))
+                'attr' => array('class' => 'selectpicker', 'title' => 'Sélectionner un client', 'data-live-search' => 'true')))
             ->add('contact', EntityType::class, array('class' => 'AppBundle:contact'))
             ->add('TravailLivraison', EntityType::class, array('class' => 'AppBundle:TravailLivraison',
                 'query_builder' => $this->getEntityManager()->getRepository('AppBundle:TravailLivraison')->findAllByDescCharge(),
@@ -55,7 +56,7 @@ class DevisFormType extends AbstractType
                 'attr' => array('class' => 'selectpicker travail')))
             ->add('termes', EntityType::class, array('label' => 'Conditions générales', 'class' => 'AppBundle:TermeCommercial',
                 'query_builder' => $this->getEntityManager()->getRepository('AppBundle:TermeCommercial')->findAllByAscNom(),
-                'attr' => array('class' => 'form-control selectpicker', 'title' => 'Selectionner les condition'),
+                'attr' => array('class' => 'form-control selectpicker', 'title' => 'Sélectionner les condition'),
                 'multiple' => true, 'expanded' => false))
             ->add('devisevente', EntityType::class, array('class' => 'AppBundle:Monnaie',
                 'query_builder' => $this->getEntityManager()->getRepository('AppBundle:Monnaie')->findAllByAscNom(),
