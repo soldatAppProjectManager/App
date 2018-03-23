@@ -93,4 +93,9 @@ class Lot
     {
         return $this->rfp;
     }
+
+    public function __toString()
+    {
+        return $this->getRfp()->getObject().': '. $this->getTitle();
+    }
 }

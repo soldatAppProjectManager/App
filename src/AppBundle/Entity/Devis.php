@@ -59,6 +59,12 @@ class Devis extends AbstractDocumentClient
     private $devisevente;
 
     /**
+     * @var Lot
+     * @ORM\ManyToOne(targetEntity="Lot")
+     */
+    private $lot;
+
+    /**
      * @var float
      * @Assert\NotBlank()
      * @Assert\Range(
@@ -1283,5 +1289,29 @@ class Devis extends AbstractDocumentClient
     public function getRouteNameVoir()
     {
         return "devis_apercu";
+    }
+
+    /**
+     * Set lot
+     *
+     * @param \AppBundle\Entity\Lot $lot
+     *
+     * @return Devis
+     */
+    public function setLot(\AppBundle\Entity\Lot $lot = null)
+    {
+        $this->lot = $lot;
+
+        return $this;
+    }
+
+    /**
+     * Get lot
+     *
+     * @return \AppBundle\Entity\Lot
+     */
+    public function getLot()
+    {
+        return $this->lot;
     }
 }
