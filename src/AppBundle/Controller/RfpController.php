@@ -6,9 +6,12 @@ use AppBundle\Entity\Lot;
 use AppBundle\Entity\Rfp;
 use AppBundle\Form\RfpType;
 use Doctrine\Common\Collections\ArrayCollection;
+use Dompdf\Dompdf;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;use Symfony\Component\HttpFoundation\Request;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Symfony\Component\HttpFoundation\BinaryFileResponse;
+use Symfony\Component\HttpFoundation\Request;
 
 /**
  * Rfp controller.
@@ -112,6 +115,25 @@ class RfpController extends Controller
         ));
     }
 
+
+    /**
+     *
+     * @Route("/{id}/acte", name="rfp_act")
+     * @Method("GET")
+     */
+    public function actEngagementAction(Request $request, Rfp $rfp)
+    {
+        $dompdf = new Dompdf();
+        $html = $this->render('rfp/act.html.twig', ['rfp' => $rfp])->getContent();
+        $dompdf->loadHtml($html);
+
+        $dompdf->render();
+        $filename =  $this->getParameter('repertoire_ticket')."/".$rfp->getObject().".pdf";
+        file_put_contents($filename, $dompdf->output());
+
+        return new BinaryFileResponse($filename);
+    }
+
     /**
      * Deletes a rfp entity.
      *
@@ -147,4 +169,7 @@ class RfpController extends Controller
             ->getForm()
         ;
     }
+
+
+
 }

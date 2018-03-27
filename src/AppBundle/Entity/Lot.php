@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 
 /**
@@ -28,12 +29,16 @@ class Lot
      */
     private $title;
 
-
     /**
      * @var Rfp
      * @ORM\ManyToOne(targetEntity="Rfp", inversedBy="lots")
      */
     private $rfp;
+
+    /**
+     * @ORM\OneToMany(targetEntity="Devis", mappedBy="lot")
+     */
+    private $devis;
 
 
     /**
@@ -93,6 +98,16 @@ class Lot
     {
         return $this->rfp;
     }
+
+    /**
+     * @return ArrayCollection
+     */
+     public function getDevis()
+    {
+        return $this->devis;
+    }
+
+
 
     public function __toString()
     {

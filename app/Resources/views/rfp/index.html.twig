@@ -26,6 +26,7 @@
                 <td>{{ rfp.object }}</td>
                 <td>
                             <a class="btn btn-warning" href="{{ path('rfp_edit', { 'id': rfp.id }) }}">edit</a>
+                            <a class="btn btn-primary" target="_blank" href="{{ path('rfp_act', { 'id': rfp.id }) }}">Print</a>
                 </td>
             </tr>
         {% endfor %}

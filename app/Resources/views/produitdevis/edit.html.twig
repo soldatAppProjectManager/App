@@ -17,32 +17,37 @@
 
 			{{ form_errors(form) }}
 			<div class="row well well-lg">
+
 				<div class="row">
-					<div class="col-md-4">
-						{{ form_row(form.optionnel) }}
+					<div class="col-md-3">
+                        {{ form_row(form.optionnel) }}
 					</div>
-					<div class="col-md-4">
-						{{ form_row(form.cummulable) }}
+					<div class="col-md-3">
+                        {{ form_row(form.cummulable) }}
 					</div>
-				</div>				
+					<div class="col-md-6 form-group {% if not form.catalogue.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.catalogue) }}
+                        {{ form_errors(form.catalogue) }}
+                        {{ form_widget(form.catalogue) }}
+					</div>
+				</div>
 				<div class="row">
 					<div class="col-md-4 form-group {% if not form.designation.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.designation) }}
-						{{ form_errors(form.designation) }}
-						{{ form_widget(form.designation) }}
+                        {{ form_label(form.designation) }}
+                        {{ form_errors(form.designation) }}
+                        {{ form_widget(form.designation) }}
 					</div>
 					<div class="col-md-3 form-group {% if not form.referenceproduit.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.referenceproduit) }}
-						{{ form_errors(form.referenceproduit) }}
-						{{ form_widget(form.referenceproduit) }}
+                        {{ form_label(form.referenceproduit) }}
+                        {{ form_errors(form.referenceproduit) }}
+                        {{ form_widget(form.referenceproduit) }}
 						<p style="color:DarkRed ;"><i><small>Saisir la référence du fournisseur pour le traitement de la commande.
-						</p>						
+						</p>
 					</div>
-					<div class="col-md-5 form-group {% if not form.catalogue.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.catalogue) }}
-						{{ form_errors(form.catalogue) }}
-						{{ form_widget(form.catalogue) }}
+					<div class="col-md-3">
+                        {{ form_row(form.unite) }}
 					</div>
+
 				</div>
 				<div class="row">
 					<div class="col-md-12 form-group {% if not form.description.vars.valid %} has-error {% endif %}">
