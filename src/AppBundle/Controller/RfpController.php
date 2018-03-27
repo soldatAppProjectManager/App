@@ -128,7 +128,7 @@ class RfpController extends Controller
         $dompdf->loadHtml($html);
 
         $dompdf->render();
-        $filename =  $this->getParameter('repertoire_ticket')."/".$rfp->getObject().".pdf";
+        $filename =  $this->getParameter('repertoire_temp')."/".$rfp->getObject().".pdf";
         file_put_contents($filename, $dompdf->output());
 
         return new BinaryFileResponse($filename);
