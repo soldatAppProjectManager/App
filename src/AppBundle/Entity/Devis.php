@@ -60,7 +60,7 @@ class Devis extends AbstractDocumentClient
 
     /**
      * @var Lot
-     * @ORM\ManyToOne(targetEntity="Lot")
+     * @ORM\ManyToOne(targetEntity="Lot", inversedBy="devis")
      */
     private $lot;
 

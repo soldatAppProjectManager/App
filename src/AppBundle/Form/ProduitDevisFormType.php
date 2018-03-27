@@ -64,6 +64,7 @@ class ProduitDevisFormType extends AbstractType
                 'choices' => array('Cummulable' => true,
                     'Non cummulable' => false), 'label' => 'Produit cummulable'))
             ->add('referenceoffre', TextType::class)
+            ->add('unite', null, ['label' => 'Unité'])
             ->add('referenceproduit', TextType::class)
             ->add('commercial', EntityType::class, array('class' => 'AppBundle:contact', 'query_builder' =>
                 $this->getEntityManager()->getRepository('AppBundle:contact')->findThoseWhoWorkForSupplier()))
