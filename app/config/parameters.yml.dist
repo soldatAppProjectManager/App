@@ -22,4 +22,3 @@ parameters:
     repertoire_bl_fournisseur: uploads/bl_fournisseur
     repertoire_ticket: uploads/ticket
     repertoire_temp: temp
-    
