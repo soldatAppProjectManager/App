@@ -172,14 +172,6 @@ class ProduitDevis extends AbstractProduit
     private $garanties;
 
 
-    /**
-     * @var string
-     *
-     * @ORM\Column(name="unite", type="string", length=16, nullable=true)
-     */
-    private $unite;
-
-
     public function __construct()
     {
         $this->setTauxAchat(1);
@@ -797,29 +789,5 @@ class ProduitDevis extends AbstractProduit
     public function getCummulable()
     {
         return $this->cummulable;
-    }
-
-    /**
-     * Set unite
-     *
-     * @param string $unite
-     *
-     * @return ProduitDevis
-     */
-    public function setUnite($unite)
-    {
-        $this->unite = $unite;
-
-        return $this;
-    }
-
-    /**
-     * Get unite
-     *
-     * @return string
-     */
-    public function getUnite()
-    {
-        return $this->unite;
     }
 }

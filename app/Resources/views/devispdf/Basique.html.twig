@@ -1,3 +1,4 @@
+{% import "macros.html.twig" as mg %}
 <head>
     <meta charset='utf-8'>
 
@@ -174,7 +175,7 @@
     </tr>
     <tr>
         <td colspan="2"><i>La somme du présent devis est arretée à :
-                <strong> {{ devis.totalTTC|number_format(2, '.', '')|localizednumber('spellout','default','fr_FR')|capitalize }} {{ devis.devisevente.nom }}
+                <strong>{{ mg.nbr2char(devis.totalTTC)}} {{ devis.devisevente.nom }}
                     TTC.</strong></i></td>
     </tr>
     </tbody>

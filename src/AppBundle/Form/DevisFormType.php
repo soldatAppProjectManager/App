@@ -36,6 +36,7 @@ class DevisFormType extends AbstractType
         $builder
             ->add('lot', null, array('attr' => array('class' => 'selectpicker','title' => 'Sélectionner un lot')))
             ->add('titre', TextType::class, array('attr' => array('placeholder' => 'Saisir un titre de devis explicite')))
+            ->add('titreAct', TextType::class, array('label' => 'Titre visible sur l\'acte d\'engagement', 'attr' => array('placeholder' => 'Saisir un titre pour l\'acte d\'engagement')))
             ->add('numdemande', TextType::class, array('attr' => array('placeholder' => 'Saisir un Numero de demande')))
             ->add('validite', IntegerType::class, array('label' => 'Validité en Jours'))
             ->add('introduction', EntityType::class, array('class' => 'AppBundle:Entete', 'attr' => array('class' => 'selectpicker')))

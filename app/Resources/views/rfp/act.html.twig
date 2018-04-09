@@ -1,12 +1,24 @@
+{% import "macros.html.twig" as mg %}
 <!DOCTYPE html>
 <html lang="fr">
 <head>
     <meta charset="UTF-8">
     <title>Acte d’engagement {{ rfp.object }}</title>
+
+    <style>
+        .page {
+            page-break-after: always;
+        }
+    </style>
 </head>
 <body>
-<h3 style="text-align: center">ACTE D’ENGAGEMENT</h3>
-<b style="text-decoration: underline;">A- Partie réservée à l’administration</b><br>
+<p>
+    {% for lot in rfp.lots %}
+    <div class="page">
+
+        <div>
+            <h3 style="text-align: center">ACTE D’ENGAGEMENT</h3>
+            <b style="text-decoration: underline;">A- Partie réservée à l’administration</b><br>
 
 <p>
     Appel d’offres ouvert, sur offres des prix {{ rfp.number }} du {{ rfp.date|date('d/m/Y') }}
@@ -42,25 +54,34 @@
     2) m’engage à exécuter lesdites prestations conformément au cahier des prescriptions spéciales et moyennant les prix
     que j’ai établis moi-même, lesquels font ressortir :<br>
 </p>
-
-<p>
-{% for lot in rfp.lots %}
-    Pour le Lot n°{{ loop.index }}: {{ lot.title }}<br>
-    {% for devis in lot.devis %}
-        <b>{{ devis.titre }}</b><br>
-        Montant hors TVA : <b>{{ devis.getTotalHT|number_format(2, '.', ' ') }} {{ devis.devisevente.symbol }}</b><br>
-        Taux de la TVA : <b>20%</b><br>
-        Montant de la TVA : <b>{{ devis.getTotalTVA|number_format(2, '.', ' ') }} {{ devis.devisevente.symbol }}</b><br>
-        Montant TVA comprise: <b>{{ devis.getTotalTTC|number_format(2, '.', ' ') }} {{ devis.devisevente.symbol }}</b><br>
-    {% endfor %}
+</div>
+Pour le Lot n°{{ loop.index }}: {{ lot.title }}<br>
+{% for devis in lot.devis %}
+    <b>{{ devis.titreAct }}</b><br>
+    Montant hors TVA :
+    <b>{{ devis.getTotalHT|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }} </b>
+    ({{ mg.nbr2char(devis.getTotalHT) }})
+    <br>
+    Taux de la TVA : <b>20%</b><br>
+    Montant de la TVA :
+    <b>{{ devis.getTotalTVA|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}</b>
+    ({{ mg.nbr2char(devis.getTotalTVA) }})
+    <br>
+    Montant TVA comprise: <b>{{ devis.getTotalTTC|number_format(2, '.', ' ') }} {{ devis.devisevente.symbol }} </b>
+    ({{ mg.nbr2char(devis.getTotalTTC) }})
+    <br>
 {% endfor %}
-</p>
 
 <p>
-    L’Etat se libérera des sommes dues par lui en faisant donner crédit au compte <b>BMCE BANK</b> ouvert au nom de <b>SOLDAT SARL</b> à <b>Casablanca</b> sous relevé d’identification : <b>011780000016210001127789</b>.
+    L’Etat se libérera des sommes dues par lui en faisant donner crédit au compte <b>BMCE BANK</b> ouvert au nom de <b>SOLDAT
+        SARL</b> à <b>Casablanca</b> sous relevé d’identification : <b>011780000016210001127789</b>.
 </p>
 <br>
-<p style="float: right" >Fait à <b>Casablanca</b> le
-    <b>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</b></p>
+<p style="float: right">Fait à <b>Casablanca</b> le
+    <b>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</b>
+</p>
+</div>
+{% endfor %}
+</p>
 </body>
 </html>

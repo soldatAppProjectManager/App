@@ -113,4 +113,35 @@ class Lot
     {
         return $this->getRfp()->getObject().': '. $this->getTitle();
     }
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->devis = new \Doctrine\Common\Collections\ArrayCollection();
+    }
+
+    /**
+     * Add devi
+     *
+     * @param \AppBundle\Entity\Devis $devi
+     *
+     * @return Lot
+     */
+    public function addDevi(\AppBundle\Entity\Devis $devi)
+    {
+        $this->devis[] = $devi;
+
+        return $this;
+    }
+
+    /**
+     * Remove devi
+     *
+     * @param \AppBundle\Entity\Devis $devi
+     */
+    public function removeDevi(\AppBundle\Entity\Devis $devi)
+    {
+        $this->devis->removeElement($devi);
+    }
 }

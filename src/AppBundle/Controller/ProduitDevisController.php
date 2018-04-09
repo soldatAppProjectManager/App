@@ -60,8 +60,8 @@ class ProduitDevisController extends Controller
         $form = $this->createForm(ProduitDevisFormType::class,$produitdevis);
 
         $form->handleRequest($request);
-
-        if ($form->isSubmitted() && $form->isValid()){
+        $produitdevis->setPrixVenteHT($produitdevis->getPrixVenteHT());
+        if ($form->isSubmitted() && $form->isValid()) {
             $produitdevis->setDevisevente($this->getDoctrine()
                             ->getRepository('AppBundle:Monnaie')
                             ->find(3));

@@ -59,6 +59,13 @@ abstract class AbstractProduit
     protected $quantite;
 
     /**
+     * @var string
+     *
+     * @ORM\Column(name="unite", type="string", length=16, nullable=true)
+     */
+    private $unite;
+
+    /**
      * @var \Devis
      *
      * @ORM\ManyToOne(targetEntity="AbstractDocumentClient", inversedBy="abstractProduits")
@@ -293,6 +300,31 @@ abstract class AbstractProduit
     public function getOptionnel()
     {
         return $this->optionnel;
+    }
+
+
+    /**
+     * Set unite
+     *
+     * @param string $unite
+     *
+     * @return ProduitDevis
+     */
+    public function setUnite($unite)
+    {
+        $this->unite = $unite;
+
+        return $this;
+    }
+
+    /**
+     * Get unite
+     *
+     * @return string
+     */
+    public function getUnite()
+    {
+        return $this->unite;
     }
 
     public function estFusionne()

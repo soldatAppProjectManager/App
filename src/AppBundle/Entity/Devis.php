@@ -136,6 +136,12 @@ class Devis extends AbstractDocumentClient
     private $titre;
 
     /**
+     * @var string
+     * @ORM\Column(name="titre_act", type="string", length=255, nullable=true)
+     */
+    private $titreAct;
+
+    /**
      * @var numdemande
      * @ORM\Column(name="numdemande", type="string", length=255, nullable=true)
      */
@@ -441,7 +447,7 @@ class Devis extends AbstractDocumentClient
     public function getFraisFinanciers()
     {
         $FraisFinanciers = 0;
-/** @var ProduitDevis $produit */
+        /** @var ProduitDevis $produit */
         foreach ($this->getProduits() as $produit) {
             if ($produit->estFusionne()) {
                 if (!$produit->getOptionnel())
@@ -473,8 +479,9 @@ class Devis extends AbstractDocumentClient
 
     public function changerMarge($marge)
     {
+        /** @var ProduitDevis $produit */
         foreach ($this->produits as $produit) {
-            if ($produits->getTypeproduit()->getId() != 1)
+            if ($produit->getTypeproduit()->getId() != 1)
                 $produit->setMarge($marge);
         }
     }
@@ -1313,5 +1320,29 @@ class Devis extends AbstractDocumentClient
     public function getLot()
     {
         return $this->lot;
+    }
+
+    /**
+     * Set titreAct
+     *
+     * @param string $titreAct
+     *
+     * @return Devis
+     */
+    public function setTitreAct($titreAct)
+    {
+        $this->titreAct = $titreAct;
+
+        return $this;
+    }
+
+    /**
+     * Get titreAct
+     *
+     * @return string
+     */
+    public function getTitreAct()
+    {
+        return $this->titreAct;
     }
 }
