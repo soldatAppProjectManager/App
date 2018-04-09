@@ -1,0 +1,14 @@
+{% macro nbr2char(number, scale = 2) %}
+    {% set number = number|number_format(scale, ',', '') %}
+    {% set nums = number|split(',') %}
+    {{ nums[0]|localizednumber('spellout','default','fr_FR')|capitalize }}
+    dirhams
+    {% if nums[1]>0 %}
+        virgule
+        {% if nums[1]< 10 %}
+            zéro
+            {% endif %}
+        {{ nums[1]|localizednumber('spellout','default','fr_FR') }}
+        centimes
+    {% endif %}
+{% endmacro %}
