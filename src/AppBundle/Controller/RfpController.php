@@ -135,6 +135,25 @@ class RfpController extends Controller
         return new BinaryFileResponse($filename);
     }
 
+
+    /**
+     *
+     * @Route("/{id}/declaration", name="rfp_declaration_honor")
+     * @Method("GET")
+     */
+    public function declarationHonorAction(Request $request, Rfp $rfp)
+    {
+        $dompdf = new Dompdf();
+        $html = $this->render('rfp/declaration_honor.html.twig', ['rfp' => $rfp])->getContent();
+        $dompdf->loadHtml($html);
+
+        $dompdf->render();
+        $filename =  $this->getParameter('repertoire_temp')."/".$rfp->getObject().".pdf";
+        file_put_contents($filename, $dompdf->output());
+
+        return new BinaryFileResponse($filename);
+    }
+
     /**
      * Deletes a rfp entity.
      *

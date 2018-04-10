@@ -36,6 +36,18 @@ twig:
     globals:
         nicedit_icon: '/js/nicEditorIcons.gif'
         company_name: '%company_name%'
+        company_legal_name: 'SOLDAT S.A.R.L'
+        director: 'Salim El Jaï'
+        function: 'Directeur Général-Gérant'
+        mobile_phone: '+212 6 61 26 49 58'
+        email: 'seljai@solutiondata.fr'
+        cnss: '5799749'
+        rc: '393609'
+        patente: '36191840'
+        bank_account_number: '011780000016210001127789'
+        capital: '500 000 Dirhams'
+        address1: '1100 Boulevard Al Qods Régus, Shore1, 20190 Casablanca Maroc'
+        address2: '22 Rue du parc, Régus le théâtre 20100 Casablanca, Maroc.'
 
 
 # Doctrine Configuration

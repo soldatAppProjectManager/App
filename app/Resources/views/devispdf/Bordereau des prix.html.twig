@@ -44,8 +44,8 @@ th, td{
     <tr>
         <th align="center">N° ART</th>
         <th align="center">Désignation</th>
-        <th align="center">QTE</th>
         <th align="center">UNITE</th>
+        <th align="center">QTE</th>
         <th align="center">Prix Unitaire DH HTVA</th>
         <th align="center">Prix Total DH HTVA</th>
     </tr>
@@ -57,8 +57,8 @@ th, td{
             <td>
                 {{ produit.designation }}
             </td>
-            <td align="center">{{ produit.quantite }}</td>
             <td align="center">{{ produit.unite }}</td>
+            <td align="center">{{ produit.quantite }}</td>
             <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, '.', ' ') }}</td>
             <td align="right">{{ produit.sousTotalHT|number_format(produit.typeproduit.precision, '.', ' ') }}</td>
         </tr>
