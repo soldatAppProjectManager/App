@@ -312,8 +312,8 @@
                     {% endfor %}
                 {% endif %}
             </td>
-            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', '.') }} {{ devis.devisevente.symbol }}</td>
-            <td align="right">{{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
+            <td align="right">{{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
         </tr>
     {% endfor %}
     </tbody>

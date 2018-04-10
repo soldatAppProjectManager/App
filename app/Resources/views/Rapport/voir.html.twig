@@ -44,49 +44,49 @@
               <td style="min-width:120px">{{ligne.client.nom}}</td>
               <td></td>
               <td></td>
-              <td style="min-width:120px">{{ligne.getTotalHT         | number_format(2, '.', ',') }}  Dh</td>
-              <td style="min-width:120px">{{(ligne.TauxMargeNette * 100) | number_format(2, '.', ',') }}%</strong></td>
-              <td style="min-width:120px">{{(ligne.TauxMargeBrute * 100) | number_format(2, '.', ',') }}%</strong></td>
+              <td style="min-width:120px">{{ligne.getTotalHT         | number_format(2, ',', ' ') }}  Dh</td>
+              <td style="min-width:120px">{{(ligne.TauxMargeNette * 100) | number_format(2, ',', ' ') }}%</strong></td>
+              <td style="min-width:120px">{{(ligne.TauxMargeBrute * 100) | number_format(2, ',', ' ') }}%</strong></td>
               <td></td>
               <td></td>
               <td style="min-width:120px">
                 {% if attribute(ligne.RevenuParMetier,'Infrastructure serveur') is defined %}
-                    {{ligne.RevenuParMetier['Infrastructure serveur'].revenu | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.RevenuParMetier['Infrastructure serveur'].revenu | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
               <td style="min-width:120px">
                 {% if attribute(ligne.MargeParMetier,'Infrastructure serveur') is defined %}
-                    {{ligne.MargeParMetier['Infrastructure serveur'].marge | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.MargeParMetier['Infrastructure serveur'].marge | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
               <td style="min-width:120px">
                 {% if ligne.RevenuParMetier.Client is defined %}
-                    {{ligne.RevenuParMetier.Client.revenu | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.RevenuParMetier.Client.revenu | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
               <td style="min-width:120px">
                 {% if ligne.MargeParMetier.Client is defined %}
-                    {{ligne.MargeParMetier.Client.marge | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.MargeParMetier.Client.marge | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
               <td style="min-width:120px">
                 {% if ligne.RevenuParMetier.Image is defined %}
-                    {{ligne.RevenuParMetier.Image.revenu | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.RevenuParMetier.Image.revenu | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
               <td style="min-width:120px">
                 {% if ligne.MargeParMetier.Image is defined %}
-                    {{ligne.MargeParMetier.Image.marge | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.MargeParMetier.Image.marge | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
               <td style="min-width:120px">
                 {% if attribute(ligne.RevenuParTypeProduit,'Service Microdata') is defined %}
-                    {{ligne.RevenuParTypeProduit['Service Microdata'].revenu | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.RevenuParTypeProduit['Service Microdata'].revenu | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
               <td style="min-width:120px">
                 {% if attribute(ligne.MargeParTypeProduit,'Service Microdata') is defined %}
-                    {{ligne.MargeParTypeProduit['Service Microdata'].marge | number_format(2, '.', ',')}} Dh<br>
+                    {{ligne.MargeParTypeProduit['Service Microdata'].marge | number_format(2, ',', ' ')}} Dh<br>
                 {% endif %}
               </td>
            </tr>

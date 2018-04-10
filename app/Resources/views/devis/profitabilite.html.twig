@@ -76,11 +76,11 @@
           <tr>
             <td style="text-align: center;">A </td>
             <th style="min-width:15%; text-align: right;" >Chiffre d'affaire</th>
-            <td align="right">{{devis.TotalHT | number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</td>
+            <td align="right">{{devis.TotalHT | number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</td>
             <td></td>
             <td style="text-align:center;"></td>    
             <td align="center" {% if (devis.MarkUP*100) < 10 %}class="negative"{% else %}class="positive"{% endif %}>
-              Markup : {{(devis.MarkUP*100) | number_format(2, '.', ',')}}%
+              Markup : {{(devis.MarkUP*100) | number_format(2, ',', ' ')}}%
             </td>
             <td style="text-align: center;"></td>
           </tr>
@@ -89,17 +89,17 @@
             <td style="text-align: center;">B </td>
             {% if devis.getResultatDeChange() >= 0 %}
               <th style="min-width:15%; text-align: right;" >Gain de Change</th>
-              <td align="right">{{(devis.getResultatDeChange()) | number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</td>
+              <td align="right">{{(devis.getResultatDeChange()) | number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</td>
               <td align="right"></td>
               <th style="text-align:center;"></th>    
-              <td align="center" {% if (devis.getResultatDeChange()/devis.TotalHT*100) <= 0.5 %}class="negative"{% else %}class="positive"{% endif %}>{{(devis.getResultatDeChange()/(devis.TotalHT*devis.tauxVente)*100) | number_format(2, '.', ',')}}%</td>
+              <td align="center" {% if (devis.getResultatDeChange()/devis.TotalHT*100) <= 0.5 %}class="negative"{% else %}class="positive"{% endif %}>{{(devis.getResultatDeChange()/(devis.TotalHT*devis.tauxVente)*100) | number_format(2, ',', ' ')}}%</td>
 
             {% else %}
               <th style="min-width:15%; text-align: right;">Perte de Change</th>
               <td align="right"></td>
-              <td align="right">{{(-1)*devis.getResultatDeChange() | number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</td>  
+              <td align="right">{{(-1)*devis.getResultatDeChange() | number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</td>
               <th style="text-align:center;"></th>    
-              <td align="center" class="negative">{{(devis.getResultatDeChange()/devis.TotalHT*100) | number_format(2, '.', ',')}}%</td>
+              <td align="center" class="negative">{{(devis.getResultatDeChange()/devis.TotalHT*100) | number_format(2, ',', ' ')}}%</td>
 
             {% endif %}
             <td style="text-align: center;">Derniere mise à jour des taux : <br>{{ devis.datemiseajourchange| localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y") }}
@@ -111,9 +111,9 @@
             <td style="text-align: center;">C </td>
             <th style="min-width:15%; text-align: right;">Charges Financières</th>
             <td align="right"></td>
-            <td align="right">{{(devis.FraisFinanciers)| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</td>
+            <td align="right">{{(devis.FraisFinanciers)| number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</td>
             <th style="text-align:center;"></th>
-            <td align="center" {% if (devis.TauxFraisFinanciers*100) <= 0 %}class="positive"{% else %}class="negative"{% endif %}>{{(devis.TauxFraisFinanciers*100) | number_format(2, '.', ',')}}%</td>
+            <td align="center" {% if (devis.TauxFraisFinanciers*100) <= 0 %}class="positive"{% else %}class="negative"{% endif %}>{{(devis.TauxFraisFinanciers*100) | number_format(2, ',', ' ')}}%</td>
             <td align="center">Recouvrement moyen : {{devis.client.delaipaiementconstate}} Jours</td>
           </tr>
 
@@ -121,9 +121,9 @@
             <td style="text-align: center;">D </td>
             <th style="min-width:15%; text-align: right;">Achats revendus</th>
             <td align="right"></td>
-            <td align="right">{{devis.getTotalPrixRevient()| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</td>
+            <td align="right">{{devis.getTotalPrixRevient()| number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</td>
             <th style="text-align:center;"></th>    
-            <td align="center">{{(devis.getTotalPrixRevient()/devis.TotalHT*100) | number_format(2, '.', ',')}}%</td>
+            <td align="center">{{(devis.getTotalPrixRevient()/devis.TotalHT*100) | number_format(2, ',', ' ')}}%</td>
             <td align="center"></td>
           </tr>
 
@@ -132,8 +132,8 @@
             <th style="min-width:15%; text-align: right;">Marge brute</th>
             <td align="right"></td>    
             <td></td>    
-            <th style="text-align:center;">{{devis.MargeBrute | number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</th>
-            <td align="center" {% if (devis.TauxMargeBrute*100) < 10 %}class="negative"{% else %}class="positive"{% endif %}> {{(devis.TauxMargeBrute*100) | number_format(2, '.', ',')}}%</td>
+            <th style="text-align:center;">{{devis.MargeBrute | number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</th>
+            <td align="center" {% if (devis.TauxMargeBrute*100) < 10 %}class="negative"{% else %}class="positive"{% endif %}> {{(devis.TauxMargeBrute*100) | number_format(2, ',', ' ')}}%</td>
             <td></td>
 
           </tr>
@@ -141,9 +141,9 @@
             <td style="text-align: center;">E </td>
             <th style="min-width:15%; text-align: right;">Charge d'exploitation</th>
             <td align="right"></td>
-            <td align="right">{{devis.ValeurChargesDExploitation | number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</td>
+            <td align="right">{{devis.ValeurChargesDExploitation | number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</td>
             <td align="right"></td>    
-            <td align="center">{{(devis.getTauxChargesExploitation*100) | number_format(2, '.', ',')}}%</td>
+            <td align="center">{{(devis.getTauxChargesExploitation*100) | number_format(2, ',', ' ')}}%</td>
             <td>
               <span class="label label-default">{{ devis.TravailAvantVente.nom }}</span>
               <span class="label label-default">{{ devis.TravailCommercial.nom }}</span>
@@ -175,8 +175,8 @@
             <th style="min-width:15%; text-align: right;">Marge Nette</th>
             <td align="right"></td>    
             <td align="right"></td>    
-            <th style="text-align:center;">{{devis.MargeNette | number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</th>
-            <td align="center" {% if (devis.TauxMargeNette*100)  < 7 %}class="negative"{% else %}class="positive"{% endif %}>{{(devis.TauxMargeNette*100) | number_format(2, '.', ',')}}%</td>
+            <th style="text-align:center;">{{devis.MargeNette | number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</th>
+            <td align="center" {% if (devis.TauxMargeNette*100)  < 7 %}class="negative"{% else %}class="positive"{% endif %}>{{(devis.TauxMargeNette*100) | number_format(2, ',', ' ')}}%</td>
             <td></td>
             <td></td>
           </tr>
@@ -185,8 +185,8 @@
             <th style="min-width:15%;  text-align: right;">Marge Nette apres impôts</th>
             <td align="right"></td>    
             <td align="right"></td>    
-            <th style="text-align:center;">{{(devis.MargeNette*0.7) | number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</th>
-            <td align="center" {% if (100*devis.MargeNette*0.7/devis.TotalHT) < 5 %}class="negative"{% else %}class="positive"{% endif %}>{{(100*devis.MargeNette*0.7/devis.TotalHT) | number_format(2, '.', ',')}}%</td>
+            <th style="text-align:center;">{{(devis.MargeNette*0.7) | number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</th>
+            <td align="center" {% if (100*devis.MargeNette*0.7/devis.TotalHT) < 5 %}class="negative"{% else %}class="positive"{% endif %}>{{(100*devis.MargeNette*0.7/devis.TotalHT) | number_format(2, ',', ' ')}}%</td>
             <td></td>
           </tr>
         </tbody>

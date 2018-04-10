@@ -58,12 +58,12 @@
                   {% for achat in devis.getAchatsParFournisseur %} 
                     <tr>
                       <th>{{achat.nom[:10]}}... <span class="badge" >{{achat.articles}}</span>  <span class="badge" >{{achat.pieces}}</span> </th>
-                      <td>{{achat.revenu| number_format(2, '.', ',')}} <strong>{{achat.devise}}</strong></td>
+                      <td>{{achat.revenu| number_format(2, ',', ' ')}} <strong>{{achat.devise}}</strong></td>
                     </tr>
                   {% endfor %}  
                     <tr>
                       <th>TOTAL Achats ({{devis.devisevente.symbol}})</th>
-                      <th>{{devis.getTotalPrixRevient| number_format(2, '.', ',')}} <strong>{{devis.devisevente.symbol}}</strong></th>              
+                      <th>{{devis.getTotalPrixRevient| number_format(2, ',', ' ')}} <strong>{{devis.devisevente.symbol}}</strong></th>              
                     </tr>               
               </tbody>
           </table>
@@ -86,13 +86,13 @@
                 {% for achat in devis.getRevenuParMetier %} 
                   <tr>
                     <th>{{achat.nom[:10]}}... <span class="badge" >{{achat.articles}}</span>  <span class="badge" >{{achat.pieces}}</span> </th>
-                    <td>{{achat.revenu| number_format(2, '.', ',')}} <strong>{{devis.devisevente.symbol}} </strong>
-                      ({{ (100*achat.revenu/devis.getTotalHT)| number_format(2, '.', ',')}}%) </td>              
+                    <td>{{achat.revenu| number_format(2, ',', ' ')}} <strong>{{devis.devisevente.symbol}} </strong>
+                      ({{ (100*achat.revenu/devis.getTotalHT)| number_format(2, ',', ' ')}}%) </td>              
                   </tr>
                 {% endfor %}  
                   <tr>
                     <th>TOTAL C.A. ({{devis.devisevente.symbol}})</th>
-                    <th>{{devis.getTotalHT| number_format(2, '.', ',')}} <strong>{{devis.devisevente.symbol}}</strong></th>              
+                    <th>{{devis.getTotalHT| number_format(2, ',', ' ')}} <strong>{{devis.devisevente.symbol}}</strong></th>              
                   </tr>               
             </tbody>
         </table>
@@ -115,13 +115,13 @@
                   {% for achat in devis.getRevenuParTypeProduit %} 
                     <tr>
                       <th>{{achat.nom [:10]}}...<span class="badge" >{{achat.articles}}</span>  <span class="badge" >{{achat.pieces}}</span> </th>
-                      <td>{{achat.revenu| number_format(2, '.', ',')}} <strong>{{devis.devisevente.symbol}}</strong>
-                          ({{ (100*achat.revenu/devis.getTotalHT)| number_format(2, '.', ',')}}%) </td>              
+                      <td>{{achat.revenu| number_format(2, ',', ' ')}} <strong>{{devis.devisevente.symbol}}</strong>
+                          ({{ (100*achat.revenu/devis.getTotalHT)| number_format(2, ',', ' ')}}%) </td>              
                     </tr>
                   {% endfor %}  
                     <tr>
                       <th>TOTAL C.A. ({{devis.devisevente.symbol}})</th>
-                      <th>{{devis.getTotalHT| number_format(2, '.', ',')}} <strong>{{devis.devisevente.symbol}}</strong></th>              
+                      <th>{{devis.getTotalHT| number_format(2, ',', ' ')}} <strong>{{devis.devisevente.symbol}}</strong></th>              
                     </tr>               
               </tbody>
           </table>
@@ -132,18 +132,19 @@
   <hr>
 
   <div class="row">
+     <a type="button" class="btn btn-success invisible pull-right" href="{{ url('produitdevis_create', {'id' : devis.id})}}">
+     <i class="fa fa-plus" aria-hidden="true"></i>
+     Ajouter un produit
+     </a>
+    <br>
+    <br>
     <div class="well" style="background-color: #fcfcfc">
-      <table class="table table-hover" id ="liste_devis">
+      <table class="table table-hover" id ="">
         <thead>
           <tr>
-            <th style="text-align:center;">
-              <a type="button" class="btn btn-success invisible" href="{{ url('produitdevis_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
-            </th>
             <th>Qté</th>
             <th>Desc.</th>   
-            <th>Px Achat</th>   
-            <th>Métier</th>           
-            <th>Type</th>
+            <th>Px Achat</th>
             <th>TAUX</th>
             <th>FA</th>
             <th>Marge</th>
@@ -155,7 +156,6 @@
         <tbody>
           {% for produit in devis.produits %}
             <tr>
-              <td scope="row">{{ produit.ordre }} </td>
               <td class="quantite" contenteditable="true" id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
               <td>
                 {% if produit.designation != " " %}
@@ -165,14 +165,12 @@
                 {{ produit.description|raw }}
                 <br>
               </td>
-              <td>{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
-              <td>{{ produit.metier.nom [:10]}}... </td>
-              <td>{{ produit.typeproduit.nom [:10]}}... </td>
-              <td>{{ produit.tauxAchat | number_format(2, '.', ',')}}{{devis.devisevente.code}}/{{produit.deviseachat.code}} </td>
+              <td>{{ produit.prixachatht | number_format(2, ',', ' ') }} {{produit.deviseachat.code}} </td>
+              <td>{{ produit.tauxAchat | number_format(2, ',', ' ')}}{{devis.devisevente.code}}/{{produit.deviseachat.code}} </td>
               <td>{{ produit.fraisapproche * 100 }}% </td>
-              <td>{{ (produit.marge * 100) | number_format(2, '.', ',') }}% </td>
-              <td>{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
-              <td>{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
+              <td>{{ (produit.marge * 100) | number_format(2, ',', ' ') }}% </td>
+              <td>{{ produit.getPrixVenteHT() | number_format(2, ',', ' ') }} </td>
+              <td>{{ (produit.getSousTotalHT()) | number_format(2, ',', ' ') }} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
               <td>
                 {# <a type="button" class="btn btn-default" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a> #}
                 <a type="button" class="label label-warning" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>

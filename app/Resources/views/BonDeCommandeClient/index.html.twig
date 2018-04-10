@@ -37,7 +37,7 @@
                         <td>{{ chaque_BonDeCommandeClient.datedereception |date("d/m/Y") }} </td>
                         <td>{{ chaque_BonDeCommandeClient.commercial.prenom }} {{ chaque_BonDeCommandeClient.commercial.nom }} </td>
                         <td align="right">
-                            <strong>{{ chaque_BonDeCommandeClient.getTotalHT | number_format(2, '.', ',') }} </strong>
+                            <strong>{{ chaque_BonDeCommandeClient.getTotalHT | number_format(2, ',', ' ') }} </strong>
                         </td>
                         <td>
                             <a class="btn btn-xs btn-info"

@@ -152,8 +152,8 @@
                 {% endif %}
                 {% endif %}
             </td>
-            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', '.') }} {{ devis.devisevente.symbol }}</td>
-            <td align="right">{{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
+            <td align="right">{{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
         </tr>
     {% endfor %}
     </tbody>
@@ -163,15 +163,15 @@
     <tbody>
     <tr>
         <th>Total HT</th>
-        <td>{{ devis.getTotalHT|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+        <td>{{ devis.getTotalHT|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
     </tr>
     <tr>
         <th>Total T.V.A.</th>
-        <td>{{ devis.getTotalTVA|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+        <td>{{ devis.getTotalTVA|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
     </tr>
     <tr>
         <th>Total TTC</th>
-        <td>{{ devis.getTotalTTC|number_format(2, ',', '.') }} {{ devis.devisevente.symbol }}</td>
+        <td>{{ devis.getTotalTTC|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
     </tr>
     <tr>
         <td colspan="2"><i>La somme du présent devis est arretée à :

@@ -1,3 +1,4 @@
+{% import "macros.html.twig" as mg %}
 <head>
     <meta charset='utf-8'>
 
@@ -90,9 +91,9 @@
                     {% endif %}
                 {% endif %}
             </td>
-            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', ' ') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
             <td align="right">
-                {{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', '.') }}
+                {{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', ' ') }}
                 {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}
                 &nbsp;
             </td>
@@ -110,19 +111,19 @@
     <tbody>
     <tr>
         <th>Total HT</th>
-        <td>{{ facture.bonDeCommandeClient.getTotalHT|number_format(2, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+        <td>{{ facture.bonDeCommandeClient.getTotalHT|number_format(2, ',', ' ') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
     </tr>
     <tr>
         <th>Total T.V.A.</th>
-        <td>{{ facture.bonDeCommandeClient.getTotalTVA|number_format(2, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+        <td>{{ facture.bonDeCommandeClient.getTotalTVA|number_format(2, ',', ' ') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
     </tr>
     <tr>
         <th>Total TTC</th>
-        <td>{{ facture.bonDeCommandeClient.getTotalTTC|number_format(2, ',', '.') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
+        <td>{{ facture.bonDeCommandeClient.getTotalTTC|number_format(2, ',', ' ') }} {{ facture.bonDeCommandeClient.devis.devisevente.symbol }}</td>
     </tr>
     <tr>
         <td colspan="2"><i>La somme de la présente facture est arretée à :
-                <strong>{{ facture.bonDeCommandeClient.devis.totalTTC|localizednumber('spellout','default','fr_FR')|capitalize }} {{ facture.bonDeCommandeClient.devis.devisevente.nom }}
+                <strong>{{ mg.nbr2char(facture.bonDeCommandeClient.devis.totalTTC) }}
                     TTC.</strong></i>
         </td>
     </tr>

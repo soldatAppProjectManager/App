@@ -134,10 +134,10 @@
                   {% endif %}
               </td>
               <td id="prixdevente{{produit.id}}" style="min-width:120px">
-                  {{ produit.getPrixVenteHT() | number_format(produit.typeproduit.precision , '.', ',') }}
+                  {{ produit.getPrixVenteHT() | number_format(produit.typeproduit.precision , ',', ' ') }}
                   {{devis.deviseVente.symbol}}
               </td>
-              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, ',', ' ') }} {{devis.deviseVente.symbol}} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
               </tr>
           {% endif %}
           {% endfor %}
@@ -148,21 +148,21 @@
               <td style="border-top: 0px"></td>
               <td style="border-top: 0px"></td>
               <td style="float: right" ><strong>TOTAL HT :</strong></td>
-              <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}}</strong></td>
+              <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}}</strong></td>
               <td></td>
             </tr>
           <tr>
               <td style="border-top: 0px"></td>
               <td style="border-top: 0px"></td>
               <td style="float: right" >TOTAL TVA : </td>
-              <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</td>
+              <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, ',', ' ') }} {{devis.deviseVente.symbol}}</td>
               <td  style="border-top: 0px"></td>
           </tr>
           <tr>
               <td style="border-top: 0px"></td>
               <td style="border-top: 0px"></td>
               <td style="float: right" ><strong>TOTAL TTC: </strong></td>
-              <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</strong></td>
+              <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, ',', ' ') }} {{devis.deviseVente.symbol}}</strong></td>
               <td style="border-top: 0px"></td>
           </tr>
           <tr>
