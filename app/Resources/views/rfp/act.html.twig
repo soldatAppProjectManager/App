@@ -71,7 +71,7 @@ Pour le Lot n°{{ loop.index }}: {{ lot.title }}<br>
     <b>{{ devis.getTotalTVA|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}</b>
     ({{ mg.nbr2char(devis.getTotalTVA) }})
     <br>
-    Montant TVA comprise: <b>{{ devis.getTotalTTC|number_format(2, '.', ' ') }} {{ devis.devisevente.symbol }} </b>
+    Montant TVA comprise: <b>{{ devis.getTotalTTC|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }} </b>
     ({{ mg.nbr2char(devis.getTotalTTC) }})
     <br>
 {% endfor %}

@@ -69,9 +69,9 @@
 
                 {{ produit.description | capitalize | raw }}
               </td>
-{#               <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
- #}              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT | number_format(2, '.', ',') }} </td>
-              <td id="soustotal{{produit.id}}">{{ (produit.getPrixVenteHT*produit.quantite) | number_format(2, '.', ',') }} </td>
+{#               <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, ',', ' ') }} {{produit.deviseachat.code}} </td>
+ #}              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT | number_format(2, ',', ' ') }} </td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getPrixVenteHT*produit.quantite) | number_format(2, ',', ' ') }} </td>
               <td style="min-width:250px">
                 <a type="button" class="btn btn-default" href="{{ url('ProduitFusion_voir', {'id' : produit.id})}}">Voir</a>
                 <a type="button" class="btn btn-warning invisible" href="{{ url('ProduitFusion_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>

@@ -71,8 +71,8 @@
                 {{ produit.produitDevis.description|raw }}
             </td>
             <td align="center">{{ produit.quantiteFournisseur }}</td>
-            <td align="right">{{ produit.prixachatht|number_format(2, ',', '.') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
-            <td align="right">{{ (produit.quantite * produit.prixachatht)|number_format(2, ',', '.') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
+            <td align="right">{{ produit.prixachatht|number_format(2, ',', ' ') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
+            <td align="right">{{ (produit.quantite * produit.prixachatht)|number_format(2, ',', ' ') }} {{ bcf.fournisseur.devisevente.symbol }}</td>
         </tr>
     {% endfor %}
     </tbody>
@@ -82,15 +82,15 @@
     <tbody>
     <tr>
         <th>Total HT</th>
-        <td>{{ bcf.total|number_format(2, ',', '.') }}</td>
+        <td>{{ bcf.total|number_format(2, ',', ' ') }}</td>
     </tr>
     <tr>
         <th>Total T.V.A.</th>
-        <td>{{ bcf.totalTVA|number_format(2, ',', '.') }}</td>
+        <td>{{ bcf.totalTVA|number_format(2, ',', ' ') }}</td>
     </tr>
     <tr>
         <th>Total TTC</th>
-        <td>{{ bcf.getTotalTTC|number_format(2, ',', '.') }}</td>
+        <td>{{ bcf.getTotalTTC|number_format(2, ',', ' ') }}</td>
     </tr>
     <tr>
         <td colspan="2"><i>La somme du présent devis est arretée à :

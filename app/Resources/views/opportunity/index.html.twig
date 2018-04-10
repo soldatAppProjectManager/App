@@ -37,7 +37,7 @@
                     </div>
                 </td>
                 <td>{{ opportunity.status }}</td>
-                <td class="pull text-right">{{ opportunity.total|number_format(2, '.', ' ') }}</td>
+                <td class="pull text-right">{{ opportunity.total|number_format(2, ',', ' ') }}</td>
                 <td>
                     <a class="btn btn-xs btn-warning" href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}"><i class="fa fa-pencil" ></i> Edit</a>
                 </td>
