@@ -111,7 +111,7 @@ class Lot
 
     public function __toString()
     {
-        return $this->getRfp()->getObject().': '. $this->getTitle();
+        return $this->getRfp()->getNumber().': '. $this->getTitle();
     }
     /**
      * Constructor
