@@ -63,11 +63,11 @@
               <td><strong>{{ produit.quantite }}</strong></td>
               <td>
                 {% if produit.designation != " " %}
-                  <strong>{{ produit.designation |capitalize | nl2br}}</strong>
+                  <strong>{{ produit.designation | nl2br}}</strong>
                   <br>              
                 {% endif %}
 
-                {{ produit.description | capitalize | raw }}
+                {{ produit.description | raw }}
               </td>
 {#               <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, ',', ' ') }} {{produit.deviseachat.code}} </td>
  #}              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT | number_format(2, ',', ' ') }} </td>

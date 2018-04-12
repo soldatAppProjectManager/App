@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Controller;
+
 use AppBundle\Entity\AbstractProduit;
 use DateTime;
 use AppBundle\Entity\ProduitDevis;
@@ -37,36 +38,36 @@ class ProduitDevisController extends Controller
     /**
      * @Route("/voir/{id}", name="produitdevis_voir")
      */
-    public function voirAction($id,Request $request)
+    public function voirAction($id, Request $request)
     {
         $produitdevis = $this->getDoctrine()
-                        ->getRepository('AppBundle:ProduitDevis')
-                        ->find($id);
+            ->getRepository('AppBundle:ProduitDevis')
+            ->find($id);
 
-        
+
         // replace this example code with whatever you need
-        return $this->render('produitdevis/voir.html.twig',array('produitdevis' => $produitdevis));
+        return $this->render('produitdevis/voir.html.twig', array('produitdevis' => $produitdevis));
     }
 
     /**
      * @Route("/create/{id}", name="produitdevis_create")
      */
-    public function createAction(Devis $devis,Request $request)
+    public function createAction(Devis $devis, Request $request)
     {
         $produitdevis = new ProduitDevis;
-                        
+
         $produitdevis->setDocumentClient($devis);
 
-        $form = $this->createForm(ProduitDevisFormType::class,$produitdevis);
+        $form = $this->createForm(ProduitDevisFormType::class, $produitdevis);
 
         $form->handleRequest($request);
         $produitdevis->setPrixVenteHT($produitdevis->getPrixVenteHT());
         if ($form->isSubmitted() && $form->isValid()) {
             $produitdevis->setDevisevente($this->getDoctrine()
-                            ->getRepository('AppBundle:Monnaie')
-                            ->find(3));
+                ->getRepository('AppBundle:Monnaie')
+                ->find(3));
 
-            $produitdevis->setOrdre($devis->getAbstractProduits()->count()+1);
+            $produitdevis->setOrdre($devis->getAbstractProduits()->count() + 1);
             $produitdevis->setReference();
 
             $em = $this->getDoctrine()->getManager();
@@ -74,9 +75,9 @@ class ProduitDevisController extends Controller
             $em->persist($produitdevis);
             $em->flush();
 
-            $this->addFlash('notice','Produit de devis Ajouté');
+            $this->addFlash('notice', 'Produit de devis Ajouté');
 
-            return $this->redirectToRoute('devis_produits',array('id' => $produitdevis->getDocumentClient()->getId()));
+            return $this->redirectToRoute('devis_produits', array('id' => $produitdevis->getDocumentClient()->getId()));
         }
 
         return $this->render('produitdevis/create.html.twig', array(
@@ -88,38 +89,38 @@ class ProduitDevisController extends Controller
     /**
      * @Route("/delete/{id}", name="produitdevis_delete")
      */
-    public function deleteAction(ProduitDevis $produitDevis,Request $request)
+    public function deleteAction(ProduitDevis $produitDevis, Request $request)
     {
-        return $this->render('produitdevis/delete.html.twig',[
-            'id'=> $produitDevis->getId(),
-            'designation' => $produitDevis->getDesignation(),
-            'devisId' => $produitDevis->getDocumentClient()->getId()
-        ]
+        return $this->render('produitdevis/delete.html.twig', [
+                'id' => $produitDevis->getId(),
+                'designation' => $produitDevis->getDesignation(),
+                'devisId' => $produitDevis->getDocumentClient()->getId()
+            ]
         );
     }
 
     /**
      * @Route("/deleteConfirmed/{id}", name="produitdevis_delete_confirmed")
      */
-    public function deleteConfirmedAction(ProduitDevis $produitdevis,Request $request)
+    public function deleteConfirmedAction(ProduitDevis $produitdevis, Request $request)
     {
 
         $devis = $produitdevis->getDocumentClient();
- 
+
         $em = $this->getDoctrine()->getManager();
 
         $em->remove($produitdevis);
         $em->flush();
 
-        $this->addFlash('notice','Produit de devis Effacé');
+        $this->addFlash('notice', 'Produit de devis Effacé');
 
-        return $this->redirectToRoute('devis_apercu',array('id' => $devis->getId()));
+        return $this->redirectToRoute('devis_apercu', array('id' => $devis->getId()));
     }
 
     /**
      * @Route("/edit/{id}", name="produitdevis_edit")
      */
-    public function editAction(ProduitDevis $produitDevis,Request $request)
+    public function editAction(ProduitDevis $produitDevis, Request $request)
     {
         $devis = $produitDevis->getDocumentClient();
 
@@ -127,26 +128,27 @@ class ProduitDevisController extends Controller
 
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()){
+        if ($form->isSubmitted() && $form->isValid()) {
             //$produitdevis->mettreAJourTauxAchat();
             $produitDevis->setReference();
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
 
-            $this->addFlash('notice','Produit de devis Mis à jour');
+            $this->addFlash('notice', 'Produit de devis Mis à jour');
 
-            return $this->redirectToRoute('devis_produits',array(   'id' => $devis->getId()));
+            return $this->redirectToRoute('devis_produits', array('id' => $devis->getId()));
         }
 
 
         // replace this example code with whatever you need
-        return $this->render('produitdevis/edit.html.twig',array(   'form' => $form->createView(),
-                                                                    'devis' => $devis,
-                                                                    'produit' => $produitDevis));
+        return $this->render('produitdevis/edit.html.twig', array('form' => $form->createView(),
+            'devis' => $devis,
+            'produit' => $produitDevis));
     }
 
-    private function getErrorMessages($form) {
+    private function getErrorMessages($form)
+    {
         $errors = array();
 
         foreach ($form->getErrors() as $key => $error) {
@@ -177,33 +179,63 @@ class ProduitDevisController extends Controller
 
             /** @var ProduitDevis $produit */
             $produit = $this->getDoctrine()->getRepository(AbstractProduit::class)->find($request->request->get('produit'));
-            
+
             $F = new \NumberFormatter("fr_FR", \NumberFormatter::SPELLOUT);
             $F->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 2);
 
-            $F2 =new \NumberFormatter("en-US",  \NumberFormatter::PATTERN_DECIMAL, '#,##0.00');
+            $F2 = new \NumberFormatter("en-US", \NumberFormatter::PATTERN_DECIMAL, '#,##0.00');
 
             $produit->setQuantite($request->request->get('quantite'));
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            
+
             return new JsonResponse(array(
-                'code'                  => 1,
-                'prixdevente'           => $F2->format($produit->getPrixVenteHT()),
-                'devise'                => $produit->getDeviseachat()->getCode(),
-                'sousTotalHT'           => $F2->format($produit->getSousTotalHT()),
-                'totalHT'               => $F2->format($produit->getDocumentClient()->getTotalHT()),
-                'totalTVA'              => $F2->format($produit->getDocumentClient()->getTotalTVA()),
-                'totalTTC'              => $F2->format($produit->getDocumentClient()->getTotalTTC()),
-                'totalEntouteLettre'    => $F->format($produit->getDocumentClient()->getTotalTTC())
+                'code' => 1,
+                'prixdevente' => $F2->format($produit->getPrixVenteHT()),
+                'devise' => $produit->getDeviseachat()->getCode(),
+                'sousTotalHT' => $F2->format($produit->getSousTotalHT()),
+                'totalHT' => $F2->format($produit->getDocumentClient()->getTotalHT()),
+                'totalTVA' => $F2->format($produit->getDocumentClient()->getTotalTVA()),
+                'totalTTC' => $F2->format($produit->getDocumentClient()->getTotalTTC()),
+                'totalEntouteLettre' => $F->format($produit->getDocumentClient()->getTotalTTC())
             ));
 
-        } 
-        else return $this->redirectToRoute('homepage');
-        
+        } else return $this->redirectToRoute('homepage');
+
     }
 
+    /**
+     *
+     * @Route("/maj_produit_attr", name="maj_produit_attr")
+     * @Method("POST")
+     */
+    public function majProduitAttrAction(Request $request)
+    {
+        if ($request->isXmlHttpRequest()) {
+
+            extract($request->request->all());
+            /** @var ProduitDevis $produit */
+            $produit = $this->getDoctrine()->getRepository('AppBundle:ProduitDevis')->find($produit);
+
+            $value = (float)str_replace(',', '.', $value);
+            $value = $attr === 'marge' ? $value/100 : $value;
+            $produit->{'set' . ucfirst($attr)}($value);
+            $em = $this->getDoctrine()->getManager();
+            $em->flush();
+
+            return new JsonResponse([
+                'code' => 1,
+                'devise' => $produit->getDeviseachat()->getCode(),
+                'prixachatht' => number_format($produit->getPrixachatht(), $produit->getTypeproduit()->getPrecision(), ',', ' '),
+                'marge' => ($produit->getMarge()*100) . '%' ,
+                'quantite' => $produit->getQuantite() ,
+                'prixVenteHT' => number_format($produit->getPrixVenteHT(), $produit->getTypeproduit()->getPrecision(), ',', ' '),
+                'sousTotalHT' => number_format($produit->getSousTotalHT(), $produit->getTypeproduit()->getPrecision(), ',', ' '),
+            ]);
+
+        } else return $this->redirectToRoute('homepage');
+    }
 
     /**
      *
@@ -214,31 +246,32 @@ class ProduitDevisController extends Controller
     {
         if ($request->isXmlHttpRequest()) {
 
-            $produit = $this->getDoctrine()->getRepository('AppBundle:ProduitDevis')->find($request->request->get('produit'));
-            
+            extract($request->request->all());
+            /** @var ProduitDevis $produit */
+            $produit = $this->getDoctrine()->getRepository('AppBundle:ProduitDevis')->find($produit);
+
             $F = new \NumberFormatter("fr_FR", \NumberFormatter::SPELLOUT);
             $F->setAttribute(\NumberFormatter::MAX_FRACTION_DIGITS, 2);
 
-            $F2 =new \NumberFormatter("en-US",  \NumberFormatter::PATTERN_DECIMAL, '#,##0.00');
+            $F2 = new \NumberFormatter("en-US", \NumberFormatter::PATTERN_DECIMAL, '#,##0.00');
 
-            $produit->setPrixachatht($request->request->get('prixachat'));
+            $produit->setPrixachatht((float)str_replace(',', '.', $prixachat));
 
             $em = $this->getDoctrine()->getManager();
             $em->flush();
-            
+
             return new JsonResponse(array(
-                'code'                  => 1,
-                'prixdevente'           => $F2->format($produit->getPrixVenteHT()),
-                'devise'                => $produit->getDeviseachat()->getCode(),
-                'sousTotalHT'           => $F2->format($produit->getSousTotalHT()),
-                'totalHT'               => $F2->format($produit->getDevis()->getTotalHT()),
-                'totalTVA'              => $F2->format($produit->getDevis()->getTotalTVA()),               
-                'totalTTC'              => $F2->format($produit->getDevis()->getTotalTTC()),
-                'totalEntouteLettre'    => $F->format($produit->getDevis()->getTotalTTC())
+                'code' => 1,
+                'prixdevente' => $F2->format($produit->getPrixVenteHT()),
+                'devise' => $produit->getDeviseachat()->getCode(),
+                'sousTotalHT' => $F2->format($produit->getSousTotalHT()),
+                'totalHT' => $F2->format($produit->getDocumentClient()->getTotalHT()),
+                'totalTVA' => $F2->format($produit->getDocumentClient()->getTotalTVA()),
+                'totalTTC' => $F2->format($produit->getDocumentClient()->getTotalTTC()),
+                'totalEntouteLettre' => $F->format($produit->getDocumentClient()->getTotalTTC())
             ));
 
-        } 
-        else return $this->redirectToRoute('homepage');
+        } else return $this->redirectToRoute('homepage');
     }
 
 
@@ -265,7 +298,7 @@ class ProduitDevisController extends Controller
             $normalizer->setCircularReferenceHandler(function ($object) {
                 return $object->getId();
             });
-            
+
             $normalizers = array($normalizer);
 
             $serializer = new Serializer($normalizers, $encoders);
@@ -273,15 +306,16 @@ class ProduitDevisController extends Controller
             // dump($ProduitDevis); die();
 
             try {
-            $ProduitDevisNormalised=$normalizer->normalize($ProduitDevis);
-                
+                $ProduitDevisNormalised = $normalizer->normalize($ProduitDevis);
+
             } catch (Exception $e) {
-                dump($e); die();
+                dump($e);
+                die();
             }
 
             return new JsonResponse(array(
-                'code'                  => 1,
-                'produitdevis'           => $ProduitDevisNormalised
+                'code' => 1,
+                'produitdevis' => $ProduitDevisNormalised
             ));
         } else {
             return $this->redirectToRoute('homepage');
