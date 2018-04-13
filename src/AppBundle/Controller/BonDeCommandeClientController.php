@@ -51,7 +51,6 @@ class BonDeCommandeClientController extends Controller
             ->getRepository('AppBundle:BonDeCommandeClient')
             ->findAll();
 
-        // replace this example code with whatever you need
         return $this->render('BonDeCommandeClient/index.html.twig', array('BonDeCommandeClient' => $BonDeCommandeClient));
     }
 
