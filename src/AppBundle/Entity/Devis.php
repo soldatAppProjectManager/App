@@ -209,7 +209,6 @@ class Devis extends AbstractDocumentClient
     {
         $produits = $this->getProduits();
         $fusions = $this->getFusionProduits();
-
         $this->termes = $this->getTermes();
         $this->BonDeCommandes = new ArrayCollection();
 
@@ -225,13 +224,14 @@ class Devis extends AbstractDocumentClient
 
         foreach ($fusions as $fusion) {
             $CloneFusion = clone $fusion;
-            $CloneFusion->setDevis($this);
+            $CloneFusion->setDocumentClient($this);
             $CloneFusions->add($CloneFusion);
         }
 
         $this->setDraft(true);
         $this->fusionProduits = $CloneFusions;
-        $this->produits = $CloneProduits;
+        $this->abstractProduits = $CloneProduits;
+
     }
 
     public function ProduitDevis($numero)

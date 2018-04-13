@@ -271,13 +271,8 @@ class DevisController extends Controller
     /**
      * @Route("/copie/{id}", name="devis_copie")
      */
-    public function copieAction($id, Request $request)
+    public function copieAction(Devis $devisaCloner, Request $request)
     {
-
-        $devisaCloner = $this->getDoctrine()
-            ->getRepository('AppBundle:Devis')
-            ->find($id);
-
         $devis = clone $devisaCloner;
 
         $now = new DateTime("now");
