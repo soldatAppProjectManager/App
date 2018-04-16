@@ -43,7 +43,7 @@ class Rfp
     /**
      * @var string
      *
-     * @ORM\Column(name="object", type="string", length=255)
+     * @ORM\Column(name="object", type="text")
      */
     private $object;
 

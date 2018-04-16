@@ -129,7 +129,7 @@ class RfpController extends Controller
         $dompdf->loadHtml($html);
 
         $dompdf->render();
-        $filename =  $this->getParameter('repertoire_temp')."/".$rfp->getObject().".pdf";
+        $filename =  $this->getParameter('repertoire_temp')."/".$rfp->getId().".pdf";
         file_put_contents($filename, $dompdf->output());
 
         return new BinaryFileResponse($filename);
@@ -148,7 +148,7 @@ class RfpController extends Controller
         $dompdf->loadHtml($html);
 
         $dompdf->render();
-        $filename =  $this->getParameter('repertoire_temp')."/".$rfp->getObject().".pdf";
+        $filename =  $this->getParameter('repertoire_temp')."/".$rfp->getId().".pdf";
         file_put_contents($filename, $dompdf->output());
 
         return new BinaryFileResponse($filename);
