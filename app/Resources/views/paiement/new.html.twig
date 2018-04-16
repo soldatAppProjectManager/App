@@ -9,7 +9,7 @@
 {% block body %}
 
     <h1>
-        Ajouter un nouveau paiement pour la facture : #{{ facture.numero }}
+        Ajouter un nouveau paiement pour la facture : #{{ facture.reference }}
     </h1>
     {{ form_start(form) }}
     {{ form_widget(form._token) }}
