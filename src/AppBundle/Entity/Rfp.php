@@ -54,6 +54,13 @@ class Rfp
     private $lots;
 
     /**
+     * @var RfpModele
+     * @ORM\ManyToOne(targetEntity="RfpModele")
+     * @ORM\JoinColumn(name="rfp_modele_id", referencedColumnName="id")
+     */
+    private $modele;
+
+    /**
      * Get id
      *
      * @return int
@@ -175,5 +182,29 @@ class Rfp
     public function getLots()
     {
         return $this->lots;
+    }
+
+    /**
+     * Set modele
+     *
+     * @param \AppBundle\Entity\RfpModele $modele
+     *
+     * @return Rfp
+     */
+    public function setModele(\AppBundle\Entity\RfpModele $modele = null)
+    {
+        $this->modele = $modele;
+
+        return $this;
+    }
+
+    /**
+     * Get modele
+     *
+     * @return \AppBundle\Entity\RfpModele
+     */
+    public function getModele()
+    {
+        return $this->modele;
     }
 }

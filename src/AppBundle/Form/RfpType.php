@@ -32,6 +32,7 @@ class RfpType extends AbstractType
             'by_reference' => false,
         ])
             ->add('number')
+            ->add('modele', null, ['label' => 'Modele'])
             ->add('object');
     }
 

@@ -125,7 +125,8 @@ class RfpController extends Controller
     public function actEngagementAction(Request $request, Rfp $rfp)
     {
         $dompdf = new Dompdf();
-        $html = $this->render('rfp/act.html.twig', ['rfp' => $rfp])->getContent();
+        $modele = $rfp->getModele() ? $rfp->getModele()->getId() : 1;
+        $html = $this->render("rfp/$modele/act.html.twig", ['rfp' => $rfp])->getContent();
         $dompdf->loadHtml($html);
 
         $dompdf->render();
@@ -144,7 +145,8 @@ class RfpController extends Controller
     public function declarationHonorAction(Request $request, Rfp $rfp)
     {
         $dompdf = new Dompdf();
-        $html = $this->render('rfp/declaration_honor.html.twig', ['rfp' => $rfp])->getContent();
+        $modele = $rfp->getModele() ? $rfp->getModele()->getId() : 1;
+        $html = $this->render("rfp/$modele/declaration_honor.html.twig", ['rfp' => $rfp])->getContent();
         $dompdf->loadHtml($html);
 
         $dompdf->render();
