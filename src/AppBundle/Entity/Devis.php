@@ -367,12 +367,8 @@ class Devis extends AbstractDocumentClient
         $totalTVA = 0;
 
         foreach ($this->abstractProduits as $produit) {
-            if (!$produit->getOptionnel()){
-                if($produit instanceof ProduitDevis) {
-                    $totalTVA += $produit->getSoustotalHT() * $produit->getTauxTVA();
-                } else {
-                    $produit->getTotalTVA();
-                }
+            if (!$produit->getOptionnel() && !$produit->estFusionne()) {
+                    $totalTVA += $produit->getTotalTVA();
             }
         }
 

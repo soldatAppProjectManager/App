@@ -790,4 +790,9 @@ class ProduitDevis extends AbstractProduit
     {
         return $this->cummulable;
     }
+
+    public function getTotalTVA()
+    {
+        return round($this->getSousTotalHT() * $this->getTauxTVA(),2);
+    }
 }
