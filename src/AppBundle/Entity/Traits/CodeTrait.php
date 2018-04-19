@@ -2,17 +2,19 @@
 
 namespace AppBundle\Entity\Traits;
 
+use AppBundle\Entity\AbstractDocumentClient;
+use AppBundle\Entity\Facture;
+
 /**
  * Trait CodeTrait
  * @package AppBundle\Entity\Traits
  */
 trait CodeTrait
 {
-
     /**
      * @var string
      *
-     * @ORM\Column(name="code", type="string", length=16, nullable=true)
+     * @ORM\Column(name="code", type="string", length=16, nullable=false)
      */
     private $code;
 
@@ -31,6 +33,7 @@ trait CodeTrait
     public function setCode($code)
     {
         $this->code = $code;
+
         return $this;
     }
 }

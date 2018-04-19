@@ -82,7 +82,7 @@ class ProduitFusion extends AbstractProduit
         foreach ($this->produits as $produit) {
             if($produit->isProduct())
             $prixRevient += $produit->getTotalPrixDeRevient();
-        } 
+        }
         return round($prixRevient,2);
     }
 
@@ -92,7 +92,7 @@ class ProduitFusion extends AbstractProduit
 
         foreach ($this->produits as $produit) {
             $SommePrixDeVenteHT += $produit->getSoustotalht();
-        } 
+        }
         return round($SommePrixDeVenteHT,2);
     }
 
@@ -107,11 +107,11 @@ class ProduitFusion extends AbstractProduit
 
     public function getTotalTVA()
     {
-        // $totalTVA = 0;
+         $totalTVA = 0;
 
         // foreach ($this->produits as $produit) {$totalTVA += $this->getSoustotalHT()*$produit->getTauxTVA();}
-        
-        return round($this->getSoustotalHT()*0.2,2);
+
+        return round($this->getSoustotalHT() * 0.2,2);
     }
 
 

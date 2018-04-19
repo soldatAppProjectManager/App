@@ -14,6 +14,8 @@
             <th>Nom du projet</th>
             <th>Client</th>
             <th>Type</th>
+            <th>Probabilité</th>
+            <th>État</th>
             <th>Total</th>
             <th>Actions</th>
         </tr>
@@ -25,7 +27,17 @@
                 <td>{{ opportunity.label }}</td>
                 <td>{{ opportunity.customer.nom }}</td>
                 <td>{{ opportunity.type }}</td>
-                <td class="pull text-right">{{ opportunity.total|number_format(2, '.', ' ') }}</td>
+                <td>
+                    {% set val = opportunity.probability ? opportunity.probability.value : 0  %}
+                    <div class="progress">
+                        <div class="progress-bar" role="progressbar" aria-valuenow="{{ val }}"
+                             aria-valuemin="0" aria-valuemax="100" style="width:{{ val }}%">
+                            {{ val }}%
+                        </div>
+                    </div>
+                </td>
+                <td>{{ opportunity.status }}</td>
+                <td class="pull text-right">{{ opportunity.total|number_format(2, ',', ' ') }}</td>
                 <td>
                     <a class="btn btn-xs btn-warning" href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}"><i class="fa fa-pencil" ></i> Edit</a>
                 </td>

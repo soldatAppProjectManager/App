@@ -157,9 +157,9 @@
                   {{terme.categorie.nom |capitalize }} : {{terme.description|capitalize}} <br>
                 {% endfor %}    #}         
               </td>
-              {# <td  class="prixachat" {{modifiable|raw}} id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht|number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td> #}
-              <td style="min-width:120px">{{ produit.prixunitaire()|number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</td>
-              <td >{{ (produit.soustotalht())|number_format(2, '.', ',') }} {{devis.deviseVente.symbol}}</td>
+              {# <td  class="prixachat" {{modifiable|raw}} id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht|number_format(2, ',', ' ') }} {{produit.deviseachat.code}} </td> #}
+              <td style="min-width:120px">{{ produit.prixunitaire()|number_format(2, ',', ' ') }} {{devis.deviseVente.symbol}}</td>
+              <td >{{ (produit.soustotalht())|number_format(2, ',', ' ') }} {{devis.deviseVente.symbol}}</td>
 {#               <td style="min-width:250px">
                 <a type="button" class="btn btn-default visible" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a>
                 <a type="button" class="btn btn-warning invisible" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
@@ -173,7 +173,7 @@
               <td style="border-top: 0px"></td>                      
               <td style="border-top: 0px"></td>            
               <td><strong>TOTAL HT :</strong></td>            
-              <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, '.', ',')}} {{devis.deviseVente.symbol}} </strong></td>        
+              <td id="totalHT"><strong>{{devis.getTotalHT()| number_format(2, ',', ' ')}} {{devis.deviseVente.symbol}} </strong></td>
               <td></td>            
             </tr>        
             <tr> 
@@ -182,7 +182,7 @@
               <td style="border-top: 0px"></td>            
               <td style="border-top: 0px"></td>            
               <td>TOTAL TVA : </td>            
-              <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} </td>            
+              <td id="totalTVA">{{devis.getTotalTVA()| number_format(2, ',', ' ') }} {{devis.deviseVente.symbol}} </td>
               <td  style="border-top: 0px"></td>            
             </tr>        
              <tr> 
@@ -191,7 +191,7 @@
               <td style="border-top: 0px"></td>            
               <td style="border-top: 0px"></td>            
               <td><strong>TOTAL TTC: </strong></td>            
-              <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, '.', ',') }} {{devis.deviseVente.symbol}} </strong></td>            
+              <td id="totalTTC"><strong>{{devis.getTotalTTC()| number_format(2, ',', ' ') }} {{devis.deviseVente.symbol}} </strong></td>
               <td style="border-top: 0px"></td>            
             </tr>        
              <tr> 

@@ -22,9 +22,9 @@
                 <td>{{ facture.reference }}</td>
                 <td>{{ facture.date|date('d/m/Y') }}</td>
                 <td>{{ facture.bonDeCommandeClient }}</td>
-                <td>{{ facture.bonDeCommandeClient.totalTTC|number_format(2, '.', ' ') }}</td>
-                <td>{{ facture.totalPaiements|number_format(2, '.', ' ') }}</td>
-                <td>{{ facture.restePayer|number_format(2, '.', ' ') }}</td>
+                <td>{{ facture.bonDeCommandeClient.totalTTC|number_format(2, ',', ' ') }}</td>
+                <td>{{ facture.totalPaiements|number_format(2, ',', ' ') }}</td>
+                <td>{{ facture.restePayer|number_format(2, ',', ' ') }}</td>
                 <td>
                     <a class="btn btn-xs btn-warning" href="{{ path('facture_paiements', {'id' : facture.id }) }}">Paiement</a>
                     <a class="btn btn-xs btn-primary" target="_blank"

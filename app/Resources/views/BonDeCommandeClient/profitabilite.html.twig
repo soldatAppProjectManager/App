@@ -136,7 +136,7 @@
             <tr>
                 <td style="text-align: center;">A</td>
                 <th style="min-width:15%; text-align: right;">Chiffre d'affaire</th>
-                <td align="right">{{ BonDeCommandeClient.TotalHT | number_format(2, '.', ',') }} Dh</td>
+                <td align="right">{{ BonDeCommandeClient.TotalHT | number_format(2, ',', ' ') }} Dh</td>
                 <td></td>
                 <td style="text-align:center;"></td>
                 <td align="center"
@@ -145,7 +145,7 @@
                 {% else %}
                     class="positive"
                         {% endif %}>
-                    Markup : {{ (BonDeCommandeClient.MarkUP*100) | number_format(2, '.', ',') }}%
+                    Markup : {{ (BonDeCommandeClient.MarkUP*100) | number_format(2, ',', ' ') }}%
                 </td>
                 <td style="text-align: center;"></td>
             </tr>
@@ -154,26 +154,26 @@
                 <td style="text-align: center;">B</td>
                 {% if BonDeCommandeClient.getResultatDeChange() >= 0 %}
                     <th style="min-width:15%; text-align: right;">Gain de Change</th>
-                    <td align="right">{{ (BonDeCommandeClient.getResultatDeChange()) | number_format(2, ',', '.') }}Dh
+                    <td align="right">{{ (BonDeCommandeClient.getResultatDeChange()) | number_format(2, ',', ' ') }}Dh
                     </td>
                     <td align="right"></td>
                     <th style="text-align:center;"></th>
                     <td align="center"
                         {% if ((BonDeCommandeClient.getResultatDeChange()/BonDeCommandeClient.TotalHT)*100) <= 0.5 %}class="negative"
                         {% else %}class="positive"{% endif %}>
-                        {{ ((BonDeCommandeClient.getResultatDeChange()/BonDeCommandeClient.TotalHT)*100) | number_format(2, '.', ',') }}
+                        {{ ((BonDeCommandeClient.getResultatDeChange()/BonDeCommandeClient.TotalHT)*100) | number_format(2, ',', ' ') }}
                         %
                     </td>
 
                 {% else %}
                     <th style="min-width:15%; text-align: right;">Perte de Change</th>
                     <td align="right"></td>
-                    <td align="right">{{ ((-1) * BonDeCommandeClient.getResultatDeChange()) | number_format(2, '.', ',') }}
+                    <td align="right">{{ ((-1) * BonDeCommandeClient.getResultatDeChange()) | number_format(2, ',', ' ') }}
                         Dh
                     </td>
                     <th style="text-align:center;"></th>
                     <td align="center"
-                        class="negative">{{ (BonDeCommandeClient.TauxResultatDeChange * 100 ) | number_format(2, '.', ',') }}
+                        class="negative">{{ (BonDeCommandeClient.TauxResultatDeChange * 100 ) | number_format(2, ',', ' ') }}
                         %
                     </td>
                 {% endif %}
@@ -186,10 +186,10 @@
                 <td style="text-align: center;">C</td>
                 <th style="min-width:15%; text-align: right;">Charges Financières</th>
                 <td align="right"></td>
-                <td align="right">{{ (BonDeCommandeClient.FraisFinanciers)| number_format(2, '.', ',') }} Dh</td>
+                <td align="right">{{ (BonDeCommandeClient.FraisFinanciers)| number_format(2, ',', ' ') }} Dh</td>
                 <th style="text-align:center;"></th>
                 <td align="center" {% if (BonDeCommandeClient.TauxFraisFinanciers*100) <= 0 %}class="positive"
-                    {% else %}class="negative"{% endif %}>{{ (BonDeCommandeClient.TauxFraisFinanciers*100) | number_format(2, '.', ',') }}
+                    {% else %}class="negative"{% endif %}>{{ (BonDeCommandeClient.TauxFraisFinanciers*100) | number_format(2, ',', ' ') }}
                     %
                 </td>
                 <td align="center">Recouvrement moyen : {{ BonDeCommandeClient.client.delaipaiementconstate }}Jours
@@ -200,9 +200,9 @@
                 <td style="text-align: center;">D</td>
                 <th style="min-width:15%; text-align: right;">Achats revendus</th>
                 <td align="right"></td>
-                <td align="right">{{ BonDeCommandeClient.getTotalPrixRevient()| number_format(2, '.', ',') }} Dh</td>
+                <td align="right">{{ BonDeCommandeClient.getTotalPrixRevient()| number_format(2, ',', ' ') }} Dh</td>
                 <th style="text-align:center;"></th>
-                <td align="center">{{ (BonDeCommandeClient.getTotalPrixRevient()/BonDeCommandeClient.TotalHT*100) | number_format(2, '.', ',') }}
+                <td align="center">{{ (BonDeCommandeClient.getTotalPrixRevient()/BonDeCommandeClient.TotalHT*100) | number_format(2, ',', ' ') }}
                     %
                 </td>
                 <td align="center"></td>
@@ -213,9 +213,9 @@
                 <th style="min-width:15%; text-align: right;">Marge brute</th>
                 <td align="right"></td>
                 <td></td>
-                <th style="text-align:center;">{{ BonDeCommandeClient.MargeBrute | number_format(2, '.', ',') }} Dh</th>
+                <th style="text-align:center;">{{ BonDeCommandeClient.MargeBrute | number_format(2, ',', ' ') }} Dh</th>
                 <td align="center" {% if (BonDeCommandeClient.TauxMargeBrute*100) < 10 %}class="negative"
-                    {% else %}class="positive"{% endif %}> {{ (BonDeCommandeClient.TauxMargeBrute*100) | number_format(2, '.', ',') }}
+                    {% else %}class="positive"{% endif %}> {{ (BonDeCommandeClient.TauxMargeBrute*100) | number_format(2, ',', ' ') }}
                     %
                 </td>
                 <td></td>
@@ -225,10 +225,10 @@
                 <td style="text-align: center;">E</td>
                 <th style="min-width:15%; text-align: right;">Charge d'exploitation</th>
                 <td align="right"></td>
-                <td align="right">{{ BonDeCommandeClient.ValeurChargesDExploitation | number_format(2, '.', ',') }}Dh
+                <td align="right">{{ BonDeCommandeClient.ValeurChargesDExploitation | number_format(2, ',', ' ') }}Dh
                 </td>
                 <td align="right"></td>
-                <td align="center">{{ (BonDeCommandeClient.getTauxChargesExploitation*100) | number_format(2, '.', ',') }}
+                <td align="center">{{ (BonDeCommandeClient.getTauxChargesExploitation*100) | number_format(2, ',', ' ') }}
                     %
                 </td>
                 <td>
@@ -243,9 +243,9 @@
                 <th style="min-width:15%; text-align: right;">Marge Nette</th>
                 <td align="right"></td>
                 <td align="right"></td>
-                <th style="text-align:center;">{{ BonDeCommandeClient.MargeNette | number_format(2, '.', ',') }} Dh</th>
+                <th style="text-align:center;">{{ BonDeCommandeClient.MargeNette | number_format(2, ',', ' ') }} Dh</th>
                 <td align="center" {% if (BonDeCommandeClient.TauxMargeNette*100)  < 7 %}class="negative"
-                    {% else %}class="positive"{% endif %}>{{ (BonDeCommandeClient.TauxMargeNette*100) | number_format(2, '.', ',') }}
+                    {% else %}class="positive"{% endif %}>{{ (BonDeCommandeClient.TauxMargeNette*100) | number_format(2, ',', ' ') }}
                     %
                 </td>
                 <td></td>
@@ -256,12 +256,12 @@
                 <th style="min-width:15%;  text-align: right;">Marge Nette apres impôts</th>
                 <td align="right"></td>
                 <td align="right"></td>
-                <th style="text-align:center;">{{ (BonDeCommandeClient.MargeNette*0.7) | number_format(2, '.', ',') }}
+                <th style="text-align:center;">{{ (BonDeCommandeClient.MargeNette*0.7) | number_format(2, ',', ' ') }}
                     Dh
                 </th>
                 <td align="center"
                     {% if (100*BonDeCommandeClient.MargeNette*0.7/BonDeCommandeClient.TotalHT) < 5 %}class="negative"
-                    {% else %}class="positive"{% endif %}>{{ (100*BonDeCommandeClient.MargeNette*0.7/BonDeCommandeClient.TotalHT) | number_format(2, '.', ',') }}
+                    {% else %}class="positive"{% endif %}>{{ (100*BonDeCommandeClient.MargeNette*0.7/BonDeCommandeClient.TotalHT) | number_format(2, ',', ' ') }}
                     %
                 </td>
                 <td></td>

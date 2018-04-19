@@ -17,11 +17,11 @@
 			  <li class="list-group-item">Quantité : <strong>{{produitdevis.quantite}}</strong></li>
 			  <li class="list-group-item"><u>Désignation </u> : {{produitdevis.designation|capitalize}}</li>
 			  <li class="list-group-item"><u>Description </u> : {{produitdevis.description|raw}}</li>
-			  <li class="list-group-item"><u>Prix d'achat </u> : <strong>{{produitdevis.prixachatht|number_format(2, '.', ',')}} {{produitdevis.deviseachat.symbol|capitalize}} ({{produitdevis.tauxAchat}})</strong></li>
-			  <li class="list-group-item"><u>Marge </u> : {{(produitdevis.marge*100)|number_format(2, '.', ',')}}%</li>
-			  <li class="list-group-item"><u>Prix de vente </u> : <strong>{{produitdevis.getPrixVenteHT|number_format(2, '.', ',')}} {{produitdevis.devis.devisevente.symbol|capitalize}}</strong></li>
-			  <li class="list-group-item"><u>Sous total </u> : <strong>{{produitdevis.getSousTotalHT|number_format(2, '.', ',')}} {{produitdevis.devis.devisevente.symbol|capitalize}}</strong></li>
-			  <li class="list-group-item"><u>Frais d'approche </u> : {{(produitdevis.fraisapproche*100)|number_format(2, '.', ',')}}%</li>
+			  <li class="list-group-item"><u>Prix d'achat </u> : <strong>{{produitdevis.prixachatht|number_format(2, ',', ' ')}} {{produitdevis.deviseachat.symbol|capitalize}} ({{produitdevis.tauxAchat}})</strong></li>
+			  <li class="list-group-item"><u>Marge </u> : {{(produitdevis.marge*100)|number_format(2, ',', ' ')}}%</li>
+			  <li class="list-group-item"><u>Prix de vente </u> : <strong>{{produitdevis.getPrixVenteHT|number_format(2, ',', ' ')}} {{produitdevis.devis.devisevente.symbol|capitalize}}</strong></li>
+			  <li class="list-group-item"><u>Sous total </u> : <strong>{{produitdevis.getSousTotalHT|number_format(2, ',', ' ')}} {{produitdevis.devis.devisevente.symbol|capitalize}}</strong></li>
+			  <li class="list-group-item"><u>Frais d'approche </u> : {{(produitdevis.fraisapproche*100)|number_format(2, ',', ' ')}}%</li>
 			  <li class="list-group-item"><u>Fournisseur </u> : <strong>{{produitdevis.fournisseur.nom}}</strong>, {{produitdevis.commercial}}, offre n°<strong>{{produitdevis.referenceoffre}}</strong> du {{produitdevis.dateoffre|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</li>
 			  <li class="list-group-item"><u>Catégorie </u> : {{produitdevis.typeproduit.nom}}, {{produitdevis.metier.nom}}</li>
 			  <li class="list-group-item"><u>Désignation </u> : {{produitdevis.metier.nom}}</li>

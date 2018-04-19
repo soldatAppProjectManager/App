@@ -44,6 +44,7 @@ class ProduitFusionFormType extends AbstractType
         $builder
             ->add('quantite', IntegerType::class, array('attr' => array('class' => 'impactprix')))
             ->add('designation', TextType::class)
+            ->add('unite', null, ['label' => 'Unité'])
             ->add('prixVenteHT', MoneyType::class, array('attr' => array('placeholder' => 'Saisir un prix','class' => 'impactprix'), 'label' => 'Prix de Vente H.T.'))
             ->add('description', TextareaType::class, array('attr' => array('rows'=> '10', 'cols' => '200')));        
     }

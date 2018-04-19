@@ -1,0 +1,94 @@
+{% import "macros.html.twig" as mg %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>Acte d’engagement {{ rfp.object }}</title>
+
+    <style>
+        .page {
+            page-break-after: always;
+        }
+
+        div,p{
+            text-align: justify;
+            font-size: 14px;
+            line-height:16.2px;
+        }
+
+        /* @page{margin: 0.1in 0.5in 0.5in 0.5in;} */
+    </style>
+</head>
+<body>
+<p>
+    {% for lot in rfp.lots %}
+    <div class="page">
+
+        <div>
+            <h3 style="text-align: center">ACTE D’ENGAGEMENT</h3>
+            <b style="text-decoration: underline;">A- Partie réservée à l’administration</b><br>
+
+<p>
+    Appel d’offres ouvert, sur offres des prix {{ rfp.number }} du
+    {{ rfp.date|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y 'à' h 'heures' m 'minutes'")|capitalize }}.<br>
+</p>
+
+<p>
+    <b>Objet :</b> {{ rfp.object|nl2br }}
+</p>
+
+<p>
+    Marché passé en application des prescriptions de l'article 7, de l'alinéa 2 paragraphe 1 de l'article 16 et
+    paragraphe 1 de l'article 17 et alinéa 3 du paragraphe 3 de l’article 17 du Décret n° 2.12.349 du 8 joumada I 1434
+    (20 mars 2013) relatif aux des marchés publics.
+</p>
+<b style="text-decoration: underline;">B- Partie réservée au concurrent</b>
+<p>
+    Je, soussigné <b>{{ director }} , {{ function }}</b><br>
+    Agissant au nom et pour le compte de : <b>{{ company_legal_name }}</b><br>
+    Au capital de: <b>{{ capital }}</b><br>
+    Adresse du siège social de la société: <b>{{ address1 }}</b><br>
+    Adresse du domicile élu: <b>{{ address2 }}</b><br>
+    Affiliée à la CNSS sous le N° <b>{{ cnss }}</b><br>
+    Inscrite au registre du commerce Casablanca sous le n° <b>{{ rc }}</b><br>
+    N° de patente <b>{{ patente }}</b><br>
+    En vertu des pouvoirs qui me sont conférés :<br>
+    Après avoir pris connaissance du dossier d'appel d’offres concernant les prestations précisées
+    en objet de la partie A ci-dessus;<br>
+    Après avoir apprécié à mon point de vue et sous ma responsabilité la nature et les difficultés que comportent ces
+    prestations :<br>
+    1) remets, revêtu(s) de ma signature un bordereau de prix - détail estimatif établi conformément aux modèles
+    figurant au dossier d’appel d’offres;<br>
+    2) m’engage à exécuter lesdites prestations conformément au cahier des prescriptions spéciales et moyennant les prix
+    que j’ai établis moi-même, lesquels font ressortir :<br>
+</p>
+</div>
+Pour le Lot n°{{ loop.index }}: {{ lot.title }}<br>
+{% for devis in lot.devis %}
+    <b>{{ devis.titreAct }}</b><br>
+    Montant hors TVA :
+    <b>{{ devis.getTotalHT|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }} </b>
+    ({{ mg.nbr2char(devis.getTotalHT) }})
+    <br>
+    Taux de la TVA : <b>20%</b><br>
+    Montant de la TVA :
+    <b>{{ devis.getTotalTVA|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}</b>
+    ({{ mg.nbr2char(devis.getTotalTVA) }})
+    <br>
+    Montant TVA comprise: <b>{{ devis.getTotalTTC|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }} </b>
+    ({{ mg.nbr2char(devis.getTotalTTC) }})
+    <br>
+{% endfor %}
+
+<p>
+    L’Etat se libérera des sommes dues par lui en faisant donner crédit au compte <b>BMCE BANK</b> ouvert au nom de <b>SOLDAT
+        SARL</b> à <b>Casablanca</b> sous relevé d’identification : <b>{{ bank_account_number }}</b>.
+</p>
+<p style="float: right">Fait à <b>Casablanca</b> le
+    <b>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</b>
+</p>
+</div>
+{% endfor %}
+</p>
+</body>
+</html>

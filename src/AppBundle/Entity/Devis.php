@@ -59,6 +59,12 @@ class Devis extends AbstractDocumentClient
     private $devisevente;
 
     /**
+     * @var Lot
+     * @ORM\ManyToOne(targetEntity="Lot", inversedBy="devis")
+     */
+    private $lot;
+
+    /**
      * @var float
      * @Assert\NotBlank()
      * @Assert\Range(
@@ -130,6 +136,12 @@ class Devis extends AbstractDocumentClient
     private $titre;
 
     /**
+     * @var string
+     * @ORM\Column(name="titre_act", type="string", length=255, nullable=true)
+     */
+    private $titreAct;
+
+    /**
      * @var numdemande
      * @ORM\Column(name="numdemande", type="string", length=255, nullable=true)
      */
@@ -197,7 +209,6 @@ class Devis extends AbstractDocumentClient
     {
         $produits = $this->getProduits();
         $fusions = $this->getFusionProduits();
-
         $this->termes = $this->getTermes();
         $this->BonDeCommandes = new ArrayCollection();
 
@@ -213,13 +224,14 @@ class Devis extends AbstractDocumentClient
 
         foreach ($fusions as $fusion) {
             $CloneFusion = clone $fusion;
-            $CloneFusion->setDevis($this);
+            $CloneFusion->setDocumentClient($this);
             $CloneFusions->add($CloneFusion);
         }
 
         $this->setDraft(true);
         $this->fusionProduits = $CloneFusions;
-        $this->produits = $CloneProduits;
+        $this->abstractProduits = $CloneProduits;
+
     }
 
     public function ProduitDevis($numero)
@@ -355,12 +367,8 @@ class Devis extends AbstractDocumentClient
         $totalTVA = 0;
 
         foreach ($this->abstractProduits as $produit) {
-            if (!$produit->getOptionnel()){
-                if($produit instanceof ProduitDevis) {
-                    $totalTVA += $produit->getSoustotalHT() * $produit->getTauxTVA();
-                } else {
-                    $produit->getTotalTVA();
-                }
+            if (!$produit->getOptionnel() && !$produit->estFusionne()) {
+                    $totalTVA += $produit->getTotalTVA();
             }
         }
 
@@ -435,7 +443,7 @@ class Devis extends AbstractDocumentClient
     public function getFraisFinanciers()
     {
         $FraisFinanciers = 0;
-/** @var ProduitDevis $produit */
+        /** @var ProduitDevis $produit */
         foreach ($this->getProduits() as $produit) {
             if ($produit->estFusionne()) {
                 if (!$produit->getOptionnel())
@@ -467,8 +475,9 @@ class Devis extends AbstractDocumentClient
 
     public function changerMarge($marge)
     {
+        /** @var ProduitDevis $produit */
         foreach ($this->produits as $produit) {
-            if ($produits->getTypeproduit()->getId() != 1)
+            if ($produit->getTypeproduit()->getId() != 1)
                 $produit->setMarge($marge);
         }
     }
@@ -1283,5 +1292,53 @@ class Devis extends AbstractDocumentClient
     public function getRouteNameVoir()
     {
         return "devis_apercu";
+    }
+
+    /**
+     * Set lot
+     *
+     * @param \AppBundle\Entity\Lot $lot
+     *
+     * @return Devis
+     */
+    public function setLot(\AppBundle\Entity\Lot $lot = null)
+    {
+        $this->lot = $lot;
+
+        return $this;
+    }
+
+    /**
+     * Get lot
+     *
+     * @return \AppBundle\Entity\Lot
+     */
+    public function getLot()
+    {
+        return $this->lot;
+    }
+
+    /**
+     * Set titreAct
+     *
+     * @param string $titreAct
+     *
+     * @return Devis
+     */
+    public function setTitreAct($titreAct)
+    {
+        $this->titreAct = $titreAct;
+
+        return $this;
+    }
+
+    /**
+     * Get titreAct
+     *
+     * @return string
+     */
+    public function getTitreAct()
+    {
+        return $this->titreAct;
     }
 }

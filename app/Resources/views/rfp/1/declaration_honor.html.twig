@@ -1,0 +1,77 @@
+{% import "macros.html.twig" as mg %}
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <title>LA DECLARATION SUR L’HONNEUR {{ rfp.object }}</title>
+
+    <style>
+
+        .page {
+            page-break-after: always;
+        }
+
+        p,div{
+            text-align: justify;
+            font-size: 15px;
+        }
+        @page{margin: 0.1in 0.5in 0.5in 0.5in;}
+    </style>
+</head>
+<body>
+<div>
+    <h3 style="text-align: center">LA DECLARATION SUR L’HONNEUR</h3>
+
+        - Mode de passation : Appel d’offres ouvert, sur offres des prix {{ rfp.number }} du {{ rfp.date|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y 'à' h 'heures' m 'minutes'")|capitalize }}.<br>
+        - <b>Objet</b> : {{ rfp.object|nl2br }}
+     
+ <br><br>
+        Je, soussigné <b>{{ director }} , {{ function }}</b> <br>
+        Numéro de téléphone <b>{{ mobile_phone }}</b> <br>
+        Adresse électronique : <b>{{ email }}</b> <br>
+        Agissant au nom et pour le compte de <b>{{ company_legal_name }}</b> <br>
+        Au capital de : <b>{{ capital }}</b> <br>
+        Adresse du siège social de la société: <b>{{ address1 }}</b> <br>
+        Adresse du domicile élu: <b>{{ address2 }}</b>. <br>
+        Affiliée à la CNSS sous le n° <b>{{ cnss }}</b> <br>
+        Inscrite au registre du commerce Casablanca sous le n° <b>{{ rc }}</b> <br>
+        N° de patente <b>{{ patente }}</b> <br>
+        N° du compte bancaire courant <b>{{ bank_account_number }}</b>, en vertu des pouvoirs qui me sont conférés ; <br>
+     
+
+    <br>
+        <b style="text-decoration: underline" >Déclare sur l’honneur :</b><br>
+
+    1- m’engager à couvrir, dans les limites fixées dans le cahier des charges, par une police d’assurance,
+        les risques découlant de mon activité professionnelle ;<br>
+
+        2- que je remplie les conditions prévues à l’article <b>24</b> du décret n° <b>2.12.349</b> du 08 Joumada I 1434
+        (<b>20 Mars 2013</b>) relatif aux marchés publics ;<br>
+
+    3 - Etant en redressement judiciaire, j’atteste que je suis autorisé par l’autorité judiciaire compétente
+        à poursuivre l’exercice de mon activité (2).<br>
+
+    4- m’engager, si j’envisage de recourir à la sous-traitance :<br>
+    - à m’assurer que les sous- traitants remplissent également les conditions prévues par l’article
+        <b>24</b> du décret n° <b>2.12.349</b> du 08 Joumada I 1434 (<b>20 mars 2013</b>) précité ;<br>
+    - que celle- ci ne peut dépasser <b>50</b>% du montant du marché, ni porter sur les prestations constituant
+        le lot ou le corps d’état principal prévues par le cahier des prescriptions spéciales,
+        ni sur celles que le maître d’ouvrage à prévues dans ledit cahier ;<br>
+    5- m’engager à ne pas recourir par moi- même ou par personne interposée, à des pratiques de fraude ou de
+        corruption de personnes qui interviennent à quelque titre que ce soit dans les différentes procédures
+        de passation, de gestion et d’exécution du présent marché.<br>
+    6- m’engager à ne pas faire, par moi- même ou par personnes interposée, des promesses, des dons ou
+        des présents en vue d’influer sur les différentes procédures de conclusion du présent marché.<br>
+        7- atteste que je ne suis pas en situation de conflit d’intérêt tel que prévu à l’article <b>168</b>
+        du décret n° <b>2.12.349</b> précité.<br>
+    8- certifie l’exactitude des renseignements contenus dans la présente déclaration sur l’honneur
+        et dans les pièces fournies dans mon dossier de candidature.<br>
+        9- reconnais avoir pris connaissance des sanctions prévues par les articles <b>138</b> et <b>159</b>
+        décret n° <b>2.12.349</b> précité, relatives à l’inexactitude de la déclaration sur l’honneur.
+     <br>
+    <p style="float: right">Fait à <b>Casablanca</b> le
+        <b>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</b>
+    </p>
+</div>
+</body>
+</html>

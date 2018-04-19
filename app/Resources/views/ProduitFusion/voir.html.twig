@@ -40,11 +40,11 @@
           </tr>
           <tr>
             <th style="min-width:10%">Prix de revient :</th>
-            <td align="left">{{ProduitFusion.getPrixRevientUnitaire|number_format(2, '.', ',') }}</td>
+            <td align="left">{{ProduitFusion.getPrixRevientUnitaire|number_format(2, ',', ' ') }}</td>
           </tr>
           <tr>
             <th style="min-width:10%">Somme des prix de vente :</th>
-            <td align="left">{{ProduitFusion.getSommePrixDeVenteHT|number_format(2, '.', ',') }}</td>
+            <td align="left">{{ProduitFusion.getSommePrixDeVenteHT|number_format(2, ',', ' ') }}</td>
           </tr>
           <tr>
             <td></td>
@@ -101,9 +101,9 @@
                   {{terme.categorie.nom |capitalize }} : {{terme.description}}|capitalize <br>
                 {% endfor %}
               </td>
-              <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, '.', ',') }} {{produit.deviseachat.code}} </td>
-              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, '.', ',') }} </td>
-              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, '.', ',') }} </td>
+              <td  class="prixachat" contenteditable="true"  id="{{ produit.id }}" style="min-width:120px">{{ produit.prixachatht | number_format(2, ',', ' ') }} {{produit.deviseachat.code}} </td>
+              <td id="prixdevente{{produit.id}}" style="min-width:120px">{{ produit.getPrixVenteHT() | number_format(2, ',', ' ') }} </td>
+              <td id="soustotal{{produit.id}}">{{ (produit.getSousTotalHT()) | number_format(2, ',', ' ') }} </td>
               <td style="min-width:250px">
                 <a type="button" class="btn btn-warning" href="{{ url(produit.routeNameEdit, {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
                   {% if produit.estFusionne %}
@@ -121,8 +121,8 @@
               <td style="border-top: 0px"></td>
               <td style="border-top: 0px"></td>
               <td style="border-top: 0px"></td>
-              <td><strong>TOTAL Prix de vente choisis HT (taux de marge {{ProduitFusion.getMargeBrute*100| number_format(2, '.', ',')}}%):</strong></td>
-              <td id="totalHT"><strong>{{ProduitFusion.getPrixVenteHT| number_format(2, '.', ',')}}</strong></td>
+              <td><strong>TOTAL Prix de vente choisis HT (taux de marge {{ProduitFusion.getMargeBrute*100| number_format(2, ',', ' ')}}%):</strong></td>
+              <td id="totalHT"><strong>{{ProduitFusion.getPrixVenteHT| number_format(2, ',', ' ')}}</strong></td>
               <td></td>
             </tr>
         </tbody>

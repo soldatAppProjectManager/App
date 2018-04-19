@@ -64,7 +64,7 @@ class Ticket
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetimetz", nullable=false)
+     * @ORM\Column(name="date", type="datetime")
      */
     private $date;
 

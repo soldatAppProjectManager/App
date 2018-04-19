@@ -1,0 +1,111 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}
+{% if rfp.id is empty %}
+    Nouvelle appel d'offre
+{% else %}
+    Modification appel d'offre #{{ rfp.id }}
+{% endif %}
+{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/bower_components/bootstrap/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet"
+          href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css"/>
+{% endblock %}
+ {% form_theme form _self %}
+  {% block _rfp_lots_entry_row %}
+      <div class="col-md-4 newLot">
+          <div class="row">
+              <div class="col-md-10">
+                  {{ form_label(form.title) }}
+                  {{ form_widget(form.title) }}
+                  {{ form_errors(form.title) }}
+              </div>
+              <div class="col-md-2" style="position: absolute;
+    bottom: 0;right: 0;" >
+                  <a class="pull-right btn btn-sm btn-danger btnDeleteLot" href="#"><i
+                              class="fa fa-times"></i></a>
+              </div>
+          </div>
+      </div>
+  {% endblock %}
+{% block body %}
+    <h1>
+        {% if rfp.id is empty %}
+            Nouvelle appel d'offre
+        {% else %}
+            Modification appel d'offre #{{ rfp.id }}
+        {% endif %}
+    </h1>
+
+    {{ form_start(form) }}
+    <div class=" well well-lg">
+        <div class="row">
+            <div class="col-md-3 form-group ">
+                {{ form_label(form.date) }}
+                {{ form_widget(form.date) }}
+                {{ form_errors(form.date) }}
+            </div>
+            <div class="col-md-2 form-group ">
+                {{ form_label(form.number) }}
+                {{ form_widget(form.number) }}
+                {{ form_errors(form.number) }}
+            </div>
+            <div class="col-md-7 form-group ">
+                {{ form_label(form.object) }}
+                {{ form_widget(form.object) }}
+                {{ form_errors(form.object) }}
+            </div>
+        </div>
+        <div class="row" >
+            <div class="col-md-3" >
+                {{ form_row(form.modele) }}
+            </div>
+        </div>
+
+        <fieldset>
+            <legend> {{ form_label(form.lots) }} <a href="#"
+                                                    id="btnNewLot"
+                                                    class="btn btn-sm btn-info pull-right"><i
+                            class="fa fa-plus"></i> Ajouter un autre lot</a></legend>
+            {{ form_widget(form.lots) }}
+            <br>
+        </fieldset>
+    </div>
+
+    <a class="btn btn-default" href="{{ path('rfp_index') }}">Annuler</a>
+    <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="/bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript"
+            src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.datetimepicker').datetimepicker({
+                locale: 'fr',
+                format: 'DD/MM/YYYY HH:mm'
+            });
+
+            $('#btnNewLot').click(function (e) {
+                e.preventDefault();
+                var list = $('#rfp_lots');
+                var counter = list.children().length;
+                var newWidget = $("#rfp_lots").attr('data-prototype');
+                newWidget = newWidget.replace(/__name__/g, counter);
+                $(newWidget).appendTo(list);
+            });
+
+            $('body').on('click', '.btnDeleteLot', function (e) {
+                e.preventDefault();
+                $(this).parents(".newLot").remove();
+            });
+
+        });
+    </script>
+{% endblock %}

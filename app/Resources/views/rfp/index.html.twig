@@ -1,0 +1,69 @@
+{% extends 'base.html.twig' %}
+
+{% block body %}
+    <h1>Liste des appels d'Offres</h1>
+
+
+    <a class="btn btn-primary" style="float: right;" href="{{ path('rfp_new') }}"><i class="fa fa-plus"></i> Appel
+        d'offre</a>
+    <br>
+    <br>
+    <table class="table table-striped table-bordered">
+        <thead>
+        <tr>
+            <th>Id</th>
+            <th>Date</th>
+            <th>Number</th>
+            <th>Object</th>
+            <th>Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for rfp in rfps %}
+            <tr>
+                <td><a href="{{ path('rfp_show', { 'id': rfp.id }) }}">{{ rfp.id }}</a></td>
+                <td>{% if rfp.date %}{{ rfp.date|date('d/m/Y H:i') }}{% endif %}</td>
+                <td>{{ rfp.number }}</td>
+                <td>{{ rfp.object }}</td>
+                <td>
+                    <table>
+                        <tr>
+                            <td>
+                                <div class="dropdown">
+                                    <button class="btn btn-sm btn-default dropdown-toggle" type="button"
+                                            id="dropdownMenu1"
+                                            data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                                        <i class="fa fa-print"></i> Imprimer
+                                        <span class="caret"></span>
+                                    </button>
+                                    <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                                        <li>
+                                            <a target="_blank" href="{{ path('rfp_act', { 'id': rfp.id }) }}">Les actes
+                                                d'engagements</a></li>
+                                        <li>
+                                            <a target="_blank"
+                                               href="{{ path('rfp_declaration_honor', { 'id': rfp.id }) }}">Déclaration
+                                                sur l'honneur</a>
+                                        </li>
+                                        <li role="separator" class="divider"></li>
+                                        {% for lot in rfp.lots %}
+                                        {% for devis in lot.devis %}
+                                        <li>
+                                            <a target="_blank" href="{{ url('devis_apercupdf', {'id' : devis.id})}}" >{{ devis.titre }}</a>
+                                        </li>
+                                        {% endfor %}
+                                        {% endfor %}
+                                    </ul>
+                                </div>
+                            </td>
+                            <td><a class="btn btn-sm btn-warning" href="{{ path('rfp_edit', { 'id': rfp.id }) }}"><i
+                                            class="fa fa-pencil"></i> Edit</a>
+                            </td>
+                        </tr>
+                    </table>
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}

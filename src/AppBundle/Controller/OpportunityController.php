@@ -3,6 +3,7 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Opportunity;
+use AppBundle\Entity\OpportunityStatus;
 use AppBundle\Entity\OpportunityType;
 use AppBundle\Entity\OProduct;
 use Doctrine\Common\Collections\ArrayCollection;
@@ -43,8 +44,11 @@ class OpportunityController extends Controller
      */
     public function editAction(Request $request, Opportunity $opportunity = null)
     {
+
+        $em = $this->getDoctrine()->getManager();
         if (null === $opportunity) {
             $opportunity = new Opportunity();
+            $opportunity->setStatus($em->getRepository(OpportunityStatus::class)->findOneBy(['code' => 1]));
         }
 
         $originalProducts = new ArrayCollection();
@@ -57,7 +61,6 @@ class OpportunityController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
 
             foreach ($originalProducts as $product) {
                 if (false === $opportunity->getProducts()->contains($product)) {

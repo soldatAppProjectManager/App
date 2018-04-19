@@ -43,10 +43,8 @@ class ProduitDevisFormType extends AbstractType
             ->add('fournisseur', EntityType::class, array('class' => 'AppBundle:Fournisseur',
                 'query_builder' => $this->getEntityManager()->getRepository('AppBundle:Fournisseur')->findAllByAscNom(),
                 'attr' => array('class' => 'selectpicker', 'data-live-search' => 'true', 'title' => 'Selectionner un Fournisseur')))
-
             ->add('prixachatht', NumberType::class, array('attr' => array('placeholder' => 'Saisir un prix', 'class' => 'impactprix'), 'label' => 'Prix d Achat H.T.'))
-            ->add('prixVenteHT', MoneyType::class, array('attr' => array('placeholder' => 'Prix de Vente H.T', 'class' => 'prixdevente'), 'label' => 'Prix de Vente H.T.'))
-
+            ->add('prixVenteHT', NumberType::class, array('required' => true, 'attr' => array('placeholder' => 'Prix de Vente H.T', 'class' => 'prixdevente'), 'label' => 'Prix de Vente H.T.'))
             ->add('fraisapproche', PercentType::class, array('scale' => 2, 'attr' => array('class' => 'impactprix')))
             ->add('tauxSpecial', ChoiceType::class, array('attr' => array('class' => 'selectpicker', 'title' => 'Taux de douane spécial ?'),
                 'choices' => array('Standard' => false,
@@ -64,6 +62,7 @@ class ProduitDevisFormType extends AbstractType
                 'choices' => array('Cummulable' => true,
                     'Non cummulable' => false), 'label' => 'Produit cummulable'))
             ->add('referenceoffre', TextType::class)
+            ->add('unite', null, ['label' => 'Unité'])
             ->add('referenceproduit', TextType::class)
             ->add('commercial', EntityType::class, array('class' => 'AppBundle:contact', 'query_builder' =>
                 $this->getEntityManager()->getRepository('AppBundle:contact')->findThoseWhoWorkForSupplier()))

@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-    <h1>Lists des paiements de la facture {{ facture.numero }}</h1>
+    <h1>Lists des paiements de la facture {{ facture.reference }}</h1>
 <a class="btn btn-default"  href="{{ path('facture_index') }}" > Retour à la liste des facture</a>
 <a class="btn btn-primary" style="float: right;" href="{{ path('paiement_edit', {'id' : facture.id }) }}" >Nouveau paiement</a>
     <br>
@@ -24,7 +24,7 @@
                 <td>{{ paiement.date|date('d/m/Y') }}</td>
                 <td>{{ paiement.mode }}</td>
                 <td>{{ paiement.numero }}</td>
-                <td align="right" >{{ paiement.valeur|number_format(2, '.', ' ') }}</td>
+                <td align="right" >{{ paiement.valeur|number_format(2, ',', ' ') }}</td>
                 <td>
                     <a class="btn btn-xs btn-warning" href="{{ path('paiement_edit', {'id' : facture.id , 'idPaiement': paiement.id }) }}" >Editer</a>
                 </td>
@@ -32,7 +32,7 @@
         {% endfor %}
         <tr>
             <td colspan="4" >Total</td>
-            <td align="right"  >{{ facture.totalPaiements|number_format(2, '.', ' ') }}</td>
+            <td align="right"  >{{ facture.totalPaiements|number_format(2, ',', ' ') }}</td>
         </tr>
         </tbody>
     </table>
