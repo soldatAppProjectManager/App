@@ -3,7 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\BonDeCommandeFournisseur;
+use AppBundle\Entity\Devis;
 use AppBundle\Entity\Facture;
+use AppBundle\Entity\Opportunity;
+use AppBundle\Entity\OpportunityStatus;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -20,8 +23,16 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        echo phpinfo();die;
+        $em = $this->getDoctrine()->getManager();
+        $opportunities = $em->getRepository(Opportunity::class)->findByStatusCode(OpportunityStatus::NCOURS_CODE);
+        $allDevis = $em->getRepository(Devis::class)->findDevisInProgress();
+//dump($devis);die;
         // replace this example code with whatever you need
-        return $this->render('default/index.html.twig');
+        return $this->render('default/index.html.twig', [
+            'opportunities' => $opportunities,
+            'allDevis' => $allDevis
+            ]);
     }
 
     /**

@@ -13,6 +13,8 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class OpportunityStatus
 {
+    const NCOURS_CODE = 1;
+
     use CodeTrait;
 
     /**

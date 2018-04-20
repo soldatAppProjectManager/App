@@ -471,7 +471,7 @@ class ProduitDevis extends AbstractProduit
         if ($this->getTypeproduit()) {
             $precision = $this->getTypeproduit()->getPrecision();
         }
-        return round($this->quantite * $this->getPrixVenteHT(), $precision);
+        return round($this->getQuantite() * $this->getPrixVenteHT(), $precision);
     }
 
     public function getFraisFinanciers($TauxFinancementTresorerie)
