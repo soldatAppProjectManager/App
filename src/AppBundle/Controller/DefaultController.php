@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\BonDeCommandeClient;
 use AppBundle\Entity\BonDeCommandeFournisseur;
 use AppBundle\Entity\Devis;
 use AppBundle\Entity\Facture;
@@ -34,10 +35,15 @@ class DefaultController extends Controller
                 $devis[] = $d;
             }
     }
-        // replace this example code with whatever you need
+
+
+    $cmds = $em->getRepository(BonDeCommandeClient::class)->findCmdNotDelivered();
+    $factures = $em->getRepository(Facture::class)->findAll();
         return $this->render('default/index.html.twig', [
             'opportunities' => $opportunities,
-            'allDevis' => $devis
+            'allDevis' => $devis,
+            'cmds' => $cmds,
+            'factures' => $factures
             ]);
     }
 
