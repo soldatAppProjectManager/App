@@ -48,10 +48,16 @@
                     <tbody>
                     {% for devis in allDevis %}
                         <tr>
-                            <td>{{ devis.client.nom }}
+                            <td>
+                                <a target="_blank" href="{{ path('client_voir', { 'id': devis.client.id }) }}">
+                                {{ devis.client.nom }}
+                                </a>
                                 <br><strong>{{ devis.totalht | number_format(2, ',', ' ') }} {{ devis.deviseVente.symbol }} </strong>
                             </td>
-                            <td>{{ devis.titre }}
+                            <td>
+                                <a target="_blank" href="{{ path('devis_apercu', { 'id': devis.id }) }}">
+                                    {{ devis.titre }}
+                                </a>
                                 <span class="badge">{{ devis.abstractProduits |length }}</span><br>
                                 {{ devis.reference }}
                             </td>
@@ -65,13 +71,13 @@
     <div class="col-md-6">
         <div class="panel panel-warning">
             <div class="panel-heading">Commandes non livrées</div>
-            <div class="panel-body">Panel Content</div>
+            <div class="panel-body"></div>
         </div>
     </div>
     <div class="col-md-6">
         <div class="panel panel-danger">
-            <div class="panel-heading">Commandes non livrées</div>
-            <div class="panel-body">Panel Content</div>
+            <div class="panel-heading">Recouvrements en attente</div>
+            <div class="panel-body"></div>
         </div>
     </div>
 {% endblock %}

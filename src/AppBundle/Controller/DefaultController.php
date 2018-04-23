@@ -23,15 +23,21 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
-        echo phpinfo();die;
         $em = $this->getDoctrine()->getManager();
         $opportunities = $em->getRepository(Opportunity::class)->findByStatusCode(OpportunityStatus::NCOURS_CODE);
         $allDevis = $em->getRepository(Devis::class)->findDevisInProgress();
-//dump($devis);die;
+        $devis = [];
+        $now = new \DateTime();
+        /** @var Devis $d */
+        foreach ($allDevis as $d) {
+            if($d->getDateFinValidite() > $now) {
+                $devis[] = $d;
+            }
+    }
         // replace this example code with whatever you need
         return $this->render('default/index.html.twig', [
             'opportunities' => $opportunities,
-            'allDevis' => $allDevis
+            'allDevis' => $devis
             ]);
     }
 

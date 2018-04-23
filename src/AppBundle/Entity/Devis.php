@@ -1316,4 +1316,12 @@ class Devis extends AbstractDocumentClient
     {
         return $this->titreAct;
     }
+
+    public function getDateFinValidite() {
+        $date = clone $this->getDatemodification();
+        $validite = $this->getValidite();
+        $date->modify("+ $validite days");
+
+        return $date;
+    }
 }
