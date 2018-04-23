@@ -80,7 +80,7 @@ class ProduitFusion extends AbstractProduit
         $prixRevient = 0;
 /** @var ProduitBC $produit */
         foreach ($this->produits as $produit) {
-            if($produit->isProduct())
+            if($produit->isProduct() && $produit->getDocumentClient()->getId() === $this->getDocumentClient()->getId())
             $prixRevient += $produit->getTotalPrixDeRevient();
         }
         return round($prixRevient,2);
@@ -90,8 +90,11 @@ class ProduitFusion extends AbstractProduit
     {
         $SommePrixDeVenteHT = 0;
 
+        /** @var ProduitDevis $produit */
         foreach ($this->produits as $produit) {
-            $SommePrixDeVenteHT += $produit->getSoustotalht();
+            if($produit->getDocumentClient()->getId() === $this->getDocumentClient()->getId()) {
+                $SommePrixDeVenteHT += $produit->getSoustotalht();
+            }
         }
         return round($SommePrixDeVenteHT,2);
     }
