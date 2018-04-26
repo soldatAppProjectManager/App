@@ -30,6 +30,7 @@ class OpportunityType extends AbstractType
                 ])
             ->add('contact', null, ['label' => 'Contact'])
             ->add('type')
+            ->add('status', null, ['label' => 'Statut'])
             ->add('acquisitionMode', null , ['label' => 'Mode d\'acquisition'])
             ->add('probability',null , ['label' => 'Probabilité'])
             ->add('products', CollectionType::class, [
