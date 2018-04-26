@@ -218,6 +218,7 @@ class ProduitDevisController extends Controller
             /** @var ProduitDevis $produit */
             $produit = $this->getDoctrine()->getRepository('AppBundle:ProduitDevis')->find($produit);
 
+            $value = str_replace(' ','',$value);
             $value = (float)str_replace(',', '.', $value);
             $value = $attr === 'marge' ? $value/100 : $value;
             $produit->{'set' . ucfirst($attr)}($value);
