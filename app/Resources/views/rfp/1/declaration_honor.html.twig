@@ -13,7 +13,11 @@
 <div>
     <h2 style="text-align: center">LA DECLARATION SUR L’HONNEUR</h2>
 
-        - Mode de passation : Appel d’offres ouvert, sur offres des prix {{ rfp.number }} du {{ rfp.date|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y 'à' h 'heures' m 'minutes'")|capitalize }}.<br>
+        - Mode de passation : Appel d’offres ouvert, sur offres des prix {{ rfp.number }} du
+    {{ rfp.date|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y 'à' h 'heures'")|capitalize }}
+    {% if rfp.date|date('i')>0 %}
+    {{ rfp.date|date('i') }} minutes
+    {% endif %}.<br>
         - <b>Objet</b> : {{ rfp.object|nl2br }}
      
  <br><br>
