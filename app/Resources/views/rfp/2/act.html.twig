@@ -1,27 +1,23 @@
-{% import "macros.html.twig" as mg %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>Acte d’engagement {{ rfp.object }}</title>
+{% extends 'base_pdf.html.twig' %}
 
+{% block title %}Acte d’engagement {{ rfp.object }}{% endblock %}
+{% block css %}
+    {{ parent() }}
     <style>
         .page {
             page-break-after: always;
         }
 
-        p{
-            text-align: justify;
-        }
+        /* @page{margin: 0.1in 0.5in 0.5in 0.5in;} */
     </style>
-</head>
-<body>
+{% endblock %}
+{% block body %}
 <p>
     {% for lot in rfp.lots %}
     <div class="page">
 
         <div>
-            <h3 style="text-align: center">ACTE D’ENGAGEMENT</h3>
+            <h2 style="text-align: center">ACTE D’ENGAGEMENT</h2>
             <b style="text-decoration: underline;">A- Partie réservée à l’administration</b><br>
 
 <p>
@@ -87,5 +83,4 @@ Pour le Lot n°{{ loop.index }}: {{ lot.title }}<br>
 </div>
 {% endfor %}
 </p>
-</body>
-</html>
+{% endblock %}
