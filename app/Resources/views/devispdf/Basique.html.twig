@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <th width="100px" >
-                Valide&nbsp;jusqu'au :
+                Valide&nbsp;jusqu'au /
             </th>
             <td>
                 {{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
