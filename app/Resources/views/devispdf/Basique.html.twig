@@ -42,7 +42,7 @@
         </tr>
         <tr>
             <th width="100px" >
-                Valide&nbsp;jusqu'au /
+                Valide jusqu'au :
             </th>
             <td>
                 {{ devis.datemodification|date_modify(""~devis.validite~" day")|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}
@@ -145,13 +145,13 @@
         <td>{{ devis.getTotalTTC|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}</td>
     </tr>
     <tr>
-        <td colspan="2">La somme du présent devis est arretée à :
+        <td colspan="2" style="font-style: italic;font-weight: normal;font-size: 13px;" >La somme du présent devis est arretée à :
                 {{ mg.nbr2char(devis.totalTTC)}} {{ devis.devisevente.nom }}
-                    TTC.</td>
+                TTC.</td>
     </tr>
     </tbody>
 </table>
-<br><br><br><br><br><br><br><br><br><br>
+<br><br><br><br><br><br><br><br>
 {% if not devis.termes is empty %}
     <strong><u> Conditions commerciales générales : </u></strong><br><br>
     <table class="termes">
