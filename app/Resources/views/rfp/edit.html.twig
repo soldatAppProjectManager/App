@@ -14,12 +14,13 @@
 {% endblock %}
  {% form_theme form _self %}
   {% block _rfp_lots_entry_row %}
-      <div class="col-md-4 newLot">
+      <div class="col-md-6 newLot">
           <div class="row">
-              <div class="col-md-10">
-                  {{ form_label(form.title) }}
-                  {{ form_widget(form.title) }}
-                  {{ form_errors(form.title) }}
+              <div class="col-md-7">
+                  {{ form_row(form.title) }}
+              </div>
+              <div class="col-md-3">
+                  {{ form_row(form.number) }}
               </div>
               <div class="col-md-2" style="position: absolute;
     bottom: 0;right: 0;" >

@@ -25,6 +25,13 @@ class Lot
     /**
      * @var string
      *
+     * @ORM\Column(name="number", type="string", length=8, nullable=true)
+     */
+    private $number;
+
+    /**
+     * @var string
+     *
      * @ORM\Column(name="title", type="string", length=128)
      */
     private $title;
@@ -143,5 +150,29 @@ class Lot
     public function removeDevi(\AppBundle\Entity\Devis $devi)
     {
         $this->devis->removeElement($devi);
+    }
+
+    /**
+     * Set number
+     *
+     * @param string $number
+     *
+     * @return Lot
+     */
+    public function setNumber($number)
+    {
+        $this->number = $number;
+
+        return $this;
+    }
+
+    /**
+     * Get number
+     *
+     * @return string
+     */
+    public function getNumber()
+    {
+        return $this->number;
     }
 }
