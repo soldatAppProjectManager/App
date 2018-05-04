@@ -35,4 +35,5 @@ security:
             #form_login: ~
 
     access_control:
-    #- { path: ^/devis, roles: ROLE_USER }
+        - { path: ^/login$, role: IS_AUTHENTICATED_ANONYMOUSLY }
+        - { path: ^/, role: ROLE_USER }
