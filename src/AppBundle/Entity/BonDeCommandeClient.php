@@ -24,6 +24,12 @@ class BonDeCommandeClient extends AbstractDocumentClient
     private $devis;
 
     /**
+     * @var string
+     * @ORM\Column(name="titre", type="string", length=255)
+     */
+    private $titre;
+
+    /**
      * @var \DateTime
      *
      * @ORM\Column(name="datedereception", type="datetime")
@@ -632,5 +638,29 @@ class BonDeCommandeClient extends AbstractDocumentClient
     public function removeLivraison(\AppBundle\Entity\Livraison $livraison)
     {
         $this->livraisons->removeElement($livraison);
+    }
+
+    /**
+     * Set titre
+     *
+     * @param string $titre
+     *
+     * @return BonDeCommandeClient
+     */
+    public function setTitre($titre)
+    {
+        $this->titre = $titre;
+
+        return $this;
+    }
+
+    /**
+     * Get titre
+     *
+     * @return string
+     */
+    public function getTitre()
+    {
+        return $this->titre;
     }
 }

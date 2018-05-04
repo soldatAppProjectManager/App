@@ -55,6 +55,37 @@ class BonDeCommandeClientController extends Controller
     }
 
     /**
+     * @Route("/new", name="BonDeCommandeClient_new")
+     */
+    public function newAction(Request $request) {
+
+        $ticket = new BonDeCommandeClient();
+        $form = $this->createForm('AppBundle\Form\TicketType', $ticket);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em = $this->getDoctrine()->getManager();
+
+            $ticket->setCreatedBy($this->getUser());
+            $ticket->generateRef($em->getRepository(Ticket::class)->getIncrement());
+            if ($form->getData()->getFile()->getFile() !== null) {
+                $ticket->getFile()->upload($this->getParameter('repertoire_ticket'));
+            } else {
+                $ticket->setFile(null);
+            }
+            $em->persist($ticket);
+            $em->flush();
+
+            return $this->redirectToRoute('ticket_show', array('id' => $ticket->getId()));
+        }
+
+        return $this->render('ticket/new.html.twig', array(
+            'ticket' => $ticket,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
      * @Route("/voir/{id}", name="BonDeCommandeClient_voir")
      */
     public function voirAction($id, Request $request)
