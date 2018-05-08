@@ -8,7 +8,7 @@
     {{ include('::style.html.twig') }}
     <style>
         th, td {
-            padding: 7px 3px 7px 3px;
+            padding: 4px 2px 4px 2px;
         }
 
         * {
@@ -50,8 +50,8 @@
         <th align="center" >Référence<br>cartouche</th>
         <th align="center" >Référence<br>fournisseur</th>
         <th align="center">Condition-<br>nement</th>
-        <th align="center">Prix unitaire proposé DH HT</th>
-        <th align="center">Montant DH HT</th>
+        <th align="center" width="60px" >Prix unitaire proposé DH HT</th>
+        <th align="center" width="75px" >Montant DH HT</th>
     </tr>
     </thead>
     <tbody>
@@ -87,7 +87,7 @@
                  DANS <br>L'ACTE D'ENGAGEMENT {% if devis.lot %}(N° {{ devis.lot.number }}){% endif %}
             </b>
         </td>
-        <td colspan="2" align="center"><b style="font-size: 15px">
+        <td colspan="2" align="right"><b style="font-size: 15px">
                 {{ devis.getTotalHT|number_format(2, ',', ' ') }}
             </b>
         </td>
