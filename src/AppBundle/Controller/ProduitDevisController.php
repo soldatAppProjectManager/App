@@ -123,9 +123,10 @@ class ProduitDevisController extends Controller
     public function editAction(ProduitDevis $produitDevis, Request $request)
     {
         $devis = $produitDevis->getDocumentClient();
-
+        if(empty($produitDevis->getAdditionalFields())) {
+            $produitDevis->setAdditionalFields(['','']);
+        }
         $form = $this->createForm(ProduitDevisFormType::class, $produitDevis);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {

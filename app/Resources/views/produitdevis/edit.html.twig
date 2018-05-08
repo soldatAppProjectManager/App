@@ -44,7 +44,11 @@
 						<p style="color:DarkRed ;"><i><small>Saisir la référence du fournisseur pour le traitement de la commande.
 						</p>
 					</div>
-					<div class="col-md-3">
+
+					<div class="col-md-3" >
+                        {{ form_row(form.articleNumber) }}
+					</div>
+					<div class="col-md-2">
                         {{ form_row(form.unite) }}
 					</div>
 
@@ -77,19 +81,23 @@
 						{{ form_widget(form.fournisseur) }}
 					</div>
 
-					<div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.marge) }}
-						{{ form_errors(form.marge) }}
-						{{ form_widget(form.marge) }}
+
+					<div class="col-md-3" >
+                        {{ form_row(form.brand) }}
 					</div>
 				</div>
 				<div class="row">
+
+					<div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.marge) }}
+                        {{ form_errors(form.marge) }}
+                        {{ form_widget(form.marge) }}
+					</div>
+
 					<div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
 						{{ form_label(form.tauxTVA) }}
 						{{ form_errors(form.tauxTVA) }}
 						{{ form_widget(form.tauxTVA) }}
-					</div>
-					<div class="col-md-3">
 					</div>
 
 					<div class="col-md-3">
