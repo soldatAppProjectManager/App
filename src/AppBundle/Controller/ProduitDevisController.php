@@ -123,9 +123,6 @@ class ProduitDevisController extends Controller
     public function editAction(ProduitDevis $produitDevis, Request $request)
     {
         $devis = $produitDevis->getDocumentClient();
-        if(empty($produitDevis->getAdditionalFields())) {
-            $produitDevis->setAdditionalFields(['','']);
-        }
         $form = $this->createForm(ProduitDevisFormType::class, $produitDevis);
         $form->handleRequest($request);
 
@@ -141,7 +138,7 @@ class ProduitDevisController extends Controller
             return $this->redirectToRoute('devis_produits', array('id' => $devis->getId()));
         }
 
-
+//dump($form->createView()->children['additionalFields']);die;
         // replace this example code with whatever you need
         return $this->render('produitdevis/edit.html.twig', array('form' => $form->createView(),
             'devis' => $devis,

@@ -1,6 +1,19 @@
 {% extends 'base.html.twig' %}
 
 {% block title %} Ajout produit, Devis {% endblock %}
+
+    {% form_theme form _self %}
+    {% block _produit_devis_form_additionalFields_entry_row %}
+		<div class="col-md-4 div_field" style="padding-bottom: 6px" >
+			<label class="control-label required" for="produit_devis_form_additionalFields_{{ form.vars.name }}">
+				Champs {{ form.vars.name+1 }}
+			</label>
+			<div class="input-group">
+                {{ form_widget(form) }}
+				<a class="input-group-addon btn btn-sm btn-danger btnDeleteChamps" href="#"><i class="fa fa-times"></i></a>
+			</div>
+		</div>
+    {% endblock %}
 {% block body %}
 <div class="row" align="center">
 <div class="page-header">
@@ -184,6 +197,20 @@
 					{{ form_label(form.termes) }}
 					{{ form_errors(form.termes) }}
 					{{ form_widget(form.termes) }}
+				</div>
+			</div>
+			<div class="row well well-lg">
+				<div class="col-md-12" >
+                    {{ form_label(form.additionalFields) }}
+
+					<a href="#"
+					   id="btnNewField"
+					   class="btn btn-sm btn-info pull-right"><i
+								class="fa fa-plus"></i>Ajouter un autre champs</a>
+				</div>
+				<hr>
+				<div class="col-md-12" >
+                    {{ form_widget(form.additionalFields) }}
 				</div>
 			</div>
 			<hr>				
@@ -468,6 +495,23 @@
 		        													(1+toFloat($('#produit_devis_form_fraisapproche').val())/100),0);
 		}
 
+
+$('#btnNewField').click(function (e) {
+    e.preventDefault();
+    var list = $('#produit_devis_form_additionalFields');
+    var counter = list.children().length;
+    var newWidget = $("#produit_devis_form_additionalFields").attr('data-prototype');
+    newWidget = newWidget.replace(/__name__/g, counter);
+
+    newWidget = newWidget.replace(/Champs 1/g, "Champs "+ (counter+1));
+    $(newWidget).appendTo(list);
+});
+
+
+$('body').on('click', '.btnDeleteChamps', function (e) {
+    e.preventDefault();
+    $(this).parents(".div_field").remove();
+});
 </script>
 {% endblock %}
 

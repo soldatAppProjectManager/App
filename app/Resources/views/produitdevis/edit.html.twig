@@ -1,231 +1,263 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} Editer produit, {{produit}} {% endblock %}
+{% block title %} Editer produit, {{ produit }} {% endblock %}
+
+    {% form_theme form _self %}
+    {% block _produit_devis_form_additionalFields_entry_row %}
+        <div class="col-md-4 div_field" style="padding-bottom: 6px" >
+            <label class="control-label required" for="produit_devis_form_additionalFields_{{ form.vars.name }}">
+            Champs {{ form.vars.name+1 }}
+            </label>
+            <div class="input-group">
+                {{ form_widget(form) }}
+                <a class="input-group-addon btn btn-sm btn-danger btnDeleteChamps" href="#"><i class="fa fa-times"></i></a>
+            </div>
+        </div>
+    {% endblock %}
 {% block body %}
-<div class="row" align="center">
-<div class="page-header">
-  <h1>Ajout produit <br>
-  	<small>devis {{devis}}</small>
-  </h1>
-</div>	
-{# <h2 class="page-header">Ajout d'article au devis <strong> {{devis}}</strong><hr><a type="button" href="{{ url('devis_voir', {'id' : devis.id})}}" class="btn btn-default">Annuler</a></h2> #}
-</div>
-<div class="container">
-	<div class="row formulaire">
-		<div class="col-lg-12">
-			{{ form_start(form) }}
+    <div class="row" align="center">
+        <div class="page-header">
+            <h1>Ajout produit <br>
+                <small>devis {{ devis }}</small>
+            </h1>
+        </div>
+        {# <h2 class="page-header">Ajout d'article au devis <strong> {{devis}}</strong><hr><a type="button" href="{{ url('devis_voir', {'id' : devis.id})}}" class="btn btn-default">Annuler</a></h2> #}
+    </div>
+    <div class="container">
+        <div class="row formulaire">
+            <div class="col-lg-12">
+                {{ form_start(form) }}
 
-			{{ form_errors(form) }}
-			<div class="row well well-lg">
+                {{ form_errors(form) }}
+                <div class="row well well-lg">
 
-				<div class="row">
-					<div class="col-md-3">
-                        {{ form_row(form.optionnel) }}
-					</div>
-					<div class="col-md-3">
-                        {{ form_row(form.cummulable) }}
-					</div>
-					<div class="col-md-6 form-group {% if not form.catalogue.vars.valid %} has-error {% endif %}">
-                        {{ form_label(form.catalogue) }}
-                        {{ form_errors(form.catalogue) }}
-                        {{ form_widget(form.catalogue) }}
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4 form-group {% if not form.designation.vars.valid %} has-error {% endif %}">
-                        {{ form_label(form.designation) }}
-                        {{ form_errors(form.designation) }}
-                        {{ form_widget(form.designation) }}
-					</div>
-					<div class="col-md-3 form-group {% if not form.referenceproduit.vars.valid %} has-error {% endif %}">
-                        {{ form_label(form.referenceproduit) }}
-                        {{ form_errors(form.referenceproduit) }}
-                        {{ form_widget(form.referenceproduit) }}
-						<p style="color:DarkRed ;"><i><small>Saisir la référence du fournisseur pour le traitement de la commande.
-						</p>
-					</div>
+                    <div class="row">
+                        <div class="col-md-3">
+                            {{ form_row(form.optionnel) }}
+                        </div>
+                        <div class="col-md-3">
+                            {{ form_row(form.cummulable) }}
+                        </div>
+                        <div class="col-md-6 form-group {% if not form.catalogue.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.catalogue) }}
+                            {{ form_errors(form.catalogue) }}
+                            {{ form_widget(form.catalogue) }}
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 form-group {% if not form.designation.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.designation) }}
+                            {{ form_errors(form.designation) }}
+                            {{ form_widget(form.designation) }}
+                        </div>
+                        <div class="col-md-3 form-group {% if not form.referenceproduit.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.referenceproduit) }}
+                            {{ form_errors(form.referenceproduit) }}
+                            {{ form_widget(form.referenceproduit) }}
+                            <p style="color:DarkRed ;"><i>
+                                    <small>Saisir la référence du fournisseur pour le traitement de la commande.
+                            </p>
+                        </div>
 
-					<div class="col-md-3" >
-                        {{ form_row(form.articleNumber) }}
-					</div>
-					<div class="col-md-2">
-                        {{ form_row(form.unite) }}
-					</div>
+                        <div class="col-md-3">
+                            {{ form_row(form.articleNumber) }}
+                        </div>
+                        <div class="col-md-2">
+                            {{ form_row(form.unite) }}
+                        </div>
 
-				</div>
-				<div class="row">
-					<div class="col-md-12 form-group {% if not form.description.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.description) }}
-						{{ form_errors(form.description) }}
-						{{ form_widget(form.description)}}
-					</div>
-				</div>
-				<hr>				
-				<div class="row">
+                    </div>
+                    <div class="row">
+                        <div class="col-md-12 form-group {% if not form.description.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.description) }}
+                            {{ form_errors(form.description) }}
+                            {{ form_widget(form.description) }}
+                        </div>
+                    </div>
+                    <hr>
+                    <div class="row">
 
-					<div class="col-md-3 form-group {% if not form.quantite.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.quantite) }}
-					{{ form_errors(form.quantite) }}
-					{{ form_widget(form.quantite) }}
-					</div>
+                        <div class="col-md-3 form-group {% if not form.quantite.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.quantite) }}
+                            {{ form_errors(form.quantite) }}
+                            {{ form_widget(form.quantite) }}
+                        </div>
 
-					<div class="col-md-3 form-group {% if not form.prixachatht.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.prixachatht) }}
-						{{ form_errors(form.prixachatht) }}
-						{{ form_widget(form.prixachatht) }}
-					</div>
+                        <div class="col-md-3 form-group {% if not form.prixachatht.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.prixachatht) }}
+                            {{ form_errors(form.prixachatht) }}
+                            {{ form_widget(form.prixachatht) }}
+                        </div>
 
-					<div class="col-md-3 form-group {% if not form.fournisseur.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.fournisseur) }}
-						{{ form_errors(form.fournisseur) }}
-						{{ form_widget(form.fournisseur) }}
-					</div>
+                        <div class="col-md-3 form-group {% if not form.fournisseur.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.fournisseur) }}
+                            {{ form_errors(form.fournisseur) }}
+                            {{ form_widget(form.fournisseur) }}
+                        </div>
 
 
-					<div class="col-md-3" >
-                        {{ form_row(form.brand) }}
-					</div>
-				</div>
-				<div class="row">
+                        <div class="col-md-3">
+                            {{ form_row(form.brand) }}
+                        </div>
+                    </div>
+                    <div class="row">
 
-					<div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
-                        {{ form_label(form.marge) }}
-                        {{ form_errors(form.marge) }}
-                        {{ form_widget(form.marge) }}
-					</div>
+                        <div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.marge) }}
+                            {{ form_errors(form.marge) }}
+                            {{ form_widget(form.marge) }}
+                        </div>
 
-					<div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.tauxTVA) }}
-						{{ form_errors(form.tauxTVA) }}
-						{{ form_widget(form.tauxTVA) }}
-					</div>
+                        <div class="col-md-3 form-group {% if not form.marge.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.tauxTVA) }}
+                            {{ form_errors(form.tauxTVA) }}
+                            {{ form_widget(form.tauxTVA) }}
+                        </div>
 
-					<div class="col-md-3">
-                        {{ form_label(form.prixVenteHT) }}
-                        {{ form_errors(form.prixVenteHT) }}
-                        {{ form_widget(form.prixVenteHT) }}
-					</div>
-					<div class="col-md-3">
-						<label >Sous-total H.T. </label>
-						<input type="text"  id="produit_devis_form_soustotalht" class="form-control" readonly>
-					</div>							
-				</div>
-			</div>
-			<hr>
-			<div class="well well-lg info_fournisseur">
-				<div class="row">
-					<div class="col-md-4 form-group {% if not form.fraisapproche.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.fraisapproche) }}
-						{{ form_errors(form.fraisapproche) }}
-						{{ form_widget(form.fraisapproche) }}
-					</div>
-					<div class="col-md-4 form-group {% if not form.deviseachat.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.deviseachat) }}
-						{{ form_errors(form.deviseachat) }}
-						{{ form_widget(form.deviseachat) }}
-					</div>
-					<div class="col-md-4 form-group {% if not form.tauxAchat.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.tauxAchat) }}
-						{{ form_errors(form.tauxAchat) }}
-						{{ form_widget(form.tauxAchat) }}
-						<p style="color:DarkRed ;"><i><small>Le taux proposé contient :
-							<ul style="color:DarkRed ;"><li>les commissions bancaires,</li>
-							<li>le risque de variation du à la durée de validité du devis,</li>
-							<li>le risque de variation du au délai de paiement fournisseur.</small></i></li></ul>
-						</p>
-					</div>
-				</div>
-				<div class="row">
-					<div class="col-md-4 form-group {% if not form.tauxSpecial.vars.valid %} has-error {% endif %}">
-						{{ form_label(form.tauxSpecial) }}
-						{{ form_errors(form.tauxSpecial) }}
-						{{ form_widget(form.tauxSpecial) }}
-					</div>
-				</div>
-			</div>				
-			<hr>
-			<div class="row well well-lg" >
-				<div class="col-md-4 form-group {% if not form.commercial.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.commercial) }}
-					{{ form_errors(form.commercial) }}
-					{{ form_widget(form.commercial) }}
-				</div>
-				<div class="col-md-4 form-group {% if not form.dateoffre.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.dateoffre) }}
-					{{ form_errors(form.dateoffre) }}
-					{{ form_widget(form.dateoffre) }}
-				</div>
-				<div class="col-md-4 form-group {% if not form.referenceoffre.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.referenceoffre) }}
-					{{ form_errors(form.referenceoffre) }}
-					{{ form_widget(form.referenceoffre) }}
-				</div>
-			</div>
-			<hr>
-			<div class="row ">
-				<div class="col-md-5 form-group {% if not form.metier.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.metier) }}
-					{{ form_errors(form.metier) }}
-					{{ form_widget(form.metier) }}
-				</div>
-				<div class="col-md-5 form-group {% if not form.typeproduit.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.typeproduit) }}
-					{{ form_errors(form.typeproduit) }}
-					{{ form_widget(form.typeproduit) }}
-				</div>
-			</div>						
-			<hr>
-			<div class="row well well-lg">
-				<div class="col-md-6 form-group {% if not form.garanties.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.garanties) }}
-					{{ form_errors(form.garanties) }}
-					{{ form_widget(form.garanties) }}
-				</div>
-				<div class="col-md-6 form-group {% if not form.termes.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.termes) }}
-					{{ form_errors(form.termes) }}
-					{{ form_widget(form.termes) }}
-				</div>
-			</div>
-			<hr>				
-			<div class="row" align="center">
-				<div>
-					<a type="button" href="{{ url('devis_apercu', {'id' : devis.id})}}" class="btn btn-default">Annuler</a>
-					<button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
-				</div>
-			</div>
+                        <div class="col-md-3">
+                            {{ form_label(form.prixVenteHT) }}
+                            {{ form_errors(form.prixVenteHT) }}
+                            {{ form_widget(form.prixVenteHT) }}
+                        </div>
+                        <div class="col-md-3">
+                            <label>Sous-total H.T. </label>
+                            <input type="text" id="produit_devis_form_soustotalht" class="form-control" readonly>
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="well well-lg info_fournisseur">
+                    <div class="row">
+                        <div class="col-md-4 form-group {% if not form.fraisapproche.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.fraisapproche) }}
+                            {{ form_errors(form.fraisapproche) }}
+                            {{ form_widget(form.fraisapproche) }}
+                        </div>
+                        <div class="col-md-4 form-group {% if not form.deviseachat.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.deviseachat) }}
+                            {{ form_errors(form.deviseachat) }}
+                            {{ form_widget(form.deviseachat) }}
+                        </div>
+                        <div class="col-md-4 form-group {% if not form.tauxAchat.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.tauxAchat) }}
+                            {{ form_errors(form.tauxAchat) }}
+                            {{ form_widget(form.tauxAchat) }}
+                            <p style="color:DarkRed ;"><i>
+                                    <small>Le taux proposé contient :
+                                        <ul style="color:DarkRed ;">
+                                            <li>les commissions bancaires,</li>
+                                            <li>le risque de variation du à la durée de validité du devis,</li>
+                                            <li>le risque de variation du au délai de paiement fournisseur.
+                                    </small>
+                                </i></li></ul>
+                            </p>
+                        </div>
+                    </div>
+                    <div class="row">
+                        <div class="col-md-4 form-group {% if not form.tauxSpecial.vars.valid %} has-error {% endif %}">
+                            {{ form_label(form.tauxSpecial) }}
+                            {{ form_errors(form.tauxSpecial) }}
+                            {{ form_widget(form.tauxSpecial) }}
+                        </div>
+                    </div>
+                </div>
+                <hr>
+                <div class="row well well-lg">
+                    <div class="col-md-4 form-group {% if not form.commercial.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.commercial) }}
+                        {{ form_errors(form.commercial) }}
+                        {{ form_widget(form.commercial) }}
+                    </div>
+                    <div class="col-md-4 form-group {% if not form.dateoffre.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.dateoffre) }}
+                        {{ form_errors(form.dateoffre) }}
+                        {{ form_widget(form.dateoffre) }}
+                    </div>
+                    <div class="col-md-4 form-group {% if not form.referenceoffre.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.referenceoffre) }}
+                        {{ form_errors(form.referenceoffre) }}
+                        {{ form_widget(form.referenceoffre) }}
+                    </div>
+                </div>
+                <hr>
+                <div class="row ">
+                    <div class="col-md-5 form-group {% if not form.metier.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.metier) }}
+                        {{ form_errors(form.metier) }}
+                        {{ form_widget(form.metier) }}
+                    </div>
+                    <div class="col-md-5 form-group {% if not form.typeproduit.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.typeproduit) }}
+                        {{ form_errors(form.typeproduit) }}
+                        {{ form_widget(form.typeproduit) }}
+                    </div>
+                </div>
+                <hr>
+                <div class="row well well-lg">
+                    <div class="col-md-6 form-group {% if not form.garanties.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.garanties) }}
+                        {{ form_errors(form.garanties) }}
+                        {{ form_widget(form.garanties) }}
+                    </div>
+                    <div class="col-md-6 form-group {% if not form.termes.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.termes) }}
+                        {{ form_errors(form.termes) }}
+                        {{ form_widget(form.termes) }}
+                    </div>
+                </div>
+                <div class="row well well-lg">
+                    <div class="col-md-12" >
+                        {{ form_label(form.additionalFields) }}
 
-			{{ form_end(form) }}
-		<br>
-		<br>
-		<br>
-		</div>
-	</div>
-</div>
+                        <a href="#"
+                           id="btnNewField"
+                           class="btn btn-sm btn-info pull-right"><i
+                                    class="fa fa-plus"></i>Ajouter un autre champs</a>
+                    </div>
+                    <hr>
+                    <div class="col-md-12" >
+                    {{ form_widget(form.additionalFields) }}
+                    </div>
+                </div>
+                <hr>
+                <div class="row" align="center">
+                    <div>
+                        <a type="button" href="{{ url('devis_apercu', {'id' : devis.id}) }}" class="btn btn-default">Annuler</a>
+                        <button type="submit" class="btn btn-primary" formnovalidate>Enregistrer</button>
+                    </div>
+                </div>
+
+                {{ form_end(form) }}
+                <br>
+                <br>
+                <br>
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
- 	{{ parent() }}
-  	<script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
+    {{ parent() }}
+    <script src="{{ asset('js/tinymce/tinymce.min.js') }}"></script>
     <script>
 
 
-/* 
- * -----------------------------------Comportements-----------------------------------------------------//
- */
-		$( document ).ready(function() {
-				setPrixDeVente();
-				setSousTotal();
-				$('#produit_devis_form_prixachatht').next().text("{{produit.deviseachat.symbol}}"); 
-			tinymce.init({selector: '#produit_devis_form_description',plugins: "code"});
-		});
-        
-		$( "form" ).submit(function() {
-        	$("#produit_devis_form_deviseachat").prop('disabled',false);
+        /*
+         * -----------------------------------Comportements-----------------------------------------------------//
+         */
+        $(document).ready(function () {
+            setPrixDeVente();
+            setSousTotal();
+            $('#produit_devis_form_prixachatht').next().text("{{ produit.deviseachat.symbol }}");
+            tinymce.init({selector: '#produit_devis_form_description', plugins: "code"});
+        });
+
+        $("form").submit(function () {
+            $("#produit_devis_form_deviseachat").prop('disabled', false);
 
             var prixVente = $("#produit_devis_form_prixVenteHT").val().replace(' ', '');
             $("#produit_devis_form_prixVenteHT").val(prixVente);
-    	});
+        });
 
         $('#produit_devis_form_fournisseur').on('change', function (e) {
 
@@ -236,46 +268,51 @@
                 dataType: "json",
                 success: function (data, status, object) {
                     if (data.code == 1) {
-                    	if (data.fournisseur.devisevente.code == "MAD") {var coefficientChange=0;}
-                    	else {var coefficientChange = {{devis.getCoefficientChange}}+data.fournisseur.termepaiement/365*data.taux;}
+                        if (data.fournisseur.devisevente.code == "MAD") {
+                            var coefficientChange = 0;
+                        }
+                        else {
+                            var coefficientChange = {{ devis.getCoefficientChange }}+data.fournisseur.termepaiement / 365 * data.taux;
+                        }
 
-                    	$("#produit_devis_form_deviseachat").val(data.fournisseur.devisevente.id);
-                    	$("#produit_devis_form_deviseachat").selectpicker('refresh');
+                        $("#produit_devis_form_deviseachat").val(data.fournisseur.devisevente.id);
+                        $("#produit_devis_form_deviseachat").selectpicker('refresh');
 
-                    	$('#produit_devis_form_fraisapproche').val(auFormat(data.fournisseur.fa*100));
-                    	$("#produit_devis_form_devisesymbol").text(data.fournisseur.devisevente.symbol);   
-                    	$("#produit_devis_form_tauxAchat").val(auFormat(data.fournisseur.devisevente.tauxAchat*(1+coefficientChange)));
-                    	$("#produit_devis_form_tauxAchat").prop('style', 'background-color: #DBDADA;');
-                    	$("#produit_devis_form_deviseachat").prop('style', 'background-color: #DBDADA;');
+                        $('#produit_devis_form_fraisapproche').val(auFormat(data.fournisseur.fa * 100));
+                        $("#produit_devis_form_devisesymbol").text(data.fournisseur.devisevente.symbol);
+                        $("#produit_devis_form_tauxAchat").val(auFormat(data.fournisseur.devisevente.tauxAchat * (1 + coefficientChange)));
+                        $("#produit_devis_form_tauxAchat").prop('style', 'background-color: #DBDADA;');
+                        $("#produit_devis_form_deviseachat").prop('style', 'background-color: #DBDADA;');
 
-                    	
-                    	$('#produit_devis_form_prixachatht').next().text(data.fournisseur.devisevente.symbol);
 
-						setPrixDeVente();
-						setSousTotal();
-				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
-				      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
+                        $('#produit_devis_form_prixachatht').next().text(data.fournisseur.devisevente.symbol);
 
-				      	$('#produit_devis_form_commercial').empty();
-                    	$.each(data.fournisseur.contacts, function (i, item) {
-						    
-						    if (item.defaut) {
-							    $('#produit_devis_form_commercial').append($('<option>', { 
-							        value: item.id,
-							        text : item.civilite + " " +item.prenom + " " + item.nom,
-							        selected : true
-							    }));
-						    	$('#produit_devis_form_commercial').prop( 'selected' );
-							}
-							else {
-							    $('#produit_devis_form_commercial').append($('<option>', { 
-							        value: item.id,
-							        text : item.civilite + " " +item.prenom + " " + item.nom
-							    }));
+                        setPrixDeVente();
+                        setSousTotal();
+                        $("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
+                        $("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
-							}					    
-						});
-                }},
+                        $('#produit_devis_form_commercial').empty();
+                        $.each(data.fournisseur.contacts, function (i, item) {
+
+                            if (item.defaut) {
+                                $('#produit_devis_form_commercial').append($('<option>', {
+                                    value: item.id,
+                                    text: item.civilite + " " + item.prenom + " " + item.nom,
+                                    selected: true
+                                }));
+                                $('#produit_devis_form_commercial').prop('selected');
+                            }
+                            else {
+                                $('#produit_devis_form_commercial').append($('<option>', {
+                                    value: item.id,
+                                    text: item.civilite + " " + item.prenom + " " + item.nom
+                                }));
+
+                            }
+                        });
+                    }
+                },
                 error: function (data, status, object) {
                     toastr.error(data.message);
                 }
@@ -283,52 +320,53 @@
         });
 
 
-
         $('.impactprix').on('change', function (e) {
-        		$(this).val($(this).val().replace(".",","));
+            $(this).val($(this).val().replace(".", ","));
 
-        		if ($(this).attr("id")=="produit_devis_form_marge") {
-        			if ($(this).val()<0) {$(this).val(auFormat(15));}
-        			if ($(this).val()<5) {
-        				$(this).prop('style', 'background-color: red;');
-						setPrixDeVente();
-						setSousTotal();
-				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
-				      	return;
-        			}
-        		}
-				setPrixDeVente();
-				setSousTotal();
-		      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
-		      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
+            if ($(this).attr("id") == "produit_devis_form_marge") {
+                if ($(this).val() < 0) {
+                    $(this).val(auFormat(15));
+                }
+                if ($(this).val() < 5) {
+                    $(this).prop('style', 'background-color: red;');
+                    setPrixDeVente();
+                    setSousTotal();
+                    $("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
+                    return;
+                }
+            }
+            setPrixDeVente();
+            setSousTotal();
+            $("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
+            $("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
         });
 
 
         $('#produit_devis_form_prixVenteHT').on('change', function (e) {
-		      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
-        		
-        		$(this).val($(this).val().replace(".",","));
-        		if($(this).val()<prixMin()) {
-        			$(this).val(auFormat(prixMin()));
-        			$("#produit_devis_form_marge").prop('style', 'background-color: red;');
-					setMarge();
-					setSousTotal();
-		      		$(this).prop('style', 'background-color: #FFFFFF;');       
-					return;
-        		}
-        		else if ($(this).val()<(prixMin()/0.95)) { 
+            $("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
-        			$("#produit_devis_form_marge").prop('style', 'background-color: red;');
-					setMarge();
-					setSousTotal();
-		      		$(this).prop('style', 'background-color: #FFFFFF;');       
-					return;
-				}
+            $(this).val($(this).val().replace(".", ","));
+            if ($(this).val() < prixMin()) {
+                $(this).val(auFormat(prixMin()));
+                $("#produit_devis_form_marge").prop('style', 'background-color: red;');
+                setMarge();
+                setSousTotal();
+                $(this).prop('style', 'background-color: #FFFFFF;');
+                return;
+            }
+            else if ($(this).val() < (prixMin() / 0.95)) {
 
-				setMarge();
-				setSousTotal();
-		      	$("#produit_devis_form_marge").prop('style', 'background-color: #DBDADA;');
-		      	$(this).prop('style', 'background-color: #FFFFFF;');       
+                $("#produit_devis_form_marge").prop('style', 'background-color: red;');
+                setMarge();
+                setSousTotal();
+                $(this).prop('style', 'background-color: #FFFFFF;');
+                return;
+            }
+
+            setMarge();
+            setSousTotal();
+            $("#produit_devis_form_marge").prop('style', 'background-color: #DBDADA;');
+            $(this).prop('style', 'background-color: #FFFFFF;');
         });
 
 
@@ -341,62 +379,63 @@
                 dataType: "json",
                 success: function (data, status, object) {
                     if (data.code == 1) {
-                    	$("#produit_devis_form_designation").val(data.produitdevis.designation);
-                    	tinyMCE.remove({selector: '#produit_devis_form_description'});
-                    	$("#produit_devis_form_description").val(data.produitdevis.description);
-                    	alert("pause");
-                    	tinyMCE.init({selector: '#produit_devis_form_description'});
+                        $("#produit_devis_form_designation").val(data.produitdevis.designation);
+                        tinyMCE.remove({selector: '#produit_devis_form_description'});
+                        $("#produit_devis_form_description").val(data.produitdevis.description);
+                        alert("pause");
+                        tinyMCE.init({selector: '#produit_devis_form_description'});
 
-                    	$("#produit_devis_form_quantite").text(data.produitdevis.quantite);
+                        $("#produit_devis_form_quantite").text(data.produitdevis.quantite);
 
-                    	$("#produit_devis_form_fournisseur").val(data.produitdevis.fournisseur.id);
-                     	$("#produit_devis_form_fournisseur").selectpicker('refresh');
-                   	
-                    	$("#produit_devis_form_metier").val(data.produitdevis.metier.id);
-                     	$("#produit_devis_form_metier").selectpicker('refresh');
+                        $("#produit_devis_form_fournisseur").val(data.produitdevis.fournisseur.id);
+                        $("#produit_devis_form_fournisseur").selectpicker('refresh');
 
-                     	$('#produit_devis_form_commercial').append($('<option>', { 
-							        value: data.produitdevis.commercial.id,
-							        text : data.produitdevis.commercial.civilite + " " +data.produitdevis.commercial.prenom + " " + data.produitdevis.commercial.nom,
-							        selected : true
-							    }));
-                    	$("#produit_devis_form_commercial").val(data.produitdevis.commercial.id);
-                     	$("#produit_devis_form_commercial").selectpicker('refresh');
+                        $("#produit_devis_form_metier").val(data.produitdevis.metier.id);
+                        $("#produit_devis_form_metier").selectpicker('refresh');
 
-                    	$("#produit_devis_form_typeproduit").val(data.produitdevis.typeproduit.id);
-                     	$("#produit_devis_form_typeproduit").selectpicker('refresh');
+                        $('#produit_devis_form_commercial').append($('<option>', {
+                            value: data.produitdevis.commercial.id,
+                            text: data.produitdevis.commercial.civilite + " " + data.produitdevis.commercial.prenom + " " + data.produitdevis.commercial.nom,
+                            selected: true
+                        }));
+                        $("#produit_devis_form_commercial").val(data.produitdevis.commercial.id);
+                        $("#produit_devis_form_commercial").selectpicker('refresh');
 
-                    	$("#produit_devis_form_deviseachat").val(data.produitdevis.fournisseur.devisevente.id);
-                    	$("#produit_devis_form_deviseachat").selectpicker('refresh');
+                        $("#produit_devis_form_typeproduit").val(data.produitdevis.typeproduit.id);
+                        $("#produit_devis_form_typeproduit").selectpicker('refresh');
 
-                    	$('#produit_devis_form_fraisapproche').val(auFormat(data.produitdevis.fournisseur.fa*100));
+                        $("#produit_devis_form_deviseachat").val(data.produitdevis.fournisseur.devisevente.id);
+                        $("#produit_devis_form_deviseachat").selectpicker('refresh');
 
-                    	$("#produit_devis_form_devisesymbol").text(data.produitdevis.deviseachat.symbol);   
-                    	$("#produit_devis_form_tauxAchat").text(auFormat(data.produitdevis.tauxAchat));
+                        $('#produit_devis_form_fraisapproche').val(auFormat(data.produitdevis.fournisseur.fa * 100));
 
-                    	$("#produit_devis_form_tauxAchat").prop('style', 'background-color: #DBDADA;');
-                    	$("#produit_devis_form_deviseachat").prop('style', 'background-color: #DBDADA;');
+                        $("#produit_devis_form_devisesymbol").text(data.produitdevis.deviseachat.symbol);
+                        $("#produit_devis_form_tauxAchat").text(auFormat(data.produitdevis.tauxAchat));
 
-                    	$('#produit_devis_form_prixachatht').next().text(data.produitdevis.deviseachat.symbol);
-                    	
+                        $("#produit_devis_form_tauxAchat").prop('style', 'background-color: #DBDADA;');
+                        $("#produit_devis_form_deviseachat").prop('style', 'background-color: #DBDADA;');
 
-						setPrixDeVente();
-						setSousTotal();
+                        $('#produit_devis_form_prixachatht').next().text(data.produitdevis.deviseachat.symbol);
 
-				      	$("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
-				      	$("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
-                    	$.each(data.produitdevis.garanties, function (i, garantie) {
-						    $("#produit_devis_form_garanties option[value='"+garantie.id+"']").attr("selected","selected")		    
-						});	 
-						$("#produit_devis_form_garanties").selectpicker('refresh');
+                        setPrixDeVente();
+                        setSousTotal();
 
-                    	$.each(data.produitdevis.termes, function (i, terme) {
-						    $("#produit_devis_form_termes option[value='"+terme.id+"']").attr("selected","selected")		    
-						});	 
-						$("#produit_devis_form_termes").selectpicker('refresh');   						   	
+                        $("#produit_devis_form_prixVenteHT").prop('style', 'background-color: #DBDADA;');
+                        $("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
-                }},
+                        $.each(data.produitdevis.garanties, function (i, garantie) {
+                            $("#produit_devis_form_garanties option[value='" + garantie.id + "']").attr("selected", "selected")
+                        });
+                        $("#produit_devis_form_garanties").selectpicker('refresh');
+
+                        $.each(data.produitdevis.termes, function (i, terme) {
+                            $("#produit_devis_form_termes option[value='" + terme.id + "']").attr("selected", "selected")
+                        });
+                        $("#produit_devis_form_termes").selectpicker('refresh');
+
+                    }
+                },
                 error: function (data, status, object) {
                     console.log(data.message);
                 }
@@ -404,66 +443,82 @@
         });
 
 
-/* 
- * -----------------------------------Getters & Setters-----------------------------------------------------//
- */
+        /*
+         * -----------------------------------Getters & Setters-----------------------------------------------------//
+         */
 
 
-		function setPrixDeVente(){
-			if(!prixIsNaN()) $("#produit_devis_form_prixventeht").val(auFormat(arrondi(toFloat($("#produit_devis_form_tauxAchat").val())*
-		        													toFloat($("#produit_devis_form_prixachatht").val())*
-		        													(1+toFloat($('#produit_devis_form_fraisapproche').val())/100)/
-		        													(1-toFloat($("#produit_devis_form_marge").val())/100), {{ produit.typeproduit.precision }})));
-		}
+        function setPrixDeVente() {
+            if (!prixIsNaN()) $("#produit_devis_form_prixventeht").val(auFormat(arrondi(toFloat($("#produit_devis_form_tauxAchat").val()) *
+                toFloat($("#produit_devis_form_prixachatht").val()) *
+                (1 + toFloat($('#produit_devis_form_fraisapproche').val()) / 100) /
+                (1 - toFloat($("#produit_devis_form_marge").val()) / 100), {{ produit.typeproduit.precision }})));
+        }
 
-		function setMarge(){
-	      	if(!margeIsNaN()) $("#produit_devis_form_marge").val(auFormat(arrondi(100*(1-((toFloat($("#produit_devis_form_prixachatht").val())*
-	      														(1+toFloat($('#produit_devis_form_fraisapproche').val())/100)*
-	      														toFloat($("#produit_devis_form_tauxAchat").val()))/getPrixDeVenteClean())),2)));
-		}
+        function setMarge() {
+            if (!margeIsNaN()) $("#produit_devis_form_marge").val(auFormat(arrondi(100 * (1 - ((toFloat($("#produit_devis_form_prixachatht").val()) *
+                (1 + toFloat($('#produit_devis_form_fraisapproche').val()) / 100) *
+                toFloat($("#produit_devis_form_tauxAchat").val())) / getPrixDeVenteClean())), 2)));
+        }
 
-		function setSousTotal(){
-		        $("#produit_devis_form_soustotalht").val(auFormat(arrondi(getPrixDeVenteClean()*$("#produit_devis_form_quantite").val(), {{ produit.typeproduit.precision }})));
-		}
+        function setSousTotal() {
+            $("#produit_devis_form_soustotalht").val(auFormat(arrondi(getPrixDeVenteClean() * $("#produit_devis_form_quantite").val(), {{ produit.typeproduit.precision }})));
+        }
 
-		function getPrixDeVenteClean(){
-  				return toFloat($("#produit_devis_form_prixVenteHT").val());  
-		}		
+        function getPrixDeVenteClean() {
+            return toFloat($("#produit_devis_form_prixVenteHT").val());
+        }
 
 
-/* 
- * -----------------------------------services-----------------------------------------------------//
- */
-		
- 		function prixIsNaN(){
- 			return (isNaN(toFloat($("#produit_devis_form_tauxAchat").val())) || isNaN(toFloat($("#produit_devis_form_prixachatht").val())) || isNaN(toFloat($('#produit_devis_form_fraisapproche').val())) || isNaN(toFloat($("#produit_devis_form_marge").val())));
- 		}
+        /*
+         * -----------------------------------services-----------------------------------------------------//
+         */
 
- 		function margeIsNaN(){
- 			return (isNaN(getPrixDeVenteClean()) || isNaN(toFloat($("#produit_devis_form_tauxAchat").val())) || isNaN(toFloat($("#produit_devis_form_prixachatht").val())) || isNaN(toFloat($('#produit_devis_form_fraisapproche').val())));
- 		}
+        function prixIsNaN() {
+            return (isNaN(toFloat($("#produit_devis_form_tauxAchat").val())) || isNaN(toFloat($("#produit_devis_form_prixachatht").val())) || isNaN(toFloat($('#produit_devis_form_fraisapproche').val())) || isNaN(toFloat($("#produit_devis_form_marge").val())));
+        }
 
- 		function toFloat(nombre){
+        function margeIsNaN() {
+            return (isNaN(getPrixDeVenteClean()) || isNaN(toFloat($("#produit_devis_form_tauxAchat").val())) || isNaN(toFloat($("#produit_devis_form_prixachatht").val())) || isNaN(toFloat($('#produit_devis_form_fraisapproche').val())));
+        }
 
- 			return parseFloat(nombre.replace(".","").replace(",",".")); 
- 		}
+        function toFloat(nombre) {
 
-		function arrondi(nombre,precision) {
-			var x = Math.round(nombre*(Math.pow(10,precision)))/(Math.pow(10,precision));
-			return x;
-		}
+            return parseFloat(nombre.replace(".", "").replace(",", "."));
+        }
 
-		function auFormat(nombre){
-			return nombre.toLocaleString('fr-FR', { minimumFractionDigits: 2});
-		}
+        function arrondi(nombre, precision) {
+            var x = Math.round(nombre * (Math.pow(10, precision))) / (Math.pow(10, precision));
+            return x;
+        }
 
-		function prixMin(){
-			if (prixIsNaN()) return 0;
-			return arrondi(toFloat($("#produit_devis_form_tauxAchat").val())*
-		        													toFloat($("#produit_devis_form_prixachatht").val())*
-		        													(1+toFloat($('#produit_devis_form_fraisapproche').val())/100),0);
-		}
+        function auFormat(nombre) {
+            return nombre.toLocaleString('fr-FR', {minimumFractionDigits: 2});
+        }
 
-</script>
+        function prixMin() {
+            if (prixIsNaN()) return 0;
+            return arrondi(toFloat($("#produit_devis_form_tauxAchat").val()) *
+                toFloat($("#produit_devis_form_prixachatht").val()) *
+                (1 + toFloat($('#produit_devis_form_fraisapproche').val()) / 100), 0);
+        }
+
+        $('#btnNewField').click(function (e) {
+            e.preventDefault();
+            var list = $('#produit_devis_form_additionalFields');
+            var counter = list.children().length;
+            var newWidget = $("#produit_devis_form_additionalFields").attr('data-prototype');
+            newWidget = newWidget.replace(/__name__/g, (counter+1));
+
+            newWidget = newWidget.replace(/Champs 1/g, "Champs "+ (counter+1));
+            $(newWidget).appendTo(list);
+        });
+
+
+        $('body').on('click', '.btnDeleteChamps', function (e) {
+            e.preventDefault();
+            $(this).parents(".div_field").remove();
+        });
+    </script>
 {% endblock %}
 
