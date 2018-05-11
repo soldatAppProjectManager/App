@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use Symfony\Component\Form\AbstractType;
+use Symfony\Component\Form\Extension\Core\Type\CollectionType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -80,7 +81,16 @@ class ProduitDevisFormType extends AbstractType
                 'multiple' => true, 'expanded' => false))
             ->add('typeproduit', EntityType::class, array('class' => 'AppBundle:TypeProduit',
                 'query_builder' => $this->getEntityManager()->getRepository('AppBundle:TypeProduit')->findAllByAscNom(),
-                'attr' => array('class' => 'selectpicker', 'title' => 'Selectionner le type de produit')));
+                'attr' => array('class' => 'selectpicker', 'title' => 'Selectionner le type de produit')))
+            ->add('brand', null, ['label' => 'Marque'])
+            ->add('articleNumber', null, ['label' => 'Numéro d\'article'])
+            ->add('additionalFields', CollectionType::class, [
+                'label' => 'Champs supplémentaires',
+                'allow_add' => true,
+                'allow_delete' => true,
+                'prototype' => true,
+                'by_reference' => false,
+            ]);
     }
 
     public function getEntityManager()

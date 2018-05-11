@@ -10,4 +10,13 @@ namespace AppBundle\Repository;
  */
 class OpportunityRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function findByStatusCode($code)
+    {
+        return $this->createQueryBuilder('o')
+            ->innerJoin('o.status', 's')
+            ->where('s.code = :code')
+            ->setParameter('code', $code)
+            ->getQuery()
+            ->getResult();
+    }
 }

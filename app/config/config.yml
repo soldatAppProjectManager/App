@@ -40,6 +40,7 @@ twig:
         director: 'Salim El Jaï'
         function: 'Directeur Général-Gérant'
         mobile_phone: '+212 5 29 04 17 45'
+        fax: '+212 5 29 04 09 01'
         email: 'seljai@solutiondata.fr'
         cnss: '5799749'
         rc: '393609'

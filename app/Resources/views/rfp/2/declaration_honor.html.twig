@@ -1,31 +1,29 @@
-{% import "macros.html.twig" as mg %}
-<!DOCTYPE html>
-<html lang="fr">
-<head>
-    <meta charset="UTF-8">
-    <title>LA DECLARATION SUR L’HONNEUR {{ rfp.object }}</title>
+{% extends 'base_pdf.html.twig' %}
 
+{% block title %}LA DECLARATION SUR L’HONNEUR {{ rfp.object }}{% endblock %}
+{% block css %}
+    {{ parent() }}
     <style>
         .page {
             page-break-after: always;
         }
-
-        p{
-            text-align: justify;
-            font-family: ebrima;
-        }
     </style>
-</head>
-<body>
+{% endblock %}
+{% block body %}
 <div>
-    <h3 style="text-align: center">LA DECLARATION SUR L’HONNEUR</h3>
+    <h2 style="text-align: center">LA DECLARATION SUR L’HONNEUR</h2>
 
-    - <b>Mode de passation</b> : Appel d’offres ouvert, sur offres des prix {{ rfp.number }} du {{ rfp.date|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y 'à' h 'heures' m 'minutes'")|capitalize }}.<br>
+    - <b>Mode de passation</b> : Appel d’offres ouvert, sur offres des prix {{ rfp.number }} du
+    {{ rfp.date|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y 'à' h 'heures'")|capitalize }}
+    {% if rfp.date|date('i')>0 %}
+    {{ rfp.date|date('i') }} minutes
+    {% endif %}.<br>
     - <b>Objet</b> : {{ rfp.object|nl2br }}
 
     <br><br>
     Je, soussigné <b>{{ director }} , {{ function }}</b> <br>
     Numéro de téléphone <b>{{ mobile_phone }}</b> <br>
+    Fax <b>{{ fax }}</b> <br>
     Adresse électronique : <b>{{ email }}</b> <br>
     Agissant au nom et pour le compte de <b>{{ company_legal_name }}</b> <br>
     Au capital de : <b>{{ capital }}</b> <br>
@@ -36,6 +34,7 @@
     N° de patente <b>{{ patente }}</b> <br>
     N° du compte courant postal-bancaire ou à la TGR <b>{{ bank_account_number }}</b>
 
+    <br>
     <br>
     <b style="text-decoration: underline" >Déclare sur l’honneur :</b><br>
 
@@ -78,5 +77,5 @@
         <b>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</b>
     </p>
 </div>
-</body>
-</html>
+{% endblock %}
+

@@ -171,6 +171,25 @@ class ProduitDevis extends AbstractProduit
      */
     private $garanties;
 
+    /**
+     * @var string
+     * @ORM\Column(name="article_number", type="string", length=64,nullable=true)
+     */
+    private $articleNumber;
+
+    /**
+     * @var string
+     * @ORM\Column(name="brand", type="string", length=64,nullable=true)
+     */
+    private $brand;
+
+    /**
+     * @var array
+     * @ORM\Column(name="additional_fields", type="array")
+     */
+    private $additionalFields = [];
+
+
 
     public function __construct()
     {
@@ -471,7 +490,7 @@ class ProduitDevis extends AbstractProduit
         if ($this->getTypeproduit()) {
             $precision = $this->getTypeproduit()->getPrecision();
         }
-        return round($this->quantite * $this->getPrixVenteHT(), $precision);
+        return round($this->getQuantite() * $this->getPrixVenteHT(), $precision);
     }
 
     public function getFraisFinanciers($TauxFinancementTresorerie)
@@ -794,5 +813,77 @@ class ProduitDevis extends AbstractProduit
     public function getTotalTVA()
     {
         return round($this->getSousTotalHT() * $this->getTauxTVA(),2);
+    }
+
+    /**
+     * Set articleNumber
+     *
+     * @param string $articleNumber
+     *
+     * @return ProduitDevis
+     */
+    public function setArticleNumber($articleNumber)
+    {
+        $this->articleNumber = $articleNumber;
+
+        return $this;
+    }
+
+    /**
+     * Get articleNumber
+     *
+     * @return string
+     */
+    public function getArticleNumber()
+    {
+        return $this->articleNumber;
+    }
+
+    /**
+     * Set brand
+     *
+     * @param string $brand
+     *
+     * @return ProduitDevis
+     */
+    public function setBrand($brand)
+    {
+        $this->brand = $brand;
+
+        return $this;
+    }
+
+    /**
+     * Get brand
+     *
+     * @return string
+     */
+    public function getBrand()
+    {
+        return $this->brand;
+    }
+
+    /**
+     * Set additionalFields
+     *
+     * @param array $additionalFields
+     *
+     * @return ProduitDevis
+     */
+    public function setAdditionalFields($additionalFields)
+    {
+        $this->additionalFields = $additionalFields;
+
+        return $this;
+    }
+
+    /**
+     * Get additionalFields
+     *
+     * @return array
+     */
+    public function getAdditionalFields()
+    {
+        return $this->additionalFields;
     }
 }

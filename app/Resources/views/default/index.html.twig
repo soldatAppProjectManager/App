@@ -1,8 +1,130 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
-<h1>Gestion Commerciale SolutionData - PROD</h1>
-<p class="lead">Projet de réalisation d'un outil de gestion commerciale pour le suivis du cycle commercial.<br> A venir : Opportunités, Devis, Bon de commandes clients, Facturation et recouvrement</p>
-<hr>
-<h2 class="page-header">Work in progress</h2>
+    <h1>Gestion Commerciale SolutionData - PROD</h1>
+    <p class="lead">Projet de réalisation d'un outil de gestion commerciale pour le suivis du cycle commercial.</p>
+    <hr>
+    <div class="col-md-6">
+        <div class="panel panel-success">
+            <div class="panel-heading">Opportunité en cours</div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Nom du projet</th>
+                        <th>Client</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for opportunity in opportunities %}
+                        <tr>
+                            <td>
+                                <a href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}">
+                                {{ opportunity.label }}
+                                </a>
+                            </td>
+                            <td>{{ opportunity.customer.nom }}</td>
+                            <td class="pull text-right">{{ opportunity.total|number_format(2, ',', ' ') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-info">
+            <div class="panel-heading">Devis en cours</div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Client</th>
+                        <th>Devis</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for devis in allDevis %}
+                        <tr>
+                            <td>
+                                <a target="_blank" href="{{ path('client_voir', { 'id': devis.client.id }) }}">
+                                {{ devis.client.nom }}
+                                </a>
+                                <br><strong>{{ devis.totalht | number_format(2, ',', ' ') }} {{ devis.deviseVente.symbol }} </strong>
+                            </td>
+                            <td>
+                                <a target="_blank" href="{{ path('devis_apercu', { 'id': devis.id }) }}">
+                                    {{ devis.titre }}
+                                </a>
+                                <span class="badge">{{ devis.abstractProduits |length }}</span><br>
+                                {{ devis.reference }}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-warning">
+            <div class="panel-heading">Commandes non livrées</div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Commande</th>
+                        <th>Client</th>
+                        <th>Total</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for cmd in cmds %}
+                        <tr>
+                            <td>
+                                <a target="_blank" href="{{ path('BonDeCommandeClient_voir', { 'id': cmd.id }) }}">
+                                    {{ cmd.devis.titre }}
+                                </a>
+                            </td>
+                            <td>
+                                <a target="_blank" href="{{ path('client_voir', { 'id': cmd.client.id }) }}">
+                                    {{ cmd.client.nom }}
+                                </a>
+                            </td>
+                            <td>{{ cmd.totalht | number_format(2, ',', ' ') }}</td>
+                        </tr>
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6">
+        <div class="panel panel-danger">
+            <div class="panel-heading">Recouvrements en attente</div>
+            <div class="panel-body">
+                <table class="table table-striped table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Facture</th>
+                        <th>Client</th>
+                        <th>Reste</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    {% for f in factures %}
+                        {% if f.restePayer > 0 %}
+                        <tr>
+                            <td>{{ f.reference }}</td>
+                            <td>{{ f.bonDeCommandeClient.client }}</td>
+                            <td>{{ f.restePayer|number_format(2, ',', ' ') }}</td>
+                        </tr>
+                    {% endif %}
+                    {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
 {% endblock %}

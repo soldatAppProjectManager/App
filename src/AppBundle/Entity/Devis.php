@@ -201,7 +201,6 @@ class Devis extends AbstractDocumentClient
         $this->setCoutMoyenService($CoutMoyenService);
         $this->setCommercial($commercial);
         $this->setDraft(true);
-
     }
 
 
@@ -299,30 +298,6 @@ class Devis extends AbstractDocumentClient
     public function getDatecreation()
     {
         return $this->datecreation;
-    }
-
-    /**
-     * Set datemodification
-     *
-     * @param \DateTime $datemodification
-     *
-     * @return Devis
-     */
-    public function setDatemodification($datemodification)
-    {
-        $this->datemodification = $datemodification;
-
-        return $this;
-    }
-
-    /**
-     * Get datemodification
-     *
-     * @return \DateTime
-     */
-    public function getDatemodification()
-    {
-        return $this->datemodification;
     }
 
     /**
@@ -1340,5 +1315,13 @@ class Devis extends AbstractDocumentClient
     public function getTitreAct()
     {
         return $this->titreAct;
+    }
+
+    public function getDateFinValidite() {
+        $date = clone $this->getDatemodification();
+        $validite = $this->getValidite();
+        $date->modify("+ $validite days");
+
+        return $date;
     }
 }
