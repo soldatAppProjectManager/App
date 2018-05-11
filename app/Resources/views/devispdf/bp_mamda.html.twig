@@ -1,0 +1,126 @@
+<head>
+    <meta charset='utf-8'>
+
+    <link rel="icon" href="{{ asset('img/favicon_SD.png') }}"/>
+    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
+    <title>Devis N° {{ devis.id }}</title>
+
+    {{ include('::style.html.twig') }}
+    <style>
+        th, td {
+            padding: 4px 2px 4px 2px;
+        }
+
+        * {
+            font-family: 'Open Sans', sans-serif;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <table class="entete" width="100%;">
+        <tr>
+            <td style="width: 270px;">
+                <img height="85" width="204" src="img/LOGO-SD-HR.png">
+            </td>
+            <td>
+
+            </td>
+        </tr>
+    </table>
+    <br>
+</div>
+
+
+<div class="footer">
+    {% include '::footer.html.twig' with {'footer': devis.piedDePage} %}
+</div>
+<h1 style="font-size: 16px;text-decoration: underline;text-align: center">BORDEREAUX DES PRIX - {{ devis.titre }}</h1>
+<table id="#tablePrice" border="1" style="width: 100%">
+    <thead>
+    <tr>
+        <th align="center">N° des prix</th>
+        <th align="center">Désignation</th>
+        <th align="center">Référence constructeur</th>
+        <th align="center">Précisions couleurs</th>
+        <th align="center">Quantité estimative annuelle</th>
+        <th align="center" >Produits proposés</th>
+        <th align="center" >Marque proposée</th>
+        <th align="center" >Référence<br>cartouche</th>
+        <th align="center" >Référence<br>fournisseur</th>
+        <th align="center">Condition-<br>nement</th>
+        <th align="center" width="60px" >Prix unitaire proposé DH HT</th>
+        <th align="center" width="75px" >Montant<br>DH HT</th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for produit in devis.abstractProduits if not produit.estFusionne %}
+        {% if not produit.isProduct %}
+    <tr>
+        <td colspan="12" style="font-weight: bold;font-size: 16px" >{{ produit.designation }}</td>
+    </tr>
+    {% else %}
+        <tr>
+            <td align="center">{{ produit.articleNumber }}</td>
+            <td>
+                {{ produit.designation }}
+            </td>
+            <td align="center">{% if produit.additionalFields|length>0 %} {{ produit.additionalFields[0] }} {% endif %}</td>
+            <td align="center">{% if produit.additionalFields|length>1 %} {{ produit.additionalFields[1] }} {% endif %}</td>
+            <td align="center">{{ produit.quantite }}</td>
+            <td>{{ produit.designation }}</td>
+            <td align="center">{{ produit.brand }}</td>
+            <td>{{ produit.referenceproduit }}</td>
+            <td>{{ produit.referenceproduit }}</td>
+            <td align="center">{{ produit.unite }}</td>
+            <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', ' ') }}</td>
+            <td align="right">{{ produit.sousTotalHT|number_format(produit.typeproduit.precision, ',', ' ') }}</td>
+        </tr>
+    {% endif %}
+    {% endfor %}
+    <tr>
+        <td colspan="7" rowspan="3" style="border-left: 0px;border-bottom: 0px" ></td>
+        <td  colspan="3" align="center" >
+            <b style="font-size: 15px;line-height:16px;">
+                MONTANT TOTAL HT A REPORTER
+                 DANS <br>L'ACTE D'ENGAGEMENT {% if devis.lot %}(N° {{ devis.lot.number }}){% endif %}
+            </b>
+        </td>
+        <td colspan="2" align="right"><b style="font-size: 15px">
+                {{ devis.getTotalHT|number_format(2, ',', ' ') }}
+            </b>
+        </td>
+    </tr>
+    <tr>
+        <td  colspan="3" align="center">
+            <b style="font-size: 15px;line-height:16px;">MONTANT TOTAL TVA A REPORTER
+                 DANS <br>L'ACTE D'ENGAGEMENT {% if devis.lot %}(N° {{ devis.lot.number }}){% endif %}</b>
+        </td>
+        <td colspan="2" align="right"><b style="font-size: 15px">
+                {{ devis.getTotalTVA|number_format(2, ',', ' ') }}
+            </b>
+        </td>
+    </tr>
+    <tr>
+        <td colspan="3" align="center">
+            <b style="font-size: 15px;line-height:16px;">MONTANT TOTAL TTC A REPORTER
+                 DANS <br>L'ACTE D'ENGAGEMENT {% if devis.lot %}(N° {{ devis.lot.number }}){% endif %}</b>
+        </td>
+        <td colspan="2" align="right"><b style="font-size: 15px">
+                {{ devis.getTotalTTC|number_format(2, ',', ' ') }}
+            </b>
+        </td>
+    </tr>
+
+    </tbody>
+</table>
+<br>
+
+
+<br><br>
+<div style="float: right">Fait à <b>Casablanca</b> le
+    <b>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</b></div>
+
+<div class="page-number"></div>
+
+</body>
