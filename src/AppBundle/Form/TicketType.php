@@ -20,7 +20,7 @@ class TicketType extends AbstractType
             'label' => 'Date',
             'attr' => ['class' => 'datetimepicker'],
             'widget' => 'single_text',
-            'format' => 'dd/MM/yyyy hh:mi',
+            'format' => 'dd/MM/yyyy HH:mm',
             'required' => true,
         ])
             ->add('objet')
@@ -32,9 +32,9 @@ class TicketType extends AbstractType
                         'data-live-search' => 'true'
                     ],
                 ])
-            ->add('tel')
+            ->add('tel', null, ['label' => 'Téléphone'])
             ->add('description')
-            ->add('priority')
+            ->add('priority', null, ['label' => 'Priorité'])
             ->add('serie', null,
                 ['label' => 'Numéro de série',
                     'attr' => [
@@ -43,8 +43,8 @@ class TicketType extends AbstractType
                         'data-live-search' => 'true'
                     ],
                 ])
-            ->add('file', FileSdType::class, array('label' => 'Piece jointe'))
-            ->add('affectedTo');
+            ->add('file', FileSdType::class, array('label' => 'Pièce jointe'))
+            ->add('affectedTo', null, ['label' => 'Affecté à']);
     }
 
     /**

@@ -4,16 +4,17 @@
 {% block body %}
     <h1>Liste des tickets</h1>
 
-    <a class="btn btn-primary" style="float: right;" href="{{ path('ticket_new') }}" >Nouveau ticket</a>
+    <a class="btn btn-primary" style="float: right;" href="{{ path('ticket_new') }}">Nouveau ticket</a>
     <br>
     <br>
     <table class="table table-striped table-bordered">
         <thead>
         <tr>
-            <th>Ref</th>
+            <th>Référence</th>
             <th>Date</th>
             <th>Responsable</th>
             <th>Objet</th>
+            <th>Status</th>
             <th>Actions</th>
         </tr>
         </thead>
@@ -24,9 +25,13 @@
                 <td>{{ ticket.date|date('d/m/Y') }}</td>
                 <td>{{ ticket.affectedTo }}</td>
                 <td>{{ ticket.objet }}</td>
+                <td>{{ ticket.lastHistory.status }}</td>
                 <td>
                     <a class="btn btn-xs btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">show</a>
                     <a class="btn btn-xs btn-warning" href="{{ path('ticket_edit', { 'id': ticket.id }) }}">edit</a>
+               {% if ticket.lastHistory.status.code == 1 %}
+                   <a class="btn btn-xs btn-info" href="">Assigner</a>
+               {% endif %}
                 </td>
             </tr>
         {% endfor %}

@@ -3,6 +3,10 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Ticket;
+use AppBundle\Entity\TicketHistory;
+use AppBundle\Entity\TicketStatus;
+use AppBundle\Form\TicketHistoryType;
+use AppBundle\Form\TicketType;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
@@ -40,14 +44,18 @@ class TicketController extends Controller
      */
     public function newAction(Request $request)
     {
+        $em = $this->getDoctrine()->getManager();
         $ticket = new Ticket();
-        $form = $this->createForm('AppBundle\Form\TicketType', $ticket);
+
+        $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $history = new TicketHistory();
+            $history->setDate(new \DateTime());
+            $history->setStatus($em->getRepository(TicketStatus::class)->findOneByCode(1));
+            $ticket->addHistory($history);
 
-            $ticket->setCreatedBy($this->getUser());
             $ticket->generateRef($em->getRepository(Ticket::class)->getIncrement());
             if ($form->getData()->getFile()->getFile() !== null) {
                 $ticket->getFile()->upload($this->getParameter('repertoire_ticket'));
@@ -55,6 +63,32 @@ class TicketController extends Controller
                 $ticket->setFile(null);
             }
             $em->persist($ticket);
+            $em->flush();
+
+            return $this->redirectToRoute('ticket_show', array('id' => $ticket->getId()));
+        }
+
+        return $this->render('ticket/new.html.twig', array(
+            'ticket' => $ticket,
+            'form' => $form->createView(),
+        ));
+    }
+
+    /**
+     *
+     * @Route("/{id}/history", name="ticket_new")
+     * @Method({"GET", "POST"})
+     */
+    public function newHistoryAction(Request $request, Ticket $ticket)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $ticketHistory = new TicketHistory();
+        $form = $this->createForm(TicketHistoryType::class, $ticketHistory);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $em->persist($ticketHistory);
             $em->flush();
 
             return $this->redirectToRoute('ticket_show', array('id' => $ticket->getId()));

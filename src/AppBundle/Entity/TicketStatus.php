@@ -97,4 +97,9 @@ class TicketStatus
     {
         return $this->color;
     }
+
+    public function __toString()
+    {
+        return $this->getLabel();
+    }
 }
