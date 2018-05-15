@@ -37,22 +37,7 @@ class RapportController extends Controller
      */
     public function GenererRapportHebdomadaireAction(Request $request)
     {
-
-         $rapport = $this->getDoctrine()->getRepository('AppBundle:BonDeCommandeClient')->getRapportHebdomadaire($this->getUser());
-
-        // dump($rapport);die();
-
-        // $date = new \DateTime('last monday');
-
-        // $rapport =  $em ->createQueryBuilder()
-        //                 ->select('devis', 'commercial','client')
-        //                 ->from('AppBundle:Devis', 'devis')
-        //                 ->innerJoin('devis.commercial', 'commercial')
-        //                 ->innerJoin('devis.client', 'client')
-        //                 ->andWhere('devis.datecreation >= :min')
-        //                 ->andWhere('devis.datecreation <= :max')
-        //                 ->setParameters(array('min' => $date,'max' => new \DateTime("now")))
-        //                 ->getQuery()->getResult();
+        $rapport = $this->getDoctrine()->getRepository('AppBundle:BonDeCommandeClient')->getRapportHebdomadaire($this->getUser());
 
         $rapportExcel = new RapportExcel($rapport,$this->getUser(),$this->getParameter('repertoire_rapportexport'));
 
