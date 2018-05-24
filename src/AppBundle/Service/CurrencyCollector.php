@@ -6,20 +6,21 @@ use Doctrine\ORM\EntityManager;
 
 class CurrencyCollector
 {
-	private $em;
+    private $em;
 
-	public function __construct(\Doctrine\ORM\EntityManagerInterface $em){
-		$this->em=$em;
-	}
+    public function __construct(\Doctrine\ORM\EntityManagerInterface $em)
+    {
+        $this->em = $em;
+    }
 
-	public function update(){
+    public function update()
+    {
 
         $monnaies = $this->em->getRepository('AppBundle:Monnaie')->findAll();
 
-        foreach ($monnaies as $monnaie){
-                $monnaie->recupererTauxBkam();
+        foreach ($monnaies as $monnaie) {
+            $monnaie->recupererTauxBkam();
         }
         $this->em->flush();
-	}	
-
+    }
 }

@@ -3,6 +3,9 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+parameters:
+    container.autowiring.strict_mode: true
+
 framework:
     #esi: ~
     translator: { fallbacks: ['%locale%'] }
@@ -83,7 +86,7 @@ swiftmailer:
     spool: { type: memory }
 
 stof_doctrine_extensions:
-    default_locale: %locale%
+    default_locale: '%locale%'
     translation_fallback: true
     orm:
         default:
@@ -94,50 +97,3 @@ stof_doctrine_extensions:
             sluggable: true
             blameable: true
 
-services:
-
-#    service_name:
-#        class: AppBundle\Directory\ClassName
-#        arguments: ["@another_service_name", "plain_value", "%parameter_name%"]
-#        autowire: true
-
-    twig.extension.intl:
-        class: Twig_Extensions_Extension_Intl
-        tags:
-            - { name: twig.extension }
-
-    app.form.devis:
-        class: AppBundle\Form\DevisFormType
-        arguments: ["@doctrine.orm.default_entity_manager"]
-        tags:
-            - { name: form.type.devis }
-
-    app.form.excel.devis:
-        class: AppBundle\Form\ExcelDevisFormType
-        arguments: ["@doctrine.orm.default_entity_manager"]
-        tags:
-            - { name: form.type.excel.devis }
-
-    app.form.produitdevis:
-        class: AppBundle\Form\ProduitDevisFormType
-        arguments: ["@doctrine.orm.default_entity_manager"]
-        tags:
-            - { name: form.type.produitdevis }
-
-    app.tools.charges:
-        class: AppBundle\Tools\charges
-        arguments: ["@doctrine.orm.default_entity_manager"]
-        tags:
-            - { name: tools.charges }
-
-    app.service.currencycollector:
-        class: AppBundle\Service\CurrencyCollector
-        arguments: ["@doctrine.orm.default_entity_manager"]
-        tags:
-            - { name: service.currencycollector }
-
-    app.form.rapport:
-        class: AppBundle\Form\RapportFormType
-        arguments: ["@doctrine.orm.default_entity_manager"]
-        tags:
-            - { name: form.type.rapport }

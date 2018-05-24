@@ -2,6 +2,7 @@
 
 namespace AppBundle\Form;
 
+use AppBundle\Entity\TicketHistory;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
@@ -13,13 +14,28 @@ class TicketHistoryType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
+        /** @var TicketHistory $data */
+        $data = $builder->getData();
         $builder
-            ->add('date')
+            ->add('date', null, [
+                'label' => 'Date',
+                'attr' => ['class' => 'datetimepicker'],
+                'widget' => 'single_text',
+                'format' => 'dd/MM/yyyy HH:mm',
+                'required' => true,
+            ])
             ->add('note')
-            ->add('status')
-            ->add('affectedTo')
+            ->add('affectedTo',null,  ['label' => 'Affecté à'])
         ;
-    }/**
+
+        if($data->getStatus()) {
+            $builder->add('status', null, ['disabled' => true]);
+        } else {
+            $builder->add('status');
+        }
+    }
+
+    /**
      * {@inheritdoc}
      */
     public function configureOptions(OptionsResolver $resolver)

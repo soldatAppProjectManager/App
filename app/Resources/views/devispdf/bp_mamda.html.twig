@@ -2,7 +2,6 @@
     <meta charset='utf-8'>
 
     <link rel="icon" href="{{ asset('img/favicon_SD.png') }}"/>
-    <link href="https://fonts.googleapis.com/css?family=Open+Sans" rel="stylesheet">
     <title>Devis N° {{ devis.id }}</title>
 
     {{ include('::style.html.twig') }}
@@ -12,7 +11,7 @@
         }
 
         * {
-            font-family: 'Open Sans', sans-serif;
+            font-family: sans-serif;
         }
     </style>
 </head>
@@ -115,9 +114,23 @@
     </tbody>
 </table>
 <br>
+<br>
+{% if not devis.termes is empty %}
+<div style="float: left;" >
+        <strong><u> Conditions commerciales générales : </u></strong><br><br>
+        <table class="termes">
+            <tbody>
 
-
-<br><br>
+            {% for terme in devis.termes %}
+                <tr>
+                    <th>{{ terme.categorie.nom|capitalize }} :</th>
+                    <td>{{ terme.description|capitalize }}</td>
+                </tr>
+            {% endfor %}
+            </tbody>
+        </table>
+</div>
+{% endif %}
 <div style="float: right">Fait à <b>Casablanca</b> le
     <b>{{ "now"|localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y")|capitalize }}</b></div>
 

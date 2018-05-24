@@ -29,8 +29,8 @@
                 <td>
                     <a class="btn btn-xs btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">show</a>
                     <a class="btn btn-xs btn-warning" href="{{ path('ticket_edit', { 'id': ticket.id }) }}">edit</a>
-               {% if ticket.lastHistory.status.code == 1 %}
-                   <a class="btn btn-xs btn-info" href="">Assigner</a>
+               {% if ticket.lastHistory.status.code >= 1 %}
+                   <a style="background-color: {{ ticket.nextStatus.color }};" class="btn btn-xs btn-default" href="{{ path('ticket_new_history',{'id': ticket.id, 'status_code':ticket.nextStatus.code}) }}">{{ ticket.nextStatus.label }}</a>
                {% endif %}
                 </td>
             </tr>

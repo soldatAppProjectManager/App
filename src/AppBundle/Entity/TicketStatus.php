@@ -13,6 +13,9 @@ use Doctrine\ORM\Mapping as ORM;
  */
 class TicketStatus
 {
+
+    Const OPEN_CODE = 1;
+
     use CodeTrait;
 
     /**
@@ -38,6 +41,11 @@ class TicketStatus
      * @ORM\Column(name="color", type="string", length=16)
      */
     private $color;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TicketStatus")
+     */
+    private $nextStatus;
 
 
     /**
@@ -101,5 +109,29 @@ class TicketStatus
     public function __toString()
     {
         return $this->getLabel();
+    }
+
+    /**
+     * Set nextStatus
+     *
+     * @param \AppBundle\Entity\TicketStatus $nextStatus
+     *
+     * @return TicketStatus
+     */
+    public function setNextStatus(\AppBundle\Entity\TicketStatus $nextStatus = null)
+    {
+        $this->nextStatus = $nextStatus;
+
+        return $this;
+    }
+
+    /**
+     * Get nextStatus
+     *
+     * @return \AppBundle\Entity\TicketStatus
+     */
+    public function getNextStatus()
+    {
+        return $this->nextStatus;
     }
 }

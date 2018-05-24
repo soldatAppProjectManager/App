@@ -3,6 +3,8 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\AbstractProduit;
+use AppBundle\Service\charges;
+use AppBundle\Service\CurrencyCollector;
 use DateTime;
 use DateInterval;
 use AppBundle\Entity\Parametres;
@@ -134,7 +136,7 @@ class DevisController extends Controller
      */
     public function actualiserTauxAchatAction(Devis $devis, Request $request)
     {
-        $this->get('app.service.currencycollector')->update();
+        $this->get(CurrencyCollector::class)->update();
         $devis->mettreAJourTauxAchat();
         $em = $this->getDoctrine()->getManager();
         $em->flush();
@@ -152,7 +154,7 @@ class DevisController extends Controller
             ->getRepository('AppBundle:Devis')
             ->find($id);
 
-        $this->get('app.service.currencycollector')->update();
+        $this->get(CurrencyCollector::class)->update();
 
         // replace this example code with whatever you need
         return $this->render('devis/profitabilite.html.twig', array('devis' => $devis));
@@ -192,8 +194,8 @@ class DevisController extends Controller
         return $this->render('devis/create.html.twig', array(
             'form' => $form->createView(),
             'devis' => $devis,
-            'travailminimum' => $this->get('app.tools.charges')->getMinimumCharges(),
-            'travailmaximum' => $this->get('app.tools.charges')->getMaximumCharges()
+            'travailminimum' => $this->get(charges::class)->getMinimumCharges(),
+            'travailmaximum' => $this->get(charges::class)->getMaximumCharges()
         ));
     }
 
@@ -262,8 +264,8 @@ class DevisController extends Controller
         return $this->render('devis/edit.html.twig', array(
             'form' => $form->createView(),
             'devis' => $devis,
-            'travailminimum' => $this->get('app.tools.charges')->getMinimumCharges(),
-            'travailmaximum' => $this->get('app.tools.charges')->getMaximumCharges()
+            'travailminimum' => $this->get(charges::class)->getMinimumCharges(),
+            'travailmaximum' => $this->get(charges::class)->getMaximumCharges()
         ));
     }
 

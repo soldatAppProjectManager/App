@@ -1,0 +1,47 @@
+{% extends 'base.html.twig' %}
+
+{% block title %} {{ ticketHistory.status.nextstatus }}{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+{% endblock %}
+{% block body %}
+    <h1>{{ ticketHistory.status }}</h1>
+
+{{ form_start(form) }}
+<div class="well well-lg">
+    <div class="row">
+        <div class="col-md-6 form-group ">
+            {{ form_row(form.date) }}
+        </div>
+        <div class="col-md-6 form-group ">
+            {{ form_row(form.affectedTo) }}
+        </div>
+    </div>
+    <div class="row" >
+        <div class="col-md-12 form-group ">
+            {{ form_row(form.note) }}
+        </div>
+        <div class="col-md-12 form-group ">
+            {{ form_row(form.status) }}
+        </div>
+    </div>
+</div>
+    <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
+
+    {{ form_end(form) }}
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+    <script type="text/javascript">
+        $(function () {
+            $('.datetimepicker').datetimepicker({
+                locale: 'fr',
+                format: "DD/MM/YYYY HH:mm"
+            });
+        });
+    </script>
+{% endblock %}

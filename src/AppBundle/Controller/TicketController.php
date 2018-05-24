@@ -7,9 +7,13 @@ use AppBundle\Entity\TicketHistory;
 use AppBundle\Entity\TicketStatus;
 use AppBundle\Form\TicketHistoryType;
 use AppBundle\Form\TicketType;
+use AppBundle\Service\charges;
+use AppBundle\Service\CurrencyCollector;
+use AppBundle\Service\TicketManager;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
@@ -42,21 +46,16 @@ class TicketController extends Controller
      * @Route("/new", name="ticket_new")
      * @Method({"GET", "POST"})
      */
-    public function newAction(Request $request)
+    public function newAction(Request $request, TicketManager $ticketManager)
     {
         $em = $this->getDoctrine()->getManager();
-        $ticket = new Ticket();
+        $ticket = $ticketManager->createTicket();
 
         $form = $this->createForm(TicketType::class, $ticket);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $history = new TicketHistory();
-            $history->setDate(new \DateTime());
-            $history->setStatus($em->getRepository(TicketStatus::class)->findOneByCode(1));
-            $ticket->addHistory($history);
 
-            $ticket->generateRef($em->getRepository(Ticket::class)->getIncrement());
             if ($form->getData()->getFile()->getFile() !== null) {
                 $ticket->getFile()->upload($this->getParameter('repertoire_ticket'));
             } else {
@@ -65,39 +64,49 @@ class TicketController extends Controller
             $em->persist($ticket);
             $em->flush();
 
-            return $this->redirectToRoute('ticket_show', array('id' => $ticket->getId()));
+            return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
         }
 
-        return $this->render('ticket/new.html.twig', array(
+        return $this->render('ticket/new.html.twig', [
             'ticket' => $ticket,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
+     * @param Request $request
+     * @param TicketManager $ticketManager
+     * @param Ticket $ticket
+     * @param TicketStatus $ticketStatus
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse|\Symfony\Component\HttpFoundation\Response
      *
-     * @Route("/{id}/history", name="ticket_new")
+     * @Route("/{id}/history/{status_code}", name="ticket_new_history", defaults={"status_code" = null }, requirements={"id"="\d+", "status_code"="\d+"})
+     * @ParamConverter("ticketStatus", options={"mapping": {"status_code": "code"}})
      * @Method({"GET", "POST"})
      */
-    public function newHistoryAction(Request $request, Ticket $ticket)
+    public function newHistoryAction(
+        Request $request,
+        TicketManager $ticketManager,
+        Ticket $ticket,
+        TicketStatus $ticketStatus = null
+    )
     {
-        $em = $this->getDoctrine()->getManager();
-
-        $ticketHistory = new TicketHistory();
+        $ticketHistory = $ticketManager->createTicketHistory($ticket, $ticketStatus);
+        $ticketHistory->setAffectedTo($this->getUser());
         $form = $this->createForm(TicketHistoryType::class, $ticketHistory);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
-            $em->persist($ticketHistory);
-            $em->flush();
+            $ticket->addHistory($ticketHistory);
+            $ticketManager->em->flush();
 
-            return $this->redirectToRoute('ticket_show', array('id' => $ticket->getId()));
+            return $this->redirectToRoute('ticket_show', ['id' => $ticket->getId()]);
         }
 
-        return $this->render('ticket/new.html.twig', array(
-            'ticket' => $ticket,
+        return $this->render('ticket/new_history.html.twig', [
+            'ticketHistory' => $ticketHistory,
             'form' => $form->createView(),
-        ));
+        ]);
     }
 
     /**
@@ -130,6 +139,8 @@ class TicketController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             if ($form->getData()->getFile()->getFile() !== null) {
                 $ticket->getFile()->upload($this->getParameter('repertoire_ticket'));
+            } elseif (null === $ticket->getFile()->getId()) {
+                $ticket->setFile(null);
             }
             $this->getDoctrine()->getManager()->flush();
 

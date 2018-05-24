@@ -44,7 +44,6 @@ class OpportunityController extends Controller
      */
     public function editAction(Request $request, Opportunity $opportunity = null)
     {
-
         $em = $this->getDoctrine()->getManager();
         if (null === $opportunity) {
             $opportunity = new Opportunity();

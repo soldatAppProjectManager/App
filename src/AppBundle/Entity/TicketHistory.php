@@ -27,7 +27,7 @@ class TicketHistory
 
     /**
      * @var Ticket
-     * @ORM\ManyToOne(targetEntity="Ticket")
+     * @ORM\ManyToOne(targetEntity="Ticket", inversedBy="histories")
      */
     private $ticket;
 

@@ -37,12 +37,6 @@ class Ticket
     private $priority;
 
     /**
-     * @var TicketStatus
-     * @ORM\ManyToOne(targetEntity="TicketStatus")
-     */
-    private $status;
-
-    /**
      * @var Client
      * @ORM\ManyToOne(targetEntity="Client")
      */
@@ -99,7 +93,8 @@ class Ticket
     protected $histories;
 
     /**
-     * @ORM\ManyToOne(targetEntity="TicketHistory")
+     * @ORM\ManyToOne(targetEntity="TicketHistory", cascade={"persist"})
+     * @ORM\JoinColumn(name="last_history_id", referencedColumnName="id")
      */
     private $lastHistory;
 
@@ -330,29 +325,6 @@ class Ticket
     }
 
     /**
-     * Set status
-     *
-     * @param \AppBundle\Entity\TicketStatus $status
-     *
-     * @return Ticket
-     */
-    public function setStatus(\AppBundle\Entity\TicketStatus $status = null)
-    {
-        $this->status = $status;
-
-        return $this;
-    }
-
-    /**
-     * Get status
-     *
-     * @return \AppBundle\Entity\TicketStatus
-     */
-    public function getStatus()
-    {
-        return $this->status;
-    }
-    /**
      * Constructor
      */
     public function __construct()
@@ -370,7 +342,8 @@ class Ticket
      */
     public function addHistory(\AppBundle\Entity\TicketHistory $history)
     {
-        if(!$this->histories->contains($history)) {
+        if (!$this->histories->contains($history)) {
+            $history->setTicket($this);
             $this->setLastHistory($history);
             $this->histories[] = $history;
         }
@@ -405,7 +378,7 @@ class Ticket
      *
      * @return Ticket
      */
-    public function setLastHistory(\AppBundle\Entity\TicketHistory $lastHistory = null)
+    public function setLastHistory(\AppBundle\Entity\TicketHistory $lastHistory)
     {
         $this->lastHistory = $lastHistory;
 
@@ -420,5 +393,21 @@ class Ticket
     public function getLastHistory()
     {
         return $this->lastHistory;
+    }
+
+    /**
+     * @return TicketStatus|null
+     */
+    public function getNextStatus()
+    {
+        if (
+            $this->getLastHistory() &&
+            $this->getLastHistory()->getStatus() &&
+            $this->getLastHistory()->getStatus()->getNextStatus()
+        ) {
+            return $this->getLastHistory()->getStatus()->getNextStatus();
+        }
+
+        return null;
     }
 }
