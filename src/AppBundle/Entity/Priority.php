@@ -31,7 +31,7 @@ class Priority
     /**
      * @var int
      *
-     * @ORM\Column(name="ordre", type="smallint")
+     * @ORM\Column(name="ordre", type="smallint", unique=true)
      */
     private $ordre;
 

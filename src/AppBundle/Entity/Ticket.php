@@ -37,12 +37,6 @@ class Ticket
     private $priority;
 
     /**
-     * @var StatutTicket
-     * @ORM\ManyToOne(targetEntity="StatutTicket")
-     */
-    private $statut;
-
-    /**
      * @var Client
      * @ORM\ManyToOne(targetEntity="Client")
      */
@@ -93,6 +87,16 @@ class Ticket
      */
     private $file;
 
+    /**
+     * @ORM\OneToMany(targetEntity="TicketHistory", mappedBy="ticket", cascade={"persist"})
+     */
+    protected $histories;
+
+    /**
+     * @ORM\ManyToOne(targetEntity="TicketHistory", cascade={"persist"})
+     * @ORM\JoinColumn(name="last_history_id", referencedColumnName="id")
+     */
+    private $lastHistory;
 
     /**
      * Get id
@@ -174,30 +178,6 @@ class Ticket
     public function getPriority()
     {
         return $this->priority;
-    }
-
-    /**
-     * Set statut
-     *
-     * @param \AppBundle\Entity\Statut $statut
-     *
-     * @return Ticket
-     */
-    public function setStatut(\AppBundle\Entity\Statut $statut = null)
-    {
-        $this->statut = $statut;
-
-        return $this;
-    }
-
-    /**
-     * Get statut
-     *
-     * @return \AppBundle\Entity\Statut
-     */
-    public function getStatut()
-    {
-        return $this->statut;
     }
 
     /**
@@ -342,5 +322,92 @@ class Ticket
     public function getFile()
     {
         return $this->file;
+    }
+
+    /**
+     * Constructor
+     */
+    public function __construct()
+    {
+        $this->histories = new \Doctrine\Common\Collections\ArrayCollection();
+        $this->date = new \DateTime();
+    }
+
+    /**
+     * Add history
+     *
+     * @param \AppBundle\Entity\TicketHistory $history
+     *
+     * @return Ticket
+     */
+    public function addHistory(\AppBundle\Entity\TicketHistory $history)
+    {
+        if (!$this->histories->contains($history)) {
+            $history->setTicket($this);
+            $this->setLastHistory($history);
+            $this->histories[] = $history;
+        }
+
+        return $this;
+    }
+
+    /**
+     * Remove history
+     *
+     * @param \AppBundle\Entity\TicketHistory $history
+     */
+    public function removeHistory(\AppBundle\Entity\TicketHistory $history)
+    {
+        $this->histories->removeElement($history);
+    }
+
+    /**
+     * Get histories
+     *
+     * @return \Doctrine\Common\Collections\Collection
+     */
+    public function getHistories()
+    {
+        return $this->histories;
+    }
+
+    /**
+     * Set lastHistory
+     *
+     * @param \AppBundle\Entity\TicketHistory $lastHistory
+     *
+     * @return Ticket
+     */
+    public function setLastHistory(\AppBundle\Entity\TicketHistory $lastHistory)
+    {
+        $this->lastHistory = $lastHistory;
+
+        return $this;
+    }
+
+    /**
+     * Get lastHistory
+     *
+     * @return \AppBundle\Entity\TicketHistory
+     */
+    public function getLastHistory()
+    {
+        return $this->lastHistory;
+    }
+
+    /**
+     * @return TicketStatus|null
+     */
+    public function getNextStatus()
+    {
+        if (
+            $this->getLastHistory() &&
+            $this->getLastHistory()->getStatus() &&
+            $this->getLastHistory()->getStatus()->getNextStatus()
+        ) {
+            return $this->getLastHistory()->getStatus()->getNextStatus();
+        }
+
+        return null;
     }
 }

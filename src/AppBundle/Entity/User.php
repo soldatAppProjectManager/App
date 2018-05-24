@@ -455,4 +455,8 @@ class User implements UserInterface
     {
         return $this->getCivilite()." ".$this->getPrenom()." ".$this->getNom() ;
     }
+
+    public function getFullName() {
+        return $this->getPrenom()." ".$this->getNom() ;
+    }
 }

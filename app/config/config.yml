@@ -3,6 +3,9 @@ imports:
     - { resource: security.yml }
     - { resource: services.yml }
 
+parameters:
+    container.autowiring.strict_mode: true
+
 framework:
     #esi: ~
     translator: { fallbacks: ['%locale%'] }
@@ -83,7 +86,7 @@ swiftmailer:
     spool: { type: memory }
 
 stof_doctrine_extensions:
-    default_locale: %locale%
+    default_locale: '%locale%'
     translation_fallback: true
     orm:
         default:
