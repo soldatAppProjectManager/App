@@ -10,6 +10,8 @@ use AppBundle\Form\TicketType;
 use AppBundle\Service\charges;
 use AppBundle\Service\CurrencyCollector;
 use AppBundle\Service\TicketManager;
+use AppBundle\Service\charges;
+use AppBundle\Service\CurrencyCollector;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
