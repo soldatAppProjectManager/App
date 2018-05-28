@@ -1,4 +1,4 @@
 app:
     resource: '@AppBundle/Controller/'
     type: annotation
-#    schemes: [https]
+    schemes: [https]
