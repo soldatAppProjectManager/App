@@ -12,7 +12,8 @@
         <tr>
             <th>Référence</th>
             <th>Date</th>
-            <th>Responsable</th>
+            <th>Client</th>
+            <th>Téléphone</th>
             <th>Objet</th>
             <th>Status</th>
             <th>Actions</th>
@@ -23,13 +24,14 @@
             <tr>
                 <td>{{ ticket.reference }}</td>
                 <td>{{ ticket.date|date('d/m/Y') }}</td>
-                <td>{{ ticket.affectedTo }}</td>
+                <td>{{ ticket.client }}</td>
+                <td>{{ ticket.tel }}</td>
                 <td>{{ ticket.objet }}</td>
-                <td>{{ ticket.lastHistory.status }}</td>
+                <td>{% if ticket.lastHistory %}{{ ticket.lastHistory.status }}{% endif %}</td>
                 <td>
                     <a class="btn btn-xs btn-primary" href="{{ path('ticket_show', { 'id': ticket.id }) }}">show</a>
                     <a class="btn btn-xs btn-warning" href="{{ path('ticket_edit', { 'id': ticket.id }) }}">edit</a>
-               {% if ticket.lastHistory.status.code >= 1 %}
+               {% if ticket.lastHistory and ticket.lastHistory.status.nextStatus %}
                    <a style="background-color: {{ ticket.nextStatus.color }};" class="btn btn-xs btn-default" href="{{ path('ticket_new_history',{'id': ticket.id, 'status_code':ticket.nextStatus.code}) }}">{{ ticket.nextStatus.label }}</a>
                {% endif %}
                 </td>

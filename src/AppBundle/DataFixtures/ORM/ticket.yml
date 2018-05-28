@@ -1,0 +1,12 @@
+AppBundle\Entity\Ticket:
+    e_ticket_{1..600}:
+        priority: '@priority_*'
+        client: '@client_*'
+        tel: <PhoneNumber()>
+        date: <dateTime()>
+        objet: <text(100)>
+        description: <text()>
+        uuid: <year()>
+        reference: <current()>-<numberBetween(2017,2018)>
+        createdAt: <dateTime()>
+        createdBy: '@user_*'

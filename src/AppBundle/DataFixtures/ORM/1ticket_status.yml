@@ -1,0 +1,31 @@
+AppBundle\Entity\TicketStatus:
+    ticket_status_ouvert:
+        label: 'Ouvert'
+        color: '#ba3030'
+        code: 1
+        nextStatus: '@ticket_status_affecte'
+    ticket_status_affecte:
+        label: 'Affecté'
+        color: '#BBB'
+        code: 2
+        nextStatus: '@ticket_status_diagnostique'
+    ticket_status_diagnostique:
+        label: 'Diagnostique'
+        color: '#1f87d1'
+        code: 3
+        nextStatus: '@ticket_status_intervention'
+    ticket_status_intervention:
+        label: 'Intervention'
+        color: '#d1bc1f'
+        code: 4
+        nextStatus: '@ticket_status_remise_en_service'
+    ticket_status_remise_en_service:
+        label: 'Remise en service'
+        color: '#1fd18c'
+        code: 5
+        nextStatus: '@ticket_status_cloture'
+    ticket_status_cloture:
+        label: 'Clôture'
+        color: '#1fd1bc'
+        code: 6
+

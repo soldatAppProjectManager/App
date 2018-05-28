@@ -1,0 +1,5 @@
+AppBundle\Entity\UserRole:
+    role_{ADMIN,USER,SVCADMIN,COMMERCIAL}:
+        nom: <name()>
+        description: <text(200)>
+        role: ROLE_<current()>

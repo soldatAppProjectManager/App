@@ -1,0 +1,4 @@
+AppBundle\Entity\Lot:
+    lot_{1..10}:
+        title: <name()>
+        number: 1
