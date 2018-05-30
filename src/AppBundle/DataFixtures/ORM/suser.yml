@@ -1,0 +1,27 @@
+AppBundle\Entity\User:
+
+    user_0:
+        nom: <lastname()>
+        prenom: <lastname()>
+        login: amajri
+        password: 1234
+        civilite: 'Mr.'
+        genre: <boolean()>
+        poste: <text(60)>
+        departement: <text(60)>
+        email: <email()>
+        telephone: <phoneNumber()>
+        roles: ['@role_ADMIN','@role_USER']
+
+    user_{1..10}:
+        nom: <lastname()>
+        prenom: <lastname()>
+        login: <username()>
+        password: '0000'
+        civilite: 'Mr.'
+        genre: <boolean()>
+        poste: <text(60)>
+        departement: <text(60)>
+        email: <email()>
+        telephone: <phoneNumber()>
+        roles: ['@role_ADMIN','@role_USER']

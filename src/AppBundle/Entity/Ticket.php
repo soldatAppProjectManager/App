@@ -392,6 +392,10 @@ class Ticket
      */
     public function getLastHistory()
     {
+        if(empty($this->lastHistory) && !empty($this->getHistories())) {
+            return $this->getHistories()->last();
+        }
+
         return $this->lastHistory;
     }
 

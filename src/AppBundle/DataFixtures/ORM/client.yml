@@ -1,0 +1,8 @@
+AppBundle\Entity\Client:
+    client_{1..5000}:
+        nom: <name()>
+        secteur: 'Aerospace industry'
+        address: <streetAddress()>, <city()> <country()>
+        tel: <PhoneNumber()>
+        prive: <boolean()>
+        delaipaiementconstate: <numberBetween(50, 100)>

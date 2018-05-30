@@ -1,0 +1,8 @@
+AppBundle\Entity\TicketHistory:
+    ticket_history_{1..6000}:
+        ticket: '@e_ticket_*'
+        status: '@ticket_status_*'
+        date: <dateTime()>
+        note: <text(100)>
+        createdAt: <dateTime()>
+        createdBy: '@user_*'

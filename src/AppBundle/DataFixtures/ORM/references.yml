@@ -1,0 +1,10 @@
+AppBundle\Entity\Priority:
+    priority_haute:
+        label: 'Haute'
+        ordre: 1
+    priority_moyenne:
+        label: 'Moyenne'
+        ordre: 2
+    priority_faible:
+        label: 'Faible'
+        ordre: 3

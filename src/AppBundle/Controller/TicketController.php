@@ -2,20 +2,16 @@
 
 namespace AppBundle\Controller;
 
-use AppBundle\Entity\Ticket;
-use AppBundle\Entity\TicketHistory;
-use AppBundle\Entity\TicketStatus;
-use AppBundle\Form\TicketHistoryType;
-use AppBundle\Form\TicketType;
-use AppBundle\Service\charges;
-use AppBundle\Service\CurrencyCollector;
-use AppBundle\Service\TicketManager;
-use AppBundle\Service\charges;
-use AppBundle\Service\CurrencyCollector;
-use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+
+use AppBundle\Entity\Ticket;
+use AppBundle\Entity\TicketStatus;
+use AppBundle\Form\TicketHistoryType;
+use AppBundle\Form\TicketType;
+use AppBundle\Service\TicketManager;
+use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
 
 /**
