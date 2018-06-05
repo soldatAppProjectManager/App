@@ -1,11 +1,11 @@
 {% extends 'base.html.twig' %}
 
 {% block title %}
-{% if rfp.id is empty %}
-    Nouvelle appel d'offre
-{% else %}
-    Modification appel d'offre #{{ rfp.id }}
-{% endif %}
+    {% if rfp.id is empty %}
+        Nouvelle appel d'offre
+    {% else %}
+        Modification appel d'offre #{{ rfp.id }}
+    {% endif %}
 {% endblock %}
 {% block stylesheets %}
     {{ parent() }}
@@ -23,7 +23,7 @@
                   {{ form_row(form.number) }}
               </div>
               <div class="col-md-2" style="position: absolute;
-    bottom: 0;right: 0;" >
+    bottom: 0;right: 0;">
                   <a class="pull-right btn btn-sm btn-danger btnDeleteLot" href="#"><i
                               class="fa fa-times"></i></a>
               </div>
@@ -31,52 +31,54 @@
       </div>
   {% endblock %}
 {% block body %}
-    <h1>
-        {% if rfp.id is empty %}
-            Nouvelle appel d'offre
-        {% else %}
-            Modification appel d'offre #{{ rfp.id }}
-        {% endif %}
-    </h1>
+    <div class="row">
+        <h1>
+            {% if rfp.id is empty %}
+                Nouvelle appel d'offre
+            {% else %}
+                Modification appel d'offre #{{ rfp.id }}
+            {% endif %}
+        </h1>
 
-    {{ form_start(form) }}
-    <div class=" well well-lg">
-        <div class="row">
-            <div class="col-md-3 form-group ">
-                {{ form_label(form.date) }}
-                {{ form_widget(form.date) }}
-                {{ form_errors(form.date) }}
+        {{ form_start(form) }}
+        <div class=" well well-lg">
+            <div class="row">
+                <div class="col-md-3 form-group ">
+                    {{ form_label(form.date) }}
+                    {{ form_widget(form.date) }}
+                    {{ form_errors(form.date) }}
+                </div>
+                <div class="col-md-2 form-group ">
+                    {{ form_label(form.number) }}
+                    {{ form_widget(form.number) }}
+                    {{ form_errors(form.number) }}
+                </div>
+                <div class="col-md-7 form-group ">
+                    {{ form_label(form.object) }}
+                    {{ form_widget(form.object) }}
+                    {{ form_errors(form.object) }}
+                </div>
             </div>
-            <div class="col-md-2 form-group ">
-                {{ form_label(form.number) }}
-                {{ form_widget(form.number) }}
-                {{ form_errors(form.number) }}
+            <div class="row">
+                <div class="col-md-3">
+                    {{ form_row(form.modele) }}
+                </div>
             </div>
-            <div class="col-md-7 form-group ">
-                {{ form_label(form.object) }}
-                {{ form_widget(form.object) }}
-                {{ form_errors(form.object) }}
-            </div>
-        </div>
-        <div class="row" >
-            <div class="col-md-3" >
-                {{ form_row(form.modele) }}
-            </div>
+
+            <fieldset>
+                <legend> {{ form_label(form.lots) }} <a href="#"
+                                                        id="btnNewLot"
+                                                        class="btn btn-sm btn-info pull-right"><i
+                                class="fa fa-plus"></i> Ajouter un autre lot</a></legend>
+                {{ form_widget(form.lots) }}
+                <br>
+            </fieldset>
         </div>
 
-        <fieldset>
-            <legend> {{ form_label(form.lots) }} <a href="#"
-                                                    id="btnNewLot"
-                                                    class="btn btn-sm btn-info pull-right"><i
-                            class="fa fa-plus"></i> Ajouter un autre lot</a></legend>
-            {{ form_widget(form.lots) }}
-            <br>
-        </fieldset>
+        <a class="btn btn-default" href="{{ path('rfp_index') }}">Annuler</a>
+        <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
+        {{ form_end(form) }}
     </div>
-
-    <a class="btn btn-default" href="{{ path('rfp_index') }}">Annuler</a>
-    <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
-    {{ form_end(form) }}
 {% endblock %}
 
 {% block javascripts %}

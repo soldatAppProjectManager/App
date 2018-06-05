@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="row" >
 	<h1>Liste des Monnaies</h1>
 	<p class="lead">Consulter et editer les monnaies utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des monnaies</p>
 
@@ -51,4 +52,5 @@
 				<a type="button" class="btn btn-success" href="{{ url('monnaie_create')}}">Ajouter une Monnaie</a>
 		</div>
 	</div>
-{% endblock %}  
+	</div>
+{% endblock %}

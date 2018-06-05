@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="row">
 	<h1>Liste des Entete</h1>
 	<p class="lead">Consulter et editer les Entetes utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des Entetes</p>
 
@@ -35,9 +36,7 @@
 
 				<hr>
 				<a type="button" class="btn btn-success" href="{{ url('Entete_create')}}">Ajouter un entete</a>
-
-			      
-
 		</div>
 	</div>
-{% endblock %}  
+	</div>
+{% endblock %}
