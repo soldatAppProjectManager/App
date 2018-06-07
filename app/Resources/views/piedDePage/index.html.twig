@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+	<div class="row" >
 	<h1>Liste des piedDePage</h1>
 	<p class="lead">Consulter et editer les piedDePages utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des piedDePages</p>
 
@@ -33,9 +34,7 @@
 
 				<hr>
 				<a type="button" class="btn btn-success" href="{{ url('piedDePage_create')}}">Ajouter un piedDePage</a>
-
-			      
-
 		</div>
 	</div>
-{% endblock %}  
+	</div>
+{% endblock %}

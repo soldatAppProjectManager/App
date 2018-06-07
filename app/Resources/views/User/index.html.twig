@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block body %}
+<div class="row" >
 	<h1>Liste des User</h1>
 	<p class="lead">Consulter et editer les User utilisées dans la gestion commerciale.<br> A venir, une mise a jour automatique des contact.</p>
 
@@ -36,4 +37,5 @@
 				<a type="button" class="btn btn-success" href="{{ url('User_create')}}"><i class="fa fa-user-plus" aria-hidden="true"></i> Ajouter un User</a>		
 		</div>
 	</div>
+</div>
 {% endblock %}  

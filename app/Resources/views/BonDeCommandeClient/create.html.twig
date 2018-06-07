@@ -2,73 +2,73 @@
 
 
 {% block stylesheets %}
-{{ parent() }}
+    {{ parent() }}
 
-<link href="{{ asset('css/slider.css') }}" rel="stylesheet" />
+    <link href="{{ asset('css/slider.css') }}" rel="stylesheet"/>
 {% endblock %}
 
 {% block title %} Créer un bon de commande {% endblock %}
 {% block body %}
+    <div class="row">
+        <h1>Création d'un accusé de Bon de commande </h1>
+        <p class="lead">Consulter et editer les BC utilisés dans la gestion commerciale.<br> A venir, les rapports
+        </p>
+        <hr>
+        <br><br><br>
+        <div class="container">
+            <div class="col-lg-12">
+                {{ form_start(form) }}
 
-<div class="row">
-	<h1>Création d'un accusé de Bon de commande </h1>
-		<p class="lead">Consulter et editer les BC utilisés dans la gestion commerciale.<br> A venir, les rapports </p>
-</div>
-<hr>
-<br><br><br>
-	<div class="container">
-		<div class="col-lg-12">
-			{{ form_start(form) }}
+                <div class="row well well-lg">
+                    <div class="col-md-3 form-group {% if not form.datedereception.vars.valid %} has-error {% endif %}">
+                        <div class="input date form_datetime">
+                            {{ form_label(form.datedereception) }}
+                            {{ form_errors(form.datedereception) }}
+                            {{ form_widget(form.datedereception) }}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group {% if not form.datebondecommande.vars.valid %} has-error {% endif %}">
+                        <div class="input date form_datetime">
+                            {{ form_label(form.datebondecommande) }}
+                            {{ form_errors(form.datebondecommande) }}
+                            {{ form_widget(form.datebondecommande) }}
+                        </div>
+                    </div>
+                    <div class="col-md-3 form-group {% if not form.numeroDeBonDeCommandeClient.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.numeroDeBonDeCommandeClient, 'Num BC Client') }}
+                        {{ form_errors(form.numeroDeBonDeCommandeClient) }}
+                        {{ form_widget(form.numeroDeBonDeCommandeClient) }}
+                    </div>
+                    <div class="col-md-3 form-group {% if not form.echeance.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.echeance) }}
+                        {{ form_errors(form.echeance) }}
+                        {{ form_widget(form.echeance) }}
+                    </div>
+                </div>
+                <hr>
+                <br>
+                <div class="row well well-lg" style="width:75%">
+                    <div class="col-md-12 form-group {% if not form.Fichier.vars.valid %} has-error {% endif %}">
+                        {{ form_label(form.Fichier) }}
+                        {{ form_errors(form.Fichier) }}
+                        {{ form_widget(form.Fichier) }}
+                    </div>
+                </div>
 
-			<div class="row well well-lg">
-				<div class="col-md-3 form-group {% if not form.datedereception.vars.valid %} has-error {% endif %}">
-					<div class="input date form_datetime">
-					{{ form_label(form.datedereception) }}
-					{{ form_errors(form.datedereception) }}
-					{{ form_widget(form.datedereception) }}   
-					</div>	
-				</div>
-				<div class="col-md-3 form-group {% if not form.datebondecommande.vars.valid %} has-error {% endif %}">
-					<div class="input date form_datetime">
-						{{ form_label(form.datebondecommande) }}
-						{{ form_errors(form.datebondecommande) }}
-						{{ form_widget(form.datebondecommande) }}
-					</div>
-				</div>
-				<div class="col-md-3 form-group {% if not form.numeroDeBonDeCommandeClient.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.numeroDeBonDeCommandeClient, 'Num BC Client') }}
-					{{ form_errors(form.numeroDeBonDeCommandeClient) }}
-					{{ form_widget(form.numeroDeBonDeCommandeClient) }}
-				</div>
-				<div class="col-md-3 form-group {% if not form.echeance.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.echeance) }}
-					{{ form_errors(form.echeance) }}
-					{{ form_widget(form.echeance) }}
-				</div>
-			</div>
-			<hr><br>
-			<div class="row well well-lg" style="width:75%">
-				<div class="col-md-12 form-group {% if not form.Fichier.vars.valid %} has-error {% endif %}">
-					{{ form_label(form.Fichier) }}
-					{{ form_errors(form.Fichier) }}
-					{{ form_widget(form.Fichier) }}
-				</div>
-			</div>
-
-			<div class="row">
-				<a type="button" href="{{ url('BonDeCommandeClient_list')}}" class="btn btn-default">Annuler</a>
-				<button type="submit" class="btn btn-primary" formnovalidate>Créer Bon de commande</button>
-			</div>
-			<br><br><br>
-		{{ form_end(form) }}
-		</div>
-	</div>
-
+                <div class="row">
+                    <a type="button" href="{{ url('BonDeCommandeClient_list') }}" class="btn btn-default">Annuler</a>
+                    <button type="submit" class="btn btn-primary" formnovalidate>Créer Bon de commande</button>
+                </div>
+                <br><br><br>
+                {{ form_end(form) }}
+            </div>
+        </div>
+    </div>
 {% endblock %}
 
 {% block javascripts %}
 
-	{{ parent() }}
-  	<script src="{{ asset('js/bootstrap-filestyle.min.js') }}"></script>
+    {{ parent() }}
+    <script src="{{ asset('js/bootstrap-filestyle.min.js') }}"></script>
 
 {% endblock %}
