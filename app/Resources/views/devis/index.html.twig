@@ -77,9 +77,11 @@
                             {% endif %}
 
                             <a type="button" class="btn btn-warning btn-sm"
-                               href="{{ url('devis_archive', {'id' : chaque_devis.id}) }}"><i class="fa fa-file-archive-o"
-                                                                                             aria-hidden="true"></i>
-                                {{ 'Archiver' }}</a>
+                               href="{{ url('devis_archive', {'id' : chaque_devis.id}) }}"
+                                onclick="return confirm('Êtes vous sûr de vouloir archiver ce devis ?')">
+                                <i class="fa fa-file-archive-o" aria-hidden="true"></i>
+                                {{ 'Archiver' }}
+                            </a>
                         </td>
                     </tr>
                     {% endif %}
