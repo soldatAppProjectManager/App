@@ -452,6 +452,19 @@ class DevisController extends Controller
     }
 
     /**
+     * @Route("/archive-list", name="devis_archive_list")
+     * @Method("GET")
+     */
+    public function listeArchiveAction()
+    {
+        $devis = $this->getDoctrine()->getRepository(Devis::class)
+            ->findBy([], ['id' => 'DESC']);
+        return $this->render('devis/archived_list.html.twig', array(
+            'devis' => $devis
+        ));
+    }
+
+    /**
      *
      * @Route("/charges", name="charges_fetch")
      * @Method("POST")
