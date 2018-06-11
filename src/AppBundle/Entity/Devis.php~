@@ -39,7 +39,7 @@ class Devis extends AbstractDocumentClient
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(name="archived", type="boolean")
      */
     private $archived;
 
@@ -1329,29 +1329,5 @@ class Devis extends AbstractDocumentClient
         $date->modify("+ $validite days");
 
         return $date;
-    }
-
-    /**
-     * Set archived.
-     *
-     * @param bool $archived
-     *
-     * @return Devis
-     */
-    public function setArchived($archived)
-    {
-        $this->archived = $archived;
-
-        return $this;
-    }
-
-    /**
-     * Get archived.
-     *
-     * @return bool
-     */
-    public function getArchived()
-    {
-        return $this->archived;
     }
 }

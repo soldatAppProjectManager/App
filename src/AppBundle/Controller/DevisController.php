@@ -437,6 +437,25 @@ class DevisController extends Controller
     }
 
     /**
+     * @Route("/archiver/{id}", name="devis_archive")
+     * @Method("GET")
+     */
+    public function toggleArchiveAction(Devis $devis)
+    {
+        if ($devis->getArchived() === false) {
+            $devis->setArchived(true);
+        } else {
+            $devis->setArchived(false);
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $em->flush();
+
+        $this->addFlash('notice', $devis->getArchived() ? 'archivé' : 'désarchivé');
+        return $this->redirectToRoute('devis_list');
+    }
+
+    /**
      *
      * @Route("/charges", name="charges_fetch")
      * @Method("POST")

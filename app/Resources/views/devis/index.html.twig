@@ -70,6 +70,11 @@
                                                                                                  aria-hidden="true"></i>
                                     Suppr</a>{% endif %}
                             {% endif %}
+
+                            <a type="button" class="btn btn-warning btn-sm"
+                               href="{{ url('devis_archive', {'id' : chaque_devis.id}) }}"><i class="fa fa-file-archive-o"
+                                                                                             aria-hidden="true"></i>
+                                {{ chaque_devis.archived ? 'Désarchiver' : 'Archiver' }}</a>
                         </td>
                     </tr>
                 {% endfor %}
