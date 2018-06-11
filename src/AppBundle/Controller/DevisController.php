@@ -442,11 +442,7 @@ class DevisController extends Controller
      */
     public function toggleArchiveAction(Devis $devis)
     {
-        if ($devis->getArchived() === false) {
-            $devis->setArchived(true);
-        } else {
-            $devis->setArchived(false);
-        }
+        $devis->setArchived(!$devis->getArchived());
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();

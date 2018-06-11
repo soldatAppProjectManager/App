@@ -36,6 +36,7 @@
                 </thead>
                 <tbody>
                 {% for chaque_devis in devis %}
+                    {% if not chaque_devis.archived %}
                     <tr>
                         <th scope="row">{{ chaque_devis.reference }} </th>
                         <td><strong>{{ chaque_devis.client.nom }} </strong></td>
@@ -77,6 +78,7 @@
                                 {{ chaque_devis.archived ? 'Désarchiver' : 'Archiver' }}</a>
                         </td>
                     </tr>
+                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
