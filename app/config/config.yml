@@ -51,7 +51,8 @@ twig:
         bank_account_number: '011780000016210001127789'
         capital: '500 000 Dirhams'
         address1: '1100 Boulevard Al Qods Régus, Shore1, 20190 Casablanca Maroc'
-        address2: '22 Rue du parc, Régus le théâtre 20100 Casablanca, Maroc.'
+       # address2: '22 Rue du parc, Régus le théâtre 20100 Casablanca, Maroc.'
+        address2: '14, Boulevard Yacoub El Mansour 2° étage bureau n° 3'
 
 
 # Doctrine Configuration
