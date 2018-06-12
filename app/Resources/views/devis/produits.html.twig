@@ -87,7 +87,12 @@
                   <tr>
                     <th>{{achat.nom[:10]}}... <span class="badge" >{{achat.articles}}</span>  <span class="badge" >{{achat.pieces}}</span> </th>
                     <td>{{achat.revenu| number_format(2, ',', ' ')}} <strong>{{devis.devisevente.symbol}} </strong>
-                      ({{ (100*achat.revenu/devis.getTotalHT)| number_format(2, ',', ' ')}}%) </td>              
+                      {% if devis.totalHT == 0 %}
+                        ({{ 00| number_format(2, ',', ' ')}}%)
+                      {% else %}
+                        ({{ (100*achat.revenu/devis.totalHT)| number_format(2, ',', ' ')}}%)
+                      {% endif %}
+                    </td>
                   </tr>
                 {% endfor %}  
                   <tr>
@@ -116,7 +121,12 @@
                     <tr>
                       <th>{{achat.nom [:10]}}...<span class="badge" >{{achat.articles}}</span>  <span class="badge" >{{achat.pieces}}</span> </th>
                       <td>{{achat.revenu| number_format(2, ',', ' ')}} <strong>{{devis.devisevente.symbol}}</strong>
-                          ({{ (100*achat.revenu/devis.getTotalHT)| number_format(2, ',', ' ')}}%) </td>              
+                       {% if devis.totalHT == 0 %}
+                        ({{ 00| number_format(2, ',', ' ')}}%)
+                       {% else %}
+                        ({{ (100*achat.revenu/devis.totalHT)| number_format(2, ',', ' ')}}%)
+                       {% endif %}
+                      </td>
                     </tr>
                   {% endfor %}  
                     <tr>
