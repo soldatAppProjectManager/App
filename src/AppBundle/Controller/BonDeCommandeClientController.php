@@ -22,6 +22,7 @@ use AppBundle\Entity\BonDeCommandeClient;
 use AppBundle\Entity\TermesBCRelation;
 
 use Doctrine\Common\Collections\ArrayCollection;
+use http\Env\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -35,6 +36,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Form\BonDeCommandeClientFormType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_ADMIN')")
@@ -92,6 +94,9 @@ class BonDeCommandeClientController extends Controller
      */
     public function createAction(Devis $devis, Request $request)
     {
+        /*if ($devis->getArchived() === true) {
+            return $this->render();*/
+
         $BonDeCommandeClient = new BonDeCommandeClient;
         $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
         $form->handleRequest($request);

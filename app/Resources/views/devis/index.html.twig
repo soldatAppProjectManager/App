@@ -23,7 +23,7 @@
 
             <a href="{{ archived ? url('devis_list', {'archived': 0}) : url('devis_list', {'archived': 1} )}}"
                class="btn btn-default pull-right">
-                <i class="fa fa-list-ul" aria-hidden="true"></i> {{ archived ? 'Retour à la liste principale' : 'Lister Devis Archivés'}}
+                <i class="fa fa-list-ul" aria-hidden="true"></i> {{ archived ? 'Retour à la liste principale' : 'Devis Archivés'}}
             </a>
 
             <hr>
@@ -66,9 +66,12 @@
                             <a type="button" class="btn btn-primary btn-sm"
                                href="{{ url('devis_copie', {'id' : chaque_devis.id}) }}"><i class="fa fa-clone"
                                                                                             aria-hidden="true"></i> Copy</a>
-                            <a type="button" class="btn btn-success btn-sm"
-                               href="{{ url('BonDeCommandeClient_create', {'id' : chaque_devis.id}) }}"><i
-                                        class="fa fa-check" aria-hidden="true"></i> BC</a>
+                            {% if not chaque_devis.archived %}
+                                <a type="button" class="btn btn-success btn-sm"
+                                   href="{{ url('BonDeCommandeClient_create', {'id' : chaque_devis.id}) }}"><i
+                                            class="fa fa-check" aria-hidden="true"></i> BC</a>
+                            {% endif %}
+
                             {% if chaque_devis.draft %}
                                 {% if chaque_devis.BonDeCommandes|length == 0 %}
                                 <a type="button" class="btn btn-danger btn-sm"
