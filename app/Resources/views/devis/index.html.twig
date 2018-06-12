@@ -21,8 +21,9 @@
                 <i class="fa fa-plus" aria-hidden="true"></i> Créer un devis
             </a>
 
-            <a href="{{ url('devis_list', {'archived': 1}) }}" class="btn btn-default pull-right">
-                <i class="fa fa-list-ul" aria-hidden="true"></i> Lister Devis Archivés
+            <a href="{{ archived ? url('devis_list', {'archived': 0}) : url('devis_list', {'archived': 1} )}}"
+               class="btn btn-default pull-right">
+                <i class="fa fa-list-ul" aria-hidden="true"></i> {{ archived ? 'Retour à la liste principale' : 'Lister Devis Archivés'}}
             </a>
 
             <hr>
@@ -77,7 +78,7 @@
                             {% endif %}
 
                             <a type="button" class="btn btn-warning btn-sm"
-                               href="{{ url('devis_archive', {'id' : chaque_devis.id}) }}">
+                               href="{{ url('devis_archive', {'id' : chaque_devis.id, 'archived': archived}) }}">
                                 <i class="fa fa-file-archive-o" aria-hidden="true"></i>
                                 {{ chaque_devis.archived ? 'Désarchiver' : 'Archiver' }}
                             </a>

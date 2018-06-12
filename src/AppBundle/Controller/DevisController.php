@@ -64,7 +64,8 @@ class DevisController extends Controller
 
         return $this->render('devis/index.html.twig', [
             'devis' => $devis,
-            'user' => $this->getUser()
+            'user' => $this->getUser(),
+            'archived' => $archived
         ]);
     }
 
@@ -443,15 +444,17 @@ class DevisController extends Controller
      * @Route("/archiver/{id}", name="devis_archive")
      * @Method("GET")
      */
-    public function toggleArchiveAction(Devis $devis)
+    public function toggleArchiveAction(Devis $devis, Request $request)
     {
         $devis->setArchived(!$devis->getArchived());
+
+        $archived = $request->get('archived');
 
         $em = $this->getDoctrine()->getManager();
         $em->flush();
 
         $this->addFlash('notice', $devis->getArchived() ? 'archivé' : 'désarchivé');
-        return $this->redirectToRoute('devis_list');
+        return $this->redirectToRoute('devis_list', ['archived' => $archived]);
     }
 
     /**
