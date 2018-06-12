@@ -16,10 +16,10 @@
         - Mode de passation : Appel d’offres ouvert, sur offres des prix {{ rfp.number }}
     {% if rfp.date %} du
     {{ rfp.date|localizeddate('none', 'none', 'fr_FR', null, "d MMMM Y 'à' h 'heures'")|capitalize }}
+    {% endif %}
     {% if rfp.date|date('i')>0 %}
     {{ rfp.date|date('i') }} minutes
     {% endif %}
-    {% if rfp.date %}
     .<br>
         - <b>Objet</b> : {{ rfp.object|nl2br }}
      

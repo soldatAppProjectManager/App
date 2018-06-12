@@ -6,13 +6,13 @@
 
     {{ include('::style.html.twig') }}
     <style>
-th, td{
-    padding: 7px 3px 7px 3px;
-}
+        th, td{
+            padding: 7px 3px 7px 3px;
+        }
 
-*{
-    font-family: sans-serif;
-}
+        *{
+            font-family: sans-serif;
+        }
     </style>
 </head>
 <body>
@@ -32,21 +32,30 @@ th, td{
 
 
 <div class="footer">
-        {% include '::footer.html.twig' with {'footer': devis.piedDePage} %}
-        <p class="page"></p>
+    {% include '::footer.html.twig' with {'footer': devis.piedDePage} %}
+    <p class="page"></p>
 </div>
 <br>
-<h1 style="font-size: 16px;text-decoration: underline;text-align: center">BORDEREAUX DES PRIX - DETAIL ESTIMATIF</h1>
+<h1 style="font-size: 16px;text-align: center;">
+    Bordereaux des prix-détail estimatif<br>
+    Appel d'offres ouvert sur offres de prix n° {{ devis.lot.rfp.number }} relatif à L'acquisition d'équipements informatiques
+
+</h1>
+<br>
+<br>
+<br>
+<br>
+<br>
+<h3 style="font-size: 14px" >{{ devis.titre }}</h3>
 <table id="#tablePrice" border="1" style="width: 100%" >
     <thead>
-    <tr>
-        <th align="center">N° du prix</th>
-        <th align="center">Désignation des prestations</th>
-        <th align="center">Référence au CPS</th>
-        <th align="center">Unité de mesure ou de compte</th>
-        <th align="center">Quantité</th>
-        <th align="center">Prix unitaire en DH</th>
-        <th align="center">Prix Total en DH</th>
+    <tr style="background-color: #EEEEEE" >
+        <th align="center">N° De prix</th>
+        <th align="center">DÉSIGNATION</th>
+        <th align="center">Unite de mesure ou de compte</th>
+        <th align="center">Qté</th>
+        <th align="center">Prix Unitaire en dirhams<br>(hors TVA)</th>
+        <th align="center">Prix Total en dirhams<br>(hors TVA)</th>
     </tr>
     </thead>
     <tbody>
@@ -56,7 +65,6 @@ th, td{
             <td>
                 {{ produit.designation }}
             </td>
-            <td align="center"  >Article 23</td>
             <td align="center">{{ produit.unite }}</td>
             <td align="center">{{ produit.quantite }}</td>
             <td align="right">{{ produit.prixVenteHT|number_format(produit.typeproduit.precision, ',', ' ') }}</td>
@@ -64,17 +72,17 @@ th, td{
         </tr>
     {% endfor %}
     <tr>
-        <td colspan="5" align="right" >
-            <b style="font-size: 15px" >TOTAL HORSTVA</b>
+        <td colspan="4" >
+            <b style="font-size: 15px" >Montant Total Hors TVA</b>
         </td>
         <td colspan="2" align="right" ><b style="font-size: 15px" >
-            {{ devis.getTotalHT|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}
+                {{ devis.getTotalHT|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}
             </b>
         </td>
     </tr>
     <tr>
-        <td colspan="5" align="right" >
-            <b style="font-size: 15px" >MONTANT DE LA TVA 20%</b>
+        <td colspan="4" >
+            <b style="font-size: 15px" >Taux TVA (20%)</b>
         </td>
         <td colspan="2" align="right" ><b style="font-size: 15px" >
                 {{ devis.getTotalTVA|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}
@@ -82,8 +90,8 @@ th, td{
         </td>
     </tr>
     <tr>
-        <td colspan="5" align="right" >
-            <b style="font-size: 15px" >TOTAL TTC</b>
+        <td colspan="4" >
+            <b style="font-size: 15px" >Montant Total TTC</b>
         </td>
         <td colspan="2" align="right" ><b style="font-size: 15px" >
                 {{ devis.getTotalTTC|number_format(2, ',', ' ') }} {{ devis.devisevente.symbol }}
