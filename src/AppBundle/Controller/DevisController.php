@@ -54,15 +54,18 @@ use Doctrine\ORM\Query\Expr;
 class DevisController extends Controller
 {
     /**
-     * @Route("", name="devis_list")
+     * @Route("/{archived}", name="devis_list", defaults={"archived"=0})
      */
-    public function indexAction(Request $request)
+    public function indexAction(Request $request, $archived)
     {
         $devis = $this->getDoctrine()
             ->getRepository('AppBundle:Devis')
-            ->findBy([], ['id' => 'DESC']);
+            ->findBy(['archived' => $archived], ['id' => 'DESC']);
 
-        return $this->render('devis/index.html.twig', ['devis' => $devis, 'user' => $this->getUser()]);
+        return $this->render('devis/index.html.twig', [
+            'devis' => $devis,
+            'user' => $this->getUser()
+        ]);
     }
 
     /**
@@ -449,19 +452,6 @@ class DevisController extends Controller
 
         $this->addFlash('notice', $devis->getArchived() ? 'archivé' : 'désarchivé');
         return $this->redirectToRoute('devis_list');
-    }
-
-    /**
-     * @Route("/archive-list", name="devis_archive_list")
-     * @Method("GET")
-     */
-    public function listeArchiveAction()
-    {
-        $devis = $this->getDoctrine()->getRepository(Devis::class)
-            ->findBy([], ['id' => 'DESC']);
-        return $this->render('devis/archived_list.html.twig', array(
-            'devis' => $devis
-        ));
     }
 
     /**

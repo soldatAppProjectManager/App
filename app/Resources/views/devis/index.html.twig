@@ -12,6 +12,7 @@
         <p class="lead">Consulter et editer les devis utilisées dans la gestion commerciale .<br> A venir, les rapports
         </p>
     </div>
+
     <div class="row">
         <div class="col-lg-12">
 
@@ -20,7 +21,7 @@
                 <i class="fa fa-plus" aria-hidden="true"></i> Créer un devis
             </a>
 
-            <a href="{{ url('devis_archive_list') }}" class="btn btn-default pull-right">
+            <a href="{{ url('devis_list', {'archived': 1}) }}" class="btn btn-default pull-right">
                 <i class="fa fa-list-ul" aria-hidden="true"></i> Lister Devis Archivés
             </a>
 
@@ -40,7 +41,6 @@
                 </thead>
                 <tbody>
                 {% for chaque_devis in devis %}
-                    {% if not chaque_devis.archived %}
                     <tr>
                         <th scope="row">{{ chaque_devis.reference }} </th>
                         <td><strong>{{ chaque_devis.client.nom }} </strong></td>
@@ -77,14 +77,12 @@
                             {% endif %}
 
                             <a type="button" class="btn btn-warning btn-sm"
-                               href="{{ url('devis_archive', {'id' : chaque_devis.id}) }}"
-                                onclick="return confirm('Êtes vous sûr de vouloir archiver ce devis ?')">
+                               href="{{ url('devis_archive', {'id' : chaque_devis.id}) }}">
                                 <i class="fa fa-file-archive-o" aria-hidden="true"></i>
-                                {{ 'Archiver' }}
+                                {{ chaque_devis.archived ? 'Désarchiver' : 'Archiver' }}
                             </a>
                         </td>
                     </tr>
-                    {% endif %}
                 {% endfor %}
                 </tbody>
             </table>
