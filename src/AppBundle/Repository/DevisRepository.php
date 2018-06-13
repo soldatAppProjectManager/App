@@ -51,5 +51,4 @@ class DevisRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
-
 }

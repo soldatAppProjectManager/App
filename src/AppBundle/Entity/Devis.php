@@ -38,6 +38,12 @@ class Devis extends AbstractDocumentClient
     private $TravailAvantVente;
 
     /**
+     * @var boolean
+     * @ORM\Column(type="boolean")
+     */
+    private $archived;
+
+    /**
      * @var \TravailCommercial
      * @ORM\ManyToOne(targetEntity="TravailCommercial")
      * @ORM\JoinColumn(name="TravailCommercial_id", referencedColumnName="id")
@@ -1323,5 +1329,29 @@ class Devis extends AbstractDocumentClient
         $date->modify("+ $validite days");
 
         return $date;
+    }
+
+    /**
+     * Set archived.
+     *
+     * @param bool $archived
+     *
+     * @return Devis
+     */
+    public function setArchived($archived)
+    {
+        $this->archived = $archived;
+
+        return $this;
+    }
+
+    /**
+     * Get archived.
+     *
+     * @return bool
+     */
+    public function getArchived()
+    {
+        return $this->archived;
     }
 }

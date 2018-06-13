@@ -35,6 +35,7 @@ use Symfony\Component\HttpFoundation\ResponseHeaderBag;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 use AppBundle\Form\BonDeCommandeClientFormType;
+use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
  * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_ADMIN')")
@@ -92,6 +93,10 @@ class BonDeCommandeClientController extends Controller
      */
     public function createAction(Devis $devis, Request $request)
     {
+        if ($devis->getArchived() === true) {
+            throw new NotFoundHttpException('Ce devis a été archivé ! 
+            Veuillez le désarchiver au préalable avant de pouvoir lui appliquer tout traitement particulier.');
+        }
         $BonDeCommandeClient = new BonDeCommandeClient;
         $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
         $form->handleRequest($request);
