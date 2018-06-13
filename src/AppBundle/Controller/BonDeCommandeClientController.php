@@ -22,7 +22,6 @@ use AppBundle\Entity\BonDeCommandeClient;
 use AppBundle\Entity\TermesBCRelation;
 
 use Doctrine\Common\Collections\ArrayCollection;
-use http\Env\Response;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
