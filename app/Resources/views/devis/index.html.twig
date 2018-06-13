@@ -72,7 +72,7 @@
                                             class="fa fa-check" aria-hidden="true"></i> BC</a>
                             {% endif %}
 
-                            {% if chaque_devis.draft %}
+                            {% if chaque_devis.draft and not chaque_devis.archived %}
                                 {% if chaque_devis.BonDeCommandes|length == 0 %}
                                 <a type="button" class="btn btn-danger btn-sm"
                                    href="{{ url('devis_delete', {'id' : chaque_devis.id}) }}"><i class="fa fa-trash-o"

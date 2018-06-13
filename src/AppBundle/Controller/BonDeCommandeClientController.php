@@ -94,9 +94,10 @@ class BonDeCommandeClientController extends Controller
      */
     public function createAction(Devis $devis, Request $request)
     {
-        /*if ($devis->getArchived() === true) {
-            return $this->render();*/
-
+        if ($devis->getArchived() === true) {
+            throw new NotFoundHttpException('Ce devis a été archivé ! 
+            Veuillez le désarchiver au préalable avant de pouvoir lui appliquer tout traitement particulier.');
+        }
         $BonDeCommandeClient = new BonDeCommandeClient;
         $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
         $form->handleRequest($request);
