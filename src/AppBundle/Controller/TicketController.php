@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\SearchTicketType;
+use AppBundle\Search\TicketCriteria;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
@@ -22,19 +24,29 @@ use Symfony\Component\HttpFoundation\Request;
 class TicketController extends Controller
 {
     /**
-     * Lists all ticket entities.
+     *  Lists all ticket entities.
      *
      * @Route("/", name="ticket_index")
-     * @Method("GET")
+     * @Method({"GET","POST"})
+     *
+     * @param TicketManager $ticketManager
+     * @return \Symfony\Component\HttpFoundation\Response
+     *
      */
-    public function indexAction()
+    public function indexAction(TicketManager $ticketManager, Request $request)
     {
         $em = $this->getDoctrine()->getManager();
 
-        $tickets = $em->getRepository('AppBundle:Ticket')->findAll();
+        $criteria = new TicketCriteria();
+        $form = $this->createForm(SearchTicketType::class, $criteria);
+        $form->handleRequest($request);
+
+        $tickets = $em->getRepository('AppBundle:Ticket')->findBy([], ['id' => 'DESC']);
 
         return $this->render('ticket/index.html.twig', array(
             'tickets' => $tickets,
+            'statistics' => $ticketManager->getStatistics($criteria),
+            'searchForm' => $form->createView()
         ));
     }
 
