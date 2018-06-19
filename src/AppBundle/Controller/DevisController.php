@@ -55,7 +55,7 @@ class DevisController extends Controller
 {
     /**
      * @Route("/{archived}", name="devis_list", defaults={"archived"=0},
-     *     requirements={"archived" = "\d+"})
+     *     requirements={"archived" = "0|1"})
      */
     public function indexAction(Request $request, $archived)
     {
