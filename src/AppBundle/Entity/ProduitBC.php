@@ -477,7 +477,7 @@ class ProduitBC extends AbstractProduit
      * @param float $prixachatht
      *
      * @return ProduitBC
-     */
+*/
     public function setPrixachatht($prixachatht)
     {
         $this->prixachatht = $prixachatht;

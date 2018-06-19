@@ -6,8 +6,10 @@ use AppBundle\Entity\Opportunity;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class OpportunityType extends AbstractType
 {
@@ -40,6 +42,14 @@ class OpportunityType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
                 'by_reference' => false,
+            ])
+            ->add('dateEcheance', DateTimeType::class, [
+                'required' => true,
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => [
+                    'class' => 'js-datetimepicker'
+                ]
             ]);
     }
 

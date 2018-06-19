@@ -54,7 +54,8 @@ use Doctrine\ORM\Query\Expr;
 class DevisController extends Controller
 {
     /**
-     * @Route("/{archived}", name="devis_list", defaults={"archived"=0})
+     * @Route("/{archived}", name="devis_list", defaults={"archived"=0},
+     *     requirements={"archived" = "\d+"})
      */
     public function indexAction(Request $request, $archived)
     {
