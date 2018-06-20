@@ -168,12 +168,6 @@
                 newWidget = newWidget.replace(/__name__/g, counter);
                 $(newWidget).appendTo(list);
             });
-
-            $('.datepicker').datetimepicker({
-                locale: 'fr',
-                format: 'DD/MM/YYYY'
-            })
-
         });
 
         $('body').on('click', '.btnDeleteProduct', function (e) {
@@ -225,4 +219,6 @@
             });
         }
     </script>
+
+    {% include 'datetime_picker.html.twig' %}
 {% endblock %}
