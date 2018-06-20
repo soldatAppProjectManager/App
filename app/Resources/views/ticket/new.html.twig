@@ -71,12 +71,7 @@
     {{ parent() }}
     <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
     <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
-    <script type="text/javascript">
-        $(function () {
-            $('.datetimepicker').datetimepicker({
-                locale: 'fr',
-                format: "DD/MM/YYYY HH:mm"
-            }).focus();
-        });
-    </script>
+
+    {% include 'datetime_picker.html.twig' %}
+
 {% endblock %}

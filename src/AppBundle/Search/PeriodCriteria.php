@@ -1,10 +1,4 @@
 <?php
-/**
- * Created by PhpStorm.
- * User: FOFANA
- * Date: 19/06/2018
- * Time: 16:15
- */
 
 namespace AppBundle\Search;
 

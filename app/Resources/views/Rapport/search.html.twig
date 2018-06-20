@@ -11,6 +11,9 @@
 
     <h3>Recherche par période</h3>
     <div class="row">
+        <div class="col-md-4 pull-right">
+            <a href="{{ path('Rapport_list') }}" class="btn btn-default"><i class="fa fa-arrow-left"></i> Retour au dashboard</a>
+        </div>
         <div class="col-md-8">
             {{ form_start(search_form) }}
             <div class="form-inline">
@@ -55,9 +58,6 @@
                 <td>{{ opportunity.status }}</td>
                 <td class="pull text-right">{{ opportunity.total|number_format(2, ',', ' ') }}</td>
                 <td>{{ opportunity.dateEcheance | date('d/m/Y') }}</td>
-               {# <td>
-                    <a class="btn btn-xs btn-warning" href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}"><i class="fa fa-pencil" ></i> Edit</a>
-                </td>#}
             </tr>
         {% endfor %}
         </tbody>
@@ -72,12 +72,6 @@
         src="{{ asset('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}">
     </script>
 
-    <script>
-        $(function () {
-            $('.datepicker').datetimepicker({
-                locale: 'fr',
-                format: 'DD/MM/YYYY'
-            })
-        });
-    </script>
+    {% include 'datetime_picker.html.twig' %}
+
 {% endblock %}

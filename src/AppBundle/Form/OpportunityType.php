@@ -48,7 +48,7 @@ class OpportunityType extends AbstractType
                 'widget' => 'single_text',
                 'html5' => false,
                 'attr' => [
-                    'class' => 'js-datetimepicker'
+                    'class' => 'datepicker'
                 ]
             ]);
     }
