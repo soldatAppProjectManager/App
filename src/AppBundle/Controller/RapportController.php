@@ -2,9 +2,12 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Form\SearchPeriodType;
+use AppBundle\Search\PeriodCriteria;
 use AppBundle\Tools\Rapport;
 use AppBundle\Tools\RapportExcel;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -96,6 +99,29 @@ class RapportController extends Controller
         return $this->render('Rapport/create.html.twig', array(
             'form' => $form->createView(),
         ));
+    }
+
+    /**
+     * Finds Objects by Period Criteria
+     *
+     * @Route("/search", name="generic_search")
+     *
+     * @Method({"GET", "POST"})
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $criteria = new PeriodCriteria();
+        $form = $this->createForm(SearchPeriodType::class, $criteria);
+        $form->handleRequest($request);
+
+        $opportunities = $em->getRepository('AppBundle:Opportunity')->findByCriteria($criteria);
+
+        return $this->render('Rapport/search.html.twig', [
+            'opportunities' => $opportunities,
+            'search_form' => $form->createView()
+        ]);
     }
 
 }

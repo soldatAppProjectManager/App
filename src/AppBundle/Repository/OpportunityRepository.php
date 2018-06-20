@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Search\PeriodCriteria;
 
 /**
  * OpportunityRepository
@@ -18,5 +19,22 @@ class OpportunityRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('code', $code)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByCriteria(PeriodCriteria $criteria)
+    {
+        $qb = $this->createQueryBuilder('o');
+
+        if (!empty($criteria->getStartDate())) {
+            $qb->where('o.createdAt >= :startDate')
+                ->setParameter('startDate', $criteria->getStartDate());
+        }
+
+        if (!empty($criteria->getEndDate())) {
+            $qb->andWhere('o.createdAt <= :endDate')
+                ->setParameter('endDate', $criteria->getEndDate());
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
