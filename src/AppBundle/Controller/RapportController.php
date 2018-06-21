@@ -2,6 +2,7 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Opportunity;
 use AppBundle\Form\SearchPeriodType;
 use AppBundle\Search\PeriodCriteria;
 use AppBundle\Tools\Rapport;
@@ -110,6 +111,10 @@ class RapportController extends Controller
      */
     public function searchAction(Request $request)
     {
+        $montantTotal = 0;
+
+        $totalPercentage = 0;
+
         $em = $this->getDoctrine()->getManager();
 
         $criteria = new PeriodCriteria();
@@ -118,9 +123,17 @@ class RapportController extends Controller
 
         $opportunities = $em->getRepository('AppBundle:Opportunity')->findByCriteria($criteria);
 
+        /** @var Opportunity $opportunity */
+        foreach ($opportunities as $opportunity){
+            $montantTotal += $opportunity->getTotal();
+            $totalPercentage += $opportunity->getTotal() * ($opportunity->getProbability()->getValue()/100);
+        }
+
         return $this->render('Rapport/search.html.twig', [
             'opportunities' => $opportunities,
-            'search_form' => $form->createView()
+            'search_form' => $form->createView(),
+            'montantTotal' => $montantTotal,
+            'pourcentageTotal' => ($totalPercentage)
         ]);
     }
 

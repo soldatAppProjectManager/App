@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Opportunity;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
@@ -13,6 +14,21 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class OpportunityType extends AbstractType
 {
+
+    /**
+     * @var EntityManagerInterface
+     */
+    private $entityManager;
+
+    /**
+     * OpportunityType constructor.
+     * @param EntityManagerInterface $entityManager
+     */
+    public function __construct(EntityManagerInterface $entityManager)
+    {
+        $this->entityManager = $entityManager;
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -32,7 +48,15 @@ class OpportunityType extends AbstractType
                 ])
             ->add('contact', null, ['label' => 'Contact'])
             ->add('type')
-            ->add('status', null, ['label' => 'Statut'])
+            ->add('status', null, [
+                'label' => 'Statut',
+                'query_builder' => function(){
+                        return $this->entityManager->createQueryBuilder()
+                            ->select('s')
+                            ->from('AppBundle:OpportunityStatus', 's')
+                            ->where('s.code != 5');
+                    }
+                ])
             ->add('acquisitionMode', null , ['label' => 'Mode d\'acquisition'])
             ->add('probability',null , ['label' => 'Probabilité'])
             ->add('products', CollectionType::class, [

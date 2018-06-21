@@ -23,10 +23,12 @@ class OpportunityRepository extends \Doctrine\ORM\EntityRepository
 
     public function findByCriteria(PeriodCriteria $criteria)
     {
-        $qb = $this->createQueryBuilder('o');
+        $qb = $this->createQueryBuilder('o')
+            ->innerJoin('o.status', 's')
+            ->where('s.code = 1 OR s.code = 5');
 
         if (!empty($criteria->getStartDate())) {
-            $qb->where('o.createdAt >= :startDate')
+            $qb->andWhere('o.createdAt >= :startDate')
                 ->setParameter('startDate', $criteria->getStartDate());
         }
 
