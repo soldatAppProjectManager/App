@@ -3,6 +3,7 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Opportunity;
+use AppBundle\Entity\OpportunityStatus;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
@@ -14,20 +15,6 @@ use Symfony\Component\Validator\Constraints\DateTime;
 
 class OpportunityType extends AbstractType
 {
-
-    /**
-     * @var EntityManagerInterface
-     */
-    private $entityManager;
-
-    /**
-     * OpportunityType constructor.
-     * @param EntityManagerInterface $entityManager
-     */
-    public function __construct(EntityManagerInterface $entityManager)
-    {
-        $this->entityManager = $entityManager;
-    }
 
     /**
      * {@inheritdoc}
@@ -50,11 +37,10 @@ class OpportunityType extends AbstractType
             ->add('type')
             ->add('status', null, [
                 'label' => 'Statut',
-                'query_builder' => function(){
-                        return $this->entityManager->createQueryBuilder()
-                            ->select('s')
-                            ->from('AppBundle:OpportunityStatus', 's')
-                            ->where('s.code != 5');
+                'query_builder' => function($er){
+                        return $er->createQueryBuilder('s')
+                            ->where('s.code != :code')
+                            ->setParameter('code', OpportunityStatus::ECHU_CODE);
                     }
                 ])
             ->add('acquisitionMode', null , ['label' => 'Mode d\'acquisition'])

@@ -111,10 +111,7 @@ class RapportController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $montantTotal = 0;
-
-        $totalPercentage = 0;
-
+        $montantTotal = 0; $totalPercentage = 0;
         $em = $this->getDoctrine()->getManager();
 
         $criteria = new PeriodCriteria();
