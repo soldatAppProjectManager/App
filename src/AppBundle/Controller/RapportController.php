@@ -126,7 +126,7 @@ class RapportController extends Controller
             $totalPercentage += $opportunity->getTotal() * ($opportunity->getProbability()->getValue()/100);
         }
 
-        return $this->render('Rapport/search.html.twig', [
+        return $this->render(':Rapport:role_direction_index.html.twig', [
             'opportunities' => $opportunities,
             'search_form' => $form->createView(),
             'montantTotal' => $montantTotal,
