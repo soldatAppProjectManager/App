@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\OpportunityStatus;
 use AppBundle\Search\PeriodCriteria;
 
 /**
@@ -25,7 +26,8 @@ class OpportunityRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->createQueryBuilder('o')
             ->innerJoin('o.status', 's')
-            ->where('s.code = 1 OR s.code = 5');
+            ->where('s.code in (:statusCode)')
+            ->setParameter('statusCode', [OpportunityStatus::ECHU_CODE, OpportunityStatus::NCOURS_CODE]);
 
         if (!empty($criteria->getStartDate())) {
             $qb->andWhere('o.createdAt >= :startDate')
