@@ -32,7 +32,7 @@ class UpdateOpportunityStatus extends ContainerAwareCommand
      */
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $em = $this->getContainer()->get('doctrine');
+        $em = $this->getContainer()->get('doctrine')->getManager();
 
         $opportunities = $em->getRepository('AppBundle:Opportunity')
             ->findByStatusCode(OpportunityStatus::NCOURS_CODE);
@@ -44,6 +44,7 @@ class UpdateOpportunityStatus extends ContainerAwareCommand
                     ->findOneBy(['code' => OpportunityStatus::ECHU_CODE]));
             }
         }
+        $em->flush();
 
         $output->writeln('Les statuts ont été correctement mises à jour!');
     }
