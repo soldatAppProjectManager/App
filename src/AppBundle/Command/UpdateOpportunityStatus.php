@@ -20,7 +20,7 @@ class UpdateOpportunityStatus extends ContainerAwareCommand
 {
     protected function configure()
     {
-        $this->setName('app:update-status')
+        $this->setName('opportunity:update-status')
             ->setDescription('Updates opportunities statuses')
             ->setHelp('This command allows you to update the opportunities statuses...');
     }
@@ -35,7 +35,7 @@ class UpdateOpportunityStatus extends ContainerAwareCommand
         $em = $this->getContainer()->get('doctrine');
 
         $opportunities = $em->getRepository('AppBundle:Opportunity')
-            ->findAll();
+            ->findByStatusCode(OpportunityStatus::NCOURS_CODE);
 
         foreach ($opportunities as $opportunity) {
             /** @var Opportunity $opportunity */
