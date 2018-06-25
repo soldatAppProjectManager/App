@@ -12,7 +12,7 @@
     <h3>Recherche par période</h3>
     <div class="row">
         <div class="col">
-            {%  include ':Rapport:search.html.twig' %}
+            {%  include ':Rapport:search_form.html.twig' %}
         </div>
     </div><br>
 
@@ -29,11 +29,11 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="opportunities">
                     <br>
-                    {% include ':Rapport:role_direction_opportunity.html.twig'%}
+                    {% include ':Rapport:opportunity_search.html.twig'%}
                 </div>
                 <div class="tab-pane fade" id="devis">
                     <br>
-                    {% include ':Rapport:role_direction_devis.html.twig'%}
+                    {% include ':Rapport:devis_search.html.twig'%}
                 </div>
                 <div class="tab-pane fade" id="bonDeCommande">
                     <br>

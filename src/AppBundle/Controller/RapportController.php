@@ -105,7 +105,7 @@ class RapportController extends Controller
     /**
      * Finds Objects by Period Criteria
      *
-     * @Route("/search", name="generic_search")
+     * @Route("/dashboard", name="direction_dashboard")
      *
      * @Method({"GET", "POST"})
      */
@@ -127,7 +127,7 @@ class RapportController extends Controller
             $totalPercentage += $opportunity->getTotal() * ($opportunity->getProbability()->getValue()/100);
         }
 
-        return $this->render(':Rapport:role_direction_index.html.twig', [
+        return $this->render(':Rapport:search_index.html.twig', [
             'opportunities' => $opportunities,
             'devis' => $devis,
             'search_form' => $form->createView(),
