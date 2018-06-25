@@ -1,0 +1,56 @@
+{% extends 'base.html.twig' %}
+    {% block title %} Dashboard {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet"
+          href="{{ asset('bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+{% endblock %}
+{% block body %}
+    <h1>Dashboard</h1>
+    <hr>
+
+    <h3>Recherche par période</h3>
+    <div class="row">
+        <div class="col">
+            {%  include ':Rapport:search_form.html.twig' %}
+        </div>
+    </div><br>
+
+    <div class="row">
+        <div class="col-md-12">
+            <ul class="nav nav-tabs">
+                <li class="active"><a href="#opportunities" data-toggle="tab">Opportunités</a>
+                </li>
+                <li><a href="#devis" data-toggle="tab">Devis</a></li>
+                <li><a href="#bonDeCommande" data-toggle="tab">Bons De Commandes</a></li>
+            </ul>
+
+            <!-- Tabs -->
+            <div class="tab-content">
+                <div class="tab-pane fade in active" id="opportunities">
+                    <br>
+                    {% include ':Rapport:opportunity_search.html.twig'%}
+                </div>
+                <div class="tab-pane fade" id="devis">
+                    <br>
+                    {% include ':Rapport:devis_search.html.twig'%}
+                </div>
+                <div class="tab-pane fade" id="bonDeCommande">
+                    <br>
+                    En attente!
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script
+        src="{{ asset('bower_components/moment/min/moment.min.js') }}">
+    </script>
+    <script
+        src="{{ asset('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}">
+    </script>
+    {% include 'datetime_picker.html.twig' %}
+{% endblock %}

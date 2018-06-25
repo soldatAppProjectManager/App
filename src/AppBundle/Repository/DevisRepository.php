@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use AppBundle\Search\PeriodCriteria;
+
 /**
  * DevisRepository
  *
@@ -51,4 +53,27 @@ class DevisRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
+    /**
+     * @param PeriodCriteria $criteria
+     * @return mixed
+     */
+    public function findByPeriod(PeriodCriteria $criteria)
+    {
+        $qb = $this->createQueryBuilder('d')
+            ->where('d.draft = true')
+            ->orWhere('d.dateFinValidite < :date')
+            ->setParameter('date', new \DateTime('now'));
+
+        if (!empty($criteria->getStartDate())) {
+            $qb->andWhere('d.datecreation >= :startDate')
+                ->setParameter('startDate', $criteria->getStartDate());
+        }
+
+        if (!empty($criteria->getStartDate())) {
+            $qb->andWhere('d.datecreation <= :endDate')
+                ->setParameter('endDate', $criteria->getEndDate());
+        }
+
+        return $qb->getQuery()->getResult();
+    }
 }

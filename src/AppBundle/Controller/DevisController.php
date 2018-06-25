@@ -187,6 +187,7 @@ class DevisController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
+            $devis->updateDateFinValidite();
             $em->persist($devis);
             $em->flush();
 
@@ -254,10 +255,10 @@ class DevisController extends Controller
 
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
+            $devis->updateDateFinValidite();
             $em->flush();
 
             $this->addFlash('notice', 'Devis Mis à jour');
