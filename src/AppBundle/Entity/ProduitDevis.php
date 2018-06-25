@@ -87,10 +87,6 @@ class ProduitDevis extends AbstractProduit
     /**
      * @var float
      * @Assert\NotBlank()
-     * @Assert\Range(
-     *      min = 0,
-     *      max = 20000000
-     * )
      * @ORM\Column(name="marge", type="float")
      */
     private $marge;

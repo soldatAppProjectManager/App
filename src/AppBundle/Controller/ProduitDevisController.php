@@ -114,7 +114,7 @@ class ProduitDevisController extends Controller
 
         $this->addFlash('notice', 'Produit de devis Effacé');
 
-        return $this->redirectToRoute('devis_apercu', array('id' => $devis->getId()));
+        return $this->redirectToRoute('devis_produits', array('id' => $devis->getId()));
     }
 
     /**

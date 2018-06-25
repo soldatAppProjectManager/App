@@ -40,7 +40,7 @@ class TicketHistory
     /**
      * @var \DateTime
      *
-     * @ORM\Column(name="date", type="datetimetz", nullable=false)
+     * @ORM\Column(name="date", type="datetime", nullable=false)
      */
     private $date;
 
