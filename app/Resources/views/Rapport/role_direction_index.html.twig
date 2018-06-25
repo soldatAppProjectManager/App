@@ -7,6 +7,14 @@
 {% endblock %}
 {% block body %}
     <h1>Dashboard</h1>
+    <hr>
+
+    <h3>Recherche par période</h3>
+    <div class="row">
+        <div class="col">
+            {%  include ':Rapport:search.html.twig' %}
+        </div>
+    </div><br>
 
     <div class="row">
         <div class="col-md-12">
@@ -21,16 +29,15 @@
             <div class="tab-content">
                 <div class="tab-pane fade in active" id="opportunities">
                     <br>
-                    <p>Bonjour!</p>
-                    {% include ':Rapport:search.html.twig'%}
+                    {% include ':Rapport:role_direction_opportunity.html.twig'%}
                 </div>
                 <div class="tab-pane fade" id="devis">
                     <br>
-                    {#{% include 'search.html.twig'%}#}
+                    {% include ':Rapport:role_direction_devis.html.twig'%}
                 </div>
                 <div class="tab-pane fade" id="bonDeCommande">
                     <br>
-                    {#{% include 'search.html.twig'%}#}
+                    En attente!
                 </div>
             </div>
         </div>

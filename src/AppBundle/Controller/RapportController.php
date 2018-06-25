@@ -119,6 +119,7 @@ class RapportController extends Controller
         $form->handleRequest($request);
 
         $opportunities = $em->getRepository('AppBundle:Opportunity')->findByCriteria($criteria);
+        $devis = $em->getRepository('AppBundle:Devis')->findByPeriod($criteria);
 
         /** @var Opportunity $opportunity */
         foreach ($opportunities as $opportunity){
@@ -128,6 +129,7 @@ class RapportController extends Controller
 
         return $this->render(':Rapport:role_direction_index.html.twig', [
             'opportunities' => $opportunities,
+            'devis' => $devis,
             'search_form' => $form->createView(),
             'montantTotal' => $montantTotal,
             'pourcentageTotal' => ($totalPercentage)

@@ -1,0 +1,41 @@
+<h3>Liste des devis</h3>
+<table class="table table-striped table-bordered">
+    <thead>
+    <tr>
+        <th>#</th>
+        <th>Client</th>
+        <th>Statut</th>
+        <th>Titre <span class="badge">nombre de produits</span></th>
+        <th>Commercial</th>
+        <th>Date de validité</th>
+        <th>Total H.T.</th>
+        <th></th>
+    </tr>
+    </thead>
+    <tbody>
+    {% for chaque_devis in devis %}
+        <tr>
+            <th scope="row">{{ chaque_devis.reference }} </th>
+            <td><strong>{{ chaque_devis.client.nom }} </strong></td>
+            <td>{% if chaque_devis.estCommande %} Commande {% elseif chaque_devis.draft %} Devis {% else %} Publié {% endif %}</td>
+            <td>{{ chaque_devis.titre }} <span
+                        class="badge">{{ chaque_devis.abstractProduits |length }}</span></td>
+            {% if chaque_devis.commercial %}
+                <td>{{ chaque_devis.commercial.prenom }} {{ chaque_devis.commercial.nom }} </td>
+            {% else %}
+                <td> NULL</td>
+            {% endif %}
+            <td>{{ chaque_devis.dateFinValidite | date('d/m/Y')}} </td>
+            <td align="right">
+                <strong>{{ chaque_devis.totalht | number_format(2, ',', ' ') }} {{ chaque_devis.deviseVente.symbol }} </strong>
+            </td>
+            <td style="width:300px; vertical-align:middle;">
+                <a type="button" class="btn btn-default"
+                   href="{{ url('devis_apercu', {'id' : chaque_devis.id}) }}"><i class="fa fa-search" aria-hidden="true"></i>
+                    Voir
+                </a>
+            </td>
+        </tr>
+    {% endfor %}
+    </tbody>
+</table>
