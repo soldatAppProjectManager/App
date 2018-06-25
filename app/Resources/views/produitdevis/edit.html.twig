@@ -346,22 +346,7 @@
             $("#produit_devis_form_marge").prop('style', 'background-color: #FFFFFF;');
 
             $(this).val($(this).val().replace(".", ","));
-            if ($(this).val() < prixMin()) {
-                $(this).val(auFormat(prixMin()));
-                $("#produit_devis_form_marge").prop('style', 'background-color: red;');
-                setMarge();
-                setSousTotal();
-                $(this).prop('style', 'background-color: #FFFFFF;');
-                return;
-            }
-            else if ($(this).val() < (prixMin() / 0.95)) {
-
-                $("#produit_devis_form_marge").prop('style', 'background-color: red;');
-                setMarge();
-                setSousTotal();
-                $(this).prop('style', 'background-color: #FFFFFF;');
-                return;
-            }
+             
 
             setMarge();
             setSousTotal();

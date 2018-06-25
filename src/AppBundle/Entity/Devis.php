@@ -39,9 +39,9 @@ class Devis extends AbstractDocumentClient
 
     /**
      * @var boolean
-     * @ORM\Column(type="boolean")
+     * @ORM\Column(type="boolean", options={"default" : false})
      */
-    private $archived;
+    private $archived = false;
 
     /**
      * @var \TravailCommercial
