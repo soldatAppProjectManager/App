@@ -330,11 +330,8 @@ class DevisController extends Controller
     /**
      * @Route("/pdf/{id}", name="devis_publier_pdf")
      */
-    public function pdfAction($id, Request $request)
+    public function pdfAction(Devis $devis, Request $request)
     {
-        $devis = $this->getDoctrine()
-            ->getRepository('AppBundle:Devis')
-            ->find($id);
 
         $devis->setDatemodification(new DateTime("now"));
         $devis->setDraft(false);
@@ -371,22 +368,20 @@ class DevisController extends Controller
      */
     public function apercupdfAction(Devis $devis, Request $request)
     {
-        // instantiate and use the dompdf class
         $dompdf = new Dompdf();
-        // $dompdf->loadHtml($devisHtml->getHtml());
 
-        $items = ['I1', 'I2', ' ', 'I3', 'I4', ' ', 'I5', 'I6', ' ', 'I7', ' '];
-        $html = $this->render('devispdf/' . $devis->getModele()->getModele(), array('devis' => $devis, 'item' => $items))->getContent();
+        $html = $this->renderView(
+            'devispdf/' . $devis->getModele()->getModele(),
+            ['devis' => $devis]
+        );
 
         $dompdf->loadHtml($html);
 
-        // (Optional) Setup the paper size and orientation
         $dompdf->setPaper('A4', $devis->getModele()->getMiseenpage());
 
-        // Render the HTML as PDF
         $dompdf->render();
 
-        $filename = $this->getParameter('repertoire_export') . "/" . $devis->createFileName() . ".pdf";
+        $filename = $this->getParameter('repertoire_temp') . "/" . $devis->createFileName() . ".pdf";
 
         file_put_contents($filename, $dompdf->output());
 
