@@ -2,6 +2,8 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\BonDeCommandeClient;
+use AppBundle\Entity\Devis;
 use AppBundle\Entity\Opportunity;
 use AppBundle\Form\SearchPeriodType;
 use AppBundle\Search\PeriodCriteria;
@@ -111,7 +113,8 @@ class RapportController extends Controller
      */
     public function searchAction(Request $request)
     {
-        $montantTotal = 0; $totalPercentage = 0;
+        $montantTotalOpportunities = 0; $totalPercentageOpportunities = 0; $montantTotalDevis = 0;
+        $totalMargeDevis = 0; $montantTotalBc = 0; $totalMargeBc = 0;
         $em = $this->getDoctrine()->getManager();
 
         $criteria = new PeriodCriteria();
@@ -120,20 +123,41 @@ class RapportController extends Controller
 
         $opportunities = $em->getRepository('AppBundle:Opportunity')->findByCriteria($criteria);
         $devis = $em->getRepository('AppBundle:Devis')->findByPeriod($criteria);
+        $bonDeCommandeClient = $em->getRepository('AppBundle:BonDeCommandeClient')->findBcByPeriod($criteria);
 
         /** @var Opportunity $opportunity */
         foreach ($opportunities as $opportunity){
-            $montantTotal += $opportunity->getTotal();
-            $totalPercentage += $opportunity->getTotal() * ($opportunity->getProbability()->getValue()/100);
+            $montantTotalOpportunities += $opportunity->getTotal();
+            $totalPercentageOpportunities += $opportunity->getTotal() * ($opportunity->getProbability()->getValue()/100);
+        }
+
+        /**
+         * @var Devis $chaque_devis
+         */
+        foreach ($devis as $chaque_devis){
+            $montantTotalDevis += $chaque_devis->getTotalHT();
+            $totalMargeDevis += $chaque_devis->getMargeNette();
+        }
+
+        /**
+         * @var BonDeCommandeClient $un_bcc
+         */
+        foreach ($bonDeCommandeClient as $un_bcc){
+            $montantTotalBc += $un_bcc->getTotalHT();
+            $totalMargeBc += $un_bcc->getMargeNette();
         }
 
         return $this->render(':Rapport:search_index.html.twig', [
             'opportunities' => $opportunities,
             'devis' => $devis,
+            'bonDeCommandeClient' => $bonDeCommandeClient,
             'search_form' => $form->createView(),
-            'montantTotal' => $montantTotal,
-            'pourcentageTotal' => ($totalPercentage)
+            'montantTotalOpportunities' => $montantTotalOpportunities,
+            'pourcentageTotalOppt' => ($totalPercentageOpportunities),
+            'montantTotalDevis' => $montantTotalDevis,
+            'totalMargeDevis' => $totalMargeDevis,
+            'montantTotalBc' => $montantTotalBc,
+            'totalMargeBc' => $totalMargeBc
         ]);
     }
-
 }

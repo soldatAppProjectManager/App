@@ -3,6 +3,7 @@
 namespace AppBundle\Repository;
 use AppBundle\Entity\ProduitBC;
 use AppBundle\Entity\statutProduit;
+use AppBundle\Search\PeriodCriteria;
 use Doctrine\ORM\Query\Expr\Join;
 
 /**
@@ -123,6 +124,25 @@ class BonDeCommandeClientRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getResult();
     }
+
+    public function findBcByPeriod(PeriodCriteria $criteria)
+    {
+        $qb = $this->createQueryBuilder('bdcc');
+
+        if (!empty($criteria->getStartDate())) {
+            $qb->Where('bdcc.datecreation >= :startDate')
+                ->setParameter('startDate', $criteria->getStartDate());
+        }
+
+        if (!empty($criteria->getStartDate())) {
+            $qb->andWhere('bdcc.datecreation <= :endDate')
+                ->setParameter('endDate', $criteria->getEndDate());
+        }
+
+        return $qb->getQuery()->getResult();
+    }
+
+
 
 // SELECT `bon_de_commande_client`.`datedereception`,`bon_de_commande_client`.`echeance`, NOW(),
 // DATE_SUB(DATE_ADD(`bon_de_commande_client`.`datedereception`, INTERVAL `bon_de_commande_client`.`echeance` DAY),INTERVAL ROUND(`bon_de_commande_client`.`echeance` / 2) DAY) AS "MIN", 

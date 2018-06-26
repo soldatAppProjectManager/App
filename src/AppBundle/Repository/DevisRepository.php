@@ -61,7 +61,7 @@ class DevisRepository extends \Doctrine\ORM\EntityRepository
     {
         $qb = $this->createQueryBuilder('d')
             ->where('d.draft = true')
-            ->orWhere('d.dateFinValidite < :date')
+            ->orWhere('d.dateFinValidite > :date')
             ->setParameter('date', new \DateTime('now'));
 
         if (!empty($criteria->getStartDate())) {
