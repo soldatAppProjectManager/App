@@ -13,7 +13,10 @@
     </tr>
     </thead>
     <tbody>
+    {% set montantTotal, totalMarge = 0,0 %}
     {% for chaque_devis in devis %}
+        {% set montantTotal = montantTotal + chaque_devis.totalht %}
+        {% set totalMarge = totalMarge + chaque_devis.margenette %}
         <tr>
             <th scope="row">{{ chaque_devis.reference }} </th>
             <td><strong>{{ chaque_devis.client.nom }} </strong></td>
@@ -39,11 +42,11 @@
     {% endfor %}
     <tr>
         <td colspan="3" class="text-center"><strong>Montant Total</strong></td>
-        <td colspan="9" class="text-center"><strong>{{ montantTotalDevis | number_format(2, ',', ' ') }}</strong></td>
+        <td colspan="9" class="text-center"><strong>{{ montantTotal | number_format(2, ',', ' ') }}</strong></td>
     </tr>
     <tr>
         <td colspan="3" class="text-center"><strong>Montant Total(% Probabilité)</strong></td>
-        <td colspan="9" class="text-center"><strong>{{ totalMargeDevis | number_format(2, ',', ' ')   }}</strong></td>
+        <td colspan="9" class="text-center"><strong>{{ totalMarge | number_format(2, ',', ' ')   }}</strong></td>
     </tr>
     </tbody>
 </table>

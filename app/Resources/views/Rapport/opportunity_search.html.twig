@@ -14,7 +14,10 @@
         </tr>
         </thead>
         <tbody>
+        {% set montantTotal, pourcentageTotal = 0, 0 %}
         {% for opportunity in opportunities %}
+            {% set montantTotal = montantTotal + opportunity.total %}
+            {% set pourcentageTotal = pourcentageTotal + (opportunity.total * (opportunity.probability.value/100))%}
             <tr>
                 <td>{{ opportunity.id }}</td>
                 <td>{{ opportunity.label }}</td>
@@ -36,11 +39,11 @@
         {% endfor %}
         <tr>
             <td colspan="3" class="text-center"><strong>Montant Total</strong></td>
-            <td colspan="9" class="text-center"><strong>{{ montantTotalOpportunities | number_format(2, ',', ' ') }}</strong></td>
+            <td colspan="9" class="text-center"><strong>{{ montantTotal | number_format(2, ',', ' ') }}</strong></td>
         </tr>
         <tr>
             <td colspan="3" class="text-center"><strong>Montant Total(% Probabilité)</strong></td>
-            <td colspan="9" class="text-center"><strong>{{ pourcentageTotalOppt | number_format(2, ',', ' ')   }}</strong></td>
+            <td colspan="9" class="text-center"><strong>{{ pourcentageTotal | number_format(2, ',', ' ')   }}</strong></td>
         </tr>
         </tbody>
     </table>

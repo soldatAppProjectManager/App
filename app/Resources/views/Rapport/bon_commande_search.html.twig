@@ -11,11 +11,14 @@
                 <th>Commercial</th>
                 <th>Total H.T.</th>
                 <th>Marge</th>
-                <th></th>
+                <th>Documents</th>
             </tr>
             </thead>
             <tbody>
+            {% set montantTotal, totalMarge = 0,0 %}
             {% for chaque_bc in bonDeCommandeClient %}
+                {% set montantTotal = montantTotal + chaque_bc.getTotalHT %}
+                {% set totalMarge = totalMarge + chaque_bc.margenette %}
                 <tr>
                     <th scope="row">{{ chaque_bc.id }}  </th>
                     <strong>
@@ -29,57 +32,17 @@
                     </td>
                     <td><strong>{{ chaque_bc.getMargeNette | number_format(2, ',', ' ') }}</strong></td>
                     <td>
-                        <a class="btn btn-xs btn-info"
-                           href="{{ url('BonDeCommandeClient_voir', {'id' : chaque_bc.id}) }}">Voir</a>
-                        <a  class="btn btn-primary btn-xs"
-                            href="{{ url('BonDeCommandeClient_fichier', {'id' : chaque_bc.id}) }}">Aperçu Doc</a>
-                        <a class="btn btn-xs btn-warning"
-                           href="{{ url('BonDeCommandeClient_edit', {'id' : chaque_bc.id}) }}">Edit</a>
-                        <div class="dropdown">
-                            <button class="btn btn-xs btn-default dropdown-toggle" type="button" id="dropdownMenu1"
-                                    data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
-                                Autre actions
-                                <span class="caret"></span>
-                            </button>
-                            <ul class="dropdown-menu" aria-labelledby="dropdownMenu1">
-                                {% if chaque_bc.verrouille  == false %}
-                                    <li>
-                                        <a href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_bc.id,'source' : "index"}) }}">Verrouiller</a>
-                                    </li>
-                                {% else %}
-                                    <li>
-                                        <a href="{{ url('BonDeCommandeClient_verrouille', {'id' : chaque_bc.id,'source' : "index"}) }}">Déverouiller</a>
-                                    </li>
-                                    <li>
-                                        <a href="{{ url('BonDeCommandeFournisseur_generate', {'id' : chaque_bc.id}) }}">BC
-                                            fournisseur</a>
-                                    </li>
-                                {% endif %}
-                                {% if chaque_bc.hasProductsInStock %}
-                                    <li>
-                                        <a href="{{ url('livraison_bc', {'id' : chaque_bc.id}) }}">Faire
-                                            une livraison
-                                        </a>
-                                    </li>
-                                {% endif %}
-                                <li>
-                                    <a href="{{ url('facture_generate', {'id' : chaque_bc.id}) }}">Générer la facture</a></li>
-                                <li role="separator" class="divider"></li>
-                                <li>
-                                    <a href="{{ url('BonDeCommandeClient_delete', {'id' : chaque_bc.id}) }}">Suppr</a>
-                                </li>
-                            </ul>
-                        </div>
+                        <a href="{{ url('BonDeCommandeClient_fichier', {'id' : chaque_bc.id}) }}">{{ chaque_bc.fichier }}</a>
                     </td>
                 </tr>
             {% endfor %}
             <tr>
                 <td colspan="3" class="text-center"><strong>Montant Total</strong></td>
-                <td colspan="9" class="text-center"><strong>{{ montantTotalBc | number_format(2, ',', ' ') }}</strong></td>
+                <td colspan="9" class="text-center"><strong>{{ montantTotal | number_format(2, ',', ' ') }}</strong></td>
             </tr>
             <tr>
                 <td colspan="3" class="text-center"><strong>Montant Total(% Probabilité)</strong></td>
-                <td colspan="9" class="text-center"><strong>{{ totalMargeBc | number_format(2, ',', ' ')   }}</strong></td>
+                <td colspan="9" class="text-center"><strong>{{ totalMarge | number_format(2, ',', ' ')   }}</strong></td>
             </tr>
             </tbody>
         </table>
