@@ -32,7 +32,7 @@
                     </td>
                     <td><strong>{{ chaque_bc.getMargeNette | number_format(2, ',', ' ') }}</strong></td>
                     <td>
-                        <a href="{{ url('BonDeCommandeClient_fichier', {'id' : chaque_bc.id}) }}">{{ chaque_bc.fichier }}</a>
+                        <a target="_blank" href="{{ bcclient_path ~ chaque_bc.fichier }}">{{ chaque_bc.fichier }}</a>
                     </td>
                 </tr>
             {% endfor %}

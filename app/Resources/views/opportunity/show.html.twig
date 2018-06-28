@@ -7,11 +7,11 @@
         <tbody>
             <tr>
                 <th>Id</th>
-                <td>{{ opportunityType.id }}</td>
+                <td>{{ opportunity.id }}</td>
             </tr>
             <tr>
                 <th>Label</th>
-                <td>{{ opportunityType.label }}</td>
+                <td>{{ opportunity.label }}</td>
             </tr>
         </tbody>
     </table>
@@ -21,7 +21,7 @@
             <a href="{{ path('opportunity_index') }}">Back to the list</a>
         </li>
         <li>
-            <a href="{{ path('opportunity_edit', { 'id': opportunityType.id }) }}">Edit</a>
+            <a href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}">Edit</a>
         </li>
         <li>
             {{ form_start(delete_form) }}
