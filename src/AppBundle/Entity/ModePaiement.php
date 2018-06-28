@@ -28,6 +28,13 @@ class ModePaiement
      */
     private $label;
 
+    /**
+     * @var string
+     *
+     * @ORM\Column(type="string", length=64)
+     */
+    private $rib;
+
 
     /**
      * Get id
@@ -68,4 +75,28 @@ class ModePaiement
         return $this->getLabel();
     }
 
+
+    /**
+     * Set rib
+     *
+     * @param string $rib
+     *
+     * @return ModePaiement
+     */
+    public function setRib($rib)
+    {
+        $this->rib = $rib;
+
+        return $this;
+    }
+
+    /**
+     * Get rib
+     *
+     * @return string
+     */
+    public function getRib()
+    {
+        return $this->rib;
+    }
 }

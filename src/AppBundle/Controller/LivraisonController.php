@@ -85,7 +85,7 @@ class LivraisonController extends Controller
 
         $dompdf->render();
 
-        $filename =  $this->getParameter('repertoire_export')."/bl_".$livraison->getId().".pdf";
+        $filename =  $this->getParameter('repertoire_temp')."/bl_".$livraison->getId().".pdf";
 
         file_put_contents($filename, $dompdf->output());
 
