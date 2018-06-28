@@ -98,6 +98,8 @@ class BonDeCommandeClientController extends Controller
             Veuillez le désarchiver au préalable avant de pouvoir lui appliquer tout traitement particulier.');
         }
         $BonDeCommandeClient = new BonDeCommandeClient;
+        $BonDeCommandeClient->setClient($devis->getClient());
+        $BonDeCommandeClient->setContact($devis->getContact());
         $form = $this->createForm(BonDeCommandeClientFormType::class, $BonDeCommandeClient);
         $form->handleRequest($request);
 
@@ -107,8 +109,6 @@ class BonDeCommandeClientController extends Controller
             $em = $this->getDoctrine()->getManager();
 
             $BonDeCommandeClient->setCommercial($devis->getCommercial());
-            $BonDeCommandeClient->setContact($devis->getContact());
-            $BonDeCommandeClient->setClient($devis->getClient());
             $BonDeCommandeClient->setDevis($devis);
             $BonDeCommandeClient->setVerrouille(false);
 
@@ -174,7 +174,7 @@ class BonDeCommandeClientController extends Controller
             return $this->redirectToRoute('BonDeCommandeClient_list');
         }
 
-        return $this->render('BonDeCommandeClient/create.html.twig', array(
+        return $this->render('BonDeCommandeClient/edit.html.twig', array(
             'form' => $form->createView(),
         ));
     }

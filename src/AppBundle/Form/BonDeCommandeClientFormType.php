@@ -27,6 +27,15 @@ class BonDeCommandeClientFormType extends AbstractType
                 'widget' => 'single_text',
                 'required' => true,
             ])
+            ->add('client', null,
+                ['label' => 'Client',
+                    'attr' => [
+                        'class' => 'selectpicker',
+                        'title' => 'Selectionner un client',
+                        'data-live-search' => 'true'
+                    ],
+                ])
+            ->add('contact')
             ->add('datebondecommande', DateType::class, ['widget' => 'single_text'])
             ->add('Fichier', FileType::class, [
                 'mapped' => false,
