@@ -42,7 +42,7 @@ class FactureController extends Controller
         $dompdf->loadHtml($html);
 
         $dompdf->render();
-        $filename = $this->getParameter('repertoire_export') . "/" . $facture->getReference() . ".pdf";
+        $filename = $this->getParameter('repertoire_temp') . "/" . $facture->getReference() . ".pdf";
         file_put_contents($filename, $dompdf->output());
 
         return new BinaryFileResponse($filename);
