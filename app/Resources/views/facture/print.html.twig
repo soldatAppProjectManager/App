@@ -104,6 +104,9 @@
 <br>
 {% if facture.modePaiement %}
     Mode de paiement : {{ facture.modePaiement }}
+    {% if facture.modePaiement.rib %}
+        <br>Numéro de compte : {{ facture.modePaiement.rib }}<br>
+    {% endif %}
 {% endif %}
 <br>
 
