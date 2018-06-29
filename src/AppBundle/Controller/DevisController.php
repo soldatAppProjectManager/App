@@ -48,7 +48,7 @@ use Doctrine\ORM\Query\Expr;
 
 
 /**
- * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_DIRECTION') or has_role('ROLE_ADMIN')")
  * @Route("/devis")
  */
 class DevisController extends Controller
