@@ -82,7 +82,6 @@ class UserRoleController extends Controller
 
         return $this->render('userrole/show.html.twig', array(
             'userRole' => $userRole,
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
@@ -116,7 +115,6 @@ class UserRoleController extends Controller
         return $this->render('userrole/edit.html.twig', array(
             'userRole' => $userRole,
             'form' => $form->createView(),
-            'delete_form' => $deleteForm->createView(),
         ));
     }
 
