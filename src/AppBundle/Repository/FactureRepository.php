@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Search\PeriodCriteria;
 
 /**
  * FactureRepository
@@ -10,4 +11,19 @@ namespace AppBundle\Repository;
  */
 class FactureRepository extends AbstractRepository
 {
+    public function findFactByPeriod(PeriodCriteria $criteria)
+    {
+        $qb = $this->createQueryBuilder('f');
+
+        if (!empty($criteria->getStartDate())) {
+            $qb->where('f.date >= :startDate')
+                ->setParameter('startDate', $criteria->getStartDate());
+        }
+
+        if (!empty($criteria->getEndDate())) {
+            $qb->andWhere('f.date <= :endDate')
+                ->setParameter('endDate', $criteria->getEndDate());
+        }
+        return $qb->getQuery()->getResult();
+    }
 }
