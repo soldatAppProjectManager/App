@@ -98,6 +98,13 @@ class Opportunity
     private $comment;
 
     /**
+     * @var \DateTime
+     *
+     * @ORM\Column(type="datetime")
+     */
+    private $dateEcheance;
+
+    /**
      * Get id
      *
      * @return int
@@ -411,5 +418,29 @@ class Opportunity
     public function getStatus()
     {
         return $this->status;
+    }
+
+    /**
+     * Set dateEcheance.
+     *
+     * @param \DateTime $dateEcheance
+     *
+     * @return Opportunity
+     */
+    public function setDateEcheance($dateEcheance)
+    {
+        $this->dateEcheance = $dateEcheance;
+
+        return $this;
+    }
+
+    /**
+     * Get dateEcheance.
+     *
+     * @return \DateTime
+     */
+    public function getDateEcheance()
+    {
+        return $this->dateEcheance;
     }
 }

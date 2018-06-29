@@ -3,14 +3,19 @@
 namespace AppBundle\Form;
 
 use AppBundle\Entity\Opportunity;
+use AppBundle\Entity\OpportunityStatus;
+use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bridge\Doctrine\Form\Type\EntityType;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\Extension\Core\Type\CollectionType;
+use Symfony\Component\Form\Extension\Core\Type\DateTimeType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
+use Symfony\Component\Validator\Constraints\DateTime;
 
 class OpportunityType extends AbstractType
 {
+
     /**
      * {@inheritdoc}
      */
@@ -30,7 +35,14 @@ class OpportunityType extends AbstractType
                 ])
             ->add('contact', null, ['label' => 'Contact'])
             ->add('type')
-            ->add('status', null, ['label' => 'Statut'])
+            ->add('status', null, [
+                'label' => 'Statut',
+                'query_builder' => function($er){
+                        return $er->createQueryBuilder('s')
+                            ->where('s.code != :code')
+                            ->setParameter('code', OpportunityStatus::ECHU_CODE);
+                    }
+                ])
             ->add('acquisitionMode', null , ['label' => 'Mode d\'acquisition'])
             ->add('probability',null , ['label' => 'Probabilité'])
             ->add('products', CollectionType::class, [
@@ -40,6 +52,14 @@ class OpportunityType extends AbstractType
                 'allow_delete' => true,
                 'prototype' => true,
                 'by_reference' => false,
+            ])
+            ->add('dateEcheance', DateTimeType::class, [
+                'required' => true,
+                'widget' => 'single_text',
+                'html5' => false,
+                'attr' => [
+                    'class' => 'datepicker'
+                ]
             ]);
     }
 

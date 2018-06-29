@@ -6,6 +6,9 @@ use AppBundle\Entity\Opportunity;
 use AppBundle\Entity\OpportunityStatus;
 use AppBundle\Entity\OpportunityType;
 use AppBundle\Entity\OProduct;
+use AppBundle\Form\SearchPeriodType;
+use AppBundle\Repository\OpportunityRepository;
+use AppBundle\Search\PeriodCriteria;
 use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
@@ -93,7 +96,6 @@ class OpportunityController extends Controller
             'delete_form' => $deleteForm->createView(),
         ));
     }
-
 
     /**
      * Deletes a opportunity entity.

@@ -7,6 +7,12 @@
         Modification opportunité #{{ opportunity.id }}
     {% endif %}
 {% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link
+        rel="stylesheet"
+        href="{{ asset('bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css') }}">
+{% endblock %}
  {% form_theme form _self %}
     {% block _opportunity_products_entry_row %}
         <div class="col-md-4 rowProduct">
@@ -116,6 +122,9 @@
                 {{ form_widget(form.salesEngineer) }}
                 {{ form_errors(form.salesEngineer) }}
             </div>
+            <div class="col-md-4">
+                {{ form_row(form.dateEcheance) }}
+            </div>
         </div>
         <div class="row">
             <div class="col-md-12 form-group ">
@@ -144,6 +153,11 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('bower_components/moment/min/moment.min.js') }}"></script>
+    <script
+        src="{{ asset('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}">
+    </script>
+
     <script>
         $(document).ready(function () {
             $('#btnNewProduct').click(function (e) {
@@ -204,6 +218,7 @@
                 }
             });
         }
-
     </script>
+
+    {% include 'datetime_picker.html.twig' %}
 {% endblock %}

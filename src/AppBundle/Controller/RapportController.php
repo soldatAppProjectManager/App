@@ -2,9 +2,15 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\BonDeCommandeClient;
+use AppBundle\Entity\Devis;
+use AppBundle\Entity\Opportunity;
+use AppBundle\Form\SearchPeriodType;
+use AppBundle\Search\PeriodCriteria;
 use AppBundle\Tools\Rapport;
 use AppBundle\Tools\RapportExcel;
 
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Method;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 use Symfony\Component\HttpFoundation\Request;
@@ -97,5 +103,35 @@ class RapportController extends Controller
             'form' => $form->createView(),
         ));
     }
+
+    /**
+     * Finds Objects by Period Criteria
+     *
+     * @Route("/dashboard", name="direction_dashboard")
+     *
+     * @Method({"GET", "POST"})
+     */
+    public function searchAction(Request $request)
+    {
+        $em = $this->getDoctrine()->getManager();
+
+        $criteria = new PeriodCriteria();
+        $form = $this->createForm(SearchPeriodType::class, $criteria);
+        $form->handleRequest($request);
+
+        $opportunities = $em->getRepository('AppBundle:Opportunity')->findByCriteria($criteria);
+        $devis = $em->getRepository('AppBundle:Devis')->findByPeriod($criteria);
+        $bonDeCommandeClient = $em->getRepository('AppBundle:BonDeCommandeClient')->findBcByPeriod($criteria);
+        $factures = $em->getRepository('AppBundle:Facture')->findFactByPeriod($criteria);
+
+        return $this->render(':Rapport:search_index.html.twig', [
+            'opportunities' => $opportunities,
+            'devis' => $devis,
+            'bonDeCommandeClient' => $bonDeCommandeClient,
+            'factures' => $factures,
+            'search_form' => $form->createView()
+        ]);
+    }
+
 
 }

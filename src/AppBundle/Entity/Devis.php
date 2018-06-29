@@ -186,6 +186,20 @@ class Devis extends AbstractDocumentClient
      */
     private $draft;
 
+    /**
+     * @ORM\Column(type="datetime")
+     */
+    private $dateFinValidite;
+
+    /**
+     * Devis constructor.
+     * @param $numero
+     * @param $DeviseVenteDefaut
+     * @param $CoutMoyenService
+     * @param $TauxFinancementTresorerie
+     * @param $Travailminimum
+     * @param $commercial
+     */
     public function __construct($numero, $DeviseVenteDefaut, $CoutMoyenService, $TauxFinancementTresorerie, $Travailminimum, $commercial)
     {
         $now = new \DateTime("now");
@@ -1323,12 +1337,12 @@ class Devis extends AbstractDocumentClient
         return $this->titreAct;
     }
 
-    public function getDateFinValidite() {
+    public function updateDateFinValidite() {
         $date = clone $this->getDatemodification();
         $validite = $this->getValidite();
         $date->modify("+ $validite days");
 
-        return $date;
+        $this->setDateFinValidite($date);
     }
 
     /**
@@ -1353,5 +1367,29 @@ class Devis extends AbstractDocumentClient
     public function getArchived()
     {
         return $this->archived;
+    }
+
+    /**
+     * Set dateFinValidite.
+     *
+     * @param \DateTime $dateFinValidite
+     *
+     * @return Devis
+     */
+    public function setDateFinValidite($dateFinValidite)
+    {
+        $this->dateFinValidite = $dateFinValidite;
+
+        return $this;
+    }
+
+    /**
+     * Get dateFinValidite.
+     *
+     * @return \DateTime
+     */
+    public function getDateFinValidite()
+    {
+        return $this->dateFinValidite;
     }
 }

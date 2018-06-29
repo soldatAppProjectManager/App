@@ -15,6 +15,8 @@ class OpportunityStatus
 {
     const NCOURS_CODE = 1;
 
+    const ECHU_CODE = 5;
+
     use CodeTrait;
 
     /**

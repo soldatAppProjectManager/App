@@ -38,7 +38,7 @@ use AppBundle\Form\BonDeCommandeClientFormType;
 use Symfony\Component\HttpKernel\Exception\NotFoundHttpException;
 
 /**
- * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_DIRECTION') or has_role('ROLE_ADMIN')")
  * @Route("/BonDeCommandeClient")
  */
 class BonDeCommandeClientController extends Controller

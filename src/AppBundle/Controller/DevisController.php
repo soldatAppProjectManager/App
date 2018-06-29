@@ -48,13 +48,14 @@ use Doctrine\ORM\Query\Expr;
 
 
 /**
- * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_DIRECTION') or has_role('ROLE_ADMIN')")
  * @Route("/devis")
  */
 class DevisController extends Controller
 {
     /**
-     * @Route("/{archived}", name="devis_list", defaults={"archived"=0})
+     * @Route("/{archived}", name="devis_list", defaults={"archived"=0},
+     *     requirements={"archived" = "0|1"})
      */
     public function indexAction(Request $request, $archived)
     {
@@ -186,6 +187,7 @@ class DevisController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
+            $devis->updateDateFinValidite();
             $em->persist($devis);
             $em->flush();
 
@@ -253,10 +255,10 @@ class DevisController extends Controller
 
         $form->handleRequest($request);
 
-
         if ($form->isSubmitted() && $form->isValid()) {
 
             $em = $this->getDoctrine()->getManager();
+            $devis->updateDateFinValidite();
             $em->flush();
 
             $this->addFlash('notice', 'Devis Mis à jour');

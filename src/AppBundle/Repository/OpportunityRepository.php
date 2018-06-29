@@ -1,6 +1,8 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\OpportunityStatus;
+use AppBundle\Search\PeriodCriteria;
 
 /**
  * OpportunityRepository
@@ -18,5 +20,25 @@ class OpportunityRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('code', $code)
             ->getQuery()
             ->getResult();
+    }
+
+    public function findByCriteria(PeriodCriteria $criteria)
+    {
+        $qb = $this->createQueryBuilder('o')
+            ->innerJoin('o.status', 's')
+            ->where('s.code in (:statusCode)')
+            ->setParameter('statusCode', [OpportunityStatus::ECHU_CODE, OpportunityStatus::NCOURS_CODE]);
+
+        if (!empty($criteria->getStartDate())) {
+            $qb->andWhere('o.createdAt >= :startDate')
+                ->setParameter('startDate', $criteria->getStartDate());
+        }
+
+        if (!empty($criteria->getEndDate())) {
+            $qb->andWhere('o.createdAt <= :endDate')
+                ->setParameter('endDate', $criteria->getEndDate());
+        }
+
+        return $qb->getQuery()->getResult();
     }
 }
