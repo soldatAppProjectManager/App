@@ -22,7 +22,7 @@ use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use AppBundle\Form\RapportFormType;
 
 /**
- * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_ADMIN')")
+ * @Security("has_role('ROLE_COMMERCIAL') or has_role('ROLE_ADMIN') or has_role('ROLE_DIRECTION')")
  * @Route("/rapport")
  */
 class RapportController extends Controller

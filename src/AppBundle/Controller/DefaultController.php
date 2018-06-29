@@ -24,6 +24,10 @@ class DefaultController extends Controller
      */
     public function indexAction(Request $request)
     {
+        if($this->isGranted('ROLE_DIRECTION')) {
+            return $this->redirectToRoute('direction_dashboard');
+        }
+
         $em = $this->getDoctrine()->getManager();
         $opportunities = $em->getRepository(Opportunity::class)->findByStatusCode(OpportunityStatus::NCOURS_CODE);
         $allDevis = $em->getRepository(Devis::class)->findDevisInProgress();
