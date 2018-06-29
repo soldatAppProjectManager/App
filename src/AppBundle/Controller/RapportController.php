@@ -122,11 +122,13 @@ class RapportController extends Controller
         $opportunities = $em->getRepository('AppBundle:Opportunity')->findByCriteria($criteria);
         $devis = $em->getRepository('AppBundle:Devis')->findByPeriod($criteria);
         $bonDeCommandeClient = $em->getRepository('AppBundle:BonDeCommandeClient')->findBcByPeriod($criteria);
+        $factures = $em->getRepository('AppBundle:Facture')->findFactByPeriod($criteria);
 
         return $this->render(':Rapport:search_index.html.twig', [
             'opportunities' => $opportunities,
             'devis' => $devis,
             'bonDeCommandeClient' => $bonDeCommandeClient,
+            'factures' => $factures,
             'search_form' => $form->createView()
         ]);
     }
