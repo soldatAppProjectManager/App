@@ -99,7 +99,7 @@
     </tr>
   </thead>
   <tbody>
-    {% for produit in BonDeCommandeClient.abstractproduits if not produit.estFusionne %}
+    {% for produit in BonDeCommandeClient.abstractProduits if not produit.estFusionne %}
         <tr {% if not produit.isProduct  %} style="font-weight: bold" {% endif %} >
             <th scope="row">{{ produit.id }}</th>
             <td id="{{ produit.id }}" class="quantite" {% if BonDeCommandeClient.verrouille  == false %} contenteditable="true"  {% endif %}><strong>{{ produit.quantite }}</strong></td>

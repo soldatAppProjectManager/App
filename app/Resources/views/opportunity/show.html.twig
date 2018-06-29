@@ -1,32 +1,124 @@
 {% extends 'base.html.twig' %}
+{% block stylesheets %}{{ parent() }}{% endblock %}
+{% block title %}Voir Opportunité{% endblock %}
 
 {% block body %}
-    <h1>Opportunitytype</h1>
 
-    <table>
-        <tbody>
-            <tr>
-                <th>Id</th>
-                <td>{{ opportunity.id }}</td>
-            </tr>
-            <tr>
-                <th>Label</th>
-                <td>{{ opportunity.label }}</td>
-            </tr>
-        </tbody>
-    </table>
+<div class="row">
+    <br>
+    <a type="button" class="btn btn-default"
+       href="{{ url('direction_dashboard') }}"><i class="fa fa-arrow-left"></i>
+        Retour à la liste
+    </a>
+    <h1>Consultation d'une Opportunité</h1>
+</div><br>
+<div class="container-fluid">
+    <div class="row">
+        <div class="well">
+            <table class="table">
+                <tbody>
+                <tr>
+                    <th>Nom du Projet :</th>
+                    <td align="left"><strong>{{ opportunity.label }}</strong></td>
+                </tr>
+                <tr>
+                    <th>Type du projet :</th>
+                    <td align="left"><strong>{{ opportunity.type.label }}</strong></td>
+                </tr>
+                <tr>
+                    <th>Nom du client :</th>
+                    <td align="left">{{ opportunity.customer.nom }}</td>
+                </tr>
+                {% if opportunity.acquisitionMode %}
+                    <tr>
+                        <th>Mode d'Acquisition :</th>
+                        <td align="left"><strong>{{ opportunity.acquisitionMode.label }}</strong></td>
+                    </tr>
+                {% endif %}
+                <tr>
+                    <th>Total(HT):</th>
+                    <td align="left"><strong>{{ opportunity.total | number_format(2, ',', ' ') }}</strong></td>
+                </tr>
+                <tr>
+                    <th>Probabilité :</th>
+                    <td align="left">{{ opportunity.probability.label }}</td>
+                </tr>
+                <tr>
+                    <th>Nom du contact Client :</th>
+                    <td align="left"><strong>{{ opportunity.contact.civilite }} {{ opportunity.contact.prenom }}
+                            {{ opportunity.contact.nom }}
+                        </strong>
+                    </td>
+                </tr>
+                <tr>
+                    <th>Description :</th>
+                    <td align="left">{{ opportunity.comment }}</td>
+                </tr>
+                <tr>
+                    <th>Nom du commercial :</th>
+                    <td align="left">{{ opportunity.salesEngineer.fullName }}</td>
+                </tr>
+                <tr>
+                    <th>Statut :</th>
+                    <td align="left"><strong>{{ opportunity.status.label }}</strong></td>
+                </tr>
+                <tr>
+                    <th>Créé le :</th>
+                    <td align="left">{{ opportunity.createdAt | date('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <th>Date d'Echéance :</th>
+                    <td align="left">{{ opportunity.dateecheance | date('d/m/Y') }} </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+        <hr>
+        <h3>Produits</h3>
+        <div class="well">
+            <table class="table table-hover" id="listedesproduits">
+                <thead>
+                <tr>
+                    <th>#</th>
+                    <th>Quantité</th>
+                    <th>Désignation</th>
+                    <th>Type de Produit</th>
+                    <th>Technologie</th>
+                    <th>Métier</th>
+                    <th>Prix Unitaire</th>
+                    <th>Sous-total</th>
+                    <th></th>
+                </tr>
+                </thead>
+                <tbody>
+                {% if opportunity.products %}
+                    {% for produit in opportunity.products %}
+                        <tr>
+                            <th scope="row">{{ produit.id }}</th>
+                            <td>{{ produit.quantity }}</td>
+                            <td>{{ produit.designation }}</td>
+                            <td>{{ produit.producttype.nom }}</td>
+                            <td>{{ produit.technology.label }}</td>
+                            <td>{{ produit.trade.nom }}</td>
+                            <td>{{ produit.price | number_format(2, ',', ' ') }}</td>
+                            <td>{{ produit.soustotalht | number_format(2, ',', ' ') }}</td>
+                        </tr>
+                    {% endfor %}
+                    <tr>
+                        <th scope="row" style="border-top: 0px"></th>
+                        <td style="border-top: 0px"></td>
+                        <td style="border-top: 0px"></td>
+                        <td style="border-top: 0px"></td>
+                        <td style="border-top: 0px"></td>
+                        <td><strong>TOTAL HT :</strong></td>
+                        <td><strong>{{ opportunity.total| number_format(2, ',', ' ') }}</strong></td>
+                        <td></td>
+                    </tr>
+                {% endif %}
+                </tbody>
+            </table>
+        </div>
+    </div>
 
-    <ul>
-        <li>
-            <a href="{{ path('opportunity_index') }}">Back to the list</a>
-        </li>
-        <li>
-            <a href="{{ path('opportunity_edit', { 'id': opportunity.id }) }}">Edit</a>
-        </li>
-        <li>
-            {{ form_start(delete_form) }}
-                <input type="submit" value="Delete">
-            {{ form_end(delete_form) }}
-        </li>
-    </ul>
-{% endblock %}
+
+    {% endblock %}

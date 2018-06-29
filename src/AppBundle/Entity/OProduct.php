@@ -245,4 +245,11 @@ class OProduct
     {
         return $this->technology;
     }
+
+    public function getSousTotalHT()
+    {
+        $precision = 2;
+        return round($this->getQuantity() * $this->getPrice(), $precision);
+    }
+
 }

@@ -35,7 +35,10 @@
                 <td class="pull text-right">{{ opportunity.total|number_format(2, ',', ' ') }}</td>
                 <td>{{ opportunity.dateEcheance | date('d/m/Y') }}</td>
                 <td>
-                    <a class="btn btn-default" href="{{ url('opportunity_show', {'id': opportunity.id}) }}"><i class="fa fa-arrow-right"></i> Voir Détails</a>
+                    <a type="button" href="{{ url('opportunity_show', {'id': opportunity.id}) }}"
+                        class="btn btn-default">
+                        <i class="fa fa-arrow-right"></i> Voir Détails
+                    </a>
                 </td>
             </tr>
         {% endfor %}
