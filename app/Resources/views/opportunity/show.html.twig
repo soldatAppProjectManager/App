@@ -97,9 +97,18 @@
                             <th scope="row">{{ produit.id }}</th>
                             <td>{{ produit.quantity }}</td>
                             <td>{{ produit.designation }}</td>
-                            <td>{{ produit.producttype.nom }}</td>
-                            <td>{{ produit.technology.label }}</td>
-                            <td>{{ produit.trade.nom }}</td>
+                            <td>{% if produit.producttype %}
+                                    {{ produit.producttype.nom }}
+                                {% endif %}
+                            </td>
+                            <td>{% if produit.technology %}
+                                    {{ produit.technology.label }}
+                                {% endif %}
+                            </td>
+                            <td>{% if produit.trade %}
+                                    {{ produit.trade.nom }}
+                                {% endif %}
+                            </td>
                             <td>{{ produit.price | number_format(2, ',', ' ') }}</td>
                             <td>{{ produit.soustotalht | number_format(2, ',', ' ') }}</td>
                         </tr>
