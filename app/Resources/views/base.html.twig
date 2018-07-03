@@ -306,7 +306,7 @@
                             <a href="{{ url('ticket_index') }}"><i class="fa fa-sticky-note fa-fw"></i> Tickets</a>
                         </li>
                     {% endif %}
-                    {% if (is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')) %}
+                    {% if (is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')) and not is_granted('ROLE_DIRECTION')%}
                         <li>
                             <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Ventes<span
                                         class="fa arrow"></span></a>

@@ -56,6 +56,7 @@ class DevisController extends Controller
     /**
      * @Route("/{archived}", name="devis_list", defaults={"archived"=0},
      *     requirements={"archived" = "0|1"})
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function indexAction(Request $request, $archived)
     {
@@ -138,6 +139,7 @@ class DevisController extends Controller
 
     /**
      * @Route("/actualiser/{id}", name="devis_actualisertauxachat")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function actualiserTauxAchatAction(Devis $devis, Request $request)
     {
@@ -207,6 +209,7 @@ class DevisController extends Controller
 
     /**
      * @Route("/delete/{id}", name="devis_delete")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function deleteAction($id, Request $request)
     {
@@ -241,6 +244,7 @@ class DevisController extends Controller
 
     /**
      * @Route("/edit/{id}", name="devis_edit")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function editAction($id, Request $request)
     {
@@ -278,6 +282,7 @@ class DevisController extends Controller
 
     /**
      * @Route("/copie/{id}", name="devis_copie")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function copieAction(Devis $devisaCloner, Request $request)
     {
@@ -303,6 +308,7 @@ class DevisController extends Controller
 
     /**
      * @Route("/nouvelleversion/{id}", name="devis_nouvelleversion")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function nouvelleVersionAction($id, Request $request)
     {
@@ -331,6 +337,7 @@ class DevisController extends Controller
 
     /**
      * @Route("/pdf/{id}", name="devis_publier_pdf")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function pdfAction(Devis $devis, Request $request)
     {
@@ -440,6 +447,7 @@ class DevisController extends Controller
     /**
      * @Route("/archiver/{id}", name="devis_archive")
      * @Method("GET")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function toggleArchiveAction(Devis $devis, Request $request)
     {

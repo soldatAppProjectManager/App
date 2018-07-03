@@ -48,6 +48,7 @@ class ProduitFusionController extends Controller
 
     /**
      * @Route("/create/{id}", name="ProduitFusion_create")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function createAction(AbstractDocumentClient $devis,Request $request)
     {

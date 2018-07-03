@@ -46,9 +46,11 @@
       <table class="table table-hover">
         <thead>
           <tr>
-            <th style="text-align:center;">
-              <a type="button" class="btn btn-success invisible" href="{{ url('ProduitFusion_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
-            </th>
+            {% if is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN') %}
+                <th style="text-align:center;">
+                    <a type="button" class="btn btn-success invisible" href="{{ url('ProduitFusion_create', {'id' : devis.id})}}"><i class="fa fa-plus" aria-hidden="true"></i></a>
+                </th>
+            {% endif %}
             <th>Quantité</th>
             <th>Description</th>            
            {#  <th>Prix d'achat</th> #}

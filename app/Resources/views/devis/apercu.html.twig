@@ -47,7 +47,14 @@
           <tr>
 
             <th style="min-width:15%">Nom du Client :</th>
-            <td align="left"><a type="button" class="btn btn-default" href="{{ url('client_voir', {'id' : devis.client.id})}}"><strong>{{devis.client.nom |capitalize }}</strong></a>
+            <td align="left">
+                {% if is_granted('ROLE_DIRECTION') %}
+                    <strong>{{devis.client.nom |capitalize }}</strong>
+                {% else %}
+                    <a type="button" class="btn btn-default" href="{{ url('client_voir', {'id' : devis.client.id})}}">
+                        <strong>{{devis.client.nom |capitalize }}</strong>
+                    </a>
+                {% endif %}
             </td>
           </tr>
           <tr>
