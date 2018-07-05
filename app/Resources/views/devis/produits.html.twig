@@ -142,11 +142,13 @@
   <hr>
 
   <div class="row">
+    {% if is_granted('ROLE_COMMERCIAL') or is_granted('ROLE_ADMIN') %}
      <a type="button" class="btn btn-success invisible pull-right" href="{{ url('produitdevis_create', {'id' : devis.id})}}">
      <i class="fa fa-plus" aria-hidden="true"></i>
      Ajouter un produit
      </a>
     <br>
+    {% endif %}
     <br>
     <div class="well" style="background-color: #fcfcfc">
       <table class="table table-hover" id ="">
@@ -181,11 +183,13 @@
               <td data-attr="marge" id="marge_{{ produit.id }}" {{modifiable|raw}} data-id="{{ produit.id }}" class="impactePrice" >{{ (produit.marge * 100) | number_format(2, ',', ' ') }}% </td>
               <td  id="prixVenteHT_{{ produit.id }}" >{{ produit.getPrixVenteHT() | number_format(2, ',', ' ') }} </td>
               <td id="sousTotalHT_{{ produit.id }}" >{{ (produit.getSousTotalHT()) | number_format(2, ',', ' ') }} {% if produit.optionnel %}<span class="badge" >option</span>{% endif %}</td>
-              <td>
-                {# <a type="button" class="btn btn-default" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a> #}
-                <a type="button" class="label label-warning" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
-                <a type="button" class="label label-danger" href="{{ url('produitdevis_delete_confirmed', {'id' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Effacer</a>
-              </td>
+              {% if is_granted('ROLE_COMMERCIAL') or is_granted('ROLE_ADMIN') %}
+                <td>
+                    {# <a type="button" class="btn btn-default" href="{{ url('produitdevis_voir', {'id' : produit.id})}}">Voir</a> #}
+                    <a type="button" class="label label-warning" href="{{ url('produitdevis_edit', {'id' : produit.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Editer</a>
+                    <a type="button" class="label label-danger" href="{{ url('produitdevis_delete_confirmed', {'id' : produit.id})}}"><i class="fa fa-trash-o" aria-hidden="true"></i> Effacer</a>
+                </td>
+              {% endif %}
               </tr>
           {% endfor %}     
         </tbody>  

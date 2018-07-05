@@ -51,6 +51,7 @@ class ProduitDevisController extends Controller
 
     /**
      * @Route("/create/{id}", name="produitdevis_create")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function createAction(Devis $devis, Request $request)
     {
@@ -101,6 +102,7 @@ class ProduitDevisController extends Controller
 
     /**
      * @Route("/deleteConfirmed/{id}", name="produitdevis_delete_confirmed")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function deleteConfirmedAction(ProduitDevis $produitdevis, Request $request)
     {
@@ -119,6 +121,7 @@ class ProduitDevisController extends Controller
 
     /**
      * @Route("/edit/{id}", name="produitdevis_edit")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function editAction(ProduitDevis $produitDevis, Request $request)
     {

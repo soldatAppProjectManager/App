@@ -103,7 +103,12 @@
 
             {% endif %}
             <td style="text-align: center;">Derniere mise à jour des taux : <br>{{ devis.datemiseajourchange| localizeddate('none', 'none', 'fr_FR', null, "cccc, d MMMM Y") }}
-              <a type="button" title="Actualiser le taux de change de chaque produit"  class="label label-success" href="{{ url('devis_actualisertauxachat', {'id' : devis.id})}}"><i class="fa fa-refresh" aria-hidden="true"></i> Actualiser le taux de change</a>
+              {% if is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN') %}
+                <a type="button" title="Actualiser le taux de change de chaque produit"  class="label label-success"
+                   href="{{ url('devis_actualisertauxachat', {'id' : devis.id})}}">
+                    <i class="fa fa-refresh" aria-hidden="true"></i> Actualiser le taux de change
+                </a>
+              {% endif %}
             </td>
           </tr>
 
@@ -149,7 +154,9 @@
               <span class="label label-default">{{ devis.TravailCommercial.nom }}</span>
               <span class="label label-default">{{ devis.TravailImport.nom }}</span>
               <span class="label label-default">{{ devis.TravailLivraison.nom }}</span>
-              <a type="button" class="label label-warning" href="{{ url('devis_edit', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+              {% if is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN') %}
+                <a type="button" class="label label-warning" href="{{ url('devis_edit', {'id' : devis.id})}}"><i class="fa fa-pencil-square-o" aria-hidden="true"></i> Edit</a>
+              {% endif %}
 {#               <font size="1">
                 <table class="charges"  >
                 <tbody>
