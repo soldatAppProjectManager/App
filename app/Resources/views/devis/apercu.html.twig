@@ -99,9 +99,11 @@
       <table class="table table-hover"  >
         <thead>
           <tr>
-            <th style="text-align:center;">
-                <button type="submit" class="btn btn-success" ><i class="fa fa-sort-numeric-asc" ></i></button>
-            </th>
+              {% if is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN') %}
+                <th style="text-align:center;">
+                    <button type="submit" class="btn btn-success" ><i class="fa fa-sort-numeric-asc" ></i></button>
+                </th>
+              {% endif %}
             <th>Quantité</th>
             <th>Description</th>
             <th>Prix Unitaire</th>
@@ -112,9 +114,11 @@
           {% for produit in devis.abstractProduits %}
           {% if not produit.estFusionne %}
             <tr>
-              <td align="center" style="width: 85px;" >
-                  <input name="ordre[{{ produit.id }}]" type="number" class="form-control input-sm" value="{{ produit.ordre }}" >
-              </td>
+                {% if is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN') %}
+                    <td align="center" style="width: 85px;" >
+                        <input name="ordre[{{ produit.id }}]" type="number" class="form-control input-sm" value="{{ produit.ordre }}" >
+                    </td>
+                {% endif %}
               <td class="quantite" {{modifiable|raw}} id="{{ produit.id }}"><strong>{{ produit.quantite }}</strong></td>
               <td>
                 {% if produit.designation != " " %}
