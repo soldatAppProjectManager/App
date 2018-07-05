@@ -10,8 +10,9 @@
         <a type="button" title="Retour à liste des devis" href="{{ url('devis_list') }}" class="btn btn-default">Retour à la liste</a>
         <a type="button" title="Finaliser un devis change la version du devis" class="btn btn-primary invisible" href="{{ url('devis_publier_pdf', {'id' : devis.id})}}"><i class="fa fa-file-pdf-o" aria-hidden="true"></i> Publier le devis pdf</a>
         <a type="button" title="Actualiser le taux de change de chaque produit"  class="btn btn-success invisible" href="{{ url('devis_actualisertauxachat', {'id' : devis.id})}}"><i class="fa fa-refresh" aria-hidden="true"></i> Actualiser le taux de change</a>
+        {% endif %}
     </div>
-    {% endif %}
+
 
     <div class="row">
         <div style="float: left;" ><h1>Devis : <small>{{ devis }} </small></h1></div>
