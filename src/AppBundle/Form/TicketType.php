@@ -16,11 +16,11 @@ class TicketType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('date', null, [
+        $builder->add('date', DateTimeType::class, [
             'label' => 'Date',
             'attr' => ['class' => 'datetimepicker'],
             'widget' => 'single_text',
-            'format' => 'dd/MM/yyyy HH:mm',
+            'format' => 'dd/MM/yyyy',
             'required' => true,
         ])
             ->add('objet')

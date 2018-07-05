@@ -1,6 +1,10 @@
 {% extends 'base.html.twig' %}
 
 {% block title %} modification ticket{% endblock %}
+{% block stylesheets %}
+    {{ parent() }}
+    <link rel="stylesheet" href="/bower_components/eonasdan-bootstrap-datetimepicker/build/css/bootstrap-datetimepicker.min.css" />
+{% endblock %}
 {% block body %}
     <h1>Ticket {{ ticket.reference }}</h1>
 
@@ -67,3 +71,13 @@
     <input class="btn btn-primary pull-right" type="submit" value="Enregistrer"/>
     {{ form_end(form) }}
 {% endblock %}
+
+{% block javascripts %}
+    {{ parent() }}
+    <script type="text/javascript" src="/bower_components/moment/min/moment.min.js"></script>
+    <script type="text/javascript" src="/bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js"></script>
+
+    {% include 'datetime_picker.html.twig' %}
+
+{% endblock %}
+
