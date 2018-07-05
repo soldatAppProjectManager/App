@@ -425,6 +425,7 @@ class DevisController extends Controller
      *
      * @Route("/monterProduit", name="monter_produit")
      * @Method("POST")
+     * @Security("is_granted('ROLE_COMMERCIAL', 'ROLE_ADMIN')")
      */
     public function monterProduitAction(Request $request)
     {
