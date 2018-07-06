@@ -1,6 +1,7 @@
 <?php
 
 namespace AppBundle\Repository;
+use AppBundle\Entity\Client;
 use AppBundle\Entity\ProduitBC;
 use AppBundle\Entity\statutProduit;
 use AppBundle\Search\PeriodCriteria;
@@ -127,10 +128,12 @@ class BonDeCommandeClientRepository extends \Doctrine\ORM\EntityRepository
 
     public function findBcByPeriod(PeriodCriteria $criteria)
     {
-        $qb = $this->createQueryBuilder('bdcc');
+        $qb = $this->createQueryBuilder('bdcc')
+            ->innerJoin('bdcc.client', 'client')
+            ->where('client.id != :clientId')->setParameter('clientId', Client::SOLDATA_ID);
 
         if (!empty($criteria->getStartDate())) {
-            $qb->Where('bdcc.datecreation >= :startDate')
+            $qb->andWhere('bdcc.datecreation >= :startDate')
                 ->setParameter('startDate', $criteria->getStartDate());
         }
 
