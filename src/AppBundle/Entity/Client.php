@@ -14,6 +14,8 @@ use Symfony\Component\Validator\Constraints as Assert;
  */
 class Client
 {
+    const SOLDATA_ID = 28;
+
     /**
      * @var int
      *

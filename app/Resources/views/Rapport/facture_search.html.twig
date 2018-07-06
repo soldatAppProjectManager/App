@@ -11,7 +11,9 @@
     </tr>
     </thead>
     <tbody>
+    {% set montantTotal = 0 %}
     {% for facture in factures %}
+        {% set montantTotal = montantTotal + facture.bonDeCommandeClient.totalTTC %}
         <tr>
             <td>{{ facture.reference }}</td>
             <td>{{ facture.date|date('d/m/Y') }}</td>
@@ -27,5 +29,9 @@
             </td>
         </tr>
     {% endfor %}
+    <tr>
+        <td colspan="3" class="text-center"><strong>C.A.H.T</strong></td>
+        <td colspan="9" class="text-center"><strong>{{ montantTotal | number_format(2, ',', ' ') }}</strong></td>
+    </tr>
     </tbody>
 </table>
