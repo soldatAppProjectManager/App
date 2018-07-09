@@ -57,22 +57,19 @@
     <script
         src="{{ asset('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}">
     </script>
-
     <script>
-        $('#myTab a').click(function(e) {
-            e.preventDefault();
-            $(this).tab('show');
+        $(document).ready(function() {
+            if (location.hash) {
+                $("a[href='" + location.hash + "']").tab("show");
+            }
+            $(document.body).on("click", "a[data-toggle]", function(event) {
+                location.hash = this.getAttribute("href");
+            });
         });
-
-        // stockage de l'onglet active
-        $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
-            var id = $(e.target).attr("href").substr(1);
-            window.location.hash = id;
+        $(window).on("popstate", function() {
+            var anchor = location.hash || $("a[data-toggle='tab']").first().attr("href");
+            $("a[href='" + anchor + "']").tab("show");
         });
-
-        // Retour à l'onglet sélectionné
-        var hash = window.location.hash;
-        $('#myTab a[href="' + hash + '"]').tab('show');
     </script>
 
     {% include 'datetime_picker.html.twig' %}
