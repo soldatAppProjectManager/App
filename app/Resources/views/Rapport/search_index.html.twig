@@ -18,7 +18,7 @@
 
     <div class="row">
         <div class="col-md-12">
-            <ul class="nav nav-tabs">
+            <ul class="nav nav-tabs" id="myTab">
                 <li class="active"><a href="#opportunities" data-toggle="tab">Opportunités</a>
                 </li>
                 <li><a href="#devis" data-toggle="tab">Devis</a></li>
@@ -57,5 +57,23 @@
     <script
         src="{{ asset('bower_components/eonasdan-bootstrap-datetimepicker/build/js/bootstrap-datetimepicker.min.js') }}">
     </script>
+
+    <script>
+        $('#myTab a').click(function(e) {
+            e.preventDefault();
+            $(this).tab('show');
+        });
+
+        // stockage de l'onglet active
+        $("ul.nav-tabs > li > a").on("shown.bs.tab", function (e) {
+            var id = $(e.target).attr("href").substr(1);
+            window.location.hash = id;
+        });
+
+        // Retour à l'onglet sélectionné
+        var hash = window.location.hash;
+        $('#myTab a[href="' + hash + '"]').tab('show');
+    </script>
+
     {% include 'datetime_picker.html.twig' %}
 {% endblock %}

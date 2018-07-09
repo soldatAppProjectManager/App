@@ -113,12 +113,20 @@ class RapportController extends Controller
      */
     public function searchAction(Request $request)
     {
+
         $em = $this->getDoctrine()->getManager();
 
         $criteria = new PeriodCriteria();
+
+        if ($request->getSession()->has('criteria')) {
+            $criteria = $request->getSession()->get('criteria');
+        }
+
         $form = $this->createForm(SearchPeriodType::class, $criteria);
+
         $form->handleRequest($request);
 
+        $request->getSession()->set('criteria', $form->getData());
         $opportunities = $em->getRepository('AppBundle:Opportunity')->findByCriteria($criteria);
         $devis = $em->getRepository('AppBundle:Devis')->findByPeriod($criteria);
         $bonDeCommandeClient = $em->getRepository('AppBundle:BonDeCommandeClient')->findBcByPeriod($criteria);
