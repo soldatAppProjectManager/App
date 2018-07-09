@@ -3,7 +3,7 @@
 
         <br>
         {% if is_granted('ROLE_DIRECTION') %}
-        <a type="button" class="btn btn-default" href="{{ url('direction_dashboard') }}" title="Retour au dashboard">
+        <a type="button" class="btn btn-default" href="{{ url('direction_dashboard', {'_fragment': 'devis'}) }}" title="Retour au dashboard">
             <i class="fa fa-arrow-left"></i> Retour au Dashboard
         </a>
         {% else %}
