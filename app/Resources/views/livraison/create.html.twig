@@ -1,0 +1,75 @@
+{% extends 'base.html.twig' %}
+
+{% block stylesheets %}
+    {{ parent() }}
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/css/select2.min.css" rel="stylesheet" />
+{% endblock %}
+
+{% block body %}
+    <div class="row" >
+    <h1>
+        Livraison pour : #{{ bcc.id }} {{ bcc.client}}
+    </h1>
+    {{ form_start(form) }}
+    {{ form_widget(form._token) }}
+
+    <div class="col-lg-12">
+        <div class="row well well-lg">
+            <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.date) }}
+                    {{ form_errors(form.date) }}
+                    {{ form_widget(form.date) }}
+                </div>
+            </div> <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.lieu) }}
+                    {{ form_errors(form.lieu) }}
+                    {{ form_widget(form.lieu) }}
+                </div>
+            </div> <div class="col-md-3 form-group ">
+                <div class="input date form_datetime">
+                    {{ form_label(form.livreur) }}
+                    {{ form_errors(form.livreur) }}
+                    {{ form_widget(form.livreur) }}
+                </div>
+            </div>
+        </div>
+
+        <fieldset>
+            <legend>Produits</legend>
+            <div class="row " >
+                {% for lpField in form.livraisonProduits %}
+                    <div class="col-md-3 form-group ">
+                        <div class="well well-lg">
+                            <h5>{{ lpField.vars.data.produit.designation }}</h5>
+                            <hr>
+                            {{ form_errors(lpField) }}
+                            {{ form_widget(lpField) }}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </fieldset>
+
+    </div>
+
+    {{ form_end(form) }}
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+
+    {{ parent() }}
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/select2/4.0.6-rc.0/js/select2.min.js"></script>
+    <script>
+        $( ".qteRecu" ).each(function( index ) {
+            $( this ).prop('min', 0).prop('max', $(this).val());
+        });
+
+        $('.js-example-basic-multiple').select2();
+
+        $(".numSeries").tagsinput('items')
+    </script>
+
+{% endblock %}
