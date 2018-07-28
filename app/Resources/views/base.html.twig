@@ -301,11 +301,6 @@
                         </div>
                         <!-- /input-group -->
                     </li>
-                    {% if is_granted('ROLE_COMMERCIAL') or is_granted('ROLE_ADMIN') %}
-                        <li>
-                            <a href="{{ url('ticket_index') }}"><i class="fa fa-sticky-note fa-fw"></i> Tickets</a>
-                        </li>
-                    {% endif %}
                     {% if (is_granted('ROLE_USER') or is_granted('ROLE_ADMIN')) and not is_granted('ROLE_DIRECTION')%}
                         <li>
                             <a href="#"><i class="fa fa-shopping-cart fa-fw"></i> Ventes<span
@@ -397,6 +392,11 @@
                                     <a href="{{ url('fournisseur_list') }}"><i class="fa fa-address-book-o"
                                                                                aria-hidden="true"></i> Fournisseurs</a>
                                 </li>
+                                {% if is_granted('ROLE_COMMERCIAL') or is_granted('ROLE_ADMIN') %}
+                                    <li>
+                                        <a href="{{ url('ticket_index') }}"><i class="fa fa-sticky-note fa-fw"></i> Tickets</a>
+                                    </li>
+                                {% endif %}
                             </ul>
                             <!-- /.nav-second-level -->
                         </li>
